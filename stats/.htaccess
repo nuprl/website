@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "Members Only"
+AuthUserFile /var/www/clients/client2/web19/web/stats/.htpasswd_stats
+require valid-user
