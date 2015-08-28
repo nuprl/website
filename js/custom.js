@@ -63,6 +63,16 @@ else
          $('.pn-top').fadeOut();
       }      
     });
+
+    /* Show read more for seminars */
+    $('.pn-readmore-introtext').click(function()
+    {
+      $this = $(this);
+
+      $this.parent().find('.pn-readmore-fulltext').animate({
+        height: "toggle"
+      }, 1000 );
+    });    
   });
 }
 
