@@ -28,7 +28,6 @@ h3, .pn-h3-like
   margin-top: 20px;
   font-size: 26px;
   line-height: 26px;
-  font-weight: bold;
   margin-bottom: 17px;
   line-height: 1.1;
 }
@@ -36,6 +35,11 @@ h3, .pn-h3-like
 table tr td, table tr th
 {
   padding: 5px 20px 5px 0;
+}
+
+ul 
+{
+  padding-left: 19px;
 }
 
 .navbar.navbar-inverse
@@ -155,7 +159,8 @@ table tr td, table tr th
     top: 44px;
 }
 
-.pn-separator-img.pn-page-title
+.pn-separator-img.pn-page-title,
+.pn-separator-img-2.pn-page-title
 {
   height: 300px;
   color: #fff;
@@ -171,11 +176,57 @@ table tr td, table tr th
   border-bottom: 1px solid rgba(117, 117, 117, 0.24);
 }
 
-.pn-separator-img.pn-page-title h2
+.pn-separator-img-2.pn-page-title
+{
+  margin-top: 30px;
+  background-image: url("../img/separator-2.jpg");    
+}
+
+.pn-separator-img.pn-page-title h2,
+.pn-separator-img-2.pn-page-title h2
 {
   top: 115px;
   font-size: 46px;
   text-shadow: rgb(105, 105, 105) 2px 2px 0px;
+}
+
+.how-to-design-programs
+{
+  float: left;
+  text-align: center;
+  font-size: 26px;
+  margin-top: 0;
+  line-height: 25px;
+  margin-right: 10px;
+  font-family: 'Ubuntu', sans-serif; 
+  display: inline-block;
+}
+
+.how-to-design-programs-2,
+.essentials-of-programming-languages-2
+{
+  font-size: 26px;  
+  line-height: 25px;
+  font-family: 'Ubuntu', sans-serif; 
+  margin-top: 10px;
+  display: inline-block;
+}
+
+.essentials-of-programming-languages-2
+{
+  margin-right: 26px;
+}
+
+.essentials-of-programming-languages
+{
+    float: right;
+    text-align: center;
+    font-size: 26px;
+    margin-top: 0;
+    line-height: 25px;
+    margin-left: 10px;
+    font-family: 'Ubuntu', sans-serif;
+    display: inline-block;  
 }
 
 .pn-main-wrapper 
@@ -214,7 +265,7 @@ table tr td, table tr th
     margin-bottom: 10px;
 }
 
-.content .pn-person .pn-dates
+.content .pn-muted
 {
     color: #B5B4B4;
     font-size: 14px;    
@@ -230,6 +281,16 @@ table tr td, table tr th
   color: #E4FB95;
   font-size: 18px;
   font-family: 'Ubuntu', sans-serif;
+}
+
+.content .pn-readmore-introtext
+{
+  cursor: pointer;
+}
+
+.content .pn-readmore-fulltext
+{
+  display: none;
 }
 
 .footer
