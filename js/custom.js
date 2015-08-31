@@ -72,7 +72,45 @@ else
       $this.parent().find('.pn-readmore-fulltext').animate({
         height: "toggle"
       }, 1000 );
-    });    
+    }); 
+
+    $('.pn-seminar').click(function()
+    {
+      $this = $(this);
+
+      if( $this.hasClass( 'compact' ) )
+      { 
+        $this.find('.pn-main-informations').fadeOut( function()
+        {      
+            $this.find('br').remove();    
+            $this.find('.pn-title, .pn-url').after('<br />');  
+
+            $this.find('.pn-abstract-bio').slideDown();    
+            $this.find('.pn-main-informations').fadeIn();
+            
+            $this.removeClass( 'compact' );   
+        });      
+      }
+      else
+      { 
+        $this.find('.pn-abstract-bio').slideUp( function()
+        {
+            $this.find('.pn-main-informations').fadeOut( function()
+            {
+                $this.find('br').remove();   
+                $this.find('.pn-name').after('<br />');       
+                
+                $this.find('.pn-main-informations').fadeIn();
+                $this.addClass( 'compact' );  
+            });
+        });
+      }
+
+      /*
+      $this.parent().find('.pn-readmore-fulltext').animate({
+        height: "toggle"
+      }, 1000 );   */
+    });
   });
 }
 

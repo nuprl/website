@@ -265,6 +265,93 @@ ul
     margin-bottom: 10px;
 }
 
+.pn-seminar
+{
+  cursor: pointer;
+}
+
+.pn-seminar .pn-main-informations
+{
+  margin-bottom: 10px;
+}
+
+.pn-seminar.compact .pn-name,
+.pn-seminar .pn-title-separator,
+.pn-seminar .pn-title
+{
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 26px;
+    line-height: 26px;
+    margin-bottom: 10px; 
+    color: white;
+}
+
+.pn-seminar .pn-title
+{
+  color: #5eb6ef;
+}
+
+.pn-seminar a:focus
+{
+   outline: 0;
+   text-decoration: none;
+}
+
+.pn-seminar a:hover
+{
+  text-decoration: underline;
+}
+
+.pn-seminar .pn-title-2
+{
+  font-family: 'Ubuntu', sans-serif;  
+  font-size: 18px;
+  line-height: 22px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.pn-seminar .pn-affiliation,
+.pn-seminar .pn-datetime,
+.pn-seminar .pn-room,
+.pn-seminar .pn-name
+{
+    color: #B5B4B4;
+    font-size: 14px;
+}
+
+.pn-seminar .pn-name:after, 
+.pn-seminar .pn-affiliation:after, 
+.pn-seminar .pn-datetime:after
+{
+  content: '\00a0|\00a0';
+}
+
+.pn-seminar.compact .pn-name:after, 
+.pn-seminar.compact .pn-affiliation:after, 
+.pn-seminar.compact .pn-datetime,
+.pn-seminar.compact .pn-datetime:after
+{
+  content: '';
+}
+
+.pn-seminar .pn-url
+{
+    font-size: 14px;  
+}
+
+.pn-seminar.compact .pn-affiliation:after
+{
+    content: " | ";
+}
+
+.pn-seminar.compact .pn-url,
+.pn-seminar.compact .pn-room,
+.pn-seminar.compact .pn-abstract-bio
+{
+  display: none;
+}
+
 .content .pn-muted
 {
     color: #B5B4B4;
