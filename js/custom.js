@@ -39,15 +39,6 @@ else
       var posicion = barra * 0.5;
       var opacity = 0;
 
-      if (barra < lastScrollTop)
-      {
-        opacity = parseFloat ( $('.jumbotron').css('opacity') ) + 0.2;
-      } else {
-        opacity = parseFloat( $('.jumbotron').css('opacity') ) - 0.2;
-      }
-
-      $('.jumbotron').css({'opacity': opacity});
-
       lastScrollTop = barra;
       
       $('body').css({
@@ -98,18 +89,13 @@ else
             $this.find('.pn-main-informations').fadeOut( function()
             {
                 $this.find('br').remove();   
-                $this.find('.pn-name').after('<br />');       
+                $this.find('.pn-name').after('<br />').before('<br />');       
                 
                 $this.find('.pn-main-informations').fadeIn();
                 $this.addClass( 'compact' );  
             });
         });
       }
-
-      /*
-      $this.parent().find('.pn-readmore-fulltext').animate({
-        height: "toggle"
-      }, 1000 );   */
     });
   });
 }
