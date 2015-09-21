@@ -91,32 +91,107 @@
               <div class="row">     
                  <div class="col-md-6 pn-seminar compact"> 
                   <div class="pn-main-informations">
-                    <a href="#" onclick="return false;" class="pn-title">Some New Developments for the R Engine</a> 
-		    <br /><span class="pn-name">Luke Tierney</span>                                                        
+                    <a href="#" onclick="return false;" class="pn-title">Programming Languages Meets Programmable Networks</a> 
+		    <br /><span class="pn-name">Arjun Guha</span>                                                        
                     <br />
-                    <span class="pn-affiliation">U. Ioawa</span>
-                    <a class="pn-url" target="_blank" href="http://homepage.stat.uiowa.edu/~luke/">link</a>
-                    <span class="pn-datetime">2 October, 10:00AM</span><span class="pn-room">WHV 366</span>
+                    <span class="pn-affiliation">U. Massachusetts, Amherst</span>
+                    <a class="pn-url" target="_blank" href="https://people.cs.umass.edu/~arjun/home/">link</a>
+                    <span class="pn-datetime">TBD, 10:00AM</span><span class="pn-room">WHV 366</span>
                   </div>
                   <div class="pn-abstract-bio">
                     <p>
                       <span class="pn-title-2">Abstract</span>
-                      <span> R is a dynamic language for statistical
-			computing and graphics. In recent years R has become
-			a major framework for both statistical practice and
-			research. This talk present a very brief outline of
-			the R language and its evolution and describe some
-			current efforts on improvements to the core
-			computational engine, including work on compilation
-			of R code, efforts to take advantage of multiple
-			processor cores, and modifications to support
-			working with larger data sets.
+                      <span>Computer networks do not simply connect machines together, but run several
+applications on network devices, such as load balancers, intrusion detection
+systems, authentication portals, and more. Historically, these applications were
+black-boxes running on proprietary hardware, but software-defined networking
+(SDN) now allows anyone to write their own programs using open networking
+protocols (e.g., OpenFlow).
+
+So, what are the right abstractions for programming networks? This talk will try
+to address this question in three ways.
+
+First, we present a syntactic theory of network forwarding called NetKAT, which
+supports equational reasoning about network-wide behavior. Using NetKAT,
+programmers can ask and answer questions like, "Can A communicate with B?",
+"Does all traffic traverse my intrusion detection system?", "Is there a loop in
+my network?", and so on.
+
+Second, we present a fast and efficient compiler for NetKAT. Although several
+network compilers already exist, they are unusable on even moderately sized
+networks. Using new data structures and compilation algorithms, our new compiler
+is two orders of magnitudes faster than prior work and scales to large
+datacenter networks.
+
+Finally, we consider the problem of building a reliable runtime system for
+NetKAT. NetKAT abstracts away several low-level details of networking hardware.
+Although this is a boon for the network programmer, the burden now shifts to us
+to engineer abstractions correctly. We present a Coq-certified runtime system
+that is proven correct with respect to a detailed operational model software-
+defined networks.
 		      </span>
 		    </p>
                     <p>
                       <span class="pn-title-2">Bio</span>
                       <span>
-			Luke Tierney is a Professor Statistics at the University of Iowa and one of the key contributors to the R project.
+Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
+enjoys tackling problems in systems using the tools and principles of
+programming languages. Apart from network programming, he has worked on Web
+security and system configuration languages. He received a PhD in Computer
+Science from Brown University in 2012 and a BA in Computer Science from Grinnell
+College in 2006.
+		      </span>
+                    </p>
+                  </div>
+                </div>
+
+
+                <div class="col-md-6 pn-seminar compact"> 
+                  <div class="pn-main-informations">
+                    <a href="#" onclick="return false;" class="pn-title">Reactive Web Programming</a> 
+		    <br /><span class="pn-name">Manuel Serrano</span>                                                        
+                    <br />
+                    <span class="pn-affiliation">INRIA</span>
+                    <a class="pn-url" target="_blank" href="http://www-sop.inria.fr/members/Manuel.Serrano/">link</a>
+                    <span class="pn-datetime">4 November, 10:00AM</span><span class="pn-room">WHV 366</span>
+                  </div>
+                  <div class="pn-abstract-bio">
+                    <p>
+                      <span class="pn-title-2">Abstract</span>
+                      <span>
+Asynchrony being consubstantial with the Web, asynchronous communication and control patterns are ubiquitous at multiple scales in Web programs. They are used to program Web clients as well as Web servers. Browser HTML GUIs raise asynchronous events in reaction to user interactions. The Web browser DOM (Document Object Model) creates Web page elements asynchronously. Browser-to-server (AJAX) and server-to-server (program-as-a-service (PAAS) and Web APIs) communications are physically asynchronous as they involve network traversals that take wall-clock time. Web-of-things and diffuse robotics applications that are based on device-to-machine communications make asynchronous event raising even more frequent.		      </span>
+		    </p>
+                    <p>
+                      <span class="pn-title-2">Bio</span>
+                      <span>
+Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.
+		      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>               
+
+<!--- ROW ----->
+              <div class="row">     
+                 <div class="col-md-6 pn-seminar compact"> 
+                  <div class="pn-main-informations">
+                    <a href="#" onclick="return false;" class="pn-title">Using LLVM as a backend for R</a> 
+		    <br /><span class="pn-name">Jan Vitek</span>                                                        
+                    <br />
+                    <span class="pn-affiliation">Northeastern University</span>
+                    <a class="pn-url" target="_blank" href="http://homepage.stat.uiowa.edu/~luke/">link</a>
+                    <span class="pn-datetime">2 October, 12:00AM</span><span class="pn-room">WHV 366</span>
+                  </div>
+                  <div class="pn-abstract-bio">
+                    <p>
+                      <span class="pn-title-2">Abstract</span>
+                      <span> I will provide an  update on the status of the Reactor project which aims to use LLVM as just-in-time compiler for the R language.  I will discuss early challenges such as integration in the environment and garbage collection suport.
+		      </span>
+		    </p>
+                    <p>
+                      <span class="pn-title-2">Bio</span>
+                      <span>
+			Jan Vitek is a Professor at Northeastern, he works on programming language design and implementation.
 		      </span>
                     </p>
                   </div>
@@ -160,14 +235,72 @@ associate editor from 2011 until 2014.
                     </p>
                   </div>
                 </div>
-
-
-
-
-
-
               </div>               
+<!--- ROW ----->
+<!--- ROW ----->
+              <div class="row">     
+                 <div class="col-md-6 pn-seminar compact"> 
+                  <div class="pn-main-informations">
+                    <a href="#" onclick="return false;" class="pn-title">Some New Developments for the R Engine</a> 
+		    <br /><span class="pn-name">Luke Tierney</span>                                                        
+                    <br />
+                    <span class="pn-affiliation">U. Ioawa</span>
+                    <a class="pn-url" target="_blank" href="http://homepage.stat.uiowa.edu/~luke/">link</a>
+                    <span class="pn-datetime">2 October, 10:00AM</span><span class="pn-room">WHV 366</span>
+                  </div>
+                  <div class="pn-abstract-bio">
+                    <p>
+                      <span class="pn-title-2">Abstract</span>
+                      <span> R is a dynamic language for statistical
+			computing and graphics. In recent years R has become
+			a major framework for both statistical practice and
+			research. This talk present a very brief outline of
+			the R language and its evolution and describe some
+			current efforts on improvements to the core
+			computational engine, including work on compilation
+			of R code, efforts to take advantage of multiple
+			processor cores, and modifications to support
+			working with larger data sets.
+		      </span>
+		    </p>
+                    <p>
+                      <span class="pn-title-2">Bio</span>
+                      <span>
+			Luke Tierney is a Professor Statistics at the University of Iowa and one of the key contributors to the R project.
+		      </span>
+                    </p>
+                  </div>
+                </div>
 
+
+                <div class="col-md-6 pn-seminar compact"> 
+                  <div class="pn-main-informations">
+                    <a href="#" onclick="return false;" class="pn-title">Completions and Diagnostics in RStudio </a> 
+		    <br /><span class="pn-name">Kevin Ushey</span>                                                        
+                    <br />
+                    <span class="pn-affiliation">RStudio</span>
+                    <a class="pn-url" target="_blank" href="http://cs.uni-salzburg.at/~ck/">link</a>
+                    <span class="pn-datetime">October 2, 11:00AM</span><span class="pn-room">WHV 366</span>
+                  </div>
+                  <div class="pn-abstract-bio">
+                    <p>
+                      <span class="pn-title-2">Abstract</span>
+                      <span>
+Kevin will discuss the details behind the implementation of completions +
+diagnostics, as well as some future goals re: enabling user extensibility of
+both the autocompletion and diagnostics systems.
+		      </span>
+		    </p>
+                    <p>
+                      <span class="pn-title-2">Bio</span>
+                      <span>
+Kevin  is a software engineer at RStudio who primarily works on the RStudio IDE. He is responsible for two large user-facing features that became part of RStudio v0.99: enhanced autocompletions and R code diagnostics. 
+
+		      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>               
 <!--- ROW ----->
 
               <div class="row">      
