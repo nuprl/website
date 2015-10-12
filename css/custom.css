@@ -272,11 +272,7 @@ ul
 .pn-seminar
 {
   cursor: pointer;
-}
-
-.pn-seminar .pn-main-informations
-{
-  margin-bottom: 10px;
+  margin-bottom: 25px;
 }
 
 .pn-seminar.compact .pn-name,
@@ -293,6 +289,16 @@ ul
 .pn-seminar .pn-title
 {
   color: #5eb6ef;
+}
+
+.pn-seminar.compact.finished .pn-name, .pn-seminar.finished .pn-title-separator, .pn-seminar.finished .pn-title
+{
+  color: #B5B4B4;
+}
+
+.pn-seminar.finished2
+{
+  opacity: 0.6;
 }
 
 .pn-seminar a:focus
@@ -347,6 +353,11 @@ ul
 .pn-seminar.compact .pn-affiliation:after
 {
     content: " | ";
+}
+
+.pn-seminar .pn-abstract-bio
+{
+  margin-top: 10px;
 }
 
 .pn-seminar.compact .pn-url,
