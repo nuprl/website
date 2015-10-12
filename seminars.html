@@ -170,6 +170,46 @@
 
           <br />
 
+
+          <div class="col-md-12 pn-seminar compact">
+            <div class="pn-main-informations">
+              <a onclick="return false;" class="pn-title">Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software</a>
+              <br /><span class="pn-name">Christoph Kirsch</span>
+              <br />
+              <span class="pn-affiliation">U. of Salzburg</span>
+              <a class="pn-url" target="_blank" href="http://cs.uni-salzburg.at/~ck/">link</a>
+              <span class="pn-datetime">2 November, 10:00AM</span><span class="pn-room">WHV 166</span>
+            </div>
+            <div class="pn-abstract-bio">
+              <p>
+              <span class="pn-title-2">Abstract</span>
+              <span>
+         This talk is about scalloc, a fast, multicore-scalable, low-fragmentation memory allocator and selfie, a 4000-line implementation of a tiny self-compiling C compiler and a tiny self-executing MIPS emulator for teaching systems engineering. Scalloc is a typical example of a very complex, multi-year research effort while selfie is, at least for now, a purely educational, many-year effort in teaching compiler, operating system, and virtual machine design based on a single, highly principled software platform. So far scalloc and selfie only share the passion of their authors and are otherwise two distinct projects. Yet earlier versions of selfie, before they were even identified as such, were instrumental in bringing up the generation of students who did scalloc.
+        The main ideas behind scalloc are: uniform treatment of small and big objects through so-called virtual spans, efficiently and effectively reclaiming free memory through fast and scalable global data structures, and constant-time (modulo synchronization) allocation and deallocation operations that trade off memory reuse and spatial locality without being subject to false sharing. The main ideas behind selfie are: a compiler written in and for a tiny subset of C called C* which uses the dereferencing * operator of C for memory access but lacks data structures and many other features and a MIPS emulator written in C* that can execute itself. Both are combined and extended by students to do very cool stuff.
+              </span>
+              </p>
+              <p>
+              <span class="pn-title-2">Bio</span>
+              <span>
+        Christoph Kirsch is Professor at the University of Salzburg, Austria. From
+        1999 to 2004 he worked as Postdoctoral Researcher at UC, Berkeley. He later
+        returned to Berkeley as Visiting Scholar (2008-2013) and Visiting Professor
+        (2014) as part of a collaborative research effort in Cyber-Physical
+        Systems. His most recent research interests are in concurrent data
+        structures, memory management, and so-called spatial programming. Dr. Kirsch
+        co-invented embedded programming languages and systems such as Giotto, HTL,
+        and the Embedded Machine, and more recently co-designed high-performance,
+        multicore-scalable concurrent data structures and memory management
+        systems. He co-founded the International Conference on Embedded Software
+        (EMSOFT) and served as ACM SIGBED chair from 2011 until 2013 and ACM TODAES
+        associate editor from 2011 until 2014.
+              </span>
+              </p>
+            </div>
+          </div>
+
+          <br />
+
           <div class="col-md-12 pn-seminar compact finished">
             <div class="pn-main-informations">
               <a onclick="return false;" class="pn-title">Using LLVM as a backend for R</a>
@@ -190,44 +230,6 @@
               <span class="pn-title-2">Bio</span>
               <span>
         Jan Vitek is a Professor at Northeastern, he works on programming language design and implementation.
-              </span>
-              </p>
-            </div>
-          </div>
-
-          <div class="col-md-12 pn-seminar compact finished">
-            <div class="pn-main-informations">
-              <a onclick="return false;" class="pn-title">Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software</a>
-              <br /><span class="pn-name">Christoph Kirsch</span>
-              <br />
-              <span class="pn-affiliation">U. of Salzburg</span>
-              <a class="pn-url" target="_blank" href="http://cs.uni-salzburg.at/~ck/">link</a>
-              <span class="pn-datetime">2 November, 10:00AM</span><span class="pn-room">WHV 166</span>
-            </div>
-            <div class="pn-abstract-bio">
-              <p>
-              <span class="pn-title-2">Abstract</span>
-              <span>
-         This talk is about scalloc, a fast, multicore-scalable, low-fragmentation memory allocator and selfie, a 4000-line implementation of a tiny self-compiling C compiler and a tiny self-executing MIPS emulator for teaching systems engineering. Scalloc is a typical example of a very complex, multi-year research effort while selfie is, at least for now, a purely educational, many-year effort in teaching compiler, operating system, and virtual machine design based on a single, highly principled software platform. So far scalloc and selfie only share the passion of their authors and are otherwise two distinct projects. Yet earlier versions of selfie, before they were even identified as such, were instrumental in bringing up the generation of students who did scalloc.
-
-        The main ideas behind scalloc are: uniform treatment of small and big objects through so-called virtual spans, efficiently and effectively reclaiming free memory through fast and scalable global data structures, and constant-time (modulo synchronization) allocation and deallocation operations that trade off memory reuse and spatial locality without being subject to false sharing. The main ideas behind selfie are: a compiler written in and for a tiny subset of C called C* which uses the dereferencing * operator of C for memory access but lacks data structures and many other features and a MIPS emulator written in C* that can execute itself. Both are combined and extended by students to do very cool stuff.
-              </span>
-              </p>
-              <p>
-              <span class="pn-title-2">Bio</span>
-              <span>
-        Christoph Kirsch is Professor at the University of Salzburg, Austria. From
-        1999 to 2004 he worked as Postdoctoral Researcher at UC, Berkeley. He later
-        returned to Berkeley as Visiting Scholar (2008-2013) and Visiting Professor
-        (2014) as part of a collaborative research effort in Cyber-Physical
-        Systems. His most recent research interests are in concurrent data
-        structures, memory management, and so-called spatial programming. Dr. Kirsch
-        co-invented embedded programming languages and systems such as Giotto, HTL,
-        and the Embedded Machine, and more recently co-designed high-performance,
-        multicore-scalable concurrent data structures and memory management
-        systems. He co-founded the International Conference on Embedded Software
-        (EMSOFT) and served as ACM SIGBED chair from 2011 until 2013 and ACM TODAES
-        associate editor from 2011 until 2014.
               </span>
               </p>
             </div>
