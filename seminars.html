@@ -169,8 +169,8 @@
           </div>
 
           <br />
-
-
+ 
+ 
           <div class="col-md-12 pn-seminar compact">
             <div class="pn-main-informations">
               <a onclick="return false;" class="pn-title">Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software</a>
@@ -210,7 +210,68 @@
 
           <br />
 
-          <div class="col-md-12 pn-seminar compact finished">
+
+
+          <div class="col-md-12 pn-seminar compact">
+            <div class="pn-main-informations">
+              <a onclick="return false;" class="pn-title">Memory corruption: why protection is hard</a>
+              <br /><span class="pn-name">Mathias Payer</span>
+              <br />
+              <span class="pn-affiliation">Purdue</span>
+              <a class="pn-url" target="_blank" href="https://nebelwelt.net">link</a>
+              <span class="pn-datetime">23 October, 1:30PM</span><span class="pn-room">WHV 366</span>
+            </div>
+            <div class="pn-abstract-bio">
+              <p>
+              <span class="pn-title-2">Abstract</span>
+              <span>
+		Memory corruption plagues systems since the dawn of computing. With the
+rise of defense techniques like stack cookies, ASLR, and DEP, attacks
+have become much more complicated, yet control-flow hijack attacks are
+still prevalent. Attacks leverage code reuse attacks, often using some
+form of information disclosure. Stronger defense mechanisms have been
+proposed but none have seen wide deployment so far (i) due to the time
+it takes to deploy a security mechanism, (ii) incompatibility with
+specific features, and (iii) most severely due to performance overhead.
+In the talk, we evaluate the security benefits and limitations of the
+status quo and look into upcoming defense mechanisms (and their attacks).
+
+Control-Flow Integrity (CFI) and Code-Pointer Integrity (CPI) are two of
+the hottest upcoming defense mechanisms. CFI guarantees that the runtime
+control flow follows the statically determined control-flow graph. An
+attacker may reuse any of the valid transitions at any control flow
+transfer. CPI on the other hand is a dynamic property that enforces
+memory safety guarantees like bounds checks for code pointers by
+separating code pointers from regular data. We will discuss differences
+and advantages/disadvantages of both approaches, especially the security
+benefits they give under novel attacks like Counterfeit Object-Oriented
+Programming (COOP) and Control-Flow Bending (CFB).  COOP reuses complete
+functions as gadgets and CFB bends the control flow along valid but
+unintended paths in the control-flow graph of a program.
+
+              </span>
+              </p>
+              <p>
+              <span class="pn-title-2">Bio</span>
+              <span>
+Mathias Payer is a security researcher and an assistant professor in
+computer science at Purdue university. His interests are related to
+system security, binary exploitation, user-space software-based fault
+isolation, binary translation/recompilation, and (application)
+virtualization. His research focuses on protecting applications even in
+the presence of vulnerabilities, with a focus on memory corruption.
+Before joining Purdue in 2014 he spent two years as PostDoc in Dawn
+Song's BitBlaze group at UC Berkeley. He graduated from ETH Zurich with
+a Dr. sc. ETH in 2012.
+              </span>
+              </p>
+            </div>
+          </div>
+
+          <br />
+
+
+         <div class="col-md-12 pn-seminar compact finished">
             <div class="pn-main-informations">
               <a onclick="return false;" class="pn-title">Using LLVM as a backend for R</a>
               <br /><span class="pn-name">Jan Vitek</span>
