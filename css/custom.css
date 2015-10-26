@@ -153,7 +153,8 @@ ul
 
 .pn-separator-img,
 .pn-separator-img-2,
-.pn-separator-img-short
+.pn-separator-img-short,
+.pn-separator-img-2-short
 {
   height: 300px;
   color: #fff;
@@ -181,9 +182,16 @@ ul
   background-image: url("../img/separator-2.jpg");    
 }
 
+.pn-separator-img-2-short
+{
+  background-image: url("../img/separator-2.jpg");    
+  height: 150px;
+}
+
 .pn-separator-img h2,
 .pn-separator-img-2 h2,
-.pn-separator-img-short h2
+.pn-separator-img-short h2,
+.pn-separator-img-2-short h2
 {
   font-size: 35px;
   position: relative;
