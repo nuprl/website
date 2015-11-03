@@ -1,74 +1,58 @@
+#lang scribble/text
+@(require
+   racket/date
+;  gregor
+  "templates.rkt")
+@;(current-timezone "America/New_York")
 ;; TODO: Remove once gregor is working
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Seminars - Programming Research Laboratory - Northeastern University</title>
+@(define (datetime year month day hour min)
+   (seconds->date (find-seconds 0 min hour day month year)))
 
-  <!-- Bootstrap -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <!-- Custom css -->
-  <link href="css/custom.css" rel="stylesheet">
-  <!-- Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
-
-  <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
-  <!--[if IE]><link rel="shortcut icon" href="./img/favicon.ico"><![endif]-->
-
-  <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
-  <link rel="icon" href="./img/favicon.png">
-
-  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-  <body id="pn-top">
-   <nav class="navbar navbar-inverse">
-  <div class="container">
-    <div class="row">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">
-          <li role="presentation"><a href="/">Home</a></li>
-          <li role="presentation"><a href="/people.html">People</a></li>
-          <li role="presentation"><a href="/teaching.html">Teaching</a></li>
-          <li role="presentation" class="active"><a href="/seminars.html">Seminars</a></li>
-          <li role="presentation"><a href="/software.html">Software</a></li>
-          <li role="presentation"><a href="/contact.html">Contact</a></li>
-        </ul>
-      </div><!--/.navbar-collapse -->
-    </div>
+@(define (seminar title speaker link aff date room abstract bio)
+   (define id (gensym))
+  @list{
+<div id="@|id|" class="col-md-12 pn-seminar compact">
+  <script type="text/javascript">
+    if (new Date() >= new Date('@(parameterize ([date-display-format 'iso-8601]) (date->string date #t))')) {
+      document.getElementById('@|id|').classList.add('finished');
+    }
+  </script>
+  <div class="pn-main-informations">
+    <a onclick="return false;" class="pn-title">@|title|</a>
+    <br />
+    <span class="pn-name">@|speaker|</span>
+    <br />
+    <span class="pn-affiliation">@|aff|</span>
+    <a class="pn-url" target="_blank" href="@link">link</a>
+@;    <span class="pn-datetime">@(~t date "MMMM D, y h:mma")</span>
+    <span class="pn-datetime">@(date->string date #t)</span>
+    <span class="pn-room">@|room|</span>
   </div>
-</nav>
-   <div class="jumbotron subpages">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h1>Seminars</h1>
-      </div>
-    </div>
+  <div class="pn-abstract-bio">
+    <p>
+      <span class="pn-title-2">Abstract</span>
+      <span>@|abstract|</span>
+    </p>
+    <p>
+      <span class="pn-title-2">Bio</span>
+      <span>@|bio|</span>
+    </p>
   </div>
 </div>
+})
+
+<!DOCTYPE html>
+<html lang="en">
+  @|header|
+  <body id="pn-top">
+   @|navbar|
+   @(page-title "Seminars")
 
     <div class="pn-main-wrapper">
       <div class="content">
         <div class="container">
           <div class="row">
-            <p>For NEU students and staff, the mailing lists <strong>prl-students</strong> and <strong>prl-staff</strong> are maintained by <a mailto:"j.vitek@neu.edu">Jan Vitek</a>.</p>
+            <p>For NEU students and staff, the mailing lists <strong>prl-students</strong> and <strong>prl-staff</strong> are maintained by <a mailto:"j.vitek@"@"neu.edu">Jan Vitek</a>.</p>
           </div>
         </div>
 
@@ -82,7 +66,7 @@
               The PL seminar meets in WVH
               [<a href="http://www.ccs.neu.edu/home/wand/directions.html">directions</a>]. The <a href="http://lists.ccs.neu.edu/pipermail/pl-seminar">mailing
                 list</a> is public. An <a
-                href="https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc@group.calendar.google.com&ctz=America/New_York">HTML
+                href="https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc@"@"group.calendar.google.com&ctz=America/New_York">HTML
                 calendar</a> and an <a
                 href="https://calendar.google.com/calendar/ical/k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com/public/basic.ics">ICAL
                 calendar</a>
@@ -96,85 +80,63 @@
         <!-- ROW -->
         <div class="row">
 
-          <div id="g194" class="col-md-12 pn-seminar compact">
-            <script type="text/javascript">
-              if (new Date() >= new Date('2015-11-16T13:00:00')) {
-                document.getElementById('g194').classList.add('finished');
-              }
-            </script>
-            <div class="pn-main-informations">
-              <a onclick="return false;" class="pn-title">Programming Languages Meets Programmable Networks</a>
-              <br />
-              <span class="pn-name">Arjun Guha</span>
-              <br />
-              <span class="pn-affiliation">U. Massachusetts, Amherst</span>
-              <a class="pn-url" target="_blank" href="https://people.cs.umass.edu/~arjun/home/">link</a>
-          <span class="pn-datetime">Monday, November 16th, 2015 1:00:00pm</span>
-              <span class="pn-room">WVH 366</span>
-            </div>
-            <div class="pn-abstract-bio">
-              <p>
-                <span class="pn-title-2">Abstract</span>
-                <span>Computer networks do not simply connect machines together, but run several
-                      applications on network devices, such as load balancers, intrusion detection
-                      systems, authentication portals, and more. Historically, these applications were
-                      black-boxes running on proprietary hardware, but software-defined networking
-                      (SDN) now allows anyone to write their own programs using open networking
-                      protocols (e.g., OpenFlow). So, what are the right abstractions for programming networks? This talk will try
-                      to address this question in three ways. <br />First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
-                      "Does all traffic traverse my intrusion detection system?", "Is there a loop in
-                      my network?", and so on. <br />Second, we present a fast and efficient compiler for NetKAT. Although several
-                      network compilers already exist, they are unusable on even moderately sized
-                      networks. Using new data structures and compilation algorithms, our new compiler
-                      is two orders of magnitudes faster than prior work and scales to large
-                      datacenter networks. <br />Finally, we consider the problem of building a reliable runtime system for
-                      NetKAT. NetKAT abstracts away several low-level details of networking hardware.
-                      Although this is a boon for the network programmer, the burden now shifts to us
-                      to engineer abstractions correctly. We present a Coq-certified runtime system
-                      that is proven correct with respect to a detailed operational model software-
-                      defined networks.</span>
-              </p>
-              <p>
-                <span class="pn-title-2">Bio</span>
-                <span>Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
-                      enjoys tackling problems in systems using the tools and principles of
-                      programming languages. Apart from network programming, he has worked on Web
-                      security and system configuration languages. He received a PhD in Computer
-                      Science from Brown University in 2012 and a BA in Computer Science from Grinnell
-                      College in 2006.</span>
-              </p>
-            </div>
-          </div>
+          @(seminar
+            "Programming Languages Meets Programmable Networks"
+            "Arjun Guha"
+            "https://people.cs.umass.edu/~arjun/home/"
+            "U. Massachusetts, Amherst"
+            (datetime 2015 11 16 13 00)
+            "WVH 366"
+            @list{
+Computer networks do not simply connect machines together, but run several
+applications on network devices, such as load balancers, intrusion detection
+systems, authentication portals, and more. Historically, these applications were
+black-boxes running on proprietary hardware, but software-defined networking
+(SDN) now allows anyone to write their own programs using open networking
+protocols (e.g., OpenFlow). So, what are the right abstractions for programming networks? This talk will try
+to address this question in three ways. <br />First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
+"Does all traffic traverse my intrusion detection system?", "Is there a loop in
+my network?", and so on. <br />Second, we present a fast and efficient compiler for NetKAT. Although several
+network compilers already exist, they are unusable on even moderately sized
+networks. Using new data structures and compilation algorithms, our new compiler
+is two orders of magnitudes faster than prior work and scales to large
+datacenter networks. <br />Finally, we consider the problem of building a reliable runtime system for
+NetKAT. NetKAT abstracts away several low-level details of networking hardware.
+Although this is a boon for the network programmer, the burden now shifts to us
+to engineer abstractions correctly. We present a Coq-certified runtime system
+that is proven correct with respect to a detailed operational model software-
+defined networks.}
+            @list{
+Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
+enjoys tackling problems in systems using the tools and principles of
+programming languages. Apart from network programming, he has worked on Web
+security and system configuration languages. He received a PhD in Computer
+Science from Brown University in 2012 and a BA in Computer Science from Grinnell
+College in 2006.})
 
         <br />
 
-        <div id="g195" class="col-md-12 pn-seminar compact">
-          <script type="text/javascript">
-            if (new Date() >= new Date('2015-11-03T10:30:00')) {
-              document.getElementById('g195').classList.add('finished');
-            }
-          </script>
-          <div class="pn-main-informations">
-            <a onclick="return false;" class="pn-title">Hop.js: multitier programming in JavaScript</a>
-            <br />
-            <span class="pn-name">Manuel Serrano</span>
-            <br />
-            <span class="pn-affiliation">INRIA</span>
-            <a class="pn-url" target="_blank" href="http://www-sop.inria.fr/members/Manuel.Serrano/">link</a>
-        <span class="pn-datetime">Tuesday, November 3rd, 2015 10:30:00am</span>
-            <span class="pn-room">WVH 366</span>
-          </div>
-          <div class="pn-abstract-bio">
-            <p>
-              <span class="pn-title-2">Abstract</span>
-              <span>parallelism.</span>
-            </p>
-            <p>
-              <span class="pn-title-2">Bio</span>
-              <span>Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.</span>
-            </p>
-          </div>
-        </div>
+        @(seminar
+           "Hop.js: multitier programming in JavaScript"
+           "Manuel Serrano"
+           "http://www-sop.inria.fr/members/Manuel.Serrano/"
+           "INRIA"
+           (datetime 2015 11 3 10 30)
+           "WVH 366"
+           @begin{
+Hop.js is a multitier extension of JavaScript. It allows a single
+JavaScript program to describe the client-side and the server-side
+components of a Web application. Its runtime environment ensures a
+consistent execution of the application on the server and on the
+client. This talk will shows its minimal set of JavaScript extensions
+that makes Web programming easier. It will present its runtime
+environment, with an emphasize on the handling of server-side
+parallelism.
+           }
+           @begin{
+Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.
+           }
+           )
 
           <br />
 
@@ -271,7 +233,7 @@ between actors and threads.
               <p>
               <span class="pn-title-2">Abstract</span>
               <span>
-                Memory corruption plagues systems since the dawn of computing. With the
+		Memory corruption plagues systems since the dawn of computing. With the
 rise of defense techniques like stack cookies, ASLR, and DEP, attacks
 have become much more complicated, yet control-flow hijack attacks are
 still prevalent. Attacks leverage code reuse attacks, often using some
@@ -544,18 +506,6 @@ a Dr. sc. ETH in 2012.
         </div>
       </div>
     </div>
-    <footer class="footer">
-<p>© Copyright Programming Research Laboratory 2015 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
-<a class="pn-top pn-dark" href="#pn-top"><img src="/img/up-arrow.png" alt="top"/></a>
-</footer>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
-<!-- Custom scripts -->
-<script src="js/custom.js"></script>
-
-
+    @|footer|
   </body>
 </html>
