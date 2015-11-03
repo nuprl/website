@@ -7,12 +7,7 @@ body
   font-family: 'PT Sans', sans-serif;
   font-size: 16px;  
   color: white; 
-  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('../img/background.jpg') no-repeat center center transparent;
-  background-repeat:no-repeat;
-  background-size:cover;
-  background-attachment: fixed;
-  background-position: 50% 0px;  
-  background-color: #051122;
+  background: #051122;
 }
 
 body a, body a:hover
@@ -120,6 +115,9 @@ ul
   text-shadow: 2px 2px rgba(0, 0, 0, 0.62);
   background-color: transparent;
   margin-bottom: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('../img/background.jpg') no-repeat center center transparent;
+  background-repeat:no-repeat;
+  background-size:cover;  
 }
 
 .jumbotron img.pn-logo
@@ -420,9 +418,32 @@ ul
   z-index: 2;
 }
 
+#pn-mobile-indicator
+{
+  display: none;
+  height: 1px;
+  width: 1px;
+}
+
 @media (min-width: 768px){
+
+  body
+  {
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('../img/background.jpg') no-repeat center center transparent;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-attachment: fixed;
+    background-position: 50% 0px;  
+    background-color: #051122;
+  }
+
   .navbar {
       border-radius: 0;
+  }
+
+  #pn-mobile-indicator
+  {
+    display: block;
   }
 
   .navbar.navbar-inverse
@@ -448,6 +469,7 @@ ul
       padding-top: 100px;
       color: white;
       padding-bottom: 110px;
+      background: transparent;
   }
 
   .jumbotron img.pn-logo

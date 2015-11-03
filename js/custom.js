@@ -5,6 +5,10 @@ else
 {
   $(document).ready(function()
   {
+    //It must be appended to check whether user has mobile version or desktop
+    var $el = $('<div id="pn-mobile-indicator"></div>');
+    $('.footer').append($el);
+
     $('a[href*=#]').click(function() 
     {
       if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
@@ -35,24 +39,35 @@ else
 
     $(window).bind('scroll', function()
     {
-      var barra = $(window).scrollTop();
-      var posicion = barra * 0.5;
-      var opacity = 0;
+      console.log();
 
-      lastScrollTop = barra;
-      
-      $('body').css({
-        'background-position': 'center -' + ( posicion ) + 'px'
-      });
+      if( $el.is(':visible'))
+      {
+        var barra = $(window).scrollTop();
+        var posicion = barra * 0.5;
+        var opacity = 0;
 
-      if ($(window).scrollTop() > 50) {
-             $('.header').addClass('fixed');
-             $('.pn-top').fadeIn();
+        lastScrollTop = barra;
+        
+        $('body').css({
+          'background-position': 'center -' + ( posicion ) + 'px'
+        });
+
+        if ($(window).scrollTop() > 50) {
+               $('.header').addClass('fixed');
+               $('.pn-top').fadeIn();
+        }
+        else {
+           $('.header').removeClass('fixed');
+           $('.pn-top').fadeOut();
+        } 
+
+        console.log('JS scroll turned on');  
       }
-      else {
-         $('.header').removeClass('fixed');
-         $('.pn-top').fadeOut();
-      }      
+      else
+      {
+        console.log('JS scroll turned off');  
+      }
     });
 
     /* Show read more for seminars */
