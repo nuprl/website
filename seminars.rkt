@@ -4,7 +4,7 @@
 ;  gregor
   "templates.rkt")
 @;(current-timezone "America/New_York")
-;; TODO: Remove once gregor is working
+@;; TODO: Remove once gregor is working
 @(define (datetime year month day hour min)
    (seconds->date (find-seconds 0 min hour day month year)))
 

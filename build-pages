@@ -1,0 +1,5 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $0)
+
+racket ${BASEDIR}/seminars.rkt > ${BASEDIR}/seminars.html
