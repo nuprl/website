@@ -1,19 +1,15 @@
 #lang scribble/text
 @(require
    racket/date
-;  gregor
+  gregor
   "templates.rkt")
-@;(current-timezone "America/New_York")
-@;; TODO: Remove once gregor is working
-@(define (datetime year month day hour min)
-   (seconds->date (find-seconds 0 min hour day month year)))
 
 @(define (seminar title speaker link aff date room abstract bio)
    (define id (gensym))
   @list{
 <div id="@|id|" class="col-md-12 pn-seminar compact">
   <script type="text/javascript">
-    if (new Date() >= new Date('@(parameterize ([date-display-format 'iso-8601]) (date->string date #t))')) {
+    if (new Date() >= new Date('@(datetime->iso8601 date)')) {
       document.getElementById('@|id|').classList.add('finished');
     }
   </script>
@@ -24,8 +20,7 @@
     <br />
     <span class="pn-affiliation">@|aff|</span>
     <a class="pn-url" target="_blank" href="@link">link</a>
-@;    <span class="pn-datetime">@(~t date "MMMM D, y h:mma")</span>
-    <span class="pn-datetime">@(date->string date #t)</span>
+    <span class="pn-datetime">@(~t date "d MMMM, y h:mma")</span>
     <span class="pn-room">@|room|</span>
   </div>
   <div class="pn-abstract-bio">
@@ -39,6 +34,8 @@
     </p>
   </div>
 </div>
+
+<br />
 })
 
 <!DOCTYPE html>
@@ -88,24 +85,28 @@
             (datetime 2015 11 16 13 00)
             "WVH 366"
             @list{
-Computer networks do not simply connect machines together, but run several
+<p>Computer networks do not simply connect machines together, but run several
 applications on network devices, such as load balancers, intrusion detection
 systems, authentication portals, and more. Historically, these applications were
 black-boxes running on proprietary hardware, but software-defined networking
 (SDN) now allows anyone to write their own programs using open networking
 protocols (e.g., OpenFlow). So, what are the right abstractions for programming networks? This talk will try
-to address this question in three ways. <br />First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
+to address this question in three ways. </p>
+<p>First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
 "Does all traffic traverse my intrusion detection system?", "Is there a loop in
-my network?", and so on. <br />Second, we present a fast and efficient compiler for NetKAT. Although several
+my network?", and so on. </p>
+<p>Second, we present a fast and efficient compiler for NetKAT. Although several
 network compilers already exist, they are unusable on even moderately sized
 networks. Using new data structures and compilation algorithms, our new compiler
 is two orders of magnitudes faster than prior work and scales to large
-datacenter networks. <br />Finally, we consider the problem of building a reliable runtime system for
+datacenter networks. </p>
+<p>Finally, we consider the problem of building a reliable runtime system for
 NetKAT. NetKAT abstracts away several low-level details of networking hardware.
 Although this is a boon for the network programmer, the burden now shifts to us
 to engineer abstractions correctly. We present a Coq-certified runtime system
 that is proven correct with respect to a detailed operational model software-
-defined networks.}
+defined networks.
+</p>}
             @list{
 Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
 enjoys tackling problems in systems using the tools and principles of
@@ -114,7 +115,55 @@ security and system configuration languages. He received a PhD in Computer
 Science from Brown University in 2012 and a BA in Computer Science from Grinnell
 College in 2006.})
 
-        <br />
+        @(seminar
+           "Declarative Programming for Eventual Consistency"
+           "Suresh Jagannathan"
+           "https://www.cs.purdue.edu/homes/suresh/"
+           "Purdue University"
+           (datetime 2015 11 13 10 30)
+           "WVH 366"
+           @list{
+<p>In geo-replicated distributed data stores, the need to ensure responsiveness
+in the face of network partitions and processor failures results in
+implementations that provide only weak (so-called eventually consistent)
+guarantees on when data updated by one process becomes visible to another.
+Applications must be carefully constructed to be aware of unwanted
+inconsistencies permitted by such implementations (e.g., having negative
+balances in a bank account, or having an item appear in a shopping cart
+after it has been removed), but must balance correctness concerns with
+performance and scalability needs.  Because understanding these tradeoffs
+requires subtle reasoning and detailed knowledge about the underlying data
+store, implementing robust distributed applications in such environments is
+often an error-prone and expensive task.</p>
+
+<p>To overcome these issues, this talk presents a declarative programming model
+for eventually consistent data stores called Quelea.  The model comprises a
+contract language, capable of defining fine-grained application-level
+consistency properties for replicated data types (and transactions over
+objects of these types), and a contract enforcement system to analyze
+contracts and automatically generate the appropriate consistency protocol
+for the method protected by the contract.  By doing so, Quelea enables
+programmers to reason compositionally about consistency from the perspective
+of high-level application requirements, not low-level implementation
+features.</p>
+
+<p>This is joint work with Gowtham Kaki and K.C. Sivaramakrishnan.</p>}
+        @list{
+<p>Suresh Jagannathan is a Professor of Computer Science at Purdue University
+where he has been on leave since September 2013, serving as a program
+manager in the Information Innovation Office at DARPA.  He has also been a
+visiting faculty at Cambridge University, where he spent a sabbatical year
+in 2010; and, prior to joining Purdue, was a senior research scientist at
+the NEC Research Institute in Princeton, N.J.  He received his Ph.D from
+MIT.</p>
+
+<p>His research interests are in programming languages generally, with specific
+focus on compilers, functional programming, program verification, and
+concurrent and distributed systems.  At DARPA, he manages programs on
+probabilistic programming and machine learning (PPAML), program synthesis
+and repair leveraging predictive analytics over large software corpora
+(MUSE), and self-adaptive software through resource-aware analyses,
+runtimes, and architectures (BRASS).</p>})
 
         @(seminar
            "Hop.js: multitier programming in JavaScript"
@@ -123,7 +172,7 @@ College in 2006.})
            "INRIA"
            (datetime 2015 11 3 10 30)
            "WVH 366"
-           @begin{
+           @list{
 Hop.js is a multitier extension of JavaScript. It allows a single
 JavaScript program to describe the client-side and the server-side
 components of a Web application. Its runtime environment ensures a
@@ -133,13 +182,10 @@ that makes Web programming easier. It will present its runtime
 environment, with an emphasize on the handling of server-side
 parallelism.
            }
-           @begin{
+           @list{
 Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.
            }
            )
-
-          <br />
-
 
           <div class="col-md-12 pn-seminar compact finished">
             <div class="pn-main-informations">
