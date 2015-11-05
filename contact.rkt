@@ -16,7 +16,7 @@
 		  <h2>Who's in charge?</h2>
 
 <center>
-<h4>Webmaster</h4> <a href="mailto:maxnew@"@"ccs.neu.edu">Max New</a>
+<h4>Webmaster</h4> <a href="mailto:schuster@"@"ccs.neu.edu">Jonathan Schuster</a>
 
 <h4>PL Seminar</h4>  <a href="mailto:wilbowma@"@"ccs.neu.edu">William J. Bowman</a> and Amal Ahmed
 
