@@ -16,7 +16,7 @@
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/mitch_wand.jpg" title="Mitch Wand" alt="Mitch Wand" /> 
+                  <img src="img/mitch_wand.jpg" title="Mitch Wand" alt="Mitch Wand" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -43,7 +43,7 @@
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/Clinger.jpg" title="Will Clinger" alt="Will Clinger" />
+                  <img src="img/Clinger.jpg" title="Will Clinger" alt="Will Clinger" />
                 </div>
               </div>
               <div class="col-md-9">
@@ -77,7 +77,7 @@
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/matthias_felleisen.jpg" title="Matthias Felleisen" alt="Matthias Felleisen" /> 
+                  <img src="img/matthias_felleisen.jpg" title="Matthias Felleisen" alt="Matthias Felleisen" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -105,7 +105,7 @@
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/olin_shivers.jpg" title="Olin Shivers" alt="Olin Shivers" /> 
+                  <img src="img/olin_shivers.jpg" title="Olin Shivers" alt="Olin Shivers" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -157,7 +157,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/ryan_culpepper.jpg" title="Ryan Culpepper" alt="Ryan Culpepper" />
+                  <img src="img/ryan_culpepper.jpg" title="Ryan Culpepper" alt="Ryan Culpepper" />
                 </div>
               </div>
               <div class="col-md-9">
@@ -182,7 +182,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/stephen_chang.jpg" title="Stephen Chang" alt="Stephen Chang" /> 
+                  <img src="img/stephen_chang.jpg" title="Stephen Chang" alt="Stephen Chang" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -209,7 +209,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/ben_lerner.jpg" title="Ben Lerner" alt="Ben Lerner" /> 
+                  <img src="img/ben_lerner.jpg" title="Ben Lerner" alt="Ben Lerner" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -234,7 +234,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/jan_vitek.jpg" title="Jan Vitek" alt="Jan Vitek" /> 
+                  <img src="img/jan_vitek.jpg" title="Jan Vitek" alt="Jan Vitek" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -262,7 +262,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/paleyli.jpg" title="Paley Li" alt="Paley Li" />
+                  <img src="img/paleyli.jpg" title="Paley Li" alt="Paley Li" />
                 </div>
               </div>
               <div class="col-md-9">
@@ -297,7 +297,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/paul_stansifer.jpg" title="Paul Stansifer" alt="Paul Stansifer" />
+                  <img src="img/paul_stansifer.jpg" title="Paul Stansifer" alt="Paul Stansifer" />
                 </div>
               </div>
               <div class="col-md-9">
@@ -321,7 +321,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/tony_jones.jpg" title="Tony Garnock-Jones" alt="Tony Garnock-Jones" /> 
+                  <img src="img/tony_jones.jpg" title="Tony Garnock-Jones" alt="Tony Garnock-Jones" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -345,7 +345,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/asumu_takikawa.jpg" title="Asumu Takikawa" alt="Asumu Takikawa" /> 
+                  <img src="img/asumu_takikawa.jpg" title="Asumu Takikawa" alt="Asumu Takikawa" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -369,7 +369,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/jonathan_schuster.jpg" title="Jonathan Schuster" alt="Jonathan Schuster" /> 
+                  <img src="img/jonathan_schuster.jpg" title="Jonathan Schuster" alt="Jonathan Schuster" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -393,7 +393,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Justin Slepak" alt="Justin Slepak" /> 
+                  <img src="img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Justin Slepak" alt="Justin Slepak" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -417,7 +417,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/william_bowman.jpg" title="William J. Bowman" alt="William J. Bowman" /> 
+                  <img src="img/william_bowman.jpg" title="William J. Bowman" alt="William J. Bowman" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -441,7 +441,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/leif_andersen.jpg" title="Leif Andersen" alt="Leif Andersen" /> 
+                  <img src="img/leif_andersen.jpg" title="Leif Andersen" alt="Leif Andersen" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -465,7 +465,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Andrew Cobb" alt="Andrew Cobb" />
+                  <img src="img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Andrew Cobb" alt="Andrew Cobb" />
                 </div>
               </div>
               <div class="col-md-9">
@@ -489,7 +489,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/ben_greenman.jpg" title="Ben Greenman" alt="Ben Greenman" />
+                  <img src="img/ben_greenman.jpg" title="Ben Greenman" alt="Ben Greenman" />
                 </div> 
               </div>
               <div class="col-md-9">
@@ -513,7 +513,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/max_new.jpg" title="Max New" alt="Max New" /> 
+                  <img src="img/max_new.jpg" title="Max New" alt="Max New" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -537,7 +537,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/sam_caldwell.jpg" title="Sam Caldwell" alt="Sam Caldwell" /> 
+                  <img src="img/sam_caldwell.jpg" title="Sam Caldwell" alt="Sam Caldwell" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -561,7 +561,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/benjamin_chung.jpg" title="Benjamin Chung" alt="Benjamin Chung" /> 
+                  <img src="img/benjamin_chung.jpg" title="Benjamin Chung" alt="Benjamin Chung" /> 
                 </div>
               </div>
               <div class="col-md-9">
@@ -609,7 +609,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="/img/joe_sackett.jpg" title="Joe Sackett" alt="Joe Sackett" /> 
+                  <img src="img/joe_sackett.jpg" title="Joe Sackett" alt="Joe Sackett" /> 
                 </div>
               </div>
               <div class="col-md-9">
