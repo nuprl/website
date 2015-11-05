@@ -40,10 +40,10 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  @|header|
+  @header{Seminars}
   <body id="pn-top">
-   @|navbar|
-   @(page-title "Seminars")
+   @navbar{Seminars}
+   @subpage-title{Seminars}
 
     <div class="pn-main-wrapper">
       <div class="content">
@@ -552,6 +552,6 @@ a Dr. sc. ETH in 2012.
         </div>
       </div>
     </div>
-    @|footer|
+    @footer
   </body>
 </html>
