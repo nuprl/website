@@ -11,12 +11,19 @@
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li role="presentation"><a href="/">Home</a></li>
-          <li role="presentation"><a href="/people.html">People</a></li>
-          <li role="presentation"><a href="/teaching.html">Teaching</a></li>
-          <li role="presentation" class="active"><a href="/seminars.html">Seminars</a></li>
-          <li role="presentation"><a href="/software.html">Software</a></li>
-          <li role="presentation"><a href="/contact.html">Contact</a></li>
+          @(for/list ([title-pair (list (cons "" "Home")
+                                   (cons "people.html" "People")
+                                   (cons "teaching.html" "Teaching")
+                                   (cons "seminars.html" "Seminars")
+                                   (cons "software.html" "Software")
+                                   (cons "contact.html" "Contact"))])
+          (if (equal? (cdr title-pair) current-page)
+          @~a{<li role="presentation" class="active"><a href="#">@cdr[title-pair]</a></li>
+
+          }
+          @~a{<li role="presentation"><a href="/@car[title-pair]">@cdr[title-pair]</a></li>
+
+          }))
         </ul>
       </div><!--/.navbar-collapse -->
     </div>

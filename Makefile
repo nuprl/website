@@ -1,6 +1,6 @@
-all: seminars.html
+all: contact.html index.html people.html publications.html seminars.html software.html teaching.html
 
-seminars.html: seminars.rkt
+%.html: %.rkt
 	chmod +w $@
 	racket -t $< > $@
 	chmod -w $@

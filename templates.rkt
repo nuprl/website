@@ -3,9 +3,9 @@
 
 (provide (all-defined-out))
 
-(define header (include-template "templates/header.html"))
+(define (header title) (include-template "templates/header.html"))
 (define footer (include-template "templates/footer.html"))
-(define navbar (include-template "templates/nav.html"))
+(define (navbar current-page) (include-template "templates/nav.html"))
 
-(define (page-title title)
-  (include-template "templates/page-title.html"))
+(define (subpage-title title)
+  (include-template "templates/subpage-title.html"))
