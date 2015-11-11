@@ -1,6 +1,11 @@
-all: contact.html index.html people.html seminars.html software.html teaching.html
+TARGETS=contact.html index.html people.html seminars.html software.html teaching.html
+
+all: $(TARGETS)
 
 %.html: %.rkt templates/footer.html templates/header.html templates/nav.html templates/subpage-title.html
-	chmod +w $@
+	if [ -f $@ ]; then chmod +w $@; fi
 	racket -t $< > $@
 	chmod -w $@
+
+clean:
+	rm -f $(TARGETS)
