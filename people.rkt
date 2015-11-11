@@ -1,5 +1,38 @@
 #lang scribble/text
 @(require "templates.rkt")
+@(define (string-empty? s) (string=? "" s))
+@(define (alumnus name #:year [year #f] #:personal-site [psite #f] #:dissertation [dsite #f] #:extra [extra #f])
+   (define (link url body)
+     (string-append "<a href=\"" url "\">" body "</a>"))
+   (define name-s
+     (if psite
+         (link psite name)
+         name))
+   (define year-s (if year (number->string year) ""))
+   (define dsite-link
+     (if dsite
+         (string-append " " (link dsite "(dissertation)"))
+         ""))
+   (define extra-s
+     (or extra ""))
+   (define (cat-space xs)
+     (let loop ([acc ""]
+                [xs  xs])
+       (cond [(empty? xs) acc]
+             [else
+              (define x (car xs))
+              (define xs2 (cdr xs))
+              (define fill
+                (if (or (string-empty? acc) (string-empty? x))
+                    ""
+                    " "))
+              (loop (string-append acc fill x) xs2)])))
+   (string-append "<li>"
+                  (cat-space (list name-s
+                                   year-s
+                                   dsite-link
+                                   extra-s))
+                  "</li>"))
 
 <!DOCTYPE html>
 <html lang="en">
@@ -639,60 +672,108 @@ MS Stanford University 1995<br />
           <div class="row">  
             <div class="col-md-4">
               <ul>
-                <li>Dino Oliva (1992) (dissertation)</li>
-                <li>Greg Sullivan (1997) (dissertation) Advisor: Mitch Wand  Employer: BAE Systems</li>
-                <li>David Gladstein (1996) (dissertation)</li>
-                <li>Paul Steckler (1994) (dissertation)</li>
-                <li>Igor Siveroni (2001) (dissertation)</li>
-                <li>Lars Hansen (2001) (dissertation)</li>
-                <li>Paul Graunke (2003) (dissertation)</li>
-                <li>Galen Williamson (2004)</li>
-                <li>Johan Ovlinger (2004) (dissertation)</li>
-                <li>John Brinckerhoff Clements PhD 2005 (dissertation)</li>
-                <li>Richard Cobbe (2009) (dissertation)</li>
-                <li>Theo Skotiniotis (2010) (dissertation)</li>
-                <li>Bryan D. Chadwick PhD 2010 (dissertation)</li>
-                <li>Dave Herman (2010) (dissertation)</li>
-                <li>Ryan Culpepper (2010) (dissertation)</li>
-                <li>Peter Dillinger (2010) (dissertation)</li>
-                <li>Pengcheng Wu (2010) (dissertation)</li>  
-                <li>Sam Tobin-Hochstadt Joined 2004, PhD 2010, Joined IU 2013, Advisor: Matthias</li>
-                <li>Felix Klock (2011) (dissertation)</li>            
+                @(alumnus "Dino Oliva" #:year 1992
+                          #:personal-site "http://cm.bell-labs.com/cm/cs/who/oliva/"
+                          #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/oliva-thesis-94.ps.Z")
+                @(alumnus "Greg Sullivan" #:year 1997
+                          #:personal-site "http://www.ai.mit.edu/%7Egregs"
+                          #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/sullivan-thesis-97.ps"
+                          #:extra "Advisor: Mitch Wand, Employer: BAE Systems")
+                @(alumnus "David Gladstein" #:year 1996
+                          #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/gladstein-thesis-94.ps.Z")
+                @(alumnus "Paul Steckler" #:year 1994
+                          #:personal-site "http://www.ccs.neu.edu/home/steck/"
+                          #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/steckler-thesis-94.ps"
+                          #:extra "(Galois Connections)")
+                @(alumnus "Igor Siveroni" #:year 2001
+                          #:personal-site "http://www.soi.city.ac.uk/%7Esbbc287/"
+                          #:dissertation "http://www.siveroni.com/imperial/papers/thesis.ps")
+                @(alumnus "Lars Hansen" #:year 2001
+                          #:personal-site "http://www.ccs.neu.edu/home/lth/"
+                          #:dissertation "http://www.ccs.neu.edu/home/lth/thesis/index.html")
+                @(alumnus "Paul Graunke" #:year 2003
+                          #:dissertation "http://www.ccs.neu.edu/scheme/pubs/thesis-graunke.pdf"
+                          #:extra "(Galois Connectins")
+                @(alumnus "Galen Williamson" #:year 2004
+                          #:personal-site "http://www.ccs.neu.edu/home/gwilliam")
+                @(alumnus "Johan Ovlinger" #:year 2004
+                          #:personal-site "http://www.ccs.neu.edu/home/johan"
+                          #:dissertation "http://www.ccs.neu.edu/research/demeter/theses/ovlinger/thesis.pdf")
+                @(alumnus "John Brinckerhoff Clements" #:year 2005
+                          #:personal-site "http://www.csc.calpoly.edu/%7Eclements/index.html"
+                          #:dissertation "http://www.ccs.neu.edu/scheme/pubs/dissertation-clements.pdf"
+                          #:extra "(California Polytechnic, San Luis Obispo, CA)")
+                @(alumnus "Richard Cobbe" #:year 2009
+                          #:personal-site "http://www.ccs.neu.edu/home/cobbe/"
+                          #:dissertation "http://www.ccs.neu.edu/scheme/pubs/dissertation-cobbe.pdf"
+                          #:extra "(MathWorks)")
+                @(alumnus "Theo Skotiniotis" #:year 2010
+                          #:personal-site "http://www.ccs.neu.edu/home/skotthe/"
+                          #:dissertation "http://www.ccs.neu.edu/home/lieber/theses/skotiniotis/skotiniotis-dissertation.pdf")
+                @(alumnus "Bryan D. Chadwick" #:year 2010
+                          #:personal-site "http://www.ccs.neu.edu/home/chadwick/"
+                          #:dissertation "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf") </li>
+                @(alumnus "Dave Herman" #:year 2010
+                          #:personal-site "http://www.ccs.neu.edu/home/dherman/"
+                          #:dissertation "http://www.ccs.neu.edu/home/dherman/research/papers/dissertation.pdf")
+                @(alumnus "Ryan Culpepper" #:year 2010
+                          #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
+                          #:dissertation "http://www.ccs.neu.edu/scheme/pubs/dissertation-culpepper.pdf"
+                          #:extra "(Northeastern Unversity")
               </ul>
             </div>
             <div class="col-md-4">
               <ul>                  
-                <li>Stevie Strickland (2012) (dissertation)</li>
-                <li>J. Ian Johnson (2015)</li>
-                <li>Vincent St-Amour PhD 2015, Advisor: Matthias, </li>
-                <li>Carl Eastlund</li>
-                <li>Vassilis Koutavas (dissertation)</li>
-                <li>James T. Perconti</li>
-                <li>Jesse A. Tov</li>
-                <li>Aaron J. Turon</li>
-                <li>Dimitris Vardoulakis (dissertation)</li>
+                @(alumnus "Peter Dillinger" #:year 2010
+                          #:personal-site "http://www.peterd.org/"
+                          #:dissertation "http://www.peterd.org/pcd-diss.pdf")
+                @(alumnus "Pengcheng Wu" #:year 2010
+                          #:dissertation "http://www.ccs.neu.edu/home/lieber/theses/wu/Dissertation.pdf")
+                @(alumnus "Sam Tobin-Hochstadt" #:year 2010
+                          #:personal-site "http://www.ccs.neu.edu/home/samth/"
+                          #:extra "Advisor: Matthias, now at Indiana University")
+                @(alumnus "Felix Klock" #:year 2011
+                          #:personal-site "http://www.ccs.neu.edu/home/pnkfelix/"
+                          #:dissertation "http://www.ccs.neu.edu/home/pnkfelix/thesis/klock11-diss.pdf")
+                @(alumnus "Stevie Strickland" #:year 2012
+                          #:personal-site "http://www.ccs.neu.edu/%7Esstrickl/"
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-strickland.pdf"
+                          #:extra "(Brown University")
+                @(alumnus "J. Ian Johnson" #:year 2015
+                          #:personal-site "http://www.ccs.neu.edu/home/ianj/")
+                @(alumnus "Vincent St-Amour" #:year 2015
+                          #:extra "Advisor: Matthias")
+                @(alumnus "Carl Eastlund"
+                          #:personal-site "http://www.ccs.neu.edu/home/cce/")
+                @(alumnus "Vassilis Koutavas"
+                          #:personal-site "http://www.scss.tcd.ie/Vasileios.Koutavas/"
+                          #:dissertation "http://www.scss.tcd.ie/Vasileios.Koutavas/publications/dissertation.pdf")
+                @(alumnus "James T. Perconti")
+                @(alumnus "Jesse A. Tov"
+                          #:personal-site "http://www.eecs.harvard.edu/%7Etov/")
+                @(alumnus "Aaron J. Turon"
+                          #:personal-site "http://www.ccs.neu.edu/home/turon/")
+                @(alumnus "Dimitris Vardoulakis"
+                          #:personal-site "http://www.ccs.neu.edu/home/dimvar"
+                          #:dissertation "http://dimvar.github.io/papers/diss.pdf")
                 <li>Kenichi Asai</li>
-                <li>Joe Marshall</li>
+                <li>Joe Marshall (Google) </li>
                 <li>Riccardo Pucella</li>
                 <li>Eli Barzilay</li>
                 <li>Ahmed Abdelmeged</li>
                 <li>Phillip Mates</li>  
-                <li>Erik Silkensen</li>
-                <li>Eli Barzilay (research scientist)</li>
-                <li>Christos Dimoulas</li>
-                <li>Carl Eastlund</li>
               </ul>
             </div>
             <div class="col-md-4">
               <ul> 
+                <li>Erik Silkensen</li>
+                <li>Eli Barzilay (research scientist)</li>
+                @(alumnus "Christos Dimoulas"
+                          #:personal-site "http://www.ccs.neu.edu/home/chrdimo/")
                 <li>David van Horn</li>
-                <li>John Brinckerhoff Clements (California Polytechnic, San Luis Obispo, CA)</li>
-                <li>Richard Cobbe (MathWorks)</li>
-                <li>Ryan Culpepper (Northeastern University)</li>
                 <li>Matthew Flatt (University of Utah, Salt Lake City, UT)</li>
-                <li>Robby Findler (University of Chicago)</li>
+                <li>Robby Findler (Northwestern University)</li>
                 <li>Cormac Flanagan (University of California, Santa Cruz)</li>
-                <li>Paul Graunke (Galois Connections)</li>
                 <li>Shriram Krishnamurthi (Brown University, Providence, RI)</li>
                 <li>Philippe Meunier Sirindhorn International Institute of Technology, Tahmmasat University</li>
                 <li>Rebecca Parsons (ThoughtWorks)</li>
@@ -713,8 +794,8 @@ MS Stanford University 1995<br />
                 <li>Kathi Fisler (Worcester Polytechnic Institute, Worcester, MA)</li>
                 <li>Mario Latendresse (FNMOC)</li>
                 <li>Mark Krentel</li>
-                <li>Joe Marshall Google</li>
-                <li>Paul Steckler Galois Connections</li>              
+                <li>Joe Marshall (Google)</li>
+                <li>Paul Steckler (Galois Connections)</li>
               </ul>
             </div>
           </div>
