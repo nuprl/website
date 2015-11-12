@@ -4,13 +4,14 @@
   gregor
   "templates.rkt")
 
+@(define id 0)
 @(define (seminar title speaker link aff date room abstract bio)
-   (define id (gensym))
+   (set! id (add1 id))
   @list{
-<div id="@|id|" class="col-md-12 pn-seminar compact">
+<div id="seminar-@|id|" class="col-md-12 pn-seminar compact">
   <script type="text/javascript">
     if (new Date() >= new Date('@(datetime->iso8601 date)')) {
-      document.getElementById('@|id|').classList.add('finished');
+      document.getElementById('seminar-@|id|').classList.add('finished');
     }
   </script>
   <div class="pn-main-informations">
