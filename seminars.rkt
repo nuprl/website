@@ -78,6 +78,99 @@
         <div class="row">
 
           @(seminar
+            "Feature Specific Profiling for R"
+            "Leif Andersen"
+            "http://leifandersen.net"
+            "Northeastern University"
+            (datetime 2015 11 25 12 00)
+            "WVH 366"
+            @list{
+<p>
+Programmers use profilers to understand the performance
+characteristics of
+their programs and to focus on those pieces whose improvement may yield the
+largest gains. A conventional profiler measures the time that a program
+spends in functions, methods, expressions, and statements. Racket's novel
+feature-specific profiler supplements this information with timings of
+instances of linguistic features. This paper reports the results of a
+successful reproducibility effort to adapt feature-specific profiling to
+the R programming language. Specifically, the paper demonstrates how easy
+and effective it is to add the necessary language support, that the
+approach usefully enhances the information produced by a classical
+profiler, and that the additional overhead is tolerable.
+</p>}
+            @list{
+Leif Andersen is a second year Ph.D. student at Northeastern University, studying programming language
+with Matthias Felleisen.
+})
+
+          @(seminar
+            "Performance Matters"
+            "Emery Berger"
+            "http://emeryberger.com/"
+            "University of Massachusetts Amherst"
+            (datetime 2015 11 20 10 30)
+            "WVH 366"
+            @list{
+<p>
+Performance clearly matters to users. The most common software update
+on the AppStore *by far* is "Bug fixes and performance enhancements."
+Now that Moore's Law Free Lunch has ended, programmers have to work
+hard to get high performance for their applications. But why is
+performance so hard to deliver?</p>
+<p>I will first explain why our current approaches to evaluating and
+optimizing performance don't work, especially on modern hardware and
+for modern applications. I will then present two systems that address
+these challenges. Stabilizer is a tool that enables statistically
+sound performance evaluation, making it possible to understand the
+impact of optimizations and conclude things like the fact that the -O2
+and -O3 optimization levels are indistinguishable from noise
+(unfortunately true).</p>
+<p>Since compiler optimizations have largely run out of steam, we need
+better profiling support, especially for modern concurrent,
+multi-threaded applications. Coz is a novel "causal profiler" that
+lets programmers optimize for throughput or latency, and which
+pinpoints and accurately predicts the impact of optimizations. Coz's
+approach unlocks numerous previously unknown optimization
+opportunities. Guided by Coz, we improved the performance of Memcached
+by 9%, SQLite by 25%, and accelerated six Parsec applications by as
+much as 68%; in most cases, these optimizations involved modifying
+under 10 lines of code.</p>
+<p>This talk is based on work with Charlie Curtsinger published at ASPLOS
+2013 (Stabilizer) and SOSP 2015 (Coz), where it received a Best Paper
+Award.
+</p>}
+            @list{
+<p>Emery Berger is a Professor in the College of Information and Computer
+Sciences at the University of Massachusetts Amherst, the flagship
+campus of the UMass system. He graduated with a Ph.D. in Computer
+Science from the University of Texas at Austin in 2002. Professor
+Berger has been a Visiting Scientist at Microsoft Research (7 times)
+and at the Universitat Politecnica de Catalunya (UPC) / Barcelona
+Supercomputing Center (BSC).</p>
+<p>Professor Berger’s research spans programming languages, runtime
+systems, and operating systems, with a particular focus on systems
+that transparently improve reliability, security, and performance. He
+is the creator of a number of influential software systems including
+Hoard, a fast and scalable memory manager that accelerates
+multithreaded applications (used by companies including British
+Telecom, Cisco, Crédit Suisse, Reuters, Royal Bank of Canada, SAP, and
+Tata, and on which the Mac OS X memory manager is based); DieHard, an
+error-avoiding memory manager that directly influenced the design of
+the Windows 7 Fault-Tolerant Heap; and DieHarder, a secure memory
+manager that was an inspiration for hardening changes made to the
+Windows 8 heap.</p>
+<p>His honors include a Microsoft Research Fellowship, an NSF CAREER
+Award, a Lilly Teaching Fellowship, a Most Influential Paper Award at
+OOPSLA 2012, a Google Research Award, a Microsoft SEIF Award, a Best
+Artifact Award at PLDI, and Best Paper Awards at FAST, OOPSLA, and
+SOSP; he was named an ACM Senior Member in 2010. Professor Berger is
+currently a Member of the SIGPLAN Executive Committee and an Associate
+Editor of the ACM Transactions on Programming Languages and Systems,
+and will serve as Program Chair for PLDI 2016.</p>
+})
+
+          @(seminar
             "Programming Languages Meets Programmable Networks"
             "Arjun Guha"
             "https://people.cs.umass.edu/~arjun/home/"
