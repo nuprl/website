@@ -109,7 +109,7 @@ with Matthias Felleisen.
             "Performance Matters"
             "Emery Berger"
             "http://emeryberger.com/"
-            "University of Massachusetts Amherst"
+            "U. Massachusetts, Amherst"
             (datetime 2015 11 20 10 30)
             "WVH 366"
             @list{
@@ -327,7 +327,7 @@ Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.
               <a onclick="return false;" class="pn-title">Coordinated Concurrent Programming in Syndicate</a>
               <br /><span class="pn-name">Tony Garnock-Jones</span>
               <br />
-              <span class="pn-affiliation">Northeastern</span>
+              <span class="pn-affiliation">Northeastern University</span>
               <a class="pn-url" target="_blank" href="http://www.ccs.neu.edu/home/tonyg/">link</a>
               <span class="pn-datetime">October 28, 12:00PM</span><span class="pn-room">WVH 366</span>
             </div>
@@ -365,7 +365,7 @@ between actors and threads.
               <a onclick="return false;" class="pn-title">Memory corruption: why protection is hard</a>
               <br /><span class="pn-name">Mathias Payer</span>
               <br />
-              <span class="pn-affiliation">Purdue</span>
+              <span class="pn-affiliation">Purdue University</span>
               <a class="pn-url" target="_blank" href="https://nebelwelt.net">link</a>
               <span class="pn-datetime">23 October, 1:30PM</span><span class="pn-room">WVH 366</span>
             </div>
