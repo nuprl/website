@@ -83,7 +83,7 @@
             "Leif Andersen"
             "http://leifandersen.net"
             "Northeastern University"
-            (datetime 2015 11 25 12 00)
+            (datetime 2015 12 2 12 00)
             "WVH 366"
             @list{
 <p>
