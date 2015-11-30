@@ -39,6 +39,8 @@
 <br />
 })
 
+;; TODO: Define list of seminars here, automagically sort by date and insert in the below HTML
+
 <!DOCTYPE html>
 <html lang="en">
   @header{Seminars}
@@ -77,6 +79,25 @@
 
         <!-- ROW -->
         <div class="row">
+          @(seminar
+            "TBD"
+            "Ori Lahav"
+            "https://www.mpi-sws.org/~orilahav/"
+            ""
+            (datetime 2016 01 27)
+            "WVH 366?"
+            @list{}
+            @list{})
+
+          @(seminar
+            "TBD"
+            "Marco Patrignani"
+            "http://www.mpi-sws.org/~marcopat/marcopat/Home.html"
+            ""
+            (datetime 2016 01 25)
+            "WVH 366?"
+            @list{}
+            @list{})
 
           @(seminar
             "Feature Specific Profiling for R"
