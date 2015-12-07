@@ -81,9 +81,19 @@
         <div class="row">
           @(seminar
             "TBD"
+            "Satish Chandra"
+            "https://sites.google.com/site/schandraacmorg/"
+            "Samsung"
+            (datetime 2016 01 27)
+            "WVH 366?"
+            @list{}
+            @list{
+Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
+          @(seminar
+            "TBD"
             "Ori Lahav"
             "https://www.mpi-sws.org/~orilahav/"
-            ""
+            "Max Planck Institute for Software Systems"
             (datetime 2016 01 27)
             "WVH 366?"
             @list{}
@@ -93,7 +103,7 @@
             "TBD"
             "Marco Patrignani"
             "http://www.mpi-sws.org/~marcopat/marcopat/Home.html"
-            ""
+            "Max Planck Institute for Software Systems"
             (datetime 2016 01 25)
             "WVH 366?"
             @list{}
