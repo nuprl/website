@@ -80,31 +80,56 @@
         <!-- ROW -->
         <div class="row">
           @(seminar
+            "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
+            "Dominique Devriese"
+            "https://distrinet.cs.kuleuven.be/people/dominiqu"
+            "Katholieke Universiteit Leuven"
+            (datetime 2016 02 25 11 00)
+            "WVH 366"
+            @list{
+Object capabilities are a technique for fine-grained privilege separation in programming languages and systems,with important applications in security. However, current formal characterisations do not fully capture capability-safety of a programming language and are not sufficient for verifying typical applications. Using state-of-the-art techniques from programming languages research, we define a logical relation for a core calculus of JavaScript that better characterises capability-safety. The relation is powerful enough to reason about typical capability patterns and supports evolvable invariants on shared data structures, capabilities with restricted authority over them and isolated components with restricted communication channels. We use a novel notion of effect parametricity for deriving properties about effects. We demonstrate that our results imply memory access bounds that have previously been used to characterise capability-safety.}
+            @list{
+Dominique is a postdoctoral researcher in the research group
+DistriNet, part of the Computer Science department of the Katholieke
+Universiteit Leuven. He holds a postdoctoral research fellowship of
+the Research Foundation - Flanders (FWO). He works on formalising
+properties of object-oriented and object-capability programming
+languages---specifically a property called effect parametricity--is
+the author of the grammar-combinators Haskell parsing library, and has
+added instance arguments to the programming language/proof assistant
+Agda.
+He is interested in information flow security, secure compilation,
+full abstraction, and functional and dependently typed programming
+languages.
+})
+
+          @(seminar
             "TBD"
             "Satish Chandra"
             "https://sites.google.com/site/schandraacmorg/"
             "Samsung"
-            (datetime 2016 02 22)
-            "WVH 366?"
+            (datetime 2016 02 22 11 00)
+            "WVH 366"
             @list{}
             @list{
 Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
+
           @(seminar
             "TBD"
             "Ori Lahav"
             "https://www.mpi-sws.org/~orilahav/"
             "Max Planck Institute for Software Systems"
-            (datetime 2016 01 27)
-            "WVH 366?"
+            (datetime 2016 01 27 11 45)
+            "WVH 366"
             @list{}
             @list{})
 
           @(seminar
             "TBD"
             "Marco Patrignani"
-            "http://www.mpi-sws.org/~marcopat/marcopat/Home.html"
+            "http://www.mpi-sws.org/~marcopat/"
             "Max Planck Institute for Software Systems"
-            (datetime 2016 01 25)
+            (datetime 2016 01 25 11 00)
             "WVH 366?"
             @list{}
             @list{})
