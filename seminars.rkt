@@ -84,7 +84,7 @@
             "Satish Chandra"
             "https://sites.google.com/site/schandraacmorg/"
             "Samsung"
-            (datetime 2016 01 27)
+            (datetime 2016 02 22)
             "WVH 366?"
             @list{}
             @list{
