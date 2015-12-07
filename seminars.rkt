@@ -39,7 +39,7 @@
 <br />
 })
 
-;; TODO: Define list of seminars here, automagically sort by date and insert in the below HTML
+@;; TODO: Define list of seminars here, automagically sort by date and insert in the below HTML
 
 <!DOCTYPE html>
 <html lang="en">
