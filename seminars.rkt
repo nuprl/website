@@ -139,7 +139,7 @@ Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, 
             "Santosh Nagarakatte"
             "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
             "Rutgers University"
-            (datetime 2016 01 13 11 45)
+            (datetime 2016 01 13 12 00)
             "WVH 366"
             @list{
 <p>Compilers form an integral component of the software development ecosystem. Compiler writers must understand the specification of source and target languages to design sophisticated algorithms that transform programs while preserving semantics. Unfortunately, compiler bugs in mainstream compilers are common. Compiler bugs can manifest as crashes during compilation, or, much worse, result in the silent generation of incorrect programs. Such mis-compilations can introduce subtle errors that are difficult to diagnose and generally puzzling to software developers.</p>
