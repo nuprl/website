@@ -130,7 +130,17 @@ Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, 
             "http://www.mpi-sws.org/~marcopat/"
             "Max Planck Institute for Software Systems"
             (datetime 2016 01 25 11 00)
-            "WVH 366?"
+            "WVH 366"
+            @list{}
+            @list{})
+
+          @(seminar
+            "TBD"
+            "Santosh Nagarakatte"
+            "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
+            "Rutgers"
+            (datetime 2016 01 13 11 45)
+            "WVH 366"
             @list{}
             @list{})
 
