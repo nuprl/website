@@ -135,6 +135,20 @@ Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, 
             @list{})
 
           @(seminar
+            "Program verification under weak memory consistency"
+            "Viktor Vafeiadis"
+            "http://www.mpi-sws.org/~viktor/"
+            "Max Planck Institute for Software Systems"
+            (datetime 2016 01 14 13 30)
+            "WVH 366"
+            @list{
+<p>
+Weak memory models formalize the inconsistent behaviors that one can observe in multithreaded programs running on modern hardware. In so doing, they complicate the already-difficult task of reasoning about correctness of concurrent code. Worse, they render impotent most formal methods that have been developed to tame concurrency, which almost universally assume a strong (i.e., sequentially consistent) memory model. In response, we have developed a number of alternative reasoning techniques that are sound for programs running weak memory consistency. I will cover both program logics, such as relaxed separation logic, as well as theorems that allow reducing reasoning about well-structured weakly consistent implementations down to sequential consistency, and show how these can be applied to reason about a practical RCU implementation.</p>}
+            @list{
+Viktor Vafeiadis is a tenure-track researcher at MPI-SWS. He received his BA (2004) and PhD (2008) from the University of Cambridge. Before joining MPI-SWS in October 2010, he was a postdoc at Microsoft Research and at the University of Cambridge. He is interested in programming languages and verification with a focus program logics for weak memory, program logics for concurrency, compiler verifications, automated verification of concurrent programs, and interactive theorem proving.
+})
+
+          @(seminar
             "Lightweight Formal Methods for LLVM Verification"
             "Santosh Nagarakatte"
             "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
