@@ -384,6 +384,45 @@ ul
   margin-top: 25px;
 }
 
+.pn-pub-group
+{
+    margin-left: 30%;
+    margin-bottom: 20px;
+}
+
+.pn-pub-year
+{
+    font-size: 24px;
+}
+
+.pn-publication
+{
+    margin-bottom: 16px;
+    margin-left: 8px;
+}
+
+.pn-pub-title
+{
+    font-weight: bold;
+}
+
+.pn-authors
+{
+    font-size: 13px;
+}
+
+.pn-venue
+{
+    margin-left: 25px;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.pn-pub-link
+{
+    font-size: 10px;
+}
+
 .content .pn-highlight
 {
   color: #E4FB95;

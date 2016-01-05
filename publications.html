@@ -1,104 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home - Programming Research Laboratory - Northeastern University</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Publications - Programming Research Laboratory - Northeastern University</title>
 
-    <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom css -->
-    <link href="css/custom.css" rel="stylesheet">
-    <!-- Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>  
-    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'> 
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom css -->
+  <link href="css/custom.css" rel="stylesheet">
+  <!-- Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' type='text/css'>
 
-    <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
-    <!--[if IE]><link rel="shortcut icon" href="./img/favicon.ico"><![endif]-->
+  <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
+  <!--[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]-->
 
-    <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
-    <link rel="icon" href="./img/favicon.png">
+  <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
+  <link rel="icon" href="img/favicon.png">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
   <body id="pn-top">
-  	<nav class="navbar navbar-inverse">
-      	<div class="container">
-      		<div class="row">
-				<div class="navbar-header">
-		        	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-		            	<span class="sr-only">Toggle navigation</span>
-		            	<span class="icon-bar"></span>
-		            	<span class="icon-bar"></span>
-		            	<span class="icon-bar"></span>
-		          	</button>
-	        	</div>
-		        <div id="navbar" class="navbar-collapse collapse">
-		            <ul class="nav navbar-nav">
-		              <li role="presentation"><a href="/">Home</a></li>
-		              <li role="presentation"><a href="/people.html">People</a></li>
-		              <li role="presentation" class="active"><a href="/publications.html">Publications</a></li>
-		              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
-                  <li role="presentation"><a href="/contact.html">Contact</a></li>
-		            </ul>
-		        </div><!--/.navbar-collapse -->
-	        </div>
-      	</div>
-    </nav>
-
-    <div class="jumbotron subpages">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h1>Publications</h1>            
-        </div>
+   <nav class="navbar navbar-inverse">
+  <div class="container">
+    <div class="row">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
       </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li role="presentation"><a href="./">Home</a></li>
+          <li role="presentation"><a href="people.html">People</a></li>
+          <li role="presentation"><a href="teaching.html">Teaching</a></li>
+          <li role="presentation"><a href="seminars.html">Seminars</a></li>
+          <li role="presentation"><a href="software.html">Software</a></li>
+          <li role="presentation" class="active"><a href="#">Publications</a></li>
+          <li role="presentation"><a href="contact.html">Contact</a></li>
+
+        </ul>
+      </div><!--/.navbar-collapse -->
+    </div>
+  </div>
+</nav>
+   <div class="jumbotron subpages">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Publications</h1>
       </div>
     </div>
+  </div>
+</div>
 
-    <div class="container">
-      
-      <div class="content">
-        
-        <div class="row">  
-          <div class="col-md-12">
-            <h1 id="pn-anchor-home">Programming Research Laboratory</h1>  
-          </div>      
-          <div class="col-md-12">
-            <p>We believe that writing computer programs is the fundamental act of computer science, and that programming languages are therefore our fundamental tool.</p>
-            <p>We seek a deeper understanding of this fundamental tool and how it should be used, and we seek to apply this understanding to the program design process, as well as to novel applications.</p>
-            <p>We take a multi-faceted approach to the study of programming languages and programming methodology, incorporating elements of design, mathematics, experimental science, and engineering.</p>
-			<p>We conduct research on all aspects of programming, including</p>
-			<ul>
-				<li>the development of small and large programs</li>
-				<li>the design, implementation, and analysis of programming languages</li>
-				<li>programming environment tools</li>
-			</ul>
-
-			<p>Our research program is intertwined with our mission to train undergraduates and graduate students. We routinely exploit research results for our undergraduate courses, and we routinely find research challenges in our teaching. Some of the faculty and PhD students assist the TeachScheme! project, including Bootstrap, its middle school program.</p>
-          </div>
-        </div>   
-        
+    <div class="pn-main-wrapper">
+      <div class="row">
+        <div class="pn-pub-group col-md-12 compact">
+          <span class="pn-pub-year ">2012</span>
+          <br />
+          <div class="pn-publication">
+            <div class="pn-main-informations">
+              <span class="pn-pub-title">Typing the numeric tower</span>
+              <span class="pn-pub-link">
+                [<a class="pn-url" href="http://www.ccs.neu.edu/home/stamourv/papers/numeric-tower.pdf">link</a>]
+              </span>
+              <br />
+              <span class="pn-authors">Vincent St-Amour, Sam Tobin-Hochstadt, Matthew Flatt and Matthias Felleisen</span>
+              <br />
+              <span class="pn-venue">Practical Aspects of Declarative Languages (PADL)</span>
+            </div>
+          </div><div class="pn-publication">
+                  <div class="pn-main-informations">
+                    <span class="pn-pub-title">Seeing the futures: profiling shared-memory parallel Racket</span>
+                    <span class="pn-pub-link">
+                      [<a class="pn-url" href="http://www.ccs.neu.edu/home/stamourv/papers/seeing-the-futures.pdf">link</a>]
+                    </span>
+                    <br />
+                    <span class="pn-authors">James Swaine, Burke Fetscher, Vincent St-Amour, Robby Findler and Matthew Flatt</span>
+                    <br />
+                    <span class="pn-venue">Functional High-Performance Computing (FHPC)</span>
+                  </div>
+                </div><div class="pn-publication">
+                        <div class="pn-main-informations">
+                          <span class="pn-pub-title">Optimization coaching</span>
+                          <span class="pn-pub-link">
+                            [<a class="pn-url" href="http://www.ccs.neu.edu/home/stamourv/papers/optimization-coaching.pdf">link</a>]
+                          </span>
+                          <br />
+                          <span class="pn-authors">Vincent St-Amour, Sam Tobin-Hochstadt and Matthias Felleisen</span>
+                          <br />
+                          <span class="pn-venue">Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)</span>
+                        </div>
+                      </div><div class="pn-publication">
+                              <div class="pn-main-informations">
+                                <span class="pn-pub-title">Practical Programming with Substructural Types</span>
+                                <span class="pn-pub-link">
+                                  [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/dissertation/">link</a>]
+                                </span>
+                                <br />
+                                <span class="pn-authors">Jesse A. Tov</span>
+                                <br />
+                                <span class="pn-venue">PhD Dissertation, Northeastern University</span>
+                              </div>
+                            </div>
+        </div><div class="pn-pub-group col-md-12 compact">
+                <span class="pn-pub-year ">2011</span>
+                <br />
+                <div class="pn-publication">
+                  <div class="pn-main-informations">
+                    <span class="pn-pub-title">Languages as libraries</span>
+                    <span class="pn-pub-link">
+                      [<a class="pn-url" href="http://www.ccs.neu.edu/home/stamourv/papers/lang-lib.pdf">link</a>]
+                    </span>
+                    <br />
+                    <span class="pn-authors">Sam Tobin-Hochstadt, Vincent St-Amour, Ryan Culpepper, Matthew Flatt and Matthias Felleisen</span>
+                    <br />
+                    <span class="pn-venue">Programming Language Design and Implementation (PLDI)</span>
+                  </div>
+                </div><div class="pn-publication">
+                        <div class="pn-main-informations">
+                          <span class="pn-pub-title">A Family of Abstract Interpretations for Static Analysis of Concurrent Higher-Order Programs</span>
+                          <span class="pn-pub-link">
+                            [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/might-vanhorn-sas11.pdf">link</a>]
+                          </span>
+                          <br />
+                          <span class="pn-authors">Matthew Might and David Van Horn</span>
+                          <br />
+                          <span class="pn-venue">The 18th International Static Analysis Symposium</span>
+                        </div>
+                      </div><div class="pn-publication">
+                              <div class="pn-main-informations">
+                                <span class="pn-pub-title">Pushdown Flow Analysis of First-Class Control</span>
+                                <span class="pn-pub-link">
+                                  [<a class="pn-url" href="http://www.ccs.neu.edu/home/dimvar/papers/cfa2-1st-class.pdf">link</a>]
+                                </span>
+                                <br />
+                                <span class="pn-authors">Dimitrios Vardoulakis and Olin Shivers</span>
+                                <br />
+                                <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                              </div>
+                            </div><div class="pn-publication">
+                                    <div class="pn-main-informations">
+                                      <span class="pn-pub-title">CFA2: a Context-Free Approach to Control-Flow Analysis</span>
+                                      <span class="pn-pub-link">
+                                        [<a class="pn-url" href="http://www.lmcs-online.org/ojs/viewarticle.php?id=705">link</a>]
+                                      </span>
+                                      <br />
+                                      <span class="pn-authors">Dimitrios Vardoulakis and Olin Shivers</span>
+                                      <br />
+                                      <span class="pn-venue">Logical Methods in Computer Science (LMCS)</span>
+                                    </div>
+                                  </div><div class="pn-publication">
+                                          <div class="pn-main-informations">
+                                            <span class="pn-pub-title">Ordering Multiple Continuations on the Stack</span>
+                                            <span class="pn-pub-link">
+                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/dimvar/papers/rcps-NU-CCIS-11-01.pdf">link</a>]
+                                            </span>
+                                            <br />
+                                            <span class="pn-authors">Dimitrios Vardoulakis and Olin Shivers</span>
+                                            <br />
+                                            <span class="pn-venue">Partial Evaluation and Program Manipulation (PEPM)</span>
+                                          </div>
+                                        </div><div class="pn-publication">
+                                                <div class="pn-main-informations">
+                                                  <span class="pn-pub-title">A Theory of Substructural Types and Control</span>
+                                                  <span class="pn-pub-link">
+                                                    [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/substructural-control">link</a>]
+                                                  </span>
+                                                  <br />
+                                                  <span class="pn-authors">Jesse A. Tov and Riccardo Pucella</span>
+                                                  <br />
+                                                  <span class="pn-venue">Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)</span>
+                                                </div>
+                                              </div><div class="pn-publication">
+                                                      <div class="pn-main-informations">
+                                                        <span class="pn-pub-title">Practical Affine Types</span>
+                                                        <span class="pn-pub-link">
+                                                          [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/alms">link</a>]
+                                                        </span>
+                                                        <br />
+                                                        <span class="pn-authors">Jesse A. Tov and Riccardo Pucella</span>
+                                                        <br />
+                                                        <span class="pn-venue">Principles of Programming Languages (POPL)</span>
+                                                      </div>
+                                                    </div>
+              </div><div class="pn-pub-group col-md-12 compact">
+                      <span class="pn-pub-year ">2010</span>
+                      <br />
+                      <div class="pn-publication">
+                        <div class="pn-main-informations">
+                          <span class="pn-pub-title">Abstracting Abstract Machines</span>
+                          <span class="pn-pub-link">
+                            [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-might-icfp10.pdf">link</a>]
+                          </span>
+                          <br />
+                          <span class="pn-authors">David Van Horn and Matthew Might</span>
+                          <br />
+                          <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                        </div>
+                      </div><div class="pn-publication">
+                              <div class="pn-main-informations">
+                                <span class="pn-pub-title">Pushdown Control-Flow Analysis of Higher-Order Programs</span>
+                                <span class="pn-pub-link">
+                                  [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/earl-might-vanhorn-sfp10.pdf">link</a>]
+                                </span>
+                                <br />
+                                <span class="pn-authors">Christopher Earl, Matthew Might and David Van Horn</span>
+                                <br />
+                                <span class="pn-venue">Scheme and Functional Programming Workshop</span>
+                              </div>
+                            </div><div class="pn-publication">
+                                    <div class="pn-main-informations">
+                                      <span class="pn-pub-title">Resolving and Exploiting the k-CFA Paradox</span>
+                                      <span class="pn-pub-link">
+                                        [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/might-smaragdakis-vanhorn-pldi10.pdf">link</a>]
+                                      </span>
+                                      <br />
+                                      <span class="pn-authors">Matthew Might, Yannis Smaragdakis and David Van Horn</span>
+                                      <br />
+                                      <span class="pn-venue">Programming Language Design and Implementation (PLDI)</span>
+                                    </div>
+                                  </div><div class="pn-publication">
+                                          <div class="pn-main-informations">
+                                            <span class="pn-pub-title">Evaluating Call By Need on the Control Stack</span>
+                                            <span class="pn-pub-link">
+                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/stchang/pubs/Chang-VanHorn-Felleisen-TFP2010.pdf">link</a>]
+                                            </span>
+                                            <br />
+                                            <span class="pn-authors">Stephen Chang, David Van Horn and Matthias Felleisen</span>
+                                            <br />
+                                            <span class="pn-venue">Trends in Functional Programming</span>
+                                          </div>
+                                        </div><div class="pn-publication">
+                                                <div class="pn-main-informations">
+                                                  <span class="pn-pub-title">CFA2: a Context-Free Approach to Control-Flow Analysis</span>
+                                                  <span class="pn-pub-link">
+                                                    [<a class="pn-url" href="http://www.ccs.neu.edu/home/dimvar/papers/cfa2-NU-CCIS-10-01.pdf">link</a>]
+                                                  </span>
+                                                  <br />
+                                                  <span class="pn-authors">Dimitrios Vardoulakis and Olin Shivers</span>
+                                                  <br />
+                                                  <span class="pn-venue">European Symposium on Programming (ESOP)</span>
+                                                </div>
+                                              </div><div class="pn-publication">
+                                                      <div class="pn-main-informations">
+                                                        <span class="pn-pub-title">Functional Adaptive Programming</span>
+                                                        <span class="pn-pub-link">
+                                                          [<a class="pn-url" href="http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf">link</a>]
+                                                        </span>
+                                                        <br />
+                                                        <span class="pn-authors">Bryan Chadwick</span>
+                                                        <br />
+                                                        <span class="pn-venue">PhD Dissertation, Northeastern University</span>
+                                                      </div>
+                                                    </div><div class="pn-publication">
+                                                            <div class="pn-main-informations">
+                                                              <span class="pn-pub-title">Algorithms for Traversal-Based Generic Programming</span>
+                                                              <span class="pn-pub-link">
+                                                                [<a class="pn-url" href="http://www.ccs.neu.edu/home/chadwick/demeterf/papers/wgp10-final.pdf">link</a>]
+                                                              </span>
+                                                              <br />
+                                                              <span class="pn-authors">Bryan Chadwick and Karl Lieberherr</span>
+                                                              <br />
+                                                              <span class="pn-venue">Workshop on Generic Programming</span>
+                                                            </div>
+                                                          </div><div class="pn-publication">
+                                                                  <div class="pn-main-informations">
+                                                                    <span class="pn-pub-title">Weaving Generic Programming and Traversal Performance</span>
+                                                                    <span class="pn-pub-link">
+                                                                      [<a class="pn-url" href="http://www.ccs.neu.edu/home/chadwick/demeterf/papers/aosd10-final.pdf">link</a>]
+                                                                    </span>
+                                                                    <br />
+                                                                    <span class="pn-authors">Bryan Chadwick and Karl Lieberherr</span>
+                                                                    <br />
+                                                                    <span class="pn-venue">AOSD</span>
+                                                                  </div>
+                                                                </div><div class="pn-publication">
+                                                                        <div class="pn-main-informations">
+                                                                          <span class="pn-pub-title">Stateful Contracts for Affine Types</span>
+                                                                          <span class="pn-pub-link">
+                                                                            [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/affine-contracts/affinecontracts10-bw.pdf">link</a>]
+                                                                          </span>
+                                                                          <br />
+                                                                          <span class="pn-authors">Jesse A. Tov and Riccardo Pucella</span>
+                                                                          <br />
+                                                                          <span class="pn-venue">European Symposium on Programming (ESOP)</span>
+                                                                        </div>
+                                                                      </div>
+                    </div><div class="pn-pub-group col-md-12 compact">
+                            <span class="pn-pub-year ">2009</span>
+                            <br />
+                            <div class="pn-publication">
+                              <div class="pn-main-informations">
+                                <span class="pn-pub-title">All-Terimation(T)</span>
+                                <span class="pn-pub-link">
+                                  [<a class="pn-url" href="http://www.ccs.neu.edu/home/turon/tacas09.pdf">link</a>]
+                                </span>
+                                <br />
+                                <span class="pn-authors">Panagiotis Manolios and Aaron Turon</span>
+                                <br />
+                                <span class="pn-venue">TACAS</span>
+                              </div>
+                            </div><div class="pn-publication">
+                                    <div class="pn-main-informations">
+                                      <span class="pn-pub-title">Regular expression derivatives reexamined</span>
+                                      <span class="pn-pub-link">
+                                        [<a class="pn-url" href="http://www.ccs.neu.edu/home/turon/re-deriv.pdf">link</a>]
+                                      </span>
+                                      <br />
+                                      <span class="pn-authors">Scott Owens, John Reppy and Aaron Turon</span>
+                                      <br />
+                                      <span class="pn-venue">Journal of Functional Programming (JFP)</span>
+                                    </div>
+                                  </div><div class="pn-publication">
+                                          <div class="pn-main-informations">
+                                            <span class="pn-pub-title">The Complexity of Flow Analysis in Higher-Order Languages</span>
+                                            <span class="pn-pub-link">
+                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-dissertation.pdf">link</a>]
+                                            </span>
+                                            <br />
+                                            <span class="pn-authors">David Van Horn</span>
+                                            <br />
+                                            <span class="pn-venue">PhD Dissertation, Brandeis University</span>
+                                          </div>
+                                        </div><div class="pn-publication">
+                                                <div class="pn-main-informations">
+                                                  <span class="pn-pub-title">A Type System for Functional Traversal-Based Aspects</span>
+                                                  <span class="pn-pub-link">
+                                                    [<a class="pn-url" href="http://www.ccs.neu.edu/home/chadwick/demeterf/papers/foal09-final.pdf">link</a>]
+                                                  </span>
+                                                  <br />
+                                                  <span class="pn-authors">Bryan Chadwick and Karl Lieberherr</span>
+                                                  <br />
+                                                  <span class="pn-venue">FOAL Workshop</span>
+                                                </div>
+                                              </div>
+                          </div><div class="pn-pub-group col-md-12 compact">
+                                  <span class="pn-pub-year ">2008</span>
+                                  <br />
+                                  <div class="pn-publication">
+                                    <div class="pn-main-informations">
+                                      <span class="pn-pub-title">Deciding kCFA is complete for EXPTIME</span>
+                                      <span class="pn-pub-link">
+                                        [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-icfp08.pdf">link</a>]
+                                      </span>
+                                      <br />
+                                      <span class="pn-authors">David Van Horn and Harry G. Mairson</span>
+                                      <br />
+                                      <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                                    </div>
+                                  </div><div class="pn-publication">
+                                          <div class="pn-main-informations">
+                                            <span class="pn-pub-title">Flow Analysis, Linearity, and PTIME</span>
+                                            <span class="pn-pub-link">
+                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-sas08.pdf">link</a>]
+                                            </span>
+                                            <br />
+                                            <span class="pn-authors">David Van Horn and Harry G. Mairson</span>
+                                            <br />
+                                            <span class="pn-venue">Static Analysis Symposium</span>
+                                          </div>
+                                        </div><div class="pn-publication">
+                                                <div class="pn-main-informations">
+                                                  <span class="pn-pub-title">A Compositional Trace Semantics for Orc</span>
+                                                  <span class="pn-pub-link">
+                                                    [<a class="pn-url" href="http://www.ccs.neu.edu/home/dimvar/papers/orc-coord.pdf">link</a>]
+                                                  </span>
+                                                  <br />
+                                                  <span class="pn-authors">Dimitrios Vardoulakis and Mitchell Wand</span>
+                                                  <br />
+                                                  <span class="pn-venue">International Conference on Coordination Models and Languages (COORDINATION)</span>
+                                                </div>
+                                              </div><div class="pn-publication">
+                                                      <div class="pn-main-informations">
+                                                        <span class="pn-pub-title">Variable-Arity Generic Interfaces</span>
+                                                        <span class="pn-pub-link">
+                                                          [<a class="pn-url" href="http://www.ccs.neu.edu/racket/pubs/NU-CCIS-08-01.pdf">link</a>]
+                                                        </span>
+                                                        <br />
+                                                        <span class="pn-authors">T. Stephen Strickland and Richard Cobbe and Matthias Felleisen</span>
+                                                        <br />
+                                                        <span class="pn-venue">(tech report) Northeastern University College of Computer and Information Science no. NU-CCIS-08-01</span>
+                                                      </div>
+                                                    </div><div class="pn-publication">
+                                                            <div class="pn-main-informations">
+                                                              <span class="pn-pub-title">Haskell Session Types with (Almost) No Class</span>
+                                                              <span class="pn-pub-link">
+                                                                [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/haskell-session-types/">link</a>]
+                                                              </span>
+                                                              <br />
+                                                              <span class="pn-authors">Riccardo Pucella and Jesse A. Tov</span>
+                                                              <br />
+                                                              <span class="pn-venue">SIGPLAN Symposium on Haskell</span>
+                                                            </div>
+                                                          </div><div class="pn-publication">
+                                                                  <div class="pn-main-informations">
+                                                                    <span class="pn-pub-title">Caml-Shcaml: An OCaml Library for Unix Shell Programming</span>
+                                                                    <span class="pn-pub-link">
+                                                                      [<a class="pn-url" href="http://users.eecs.northwestern.edu/~jesse/pubs/caml-shcaml/">link</a>]
+                                                                    </span>
+                                                                    <br />
+                                                                    <span class="pn-authors">Alec Heller and Jesse A. Tov</span>
+                                                                    <br />
+                                                                    <span class="pn-venue">SIGPLAN workshop on ML</span>
+                                                                  </div>
+                                                                </div><div class="pn-publication">
+                                                                        <div class="pn-main-informations">
+                                                                          <span class="pn-pub-title">Much Ado about Nothing: Putting Java's Null in its Place</span>
+                                                                          <span class="pn-pub-link">
+                                                                            [<a class="pn-url" href="http://www.ccs.neu.edu/racket/pubs/dissertation-cobbe.pdf">link</a>]
+                                                                          </span>
+                                                                          <br />
+                                                                          <span class="pn-authors">Richard Cobbe</span>
+                                                                          <br />
+                                                                          <span class="pn-venue">PhD Dissertation, Northeastern University</span>
+                                                                        </div>
+                                                                      </div>
+                                </div><div class="pn-pub-group col-md-12 compact">
+                                        <span class="pn-pub-year ">2007</span>
+                                        <br />
+                                        <div class="pn-publication">
+                                          <div class="pn-main-informations">
+                                            <span class="pn-pub-title">Metaprogramming with Traits</span>
+                                            <span class="pn-pub-link">
+                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/turon/ecoop07-meta-traits.pdf">link</a>]
+                                            </span>
+                                            <br />
+                                            <span class="pn-authors">John Reppy and Aaron Turon</span>
+                                            <br />
+                                            <span class="pn-venue">European Conference on Object-Oriented Programming (ECOOP)</span>
+                                          </div>
+                                        </div><div class="pn-publication">
+                                                <div class="pn-main-informations">
+                                                  <span class="pn-pub-title">ACL2 for Freshmen: First Experiences</span>
+                                                  <span class="pn-pub-link">
+                                                    [<a class="pn-url" href="http://www.ccs.neu.edu/racket/pubs/acl207-evf.pdf">link</a>]
+                                                  </span>
+                                                  <br />
+                                                  <span class="pn-authors">Carl Eastlund, Dale Vaillancourt and Matthias Felleisen</span>
+                                                  <br />
+                                                  <span class="pn-venue">ACL2 Workshop</span>
+                                                </div>
+                                              </div><div class="pn-publication">
+                                                      <div class="pn-main-informations">
+                                                        <span class="pn-pub-title">Debugging Macros</span>
+                                                        <span class="pn-pub-link">
+                                                          [<a class="pn-url" href="http://www.ccs.neu.edu/racket/pubs/gpce07-cf.pdf">link</a>]
+                                                        </span>
+                                                        <br />
+                                                        <span class="pn-authors">Ryan Culpepper and Matthias Felleisen</span>
+                                                        <br />
+                                                        <span class="pn-venue">GPCE</span>
+                                                      </div>
+                                                    </div><div class="pn-publication">
+                                                            <div class="pn-main-informations">
+                                                              <span class="pn-pub-title">Advanced Macrology and the Implementation of Typed Scheme</span>
+                                                              <span class="pn-pub-link">
+                                                                [<a class="pn-url" href="http://www.ccs.neu.edu/racket/pubs/scheme2007-ctf.pdf">link</a>]
+                                                              </span>
+                                                              <br />
+                                                              <span class="pn-authors">Ryan Culpepper, Sam Tobin-Hochstadt and Matthew Flatt</span>
+                                                              <br />
+                                                              <span class="pn-venue">Scheme Workshop</span>
+                                                            </div>
+                                                          </div><div class="pn-publication">
+                                                                  <div class="pn-main-informations">
+                                                                    <span class="pn-pub-title">Adding Delimited and Composable Control to a Production Programming Environment</span>
+                                                                    <span class="pn-pub-link">
+                                                                      [<a class="pn-url" href="http://www.ccs.neu.edu/scheme/pubs/icfp07-fyff.pdf">link</a>]
+                                                                    </span>
+                                                                    <br />
+                                                                    <span class="pn-authors">Matthew Flatt, Gang Yu, Robert Bruce Findler and Matthias Felleisen</span>
+                                                                    <br />
+                                                                    <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                                                                  </div>
+                                                                </div><div class="pn-publication">
+                                                                        <div class="pn-main-informations">
+                                                                          <span class="pn-pub-title">Implementation and Use of the PLT Scheme Web Server</span>
+                                                                          <span class="pn-pub-link">
+                                                                            [<a class="pn-url" href="http://www.ccs.neu.edu/scheme/pubs/hosc07-sk-mf.pdf">link</a>]
+                                                                          </span>
+                                                                          <br />
+                                                                          <span class="pn-authors">Shriram Krishnamurthi, Peter Walton Hopkins, Jay McCarthy, Paul Graunke, Greg Pettyjohn and Matthias Felleisen</span>
+                                                                          <br />
+                                                                          <span class="pn-venue">Journal of Higher-Order and Symbolic Computing</span>
+                                                                        </div>
+                                                                      </div><div class="pn-publication">
+                                                                              <div class="pn-main-informations">
+                                                                                <span class="pn-pub-title">Relating Complexity and Precision in Control Flow Analysis</span>
+                                                                                <span class="pn-pub-link">
+                                                                                  [<a class="pn-url" href="http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-icfp07.pdf">link</a>]
+                                                                                </span>
+                                                                                <br />
+                                                                                <span class="pn-authors">David Van Horn and Harry G. Mairson</span>
+                                                                                <br />
+                                                                                <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                                                                              </div>
+                                                                            </div><div class="pn-publication">
+                                                                                    <div class="pn-main-informations">
+                                                                                      <span class="pn-pub-title">Status Report: Specifying JavaScript with ML</span>
+                                                                                      <span class="pn-pub-link">
+                                                                                        [<a class="pn-url" href="http://www.ccs.neu.edu/home/dherman/research/papers/ml07-javascript.pdf">link</a>]
+                                                                                      </span>
+                                                                                      <br />
+                                                                                      <span class="pn-authors">David Herman and Cormac Flanagan</span>
+                                                                                      <br />
+                                                                                      <span class="pn-venue">Workshop on ML</span>
+                                                                                    </div>
+                                                                                  </div><div class="pn-publication">
+                                                                                          <div class="pn-main-informations">
+                                                                                            <span class="pn-pub-title">Functional Pearl: The Great Escape. Or, How to Jump the Border Without Getting Caught</span>
+                                                                                            <span class="pn-pub-link">
+                                                                                              [<a class="pn-url" href="http://www.ccs.neu.edu/home/dherman/research/papers/icfp07-great-escape.pdf">link</a>]
+                                                                                            </span>
+                                                                                            <br />
+                                                                                            <span class="pn-authors">David Herman</span>
+                                                                                            <br />
+                                                                                            <span class="pn-venue">International Conference on Functional Programming (ICFP)</span>
+                                                                                          </div>
+                                                                                        </div><div class="pn-publication">
+                                                                                                <div class="pn-main-informations">
+                                                                                                  <span class="pn-pub-title">Space-Efficient Gradual Typing</span>
+                                                                                                  <span class="pn-pub-link">
+                                                                                                    [<a class="pn-url" href="http://www.ccs.neu.edu/home/dherman/research/papers/tfp07-gradual-typing.pdf">link</a>]
+                                                                                                  </span>
+                                                                                                  <br />
+                                                                                                  <span class="pn-authors">David Herman, Aaron Tomb and Cormac Flanagan</span>
+                                                                                                  <br />
+                                                                                                  <span class="pn-venue">Trends in Functional Programming</span>
+                                                                                                </div>
+                                                                                              </div>
+                                      </div>
       </div>
-      
-      <footer class="footer">
-        <p>© Copyright Programming Research Laboratory 2015 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
-        <a class="pn-top pn-dark" href="#pn-top"><img src="/img/up-arrow.png" alt="top"/></a>
-      </footer>     
-
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-      <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="js/bootstrap.min.js"></script>
-      <!-- Custom scripts -->
-      <script src="js/custom.js"></script>
-
     </div>
+    <footer class="footer">
+  <p>© Copyright Programming Research Laboratory 2015 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
+  <a class="pn-top pn-dark" href="#pn-top"><img src="/img/up-arrow.png" alt="top"/></a>
+</footer>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+<!-- Custom scripts -->
+<script src="js/custom.js"></script>
+
+
   </body>
 </html>
