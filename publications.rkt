@@ -16,7 +16,7 @@
 @(define CC "International Conference on Compiler Construction (CC)")
 @(define SIGCSE "SIGCSE")
 @(define TOPLAS "Transactions on Programming Languages and Systems (TOPLAS)")
-@(define IFL "Implementation and Application of Functional Languages(IFL)")
+@(define IFL "Implementation and Application of Functional Languages (IFL)")
 @(define PADL "Practical Aspects of Declarative Languages (PADL)")
 @(define TFP "Trends in Functional Programming (TFP)")
 @(define DLS "Dynamic Languages Symposium (DLS)")
@@ -26,6 +26,10 @@
 @(define ACL2 "ACL2 Workshop")
 @(define FDPE "Functional and Declarative Programming in Education (FDPE)")
 @(define GPCE "Generative Programming: Concepts & Experience (GPCE)")
+@(define LMCS "Logical Methods in Computer Science (LMCS)")
+@(define MSCS "Mathematical Structures in Computer Science (MSCS)")
+@(define LICS "Logic in Computer Science (LICS)")
+@(define DBPL "Database Programming Languages (DBPL)")
 
 @(define old-site-pubs
    (list
@@ -408,8 +412,107 @@
                   2007
                   "http://www.ccs.neu.edu/racket/pubs/hosc07-sk-mf.pdf")))
 
+@(define amal-pubs
+   (list
+     (publication "Noninterference for Free"
+                  "William J. Bowman and Amal Ahmed"
+                  ICFP
+                  2015
+                  "http://www.ccs.neu.edu/home/amal/papers/nifree.pdf")
+     (publication "Verified Compilers for a Multi-Language World"
+                  "Amal Ahmed"
+                  SNAPL
+                  2015
+                  "http://www.ccs.neu.edu/home/amal/papers/verifcomp.pdf")
+     (publication "Database Queries that Explain their Work"
+                  "James Cheney, Amal Ahmed, and Umut Acar"
+                  PPDP
+                  2014
+                  "http://www.ccs.neu.edu/home/amal/papers/dqew.pdf")
+     (publication "Verifying an Open Compiler Using Multi-Language Semantics"
+                  "James T. Perconti and Amal Ahmed"
+                  ESOP
+                  2014
+                  "http://www.ccs.neu.edu/home/amal/papers/voc.pdf")
+     (publication "Logical Relations for Fine-Grained Concurrency"
+                  "Aaron Turon, Jacob Thamsborg, Amal Ahmed, Lars Birkedal, Derek Dreyer"
+                  POPL
+                  2013
+                  "http://www.ccs.neu.edu/home/amal/papers/relcon.pdf")
+     (publication "An Equivalence-Preserving CPS Translation via Multi-Language Semantics"
+                  "Amal Ahmed and Matthias Blume"
+                  ICFP
+                  2011
+                  "http://www.ccs.neu.edu/home/amal/papers/epc.pdf")
+     (publication "Logical Step-Indexed Logical Relations"
+                  "Derek Dreyer, Amal Ahmed, and Lars Birkedal"
+                  LMCS
+                  2011
+                  "http://www.ccs.neu.edu/home/amal/papers/lslr-lmcs.pdf")
+     (publication "Blame for All"
+                  "Amal Ahmed, Robert Bruce Findler, Jeremy Siek, and Philip Wadler"
+                  POPL
+                  2011
+                  "http://plt.eecs.northwestern.edu/blame-for-all/")
+     (publication "Provenance as Dependency Analysis"
+                  "James Cheney, Amal Ahmed, and Umut Acar"
+                  MSCS
+                  2011
+                  "http://www.ccs.neu.edu/home/amal/papers/provdep-mscs.pdf")
+     (publication "Semantic Foundations for Typed Assembly Languages."
+                  "Amal Ahmed, Andrew W. Appel, Christopher Richards, Kedar Swadi, Gang Tan, Daniel Wang"
+                  TOPLAS
+                  2010
+                  "http://portal.acm.org/citation.cfm?doid=1709093.1709094")
+     (publication "Logical Step-Indexed Logical Relations"
+                  "Derek Dreyer, Amal Ahmed, and Lars Birkedal"
+                  LICS
+                  2009
+                  "http://www.ccs.neu.edu/home/amal/papers/lslr.pdf")
+     (publication "Blame for All"
+                  "Amal Ahmed, Robert Bruce Findler, Jacob Matthews, and Philip Wadler"
+                  "Workshop on Script to Program Evolution (STOP)"
+                  2009
+                  "http://www.ccs.neu.edu/home/amal/papers/blame-all.pdf")
+     (publication "State-Dependent Representation Independence"
+                  "Amal Ahmed, Derek Dreyer, and Andreas Rossberg"
+                  POPL
+                  2009
+                  "http://www.ccs.neu.edu/home/amal/papers/sdri.pdf")
+     (publication "Typed Closure Conversion Preserves Observational Equivalence"
+                  "Amal Ahmed and Matthias Blume"
+                  ICFP
+                  2008
+                  "http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf")
+     (publication "Parametric Polymorphism Through Run-Time Sealing, or, Theorems for Low, Low Prices!"
+                  "Jacob Matthews and Amal Ahmed"
+                  ESOP
+                  2008
+                  "http://www.ccs.neu.edu/home/amal/papers/parpolyseal.pdf")
+     (publication "Imperative Self-Adjusting Computation"
+                  "Umut Acar, Amal Ahmed, and Matthias Blume"
+                  POPL
+                  2008
+                  "http://www.ccs.neu.edu/home/amal/papers/impselfadj.pdf")
+     (publication "Provenance as Dependency Analysis"
+                  "James Cheney, Amal Ahmed, and Umut Acar"
+                  DBPL
+                  2007
+                  "http://www.ccs.neu.edu/home/amal/papers/provdep.pdf")
+     (publication "L3: A Linear Language with Locations"
+                  "Amal Ahmed, Matthew Fluet, and Greg Morrisett"
+                  "Fundamenta Informaticae"
+                  2007
+                  "http://www.ccs.neu.edu/home/amal/papers/linloc-fi07.pdf")
+     (publication "Abstract Predicates and Mutable ADTs in Hoare Type Theory"
+                  "Aleksander Nanevski, Amal Ahmed, Greg Morrisett, and Lars Birkedal"
+                  ESOP
+                  2007
+                  "http://www.ccs.neu.edu/home/amal/papers/htthol.pdf")))
+
 @(define publications
    (flatten (list mf-pubs
+                  amal-pubs
                   old-site-pubs)))
 
 @(define (publication->html pub)
@@ -440,7 +543,8 @@
      (group-by publication-year pubs)
      #;(reverse (sort pubs #:key publication-year)))
    (for/list ([pubs (in-list grouped)])
-     (publication-group pubs (publication-year (first pubs)))))
+     (publication-group (sort pubs string<? #:key publication-venue)
+                        (publication-year (first pubs)))))
 
 @(define (publication-group->html pub-group)
    @list{
