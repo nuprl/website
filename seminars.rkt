@@ -115,6 +115,32 @@ languages.
 Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
 
           @(seminar
+            "Journey to Find Bugs in Real-World Web Applications in the Wild"
+            "Sukyoung Ryu"
+            "http://plrg.kaist.ac.kr/ryu"
+            "KAIST"
+            (datetime 2016 02 19 11 45)
+            "WVH 366"
+            @list{
+Analyzing real-world web applications is a challenging task.
+On top of understanding the semantics of JavaScript, it requires
+modeling of web documents, platform objects, and interactions between
+them.
+Most web applications load JavaScript code dynamically, which makes
+pure static analysis approaches inapplicable.
+In this talk, we present our journey to analyze JavaScript web
+applications in the wild using various approaches.
+From pure JavaScript programs to JavaScript web applications using
+platform-specific libraries, we explain technical challenges in
+analyzing each of them and how we built an open-source analysis
+framework for JavaScript, SAFE, that addresses the challenges
+incrementally.
+Finally, we discuss our ongoing work on analysis of Android hybrid
+applications.
+}
+            @list{})
+
+          @(seminar
             "TBD"
             "Ori Lahav"
             "https://www.mpi-sws.org/~orilahav/"
