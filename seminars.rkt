@@ -151,14 +151,14 @@ applications.
             @list{})
 
           @(seminar
-            "TBD"
+            "Secure Compilation to Protected Module Architectures"
             "Marco Patrignani"
             "http://www.mpi-sws.org/~marcopat/"
             "Max Planck Institute for Software Systems"
             (datetime 2016 01 25 11 00)
             "WVH 366"
-            @list{}
-            @list{})
+            @list{This talk will informally describe protected module architectures (PMA), a security architecture that provides an assembly-level memory isolation mechanism. 	Then it will describe how to devise a secure (fully-abstract) compiler for an object-oriented language to PMA.  Finally, it will present how to prove the said compiler to be secure and discuss open, related research trajectories.}
+            @list{Marco Patrignani did his bachelor and masters study in Bologna, then he obtained a Ph.D. in computer science from the KU Leuven, Belgium. There, with his advisors Dave Clarke and Frank Piessens, he studied secure (fully-abstract) compilation for Intel-SGX like architectures, i.e., untyped assembly languages extended with a memory isolation mechanism. Additionally, he investigated trace-based characterisation of the behaviour of those architectures. He is now a post-doc at MPI-SWS, Germany working on more secure-compilation-related topics with Deepak Garg.})
 
           @(seminar
             "Program verification under weak memory consistency"
