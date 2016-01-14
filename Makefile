@@ -2,7 +2,7 @@ TARGETS=contact.html index.html new-members.html people.html seminars.html softw
 
 all: $(TARGETS)
 
-%.html: %.rkt templates/footer.html templates/header.html templates/nav.html templates/subpage-title.html
+%.html: %.rkt templates/*.html
 	if [ -f $@ ]; then chmod +w $@; fi
 	racket -t $< > $@
 	chmod -w $@

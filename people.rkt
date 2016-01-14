@@ -1,5 +1,6 @@
 #lang scribble/text
-@(require "templates.rkt")
+@(require "templates.rkt"
+          scribble/html/html)
 @(define (string-empty? s) (string=? "" s))
 @(define (alumnus name #:year [year #f] #:personal-site [psite #f] #:dissertation [dsite #f] #:extra [extra #f])
    (define (link url body)
@@ -263,60 +264,33 @@ MS Stanford University 1995<br />
             </div>
           </div>            
 
-          <div class="row pn-person">  
-            <div class="col-md-12 pn-row-eq-height">
-              <div class="col-md-3 pn-photo">
-                <div class="img-wrapper">
-                  <img src="img/jan_vitek.jpg" title="Jan Vitek" alt="Jan Vitek" /> 
-                </div>
-              </div>
-              <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
-                  <span class="pn-name">Jan Vitek</span><br />
-                  Profesor<br />
-                  <a href="mailto:j.vitek@"@"neu.edu">j.vitek@"@"neu.edu</a><br />
-                  <a href="http://janvitek.org">janvitek.org</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
-                    Joined Northeastern, 2014<br />
+          @(person #:name "Jan Vitek"
+                   #:title "Professor"
+                   #:e-mail "j.vitek@neu.edu"
+                   #:website "http://janvitek.org"
+                   #:history "Joined Northeastern, 2014<br />
                     Joined Purdue, 1999<br />
                     PhD, University of Geneva, 1999<br />
-                    MSc, University of Victoria, 1995
-                </div> 
-                <div class="col-md-12 pn-bio">
-                  <p>I work on the design and implementation of programming languages. I led the implementation of the first real-time Java virtual machine to be flight-tested. With Noble and Potter, I proposed what became known as Ownership Types.  I tried to understand JavaScript by dynamic analysis and am now looking at supporting scalable data analysis in R.</p>
-                </div> 
-              </div>
-            </div>
-          </div>   
+                    MSc, University of Victoria, 1995"
+                   #:bio "I work on the design and implementation of programming languages. I led the implementation of the first real-time Java virtual machine to be flight-tested. With Noble and Potter, I proposed what became known as Ownership Types.  I tried to understand JavaScript by dynamic analysis and am now looking at supporting scalable data analysis in R."
+                   #:img "jan_vitek.jpg")
 
+          @(person #:name "Paley Li"
+                   #:title "Post-doctoral researcher"
+                   #:e-mail "pa.li@neu.edu"
+                   #:website "https://palez.github.io"
+                   #:history "Joined Northeastern, 2015<br />
+                    PhD, Victoria University of Wellington, 2015"
+                   #:bio "My research interests is in programming languages, specifically type theory, ownership types, and local reasoning for memory management. Most recently, I have been working on formalising object cloning for ownership types."
+                   #:img "paleyli.jpg")
 
-          <div class="row pn-person">
-            <div class="col-md-12 pn-row-eq-height">
-              <div class="col-md-3 pn-photo">
-                <div class="img-wrapper">
-                  <img src="img/paleyli.jpg" title="Paley Li" alt="Paley Li" />
-                </div>
-              </div>
-              <div class="col-md-9">
-                <div class="col-md-4 pn-contact">
-                  <span class="pn-name">Paley Li</span><br />
-                  Post-doctoral researcher<br />
-                  <a href="mailto:pa.li@"@"neu.edu">pa.li@"@"neu.edu</a><br />
-                  <a href="https://palez.github.io">https://palez.github.io</a>
-                </div>
-                <div class="col-md-5 pn-muted col-md-offset-3">
-                    Joined Northeastern, 2015<br />
-                    PhD, Victoria University of Wellington, 2015
-                </div>
-                <div class="col-md-12 pn-bio">
-                  <p>My research interests is in programming languages, specifically type theory, ownership types, and local reasoning for memory management. Most recently, I have been working on formalising object cloning for ownership types.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
+          @(person #:name "Gabriel Scherer"
+                   #:title "Post-doctoral researcher"
+                   #:e-mail "gabriel.scherer@gmail.com"
+                   #:history "Joined Northeastern, 2016"
+                   #:img "gabriel_scherer.jpg"
+                   #:bio "I'm interested in theoretical aspects of type systems, programming language implementation, general programming language concepts, and even some syntactic aspects. I have a preference for the formalizable aspects, or formalizable approaches to programming language aspects, rather than the often subjective appeal to taste or intuition."
+)
 
         </div>
 
