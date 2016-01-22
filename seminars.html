@@ -69,6 +69,14 @@
       <div class="content">
         <div class="container">
           <div class="row">
+            <p>For NEU students and staff, the mailing lists <strong>prl-students</strong> and <strong>prl-staff</strong> are maintained by <a mailto:"j.vitek@neu.edu">Jan Vitek</a>.</p>
+          </div>
+        </div>
+
+        <div class="pn-separator-img-short"></div>
+
+        <div class="container">
+          <div class="row">
             <div class="col-md-12">
               <h2>Programming Language Seminar</h2>
               <p>
@@ -161,56 +169,12 @@
 
           <div id="seminar-3" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
-              if (new Date() >= new Date('2016-02-19T11:45:00')) {
+              if (new Date() >= new Date('2016-01-27T11:45:00')) {
                 document.getElementById('seminar-3').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
-              <a onclick="return false;" class="pn-title">Journey to Find Bugs in Real-World Web Applications in the Wild</a>
-              <br />
-              <span class="pn-name">Sukyoung Ryu</span>
-              <br />
-              <span class="pn-affiliation">KAIST</span>
-              <a class="pn-url" target="_blank" href="http://plrg.kaist.ac.kr/ryu">link</a>
-              <span class="pn-datetime">19 February, 2016 11:45AM</span>
-              <span class="pn-room">WVH 366</span>
-            </div>
-            <div class="pn-abstract-bio">
-              <p>
-                <span class="pn-title-2">Abstract</span>
-                <span>Analyzing real-world web applications is a challenging task.
-                      On top of understanding the semantics of JavaScript, it requires
-                      modeling of web documents, platform objects, and interactions between
-                      them.
-                      Most web applications load JavaScript code dynamically, which makes
-                      pure static analysis approaches inapplicable.
-                      In this talk, we present our journey to analyze JavaScript web
-                      applications in the wild using various approaches.
-                      From pure JavaScript programs to JavaScript web applications using
-                      platform-specific libraries, we explain technical challenges in
-                      analyzing each of them and how we built an open-source analysis
-                      framework for JavaScript, SAFE, that addresses the challenges
-                      incrementally.
-                      Finally, we discuss our ongoing work on analysis of Android hybrid
-                      applications.</span>
-              </p>
-              <p>
-                <span class="pn-title-2">Bio</span>
-                <span></span>
-              </p>
-            </div>
-          </div>
-
-          <br />
-
-          <div id="seminar-4" class="col-md-12 pn-seminar compact">
-            <script type="text/javascript">
-              if (new Date() >= new Date('2016-01-27T11:45:00')) {
-                document.getElementById('seminar-4').classList.add('finished');
-              }
-            </script>
-            <div class="pn-main-informations">
-              <a onclick="return false;" class="pn-title">TBD</a>
+              <a onclick="return false;" class="pn-title">Taming release-acquire consistency</a>
               <br />
               <span class="pn-name">Ori Lahav</span>
               <br />
@@ -222,21 +186,23 @@
             <div class="pn-abstract-bio">
               <p>
                 <span class="pn-title-2">Abstract</span>
-                <span></span>
+                <span><p>Multiprocessors and concurrent programming are now pervasive. Typically, they do not guarantee sequential consistency (a.k.a. interleaving semantics), which is the standard assumption by most work on semantics and verification. Instead, they employ subtle memory models, exposing unexpected relaxed behaviors arising from hardware and compiler optimizations.</p>
+                      <p>In this talk, I will focus on one such model --- the release-acquire fragment of the C/C++11 memory model. I will describe its merits, and show how it can be further improved, without additional implementation costs, to: (i) forbid dubious behaviors that are not observed in any implementation; (ii) support fence instructions that restore sequential consistency; and (iii) admit an equivalent intuitive operational semantics.</p>
+                      <p>The talk is based on a joint work with Nick Giannarakis and Viktor Vafeiadis, to be presented in POPL'16.</p></span>
               </p>
               <p>
                 <span class="pn-title-2">Bio</span>
-                <span></span>
+                <span>Ori Lahav is a postdoctoral researcher at MPI-SWS. He obtained his PhD from Tel Aviv University in the area of non-classical logics. His current research interests are in programming languages generally, with specific focus on memory models, concurrency, verification, and logic.</span>
               </p>
             </div>
           </div>
 
           <br />
 
-          <div id="seminar-5" class="col-md-12 pn-seminar compact">
+          <div id="seminar-4" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2016-01-25T11:00:00')) {
-                document.getElementById('seminar-5').classList.add('finished');
+                document.getElementById('seminar-4').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -263,10 +229,10 @@
 
           <br />
 
-          <div id="seminar-6" class="col-md-12 pn-seminar compact">
+          <div id="seminar-5" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2016-01-14T13:30:00')) {
-                document.getElementById('seminar-6').classList.add('finished');
+                document.getElementById('seminar-5').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -294,10 +260,10 @@
 
           <br />
 
-          <div id="seminar-7" class="col-md-12 pn-seminar compact">
+          <div id="seminar-6" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2016-01-13T12:00:00')) {
-                document.getElementById('seminar-7').classList.add('finished');
+                document.getElementById('seminar-6').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -327,10 +293,10 @@
 
           <br />
 
-          <div id="seminar-8" class="col-md-12 pn-seminar compact">
+          <div id="seminar-7" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2015-12-02T12:00:00')) {
-                document.getElementById('seminar-8').classList.add('finished');
+                document.getElementById('seminar-7').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -371,10 +337,10 @@
 
           <br />
 
-          <div id="seminar-9" class="col-md-12 pn-seminar compact">
+          <div id="seminar-8" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2015-11-20T10:30:00')) {
-                document.getElementById('seminar-9').classList.add('finished');
+                document.getElementById('seminar-8').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -454,10 +420,10 @@
 
           <br />
 
-          <div id="seminar-10" class="col-md-12 pn-seminar compact">
+          <div id="seminar-9" class="col-md-12 pn-seminar compact">
             <script type="text/javascript">
               if (new Date() >= new Date('2015-11-16T13:00:00')) {
-                document.getElementById('seminar-10').classList.add('finished');
+                document.getElementById('seminar-9').classList.add('finished');
               }
             </script>
             <div class="pn-main-informations">
@@ -510,10 +476,10 @@
 
           <br />
 
-        <div id="seminar-11" class="col-md-12 pn-seminar compact">
+        <div id="seminar-10" class="col-md-12 pn-seminar compact">
           <script type="text/javascript">
             if (new Date() >= new Date('2015-11-13T10:30:00')) {
-              document.getElementById('seminar-11').classList.add('finished');
+              document.getElementById('seminar-10').classList.add('finished');
             }
           </script>
           <div class="pn-main-informations">
@@ -578,10 +544,10 @@
 
         <br />
 
-        <div id="seminar-12" class="col-md-12 pn-seminar compact">
+        <div id="seminar-11" class="col-md-12 pn-seminar compact">
           <script type="text/javascript">
             if (new Date() >= new Date('2015-11-03T10:30:00')) {
-              document.getElementById('seminar-12').classList.add('finished');
+              document.getElementById('seminar-11').classList.add('finished');
             }
           </script>
           <div class="pn-main-informations">

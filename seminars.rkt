@@ -52,6 +52,14 @@
       <div class="content">
         <div class="container">
           <div class="row">
+            <p>For NEU students and staff, the mailing lists <strong>prl-students</strong> and <strong>prl-staff</strong> are maintained by <a mailto:"j.vitek@"@"neu.edu">Jan Vitek</a>.</p>
+          </div>
+        </div>
+
+        <div class="pn-separator-img-short"></div>
+
+        <div class="container">
+          <div class="row">
             <div class="col-md-12">
               <h2>Programming Language Seminar</h2>
               <p>
@@ -107,40 +115,17 @@ languages.
 Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
 
           @(seminar
-            "Journey to Find Bugs in Real-World Web Applications in the Wild"
-            "Sukyoung Ryu"
-            "http://plrg.kaist.ac.kr/ryu"
-            "KAIST"
-            (datetime 2016 02 19 11 45)
-            "WVH 366"
-            @list{
-Analyzing real-world web applications is a challenging task.
-On top of understanding the semantics of JavaScript, it requires
-modeling of web documents, platform objects, and interactions between
-them.
-Most web applications load JavaScript code dynamically, which makes
-pure static analysis approaches inapplicable.
-In this talk, we present our journey to analyze JavaScript web
-applications in the wild using various approaches.
-From pure JavaScript programs to JavaScript web applications using
-platform-specific libraries, we explain technical challenges in
-analyzing each of them and how we built an open-source analysis
-framework for JavaScript, SAFE, that addresses the challenges
-incrementally.
-Finally, we discuss our ongoing work on analysis of Android hybrid
-applications.
-}
-            @list{})
-
-          @(seminar
-            "TBD"
+            "Taming release-acquire consistency"
             "Ori Lahav"
             "https://www.mpi-sws.org/~orilahav/"
             "Max Planck Institute for Software Systems"
             (datetime 2016 01 27 11 45)
             "WVH 366"
-            @list{}
-            @list{})
+            @list{<p>Multiprocessors and concurrent programming are now pervasive. Typically, they do not guarantee sequential consistency (a.k.a. interleaving semantics), which is the standard assumption by most work on semantics and verification. Instead, they employ subtle memory models, exposing unexpected relaxed behaviors arising from hardware and compiler optimizations.</p>
+<p>In this talk, I will focus on one such model --- the release-acquire fragment of the C/C++11 memory model. I will describe its merits, and show how it can be further improved, without additional implementation costs, to: (i) forbid dubious behaviors that are not observed in any implementation; (ii) support fence instructions that restore sequential consistency; and (iii) admit an equivalent intuitive operational semantics.</p>
+<p>The talk is based on a joint work with Nick Giannarakis and Viktor Vafeiadis, to be presented in POPL'16.</p>
+}
+            @list{Ori Lahav is a postdoctoral researcher at MPI-SWS. He obtained his PhD from Tel Aviv University in the area of non-classical logics. His current research interests are in programming languages generally, with specific focus on memory models, concurrency, verification, and logic.})
 
           @(seminar
             "Secure Compilation to Protected Module Architectures"
