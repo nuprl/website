@@ -80,6 +80,16 @@
         <!-- ROW -->
         <div class="row">
           @(seminar
+            "TBD"
+            "Alex Aiken"
+            ""
+            "Stanford University"
+            (datetime 2016 04 15 11 00)
+            "WVH 366"
+            @list{}
+            @list{})
+
+          @(seminar
             "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
             "Dominique Devriese"
             "https://distrinet.cs.kuleuven.be/people/dominiqu"
