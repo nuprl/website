@@ -1,8 +1,8 @@
 #lang scribble/text
 @(require
    racket/date
-  gregor
-  "templates.rkt")
+   gregor
+   "templates.rkt")
 
 @(define id 0)
 @(define (seminar title speaker link aff date room abstract bio)
@@ -39,7 +39,291 @@
 <br />
 })
 
-@;; TODO: Define list of seminars here, automagically sort by date and insert in the below HTML
+@; TODO Have seminar return a struct; sort it by date, then create output.
+@(define seminars
+   (splice
+    (seminar
+     "TBD"
+     "Alex Aiken"
+     ""
+     "Stanford University"
+     (datetime 2016 04 15 11 00)
+     "WVH 366"
+     @list{}
+     @list{})
+
+    (seminar
+     "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
+     "Dominique Devriese"
+     "https://distrinet.cs.kuleuven.be/people/dominiqu"
+     "Katholieke Universiteit Leuven"
+     (datetime 2016 02 25 11 00)
+     "WVH 366"
+     @list{Object capabilities are a technique for fine-grained privilege separation in programming languages and systems,with important applications in security. However, current formal characterisations do not fully capture capability-safety of a programming language and are not sufficient for verifying typical applications. Using state-of-the-art techniques from programming languages research, we define a logical relation for a core calculus of JavaScript that better characterises capability-safety. The relation is powerful enough to reason about typical capability patterns and supports evolvable invariants on shared data structures, capabilities with restricted authority over them and isolated components with restricted communication channels. We use a novel notion of effect parametricity for deriving properties about effects. We demonstrate that our results imply memory access bounds that have previously been used to characterise capability-safety.}
+     @list{Dominique is a postdoctoral researcher in the research group DistriNet, part of the Computer Science department of the Katholieke Universiteit Leuven. He holds a postdoctoral research fellowship of the Research Foundation - Flanders (FWO). He works on formalising properties of object-oriented and object-capability programming languages---specifically a property called effect parametricity--is the author of the grammar-combinators Haskell parsing library, and has added instance arguments to the programming language/proof assistant Agda. He is interested in information flow security, secure compilation,full abstraction, and functional and dependently typed programming languages.})
+
+    (seminar
+     "TBD"
+     "Satish Chandra"
+     "https://sites.google.com/site/schandraacmorg/"
+     "Samsung"
+     (datetime 2016 02 22 11 00)
+     "WVH 366"
+     @list{}
+     @list{
+           Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
+
+    (seminar
+     "Taming release-acquire consistency"
+     "Ori Lahav"
+     "https://www.mpi-sws.org/~orilahav/"
+     "Max Planck Institute for Software Systems"
+     (datetime 2016 01 27 11 45)
+     "WVH 366"
+     @list{<p>Multiprocessors and concurrent programming are now pervasive. Typically, they do not guarantee sequential consistency (a.k.a. interleaving semantics), which is the standard assumption by most work on semantics and verification. Instead, they employ subtle memory models, exposing unexpected relaxed behaviors arising from hardware and compiler optimizations.</p>
+                              <p>In this talk, I will focus on one such model --- the release-acquire fragment of the C/C++11 memory model. I will describe its merits, and show how it can be further improved, without additional implementation costs, to: (i) forbid dubious behaviors that are not observed in any implementation; (ii) support fence instructions that restore sequential consistency; and (iii) admit an equivalent intuitive operational semantics.</p>
+                              <p>The talk is based on a joint work with Nick Giannarakis and Viktor Vafeiadis, to be presented in POPL'16.</p>
+                              }
+     @list{Ori Lahav is a postdoctoral researcher at MPI-SWS. He obtained his PhD from Tel Aviv University in the area of non-classical logics. His current research interests are in programming languages generally, with specific focus on memory models, concurrency, verification, and logic.})
+
+    (seminar
+     "Secure Compilation to Protected Module Architectures"
+     "Marco Patrignani"
+     "http://www.mpi-sws.org/~marcopat/"
+     "Max Planck Institute for Software Systems"
+     (datetime 2016 01 25 11 00)
+     "WVH 366"
+     @list{This talk will informally describe protected module architectures (PMA), a security architecture that provides an assembly-level memory isolation mechanism. 	Then it will describe how to devise a secure (fully-abstract) compiler for an object-oriented language to PMA.  Finally, it will present how to prove the said compiler to be secure and discuss open, related research trajectories.}
+     @list{Marco Patrignani did his bachelor and masters study in Bologna, then he obtained a Ph.D. in computer science from the KU Leuven, Belgium. There, with his advisors Dave Clarke and Frank Piessens, he studied secure (fully-abstract) compilation for Intel-SGX like architectures, i.e., untyped assembly languages extended with a memory isolation mechanism. Additionally, he investigated trace-based characterisation of the behaviour of those architectures. He is now a post-doc at MPI-SWS, Germany working on more secure-compilation-related topics with Deepak Garg.})
+
+    (seminar
+     "Program verification under weak memory consistency"
+     "Viktor Vafeiadis"
+     "http://www.mpi-sws.org/~viktor/"
+     "Max Planck Institute for Software Systems"
+     (datetime 2016 01 14 13 30)
+     "WVH 366"
+     @list{
+           <p>
+           Weak memory models formalize the inconsistent behaviors that one can observe in multithreaded programs running on modern hardware. In so doing, they complicate the already-difficult task of reasoning about correctness of concurrent code. Worse, they render impotent most formal methods that have been developed to tame concurrency, which almost universally assume a strong (i.e., sequentially consistent) memory model. In response, we have developed a number of alternative reasoning techniques that are sound for programs running weak memory consistency. I will cover both program logics, such as relaxed separation logic, as well as theorems that allow reducing reasoning about well-structured weakly consistent implementations down to sequential consistency, and show how these can be applied to reason about a practical RCU implementation.</p>}
+     @list{
+           Viktor Vafeiadis is a tenure-track researcher at MPI-SWS. He received his BA (2004) and PhD (2008) from the University of Cambridge. Before joining MPI-SWS in October 2010, he was a postdoc at Microsoft Research and at the University of Cambridge. He is interested in programming languages and verification with a focus program logics for weak memory, program logics for concurrency, compiler verifications, automated verification of concurrent programs, and interactive theorem proving.
+                  })
+
+    (seminar
+     "Lightweight Formal Methods for LLVM Verification"
+     "Santosh Nagarakatte"
+     "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
+     "Rutgers University"
+     (datetime 2016 01 13 12 00)
+     "WVH 366"
+     @list{
+           <p>Compilers form an integral component of the software development ecosystem. Compiler writers must understand the specification of source and target languages to design sophisticated algorithms that transform programs while preserving semantics. Unfortunately, compiler bugs in mainstream compilers are common. Compiler bugs can manifest as crashes during compilation, or, much worse, result in the silent generation of incorrect programs. Such mis-compilations can introduce subtle errors that are difficult to diagnose and generally puzzling to software developers.</p>
+                        <p>The talk  will describe the problems  in developing peephole optimizations that perform local rewriting to improve the efficiency of LLVM code. These optimizations are individually difficult to get right, particularly in the presence of undefined behavior; taken together they represent a persistent source of bugs.  The talk will present Alive, a domain-specific language for writing optimizations and for automatically either proving them correct or else generating counterexamples.  A transformation in Alive is shown to be correct automatically by encoding the transformation into constraints, which are automatically checked for validity using a Satisfiability Modulo Theory (SMT) solver. Furthermore, Alive can be automatically translated into C++ code that is suitable for inclusion in an LLVM optimization pass.</p>
+                        <p>
+                        Alive is based on an attempt to balance usability and formal methods; for example, it captures—but largely hides—the detailed semantics of three different kinds of undefined behavior in LLVM. We have translated more than 300 LLVM optimizations into Alive and, in the process, found that eight of them were wrong.  I will conclude the talk highlighting the lessons learned and the challenges in incorporating lightweight formal methods in the tool-chain of the compiler developer.</p>}
+                        @list{
+                              Santosh Nagarakatte is an Assistant Professor of Computer Science at Rutgers University. He obtained his PhD from the University of Pennsylvania. His research interests are in Hardware-Software Interfaces spanning Programming Languages, Compilers, Software Engineering, and Computer Architecture. His papers have been selected as IEEE MICRO TOP Picks papers of computer architecture conferences in 2010 and 2013. He has received the NSF CAREER Award in 2015, PLDI 2015 Distinguished Paper Award, and the Google Faculty Research Award in 2014 for his research on incorporating lightweight formal methods for LLVM compiler verification.})
+
+     (seminar
+      "Feature Specific Profiling for R"
+      "Leif Andersen"
+      "http://leifandersen.net"
+      "Northeastern University"
+      (datetime 2015 12 2 12 00)
+      "WVH 366"
+      @list{
+            <p>
+            Programmers use profilers to understand the performance
+            characteristics of
+            their programs and to focus on those pieces whose improvement may yield the
+            largest gains. A conventional profiler measures the time that a program
+            spends in functions, methods, expressions, and statements. Racket's novel
+            feature-specific profiler supplements this information with timings of
+            instances of linguistic features. This paper reports the results of a
+            successful reproducibility effort to adapt feature-specific profiling to
+            the R programming language. Specifically, the paper demonstrates how easy
+            and effective it is to add the necessary language support, that the
+            approach usefully enhances the information produced by a classical
+            profiler, and that the additional overhead is tolerable.
+            </p>}
+      @list{
+            Leif Andersen is a second year Ph.D. student at Northeastern University, studying programming language
+                 with Matthias Felleisen.
+                 })
+
+     (seminar
+      "Performance Matters"
+      "Emery Berger"
+      "http://emeryberger.com/"
+      "U. Massachusetts, Amherst"
+      (datetime 2015 11 20 10 30)
+      "WVH 366"
+      @list{
+            <p>
+            Performance clearly matters to users. The most common software update
+            on the AppStore *by far* is "Bug fixes and performance enhancements."
+            Now that Moore's Law Free Lunch has ended, programmers have to work
+            hard to get high performance for their applications. But why is
+            performance so hard to deliver?</p>
+            <p>I will first explain why our current approaches to evaluating and
+            optimizing performance don't work, especially on modern hardware and
+            for modern applications. I will then present two systems that address
+            these challenges. Stabilizer is a tool that enables statistically
+            sound performance evaluation, making it possible to understand the
+            impact of optimizations and conclude things like the fact that the -O2
+            and -O3 optimization levels are indistinguishable from noise
+            (unfortunately true).</p>
+            <p>Since compiler optimizations have largely run out of steam, we need
+            better profiling support, especially for modern concurrent,
+            multi-threaded applications. Coz is a novel "causal profiler" that
+            lets programmers optimize for throughput or latency, and which
+            pinpoints and accurately predicts the impact of optimizations. Coz's
+            approach unlocks numerous previously unknown optimization
+            opportunities. Guided by Coz, we improved the performance of Memcached
+            by 9%, SQLite by 25%, and accelerated six Parsec applications by as
+            much as 68%; in most cases, these optimizations involved modifying
+            under 10 lines of code.</p>
+            <p>This talk is based on work with Charlie Curtsinger published at ASPLOS
+            2013 (Stabilizer) and SOSP 2015 (Coz), where it received a Best Paper
+            Award.
+            </p>}
+      @list{
+            <p>Emery Berger is a Professor in the College of Information and Computer
+                     Sciences at the University of Massachusetts Amherst, the flagship
+                     campus of the UMass system. He graduated with a Ph.D. in Computer
+                     Science from the University of Texas at Austin in 2002. Professor
+                     Berger has been a Visiting Scientist at Microsoft Research (7 times)
+                     and at the Universitat Politecnica de Catalunya (UPC) / Barcelona
+                     Supercomputing Center (BSC).</p>
+                     <p>Professor Berger’s research spans programming languages, runtime
+                     systems, and operating systems, with a particular focus on systems
+                     that transparently improve reliability, security, and performance. He
+                     is the creator of a number of influential software systems including
+                     Hoard, a fast and scalable memory manager that accelerates
+                     multithreaded applications (used by companies including British
+                                                      Telecom, Cisco, Crédit Suisse, Reuters, Royal Bank of Canada, SAP, and
+                                                      Tata, and on which the Mac OS X memory manager is based); DieHard, an
+                     error-avoiding memory manager that directly influenced the design of
+                     the Windows 7 Fault-Tolerant Heap; and DieHarder, a secure memory
+                     manager that was an inspiration for hardening changes made to the
+                     Windows 8 heap.</p>
+                     <p>His honors include a Microsoft Research Fellowship, an NSF CAREER
+                     Award, a Lilly Teaching Fellowship, a Most Influential Paper Award at
+                     OOPSLA 2012, a Google Research Award, a Microsoft SEIF Award, a Best
+                     Artifact Award at PLDI, and Best Paper Awards at FAST, OOPSLA, and
+                     SOSP; he was named an ACM Senior Member in 2010. Professor Berger is
+                     currently a Member of the SIGPLAN Executive Committee and an Associate
+                     Editor of the ACM Transactions on Programming Languages and Systems,
+                     and will serve as Program Chair for PLDI 2016.</p>
+                     })
+
+     (seminar
+      "Programming Languages Meets Programmable Networks"
+      "Arjun Guha"
+      "https://people.cs.umass.edu/~arjun/home/"
+      "U. Massachusetts, Amherst"
+      (datetime 2015 11 16 13 00)
+      "WVH 366"
+      @list{
+            <p>Computer networks do not simply connect machines together, but run several
+                        applications on network devices, such as load balancers, intrusion detection
+                        systems, authentication portals, and more. Historically, these applications were
+                        black-boxes running on proprietary hardware, but software-defined networking
+                        (SDN) now allows anyone to write their own programs using open networking
+                        protocols (e.g., OpenFlow). So, what are the right abstractions for programming networks? This talk will try
+                        to address this question in three ways. </p>
+                        <p>First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
+                        "Does all traffic traverse my intrusion detection system?", "Is there a loop in
+my network?", and so on. </p>
+<p>Second, we present a fast and efficient compiler for NetKAT. Although several
+network compilers already exist, they are unusable on even moderately sized
+networks. Using new data structures and compilation algorithms, our new compiler
+is two orders of magnitudes faster than prior work and scales to large
+datacenter networks. </p>
+<p>Finally, we consider the problem of building a reliable runtime system for
+NetKAT. NetKAT abstracts away several low-level details of networking hardware.
+Although this is a boon for the network programmer, the burden now shifts to us
+to engineer abstractions correctly. We present a Coq-certified runtime system
+that is proven correct with respect to a detailed operational model software-
+defined networks.
+</p>}
+      @list{
+            Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
+                  enjoys tackling problems in systems using the tools and principles of
+                  programming languages. Apart from network programming, he has worked on Web
+                  security and system configuration languages. He received a PhD in Computer
+                  Science from Brown University in 2012 and a BA in Computer Science from Grinnell
+                  College in 2006.})
+
+     (seminar
+      "Declarative Programming for Eventual Consistency"
+      "Suresh Jagannathan"
+      "https://www.cs.purdue.edu/homes/suresh/"
+      "Purdue University"
+      (datetime 2015 11 13 10 30)
+      "WVH 366"
+      @list{
+            <p>In geo-replicated distributed data stores, the need to ensure responsiveness
+                  in the face of network partitions and processor failures results in
+                  implementations that provide only weak (so-called eventually consistent)
+                  guarantees on when data updated by one process becomes visible to another.
+                  Applications must be carefully constructed to be aware of unwanted
+                  inconsistencies permitted by such implementations (e.g., having negative
+                                                                           balances in a bank account, or having an item appear in a shopping cart
+                                                                           after it has been removed), but must balance correctness concerns with
+                                                                           performance and scalability needs.  Because understanding these tradeoffs
+                                                                           requires subtle reasoning and detailed knowledge about the underlying data
+                                                                           store, implementing robust distributed applications in such environments is
+                                                                           often an error-prone and expensive task.</p>
+
+                                                                           <p>To overcome these issues, this talk presents a declarative programming model
+                                                                           for eventually consistent data stores called Quelea.  The model comprises a
+                                                                           contract language, capable of defining fine-grained application-level
+                                                                           consistency properties for replicated data types (and transactions over
+                                                                                                                                 objects of these types), and a contract enforcement system to analyze
+                                                                                                                                 contracts and automatically generate the appropriate consistency protocol
+                                                                                                                                 for the method protected by the contract.  By doing so, Quelea enables
+                                                                                                                                 programmers to reason compositionally about consistency from the perspective
+                                                                                                                                 of high-level application requirements, not low-level implementation
+                                                                                                                                 features.</p>
+
+                                                                                                                                 <p>This is joint work with Gowtham Kaki and K.C. Sivaramakrishnan.</p>}
+      @list{
+            <p>Suresh Jagannathan is a Professor of Computer Science at Purdue University
+                      where he has been on leave since September 2013, serving as a program
+                      manager in the Information Innovation Office at DARPA.  He has also been a
+                      visiting faculty at Cambridge University, where he spent a sabbatical year
+                      in 2010; and, prior to joining Purdue, was a senior research scientist at
+                      the NEC Research Institute in Princeton, N.J.  He received his Ph.D from
+                      MIT.</p>
+
+                      <p>His research interests are in programming languages generally, with specific
+                      focus on compilers, functional programming, program verification, and
+                      concurrent and distributed systems.  At DARPA, he manages programs on
+                      probabilistic programming and machine learning (PPAML), program synthesis
+                      and repair leveraging predictive analytics over large software corpora
+                      (MUSE), and self-adaptive software through resource-aware analyses,
+                      runtimes, and architectures (BRASS).</p>})
+
+     (seminar
+      "Hop.js: multitier programming in JavaScript"
+      "Manuel Serrano"
+      "http://www-sop.inria.fr/members/Manuel.Serrano/"
+      "INRIA"
+      (datetime 2015 11 3 10 30)
+      "WVH 366"
+      @list{
+            Hop.js is a multitier extension of JavaScript. It allows a single
+                   JavaScript program to describe the client-side and the server-side
+                   components of a Web application. Its runtime environment ensures a
+                   consistent execution of the application on the server and on the
+                   client. This talk will shows its minimal set of JavaScript extensions
+                   that makes Web programming easier. It will present its runtime
+                   environment, with an emphasize on the handling of server-side
+                   parallelism.}
+      @list{
+            Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.}))))
 
 <!DOCTYPE html>
 <html lang="en">
@@ -79,306 +363,8 @@
 
         <!-- ROW -->
         <div class="row">
-          @(seminar
-            "TBD"
-            "Alex Aiken"
-            ""
-            "Stanford University"
-            (datetime 2016 04 15 11 00)
-            "WVH 366"
-            @list{}
-            @list{})
-
-          @(seminar
-            "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
-            "Dominique Devriese"
-            "https://distrinet.cs.kuleuven.be/people/dominiqu"
-            "Katholieke Universiteit Leuven"
-            (datetime 2016 02 25 11 00)
-            "WVH 366"
-            @list{
-Object capabilities are a technique for fine-grained privilege separation in programming languages and systems,with important applications in security. However, current formal characterisations do not fully capture capability-safety of a programming language and are not sufficient for verifying typical applications. Using state-of-the-art techniques from programming languages research, we define a logical relation for a core calculus of JavaScript that better characterises capability-safety. The relation is powerful enough to reason about typical capability patterns and supports evolvable invariants on shared data structures, capabilities with restricted authority over them and isolated components with restricted communication channels. We use a novel notion of effect parametricity for deriving properties about effects. We demonstrate that our results imply memory access bounds that have previously been used to characterise capability-safety.}
-            @list{
-Dominique is a postdoctoral researcher in the research group
-DistriNet, part of the Computer Science department of the Katholieke
-Universiteit Leuven. He holds a postdoctoral research fellowship of
-the Research Foundation - Flanders (FWO). He works on formalising
-properties of object-oriented and object-capability programming
-languages---specifically a property called effect parametricity--is
-the author of the grammar-combinators Haskell parsing library, and has
-added instance arguments to the programming language/proof assistant
-Agda.
-He is interested in information flow security, secure compilation,
-full abstraction, and functional and dependently typed programming
-languages.
-})
-
-          @(seminar
-            "TBD"
-            "Satish Chandra"
-            "https://sites.google.com/site/schandraacmorg/"
-            "Samsung"
-            (datetime 2016 02 22 11 00)
-            "WVH 366"
-            @list{}
-            @list{
-Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
-
-          @(seminar
-            "Taming release-acquire consistency"
-            "Ori Lahav"
-            "https://www.mpi-sws.org/~orilahav/"
-            "Max Planck Institute for Software Systems"
-            (datetime 2016 01 27 11 45)
-            "WVH 366"
-            @list{<p>Multiprocessors and concurrent programming are now pervasive. Typically, they do not guarantee sequential consistency (a.k.a. interleaving semantics), which is the standard assumption by most work on semantics and verification. Instead, they employ subtle memory models, exposing unexpected relaxed behaviors arising from hardware and compiler optimizations.</p>
-<p>In this talk, I will focus on one such model --- the release-acquire fragment of the C/C++11 memory model. I will describe its merits, and show how it can be further improved, without additional implementation costs, to: (i) forbid dubious behaviors that are not observed in any implementation; (ii) support fence instructions that restore sequential consistency; and (iii) admit an equivalent intuitive operational semantics.</p>
-<p>The talk is based on a joint work with Nick Giannarakis and Viktor Vafeiadis, to be presented in POPL'16.</p>
-}
-            @list{Ori Lahav is a postdoctoral researcher at MPI-SWS. He obtained his PhD from Tel Aviv University in the area of non-classical logics. His current research interests are in programming languages generally, with specific focus on memory models, concurrency, verification, and logic.})
-
-          @(seminar
-            "Secure Compilation to Protected Module Architectures"
-            "Marco Patrignani"
-            "http://www.mpi-sws.org/~marcopat/"
-            "Max Planck Institute for Software Systems"
-            (datetime 2016 01 25 11 00)
-            "WVH 366"
-            @list{This talk will informally describe protected module architectures (PMA), a security architecture that provides an assembly-level memory isolation mechanism. 	Then it will describe how to devise a secure (fully-abstract) compiler for an object-oriented language to PMA.  Finally, it will present how to prove the said compiler to be secure and discuss open, related research trajectories.}
-            @list{Marco Patrignani did his bachelor and masters study in Bologna, then he obtained a Ph.D. in computer science from the KU Leuven, Belgium. There, with his advisors Dave Clarke and Frank Piessens, he studied secure (fully-abstract) compilation for Intel-SGX like architectures, i.e., untyped assembly languages extended with a memory isolation mechanism. Additionally, he investigated trace-based characterisation of the behaviour of those architectures. He is now a post-doc at MPI-SWS, Germany working on more secure-compilation-related topics with Deepak Garg.})
-
-          @(seminar
-            "Program verification under weak memory consistency"
-            "Viktor Vafeiadis"
-            "http://www.mpi-sws.org/~viktor/"
-            "Max Planck Institute for Software Systems"
-            (datetime 2016 01 14 13 30)
-            "WVH 366"
-            @list{
-<p>
-Weak memory models formalize the inconsistent behaviors that one can observe in multithreaded programs running on modern hardware. In so doing, they complicate the already-difficult task of reasoning about correctness of concurrent code. Worse, they render impotent most formal methods that have been developed to tame concurrency, which almost universally assume a strong (i.e., sequentially consistent) memory model. In response, we have developed a number of alternative reasoning techniques that are sound for programs running weak memory consistency. I will cover both program logics, such as relaxed separation logic, as well as theorems that allow reducing reasoning about well-structured weakly consistent implementations down to sequential consistency, and show how these can be applied to reason about a practical RCU implementation.</p>}
-            @list{
-Viktor Vafeiadis is a tenure-track researcher at MPI-SWS. He received his BA (2004) and PhD (2008) from the University of Cambridge. Before joining MPI-SWS in October 2010, he was a postdoc at Microsoft Research and at the University of Cambridge. He is interested in programming languages and verification with a focus program logics for weak memory, program logics for concurrency, compiler verifications, automated verification of concurrent programs, and interactive theorem proving.
-})
-
-          @(seminar
-            "Lightweight Formal Methods for LLVM Verification"
-            "Santosh Nagarakatte"
-            "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
-            "Rutgers University"
-            (datetime 2016 01 13 12 00)
-            "WVH 366"
-            @list{
-<p>Compilers form an integral component of the software development ecosystem. Compiler writers must understand the specification of source and target languages to design sophisticated algorithms that transform programs while preserving semantics. Unfortunately, compiler bugs in mainstream compilers are common. Compiler bugs can manifest as crashes during compilation, or, much worse, result in the silent generation of incorrect programs. Such mis-compilations can introduce subtle errors that are difficult to diagnose and generally puzzling to software developers.</p>
-<p>The talk  will describe the problems  in developing peephole optimizations that perform local rewriting to improve the efficiency of LLVM code. These optimizations are individually difficult to get right, particularly in the presence of undefined behavior; taken together they represent a persistent source of bugs.  The talk will present Alive, a domain-specific language for writing optimizations and for automatically either proving them correct or else generating counterexamples.  A transformation in Alive is shown to be correct automatically by encoding the transformation into constraints, which are automatically checked for validity using a Satisfiability Modulo Theory (SMT) solver. Furthermore, Alive can be automatically translated into C++ code that is suitable for inclusion in an LLVM optimization pass.</p>
-<p>
-Alive is based on an attempt to balance usability and formal methods; for example, it captures—but largely hides—the detailed semantics of three different kinds of undefined behavior in LLVM. We have translated more than 300 LLVM optimizations into Alive and, in the process, found that eight of them were wrong.  I will conclude the talk highlighting the lessons learned and the challenges in incorporating lightweight formal methods in the tool-chain of the compiler developer.</p>}
-            @list{
-Santosh Nagarakatte is an Assistant Professor of Computer Science at Rutgers University. He obtained his PhD from the University of Pennsylvania. His research interests are in Hardware-Software Interfaces spanning Programming Languages, Compilers, Software Engineering, and Computer Architecture. His papers have been selected as IEEE MICRO TOP Picks papers of computer architecture conferences in 2010 and 2013. He has received the NSF CAREER Award in 2015, PLDI 2015 Distinguished Paper Award, and the Google Faculty Research Award in 2014 for his research on incorporating lightweight formal methods for LLVM compiler verification.})
-
-          @(seminar
-            "Feature Specific Profiling for R"
-            "Leif Andersen"
-            "http://leifandersen.net"
-            "Northeastern University"
-            (datetime 2015 12 2 12 00)
-            "WVH 366"
-            @list{
-<p>
-Programmers use profilers to understand the performance
-characteristics of
-their programs and to focus on those pieces whose improvement may yield the
-largest gains. A conventional profiler measures the time that a program
-spends in functions, methods, expressions, and statements. Racket's novel
-feature-specific profiler supplements this information with timings of
-instances of linguistic features. This paper reports the results of a
-successful reproducibility effort to adapt feature-specific profiling to
-the R programming language. Specifically, the paper demonstrates how easy
-and effective it is to add the necessary language support, that the
-approach usefully enhances the information produced by a classical
-profiler, and that the additional overhead is tolerable.
-</p>}
-            @list{
-Leif Andersen is a second year Ph.D. student at Northeastern University, studying programming language
-with Matthias Felleisen.
-})
-
-          @(seminar
-            "Performance Matters"
-            "Emery Berger"
-            "http://emeryberger.com/"
-            "U. Massachusetts, Amherst"
-            (datetime 2015 11 20 10 30)
-            "WVH 366"
-            @list{
-<p>
-Performance clearly matters to users. The most common software update
-on the AppStore *by far* is "Bug fixes and performance enhancements."
-Now that Moore's Law Free Lunch has ended, programmers have to work
-hard to get high performance for their applications. But why is
-performance so hard to deliver?</p>
-<p>I will first explain why our current approaches to evaluating and
-optimizing performance don't work, especially on modern hardware and
-for modern applications. I will then present two systems that address
-these challenges. Stabilizer is a tool that enables statistically
-sound performance evaluation, making it possible to understand the
-impact of optimizations and conclude things like the fact that the -O2
-and -O3 optimization levels are indistinguishable from noise
-(unfortunately true).</p>
-<p>Since compiler optimizations have largely run out of steam, we need
-better profiling support, especially for modern concurrent,
-multi-threaded applications. Coz is a novel "causal profiler" that
-lets programmers optimize for throughput or latency, and which
-pinpoints and accurately predicts the impact of optimizations. Coz's
-approach unlocks numerous previously unknown optimization
-opportunities. Guided by Coz, we improved the performance of Memcached
-by 9%, SQLite by 25%, and accelerated six Parsec applications by as
-much as 68%; in most cases, these optimizations involved modifying
-under 10 lines of code.</p>
-<p>This talk is based on work with Charlie Curtsinger published at ASPLOS
-2013 (Stabilizer) and SOSP 2015 (Coz), where it received a Best Paper
-Award.
-</p>}
-            @list{
-<p>Emery Berger is a Professor in the College of Information and Computer
-Sciences at the University of Massachusetts Amherst, the flagship
-campus of the UMass system. He graduated with a Ph.D. in Computer
-Science from the University of Texas at Austin in 2002. Professor
-Berger has been a Visiting Scientist at Microsoft Research (7 times)
-and at the Universitat Politecnica de Catalunya (UPC) / Barcelona
-Supercomputing Center (BSC).</p>
-<p>Professor Berger’s research spans programming languages, runtime
-systems, and operating systems, with a particular focus on systems
-that transparently improve reliability, security, and performance. He
-is the creator of a number of influential software systems including
-Hoard, a fast and scalable memory manager that accelerates
-multithreaded applications (used by companies including British
-Telecom, Cisco, Crédit Suisse, Reuters, Royal Bank of Canada, SAP, and
-Tata, and on which the Mac OS X memory manager is based); DieHard, an
-error-avoiding memory manager that directly influenced the design of
-the Windows 7 Fault-Tolerant Heap; and DieHarder, a secure memory
-manager that was an inspiration for hardening changes made to the
-Windows 8 heap.</p>
-<p>His honors include a Microsoft Research Fellowship, an NSF CAREER
-Award, a Lilly Teaching Fellowship, a Most Influential Paper Award at
-OOPSLA 2012, a Google Research Award, a Microsoft SEIF Award, a Best
-Artifact Award at PLDI, and Best Paper Awards at FAST, OOPSLA, and
-SOSP; he was named an ACM Senior Member in 2010. Professor Berger is
-currently a Member of the SIGPLAN Executive Committee and an Associate
-Editor of the ACM Transactions on Programming Languages and Systems,
-and will serve as Program Chair for PLDI 2016.</p>
-})
-
-          @(seminar
-            "Programming Languages Meets Programmable Networks"
-            "Arjun Guha"
-            "https://people.cs.umass.edu/~arjun/home/"
-            "U. Massachusetts, Amherst"
-            (datetime 2015 11 16 13 00)
-            "WVH 366"
-            @list{
-<p>Computer networks do not simply connect machines together, but run several
-applications on network devices, such as load balancers, intrusion detection
-systems, authentication portals, and more. Historically, these applications were
-black-boxes running on proprietary hardware, but software-defined networking
-(SDN) now allows anyone to write their own programs using open networking
-protocols (e.g., OpenFlow). So, what are the right abstractions for programming networks? This talk will try
-to address this question in three ways. </p>
-<p>First, we present a syntactic theory of network forwarding called NetKAT, which supports equational reasoning about network-wide behavior. Using NetKAT, programmers can ask and answer questions like, "Can A communicate with B?",
-"Does all traffic traverse my intrusion detection system?", "Is there a loop in
-my network?", and so on. </p>
-<p>Second, we present a fast and efficient compiler for NetKAT. Although several
-network compilers already exist, they are unusable on even moderately sized
-networks. Using new data structures and compilation algorithms, our new compiler
-is two orders of magnitudes faster than prior work and scales to large
-datacenter networks. </p>
-<p>Finally, we consider the problem of building a reliable runtime system for
-NetKAT. NetKAT abstracts away several low-level details of networking hardware.
-Although this is a boon for the network programmer, the burden now shifts to us
-to engineer abstractions correctly. We present a Coq-certified runtime system
-that is proven correct with respect to a detailed operational model software-
-defined networks.
-</p>}
-            @list{
-Arjun Guha is an assistant professor of Computer Science at UMass Amherst. He
-enjoys tackling problems in systems using the tools and principles of
-programming languages. Apart from network programming, he has worked on Web
-security and system configuration languages. He received a PhD in Computer
-Science from Brown University in 2012 and a BA in Computer Science from Grinnell
-College in 2006.})
-
-        @(seminar
-           "Declarative Programming for Eventual Consistency"
-           "Suresh Jagannathan"
-           "https://www.cs.purdue.edu/homes/suresh/"
-           "Purdue University"
-           (datetime 2015 11 13 10 30)
-           "WVH 366"
-           @list{
-<p>In geo-replicated distributed data stores, the need to ensure responsiveness
-in the face of network partitions and processor failures results in
-implementations that provide only weak (so-called eventually consistent)
-guarantees on when data updated by one process becomes visible to another.
-Applications must be carefully constructed to be aware of unwanted
-inconsistencies permitted by such implementations (e.g., having negative
-balances in a bank account, or having an item appear in a shopping cart
-after it has been removed), but must balance correctness concerns with
-performance and scalability needs.  Because understanding these tradeoffs
-requires subtle reasoning and detailed knowledge about the underlying data
-store, implementing robust distributed applications in such environments is
-often an error-prone and expensive task.</p>
-
-<p>To overcome these issues, this talk presents a declarative programming model
-for eventually consistent data stores called Quelea.  The model comprises a
-contract language, capable of defining fine-grained application-level
-consistency properties for replicated data types (and transactions over
-objects of these types), and a contract enforcement system to analyze
-contracts and automatically generate the appropriate consistency protocol
-for the method protected by the contract.  By doing so, Quelea enables
-programmers to reason compositionally about consistency from the perspective
-of high-level application requirements, not low-level implementation
-features.</p>
-
-<p>This is joint work with Gowtham Kaki and K.C. Sivaramakrishnan.</p>}
-        @list{
-<p>Suresh Jagannathan is a Professor of Computer Science at Purdue University
-where he has been on leave since September 2013, serving as a program
-manager in the Information Innovation Office at DARPA.  He has also been a
-visiting faculty at Cambridge University, where he spent a sabbatical year
-in 2010; and, prior to joining Purdue, was a senior research scientist at
-the NEC Research Institute in Princeton, N.J.  He received his Ph.D from
-MIT.</p>
-
-<p>His research interests are in programming languages generally, with specific
-focus on compilers, functional programming, program verification, and
-concurrent and distributed systems.  At DARPA, he manages programs on
-probabilistic programming and machine learning (PPAML), program synthesis
-and repair leveraging predictive analytics over large software corpora
-(MUSE), and self-adaptive software through resource-aware analyses,
-runtimes, and architectures (BRASS).</p>})
-
-        @(seminar
-           "Hop.js: multitier programming in JavaScript"
-           "Manuel Serrano"
-           "http://www-sop.inria.fr/members/Manuel.Serrano/"
-           "INRIA"
-           (datetime 2015 11 3 10 30)
-           "WVH 366"
-           @list{
-Hop.js is a multitier extension of JavaScript. It allows a single
-JavaScript program to describe the client-side and the server-side
-components of a Web application. Its runtime environment ensures a
-consistent execution of the application on the server and on the
-client. This talk will shows its minimal set of JavaScript extensions
-that makes Web programming easier. It will present its runtime
-environment, with an emphasize on the handling of server-side
-parallelism.
-           }
-           @list{
-Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.
-           }
-           )
-
+          @seminars
+         
           <div class="col-md-12 pn-seminar compact finished">
             <div class="pn-main-informations">
               <a onclick="return false;" class="pn-title">Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software</a>
