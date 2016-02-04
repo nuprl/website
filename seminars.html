@@ -1,5 +1,3 @@
-)
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -288,10 +286,37 @@ Weak memory models formalize the inconsistent behaviors that one can observe in 
   <div class="pn-abstract-bio">
     <p>
       <span class="pn-title-2">Abstract</span>
-      <span><p>Compilers form an integral component of the software development ecosystem. Compiler writers must understand the specification of source and target languages to design sophisticated algorithms that transform programs while preserving semantics. Unfortunately, compiler bugs in mainstream compilers are common. Compiler bugs can manifest as crashes during compilation, or, much worse, result in the silent generation of incorrect programs. Such mis-compilations can introduce subtle errors that are difficult to diagnose and generally puzzling to software developers.</p>
-             <p>The talk  will describe the problems  in developing peephole optimizations that perform local rewriting to improve the efficiency of LLVM code. These optimizations are individually difficult to get right, particularly in the presence of undefined behavior; taken together they represent a persistent source of bugs.  The talk will present Alive, a domain-specific language for writing optimizations and for automatically either proving them correct or else generating counterexamples.  A transformation in Alive is shown to be correct automatically by encoding the transformation into constraints, which are automatically checked for validity using a Satisfiability Modulo Theory (SMT) solver. Furthermore, Alive can be automatically translated into C++ code that is suitable for inclusion in an LLVM optimization pass.</p>
-             <p>
-             Alive is based on an attempt to balance usability and formal methods; for example, it captures—but largely hides—the detailed semantics of three different kinds of undefined behavior in LLVM. We have translated more than 300 LLVM optimizations into Alive and, in the process, found that eight of them were wrong.  I will conclude the talk highlighting the lessons learned and the challenges in incorporating lightweight formal methods in the tool-chain of the compiler developer.</p></span>
+      <span> <p>Compilers form an integral component of the software
+development ecosystem. Compiler writers must understand the
+specification of source and target languages to design sophisticated
+algorithms that transform programs while preserving
+semantics. Unfortunately, compiler bugs in mainstream compilers are
+common. Compiler bugs can manifest as crashes during compilation, or,
+much worse, result in the silent generation of incorrect
+programs. Such mis-compilations can introduce subtle errors that are
+difficult to diagnose and generally puzzling to software
+developers.</p>
+<p>The talk will describe the problems in developing peephole
+optimizations that perform local rewriting to improve the efficiency
+of LLVM code. These optimizations are individually difficult to get
+right, particularly in the presence of undefined behavior; taken
+together they represent a persistent source of bugs.  The talk will
+present Alive, a domain-specific language for writing optimizations
+and for automatically either proving them correct or else generating
+counterexamples.  A transformation in Alive is shown to be correct
+automatically by encoding the transformation into constraints, which
+are automatically checked for validity using a Satisfiability Modulo
+Theory (SMT) solver. Furthermore, Alive can be automatically
+translated into C++ code that is suitable for inclusion in an LLVM
+optimization pass.</p>
+<p> Alive is based on an attempt to balance usability and formal
+methods; for example, it captures—but largely hides—the detailed
+semantics of three different kinds of undefined behavior in LLVM. We
+have translated more than 300 LLVM optimizations into Alive and, in
+the process, found that eight of them were wrong.  I will conclude the
+talk highlighting the lessons learned and the challenges in
+incorporating lightweight formal methods in the tool-chain of the
+compiler developer.</p></span>
     </p>
     <p>
       <span class="pn-title-2">Bio</span>
@@ -336,8 +361,9 @@ profiler, and that the additional overhead is tolerable.
     </p>
     <p>
       <span class="pn-title-2">Bio</span>
-      <span>Leif Andersen is a second year Ph.D. student at Northeastern University, studying programming language
-     with Matthias Felleisen.</span>
+      <span>Leif Andersen is a second year Ph.D. student at
+Northeastern University, studying programming language with Matthias
+Felleisen.</span>
     </p>
   </div>
 </div>
