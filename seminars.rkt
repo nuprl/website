@@ -63,13 +63,13 @@
      @list{Dominique is a postdoctoral researcher in the research group DistriNet, part of the Computer Science department of the Katholieke Universiteit Leuven. He holds a postdoctoral research fellowship of the Research Foundation - Flanders (FWO). He works on formalising properties of object-oriented and object-capability programming languages---specifically a property called effect parametricity--is the author of the grammar-combinators Haskell parsing library, and has added instance arguments to the programming language/proof assistant Agda. He is interested in information flow security, secure compilation,full abstraction, and functional and dependently typed programming languages.})
 
     (seminar
-     "TBD"
+     "JavaScript in the Small"
      "Satish Chandra"
      "https://sites.google.com/site/schandraacmorg/"
      "Samsung"
      (datetime 2016 02 22 11 00)
      "WVH 366"
-     @list{}
+     @list{Emerging consumer electronics products are running the same software platforms that power smartphones. This leads to the appealing idea that a uniform programming abstraction can be used for app development for a range of devices, from wearables to smartphones. In practice, however, devices wary in their hardware capabilities and this has an impact on app development. In this talk, I will focus on ways in which JavaScript may be used and/or run differently to accommodate the different hardware capabilities across devices. Specifically, I will present a subset of JavaScript that strikes a balance between retaining the flavor of JavaScript (e.g. use of prototype inheritance, no explicit type declarations) and the possibility of ahead-of-time compilation to efficient code.}
      @list{
            Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
 
