@@ -667,7 +667,7 @@ MS Stanford University 1995<br />
                           #:dissertation "http://www.ccs.neu.edu/home/lth/thesis/index.html")
                 @(alumnus "Paul Graunke" #:year 2003
                           #:dissertation "http://www.ccs.neu.edu/scheme/pubs/thesis-graunke.pdf"
-                          #:extra "(Galois Connectins")
+                          #:extra "(Galois Connections)")
                 @(alumnus "Galen Williamson" #:year 2004
                           #:personal-site "http://www.ccs.neu.edu/home/gwilliam")
                 @(alumnus "Johan Ovlinger" #:year 2004
@@ -685,91 +685,157 @@ MS Stanford University 1995<br />
                           #:personal-site "http://www.ccs.neu.edu/home/skotthe/"
                           #:dissertation "http://www.ccs.neu.edu/home/lieber/theses/skotiniotis/skotiniotis-dissertation.pdf")
                 @(alumnus "Bryan D. Chadwick" #:year 2010
-                          #:personal-site "http://www.ccs.neu.edu/home/chadwick/"
-                          #:dissertation "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf") </li>
+                          #:personal-site "http://bryanchadwick.com/"
+                          #:dissertation "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf"
+                          #:extra "(Broadway Technology)")
                 @(alumnus "Dave Herman" #:year 2010
-                          #:personal-site "http://www.ccs.neu.edu/home/dherman/"
-                          #:dissertation "http://www.ccs.neu.edu/home/dherman/research/papers/dissertation.pdf")
+                          #:personal-site "http://calculist.org/"
+                          #:dissertation "http://www.ccs.neu.edu/home/dherman/research/papers/dissertation.pdf"
+                          #:extra "(Mozilla Research)")
                 @(alumnus "Ryan Culpepper" #:year 2010
                           #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
                           #:dissertation "http://www.ccs.neu.edu/scheme/pubs/dissertation-culpepper.pdf"
-                          #:extra "(Northeastern Unversity")
+                          #:extra "(Northeastern University)")
               </ul>
             </div>
             <div class="col-md-4">
               <ul>                  
                 @(alumnus "Peter Dillinger" #:year 2010
                           #:personal-site "http://www.peterd.org/"
-                          #:dissertation "http://www.peterd.org/pcd-diss.pdf")
+                          #:dissertation "http://www.peterd.org/pcd-diss.pdf"
+                          #:extra "(Coverity, Inc.)")
                 @(alumnus "Pengcheng Wu" #:year 2010
                           #:dissertation "http://www.ccs.neu.edu/home/lieber/theses/wu/Dissertation.pdf")
                 @(alumnus "Sam Tobin-Hochstadt" #:year 2010
                           #:personal-site "http://www.ccs.neu.edu/home/samth/"
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-tobin-hochstadt.pdf"
                           #:extra "Advisor: Matthias, now at Indiana University")
                 @(alumnus "Felix Klock" #:year 2011
                           #:personal-site "http://www.ccs.neu.edu/home/pnkfelix/"
-                          #:dissertation "http://www.ccs.neu.edu/home/pnkfelix/thesis/klock11-diss.pdf")
+                          #:dissertation "http://www.ccs.neu.edu/home/pnkfelix/thesis/klock11-diss.pdf"
+                          #:extra "(Mozilla Research)")
                 @(alumnus "Stevie Strickland" #:year 2012
                           #:personal-site "http://www.ccs.neu.edu/%7Esstrickl/"
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-strickland.pdf"
-                          #:extra "(Brown University")
+                          #:extra "(Brown University)")
                 @(alumnus "J. Ian Johnson" #:year 2015
-                          #:personal-site "http://www.ccs.neu.edu/home/ianj/")
+                          #:personal-site "http://www.ccs.neu.edu/home/ianj/"
+                          #:dissertation "http://www.ccs.neu.edu/home/ianj/diss.pdf"
+                          #:extra "(LogicBlox)")
                 @(alumnus "Vincent St-Amour" #:year 2015
-                          #:extra "Advisor: Matthias")
-                @(alumnus "Carl Eastlund"
+                          #:personal-site "http://users.eecs.northwestern.edu/~stamourv/"
+                          #:dissertation "http://users.eecs.northwestern.edu/~stamourv/papers/dissertation.pdf"
+                          #:extra "Advisor: Matthias, now at Northwestern University")
+                @(alumnus "Carl Eastlund" #:year 2012
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-eastlund.pdf"
+                          #:extra "(Jane Street Group, LLC)"
                           #:personal-site "http://www.ccs.neu.edu/home/cce/")
-                @(alumnus "Vassilis Koutavas"
+                @(alumnus "Vassilis Koutavas" #:year 2008
                           #:personal-site "http://www.scss.tcd.ie/Vasileios.Koutavas/"
+                          #:extra "(Trinity College, Dublin)"
                           #:dissertation "http://www.scss.tcd.ie/Vasileios.Koutavas/publications/dissertation.pdf")
-                @(alumnus "James T. Perconti")
-                @(alumnus "Jesse A. Tov"
-                          #:personal-site "http://www.eecs.harvard.edu/%7Etov/")
-                @(alumnus "Aaron J. Turon"
+                @(alumnus "James T. Perconti"
+                          #:personal-site "http://www.ccs.neu.edu/home/jtpercon/")
+                @(alumnus "Jesse A. Tov" #:year 2012
+                          #:extra "(Northwestern University)"
+                          #:dissertation "http://users.eecs.northwestern.edu/~jesse/pubs/dissertation/"
+                          #:personal-site "http://users.eecs.northwestern.edu/~jesse/")
+                @(alumnus "Aaron J. Turon" #:year 2013
+                          #:dissertation "http://www.ccs.neu.edu/home/turon/thesis.pdf"
+                          #:extra "(Mozilla Research)"
                           #:personal-site "http://www.ccs.neu.edu/home/turon/")
-                @(alumnus "Dimitris Vardoulakis"
-                          #:personal-site "http://www.ccs.neu.edu/home/dimvar"
+                @(alumnus "Dimitris Vardoulakis" #:year 2012
+                          #:extra "(Google)"
+                          #:personal-site "http://dimvar.github.io/"
                           #:dissertation "http://dimvar.github.io/papers/diss.pdf")
-                <li>Kenichi Asai</li>
-                <li>Joe Marshall (Google) </li>
-                <li>Riccardo Pucella</li>
-                <li>Eli Barzilay</li>
-                <li>Ahmed Abdelmeged</li>
-                <li>Phillip Mates</li>  
+                @(alumnus "Ahmed Abdelmeged"
+                          #:personal-site "http://www.ccs.neu.edu/home/mohsen/HomePage/index.html")
+                @(alumnus "Phillip Mates" #:year 2015
+                          #:personal-site "http://www.ccs.neu.edu/home/mates/"
+                          #:extra "(Dimagi)")
               </ul>
             </div>
             <div class="col-md-4">
-              <ul> 
-                <li>Erik Silkensen</li>
-                <li>Eli Barzilay (research scientist)</li>
-                @(alumnus "Christos Dimoulas"
-                          #:personal-site "http://www.ccs.neu.edu/home/chrdimo/")
-                <li>David van Horn</li>
-                <li>Matthew Flatt (University of Utah, Salt Lake City, UT)</li>
-                <li>Robby Findler (Northwestern University)</li>
-                <li>Cormac Flanagan (University of California, Santa Cruz)</li>
-                <li>Shriram Krishnamurthi (Brown University, Providence, RI)</li>
-                <li>Philippe Meunier Sirindhorn International Institute of Technology, Tahmmasat University</li>
-                <li>Rebecca Parsons (ThoughtWorks)</li>
-                <li>Amr Sabry (Indiana University, Bloomington, IN)</li>
-                <li>Dorai Sitaram (Verizon Labs, Waltham, MA)</li>
-                <li>Stevie Strickland (Brown University)</li>
-                <li>Andrew K. Wright (Cisco)</li>   
+              <ul>
+                @(alumnus "Erik Silkensen" #:year 2015
+                          #:personal-site "http://www.ccs.neu.edu/home/ejs/")
+                @(alumnus "Christos Dimoulas" #:year 2012
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-dimoulas.pdf"
+                          #:extra "(Harvard University)"
+                          #:personal-site "http://people.seas.harvard.edu/~chrdimo/")
+                @(alumnus "David van Horn" #:year 2009
+                          #:dissertation "http://arxiv.org/pdf/1311.4733"
+                          #:extra "(University of Maryland)"
+                          #:personal-site "http://www.cs.umd.edu/~dvanhorn/")
+                @(alumnus "Matthew Flatt" #:year 1999
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-flatt.ps.gz"
+                          #:personal-site "http://www.cs.utah.edu/~mflatt/"
+                          #:extra "(University of Utah)")
+                @(alumnus "Robby Findler" #:year 2002
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-robby.pdf"
+                          #:personal-site "https://www.eecs.northwestern.edu/~robby/"
+                          #:extra "(Northwestern University)")
+                @(alumnus "Cormac Flanagan" #:year 1997
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-flanagan.ps.gz"
+                          #:personal-site "https://users.soe.ucsc.edu/~cormac/"
+                          #:extra "(UC Santa Cruz)")
+                @(alumnus "Shriram Krishnamurthi" #:year 2001
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-shriram.ps.gz"
+                          #:personal-site "https://cs.brown.edu/~sk/"
+                          #:extra "(Brown University)")
+                @(alumnus "Philippe Meunier" #:year 2006
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-meunier.pdf"
+                          #:extra "(Sirindhorn International Institute of Technology, Tahmmasat University)")
+                @(alumnus "Rebecca Parsons"
+                          #:personal-site "https://www.thoughtworks.com/profiles/rebecca-parsons"
+                          #:extra "(ThoughtWorks)")
+                @(alumnus "Amr Sabry" #:year 1994
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-sabry.ps.gz"
+                          #:personal-site "http://www.cs.indiana.edu/~sabry/"
+                          #:extra "(Indiana University)")
+                @(alumnus "Dorai Sitaram" #:year 1994
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-sitaram.ps.gz"
+                          #:personal-site "https://ds26gte.github.io/"
+                          #:extra "(Verizon Labs, Waltham, MA)")
+                @(alumnus "Andrew K. Wright" #:year 1994
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-wright.ps.gz"
+                          #:extra "(Cisco)")
               </ul>
             </div>
           </div>
-        </div>    
+        </div>
 
         <div class="container"> 
-          <div class="row">  
+          <div class="row">
             <h3 style="text-align: center;">Former Associates (Research Scientists, Post-Docs)</h3>   
             <div class="col-md-4">
               <ul>
-                <li>Kathi Fisler (Worcester Polytechnic Institute, Worcester, MA)</li>
-                <li>Mario Latendresse (FNMOC)</li>
-                <li>Mark Krentel</li>
-                <li>Joe Marshall (Google)</li>
-                <li>Paul Steckler (Galois Connections)</li>
+                @(alumnus "Kenichi Asai"
+                          #:personal-site "http://www.is.ocha.ac.jp/~asai/"
+                          #:extra "(Ochanomizu University)"
+                          #:dissertation "http://www.is.ocha.ac.jp/~asai/papers/thesis.ps.gz")
+                @(alumnus "Eli Barzilay"
+                          #:personal-site "http://www.barzilay.org/"
+                          #:dissertation "http://www.barzilay.org/misc/thesis.pdf")
+                @(alumnus "Kathi Fisler"
+                          #:personal-site "http://www.cs.wpi.edu/~kfisler/"
+                          #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
+                @(alumnus "Mark Krentel"
+                          #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
+                          #:extra "(Rice University)")
+              </ul>
+            </div>
+            <div class="col-md-4">
+              <ul>
+                @(alumnus "Mario Latendresse"
+                          #:personal-site "http://www.ai.sri.com/~latendre/"
+                          #:extra "(SRI International)")
+                @(alumnus "Joe Marshall"
+                          #:extra "(Google)")
+                @(alumnus "Riccardo Pucella" #:year 2004
+                          #:personal-site "http://www.ccs.neu.edu/home/riccardo/"
+                          #:extra "(Olin College)"
+                          #:dissertation "http://www.ccs.neu.edu/home/riccardo/papers/phd-thesis.pdf")
               </ul>
             </div>
           </div>
