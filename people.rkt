@@ -1,15 +1,20 @@
 #lang scribble/text
 @(require "templates.rkt"
+          (only-in racket/match match-define)
           scribble/html/html)
 @(define (string-empty? s) (string=? "" s))
-@(define (alumnus name #:year [year #f] #:personal-site [psite #f] #:dissertation [dsite #f] #:extra [extra #f])
+@(struct alum (name year psite dsite extra))
+@(define (alumnus name #:year year #:personal-site [psite #f] #:dissertation [dsite #f] #:extra [extra #f])
+  (alum name year psite dsite extra))
+@(define (alumnus->string a)
+   (match-define (alum name year psite dsite extra) a)
    (define (link url body)
      (string-append "<a href=\"" url "\">" body "</a>"))
    (define name-s
      (if psite
          (link psite name)
          name))
-   (define year-s (if year (number->string year) ""))
+   (define year-s (number->string year))
    (define dsite-link
      (if dsite
          (string-append " " (link dsite "(dissertation)"))
@@ -34,6 +39,23 @@
                                    dsite-link
                                    extra-s))
                   "</li>"))
+@(define (alumnus<? a1 a2)
+  (if (= (alum-year a1) (alum-year a2))
+    (string<? (alum-name a1) (alum-name a2))
+    (< (alum-year a1) (alum-year a2))))
+@(define (alumnus*->ul a*)
+  (string-append "<div class=\"col-md-4\"><ul>" (apply string-append (map alumnus->string a*)) "</ul></div>"))
+@(define (alumnus-list . a-unsorted*)
+  (define a* (sort a-unsorted* alumnus<?))
+  (define num-groups 3)
+  (define group-size (round (/ (length a*) 3)))
+  (define a-str* (let group-alum* ([a* a*])
+                   (if (>= group-size (length a*))
+                     (list (alumnus*->ul a*))
+                     (let-values ([(hd tl) (split-at a* group-size)])
+                       (cons (alumnus*->ul hd)
+                             (group-alum* tl))))))
+  (string-append "<div>" (apply string-append a-str*) "</div>"))
 
 <!DOCTYPE html>
 <html lang="en">
@@ -641,11 +663,9 @@ MS Stanford University 1995<br />
         <div class="pn-separator-img">
            <h2>PRL Alumni and Former Members</h2>
         </div>
-
-        <div class="container">
+        <div class="container"> 
           <div class="row">
-            <div class="col-md-4">
-              <ul>
+            @(alumnus-list
                 @(alumnus "Dino Oliva" #:year 1992
                           #:personal-site "http://cm.bell-labs.com/cm/cs/who/oliva/"
                           #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/oliva-thesis-94.ps.Z")
@@ -696,10 +716,6 @@ MS Stanford University 1995<br />
                           #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
                           #:dissertation "http://www.ccs.neu.edu/scheme/pubs/dissertation-culpepper.pdf"
                           #:extra "(Northeastern University)")
-              </ul>
-            </div>
-            <div class="col-md-4">
-              <ul>
                 @(alumnus "Peter Dillinger" #:year 2010
                           #:personal-site "http://www.peterd.org/"
                           #:dissertation "http://www.peterd.org/pcd-diss.pdf"
@@ -734,7 +750,7 @@ MS Stanford University 1995<br />
                           #:personal-site "http://www.scss.tcd.ie/Vasileios.Koutavas/"
                           #:extra "(Trinity College, Dublin)"
                           #:dissertation "http://www.scss.tcd.ie/Vasileios.Koutavas/publications/dissertation.pdf")
-                @(alumnus "James T. Perconti"
+                @(alumnus "James T. Perconti" #:year 2014
                           #:personal-site "http://www.ccs.neu.edu/home/jtpercon/")
                 @(alumnus "Jesse A. Tov" #:year 2012
                           #:extra "(Northwestern University)"
@@ -748,21 +764,42 @@ MS Stanford University 1995<br />
                           #:extra "(Google)"
                           #:personal-site "http://dimvar.github.io/"
                           #:dissertation "http://dimvar.github.io/papers/diss.pdf")
-                @(alumnus "Ahmed Abdelmeged"
+                @(alumnus "Ahmed Abdelmeged" #:year 2012
                           #:personal-site "http://www.ccs.neu.edu/home/mohsen/HomePage/index.html")
                 @(alumnus "Phillip Mates" #:year 2015
                           #:personal-site "http://www.ccs.neu.edu/home/mates/"
                           #:extra "(Dimagi)")
-              </ul>
-            </div>
-            <div class="col-md-4">
-              <ul>
                 @(alumnus "Erik Silkensen" #:year 2015
                           #:personal-site "http://www.ccs.neu.edu/home/ejs/")
                 @(alumnus "Christos Dimoulas" #:year 2012
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-dimoulas.pdf"
                           #:extra "(Harvard University)"
                           #:personal-site "http://people.seas.harvard.edu/~chrdimo/")
+                @(alumnus "Philippe Meunier" #:year 2006
+                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-meunier.pdf"
+                          #:extra "(Sirindhorn International Institute of Technology, Tahmmasat University)")
+             )
+          </div>
+        </div>
+
+        <div class="container"> 
+          <div class="row">
+            <h3 style="text-align: center;">Former Associates (Research Scientists, Post-Docs)</h3>   
+              @(alumnus-list
+                @(alumnus "Kenichi Asai" #:year 2004
+                          #:personal-site "http://www.is.ocha.ac.jp/~asai/"
+                          #:extra "(Ochanomizu University)"
+                          #:dissertation "http://www.is.ocha.ac.jp/~asai/papers/thesis.ps.gz")
+                @(alumnus "Eli Barzilay" #:year 2005
+                          #:personal-site "http://www.barzilay.org/"
+                          #:dissertation "http://www.barzilay.org/misc/thesis.pdf")
+                @(alumnus "Kathi Fisler" #:year 1996
+                          #:personal-site "http://www.cs.wpi.edu/~kfisler/"
+                          #:dissertation "https://web.cs.wpi.edu/~kfisler/Pubs/dissertation.ps"
+                          #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
+                @(alumnus "Mark Krentel" #:year 1989
+                          #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
+                          #:extra "(Rice University)")
                 @(alumnus "David van Horn" #:year 2009
                           #:dissertation "http://arxiv.org/pdf/1311.4733"
                           #:extra "(University of Maryland)"
@@ -783,11 +820,9 @@ MS Stanford University 1995<br />
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-shriram.ps.gz"
                           #:personal-site "https://cs.brown.edu/~sk/"
                           #:extra "(Brown University)")
-                @(alumnus "Philippe Meunier" #:year 2006
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-meunier.pdf"
-                          #:extra "(Sirindhorn International Institute of Technology, Tahmmasat University)")
-                @(alumnus "Rebecca Parsons"
+                @(alumnus "Rebecca Parsons" #:year 1992
                           #:personal-site "https://www.thoughtworks.com/profiles/rebecca-parsons"
+                          #:dissertation "https://scholarship.rice.edu/handle/1911/16541"
                           #:extra "(ThoughtWorks)")
                 @(alumnus "Amr Sabry" #:year 1994
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-sabry.ps.gz"
@@ -800,44 +835,16 @@ MS Stanford University 1995<br />
                 @(alumnus "Andrew K. Wright" #:year 1994
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-wright.ps.gz"
                           #:extra "(Cisco)")
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div class="container">
-          <div class="row">
-            <h3 style="text-align: center;">Former Associates (Research Scientists, Post-Docs)</h3>
-            <div class="col-md-4">
-              <ul>
-                @(alumnus "Kenichi Asai"
-                          #:personal-site "http://www.is.ocha.ac.jp/~asai/"
-                          #:extra "(Ochanomizu University)"
-                          #:dissertation "http://www.is.ocha.ac.jp/~asai/papers/thesis.ps.gz")
-                @(alumnus "Eli Barzilay"
-                          #:personal-site "http://www.barzilay.org/"
-                          #:dissertation "http://www.barzilay.org/misc/thesis.pdf")
-                @(alumnus "Kathi Fisler"
-                          #:personal-site "http://www.cs.wpi.edu/~kfisler/"
-                          #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
-                @(alumnus "Mark Krentel"
-                          #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
-                          #:extra "(Rice University)")
-              </ul>
-            </div>
-            <div class="col-md-4">
-              <ul>
-                @(alumnus "Mario Latendresse"
+                @(alumnus "Mario Latendresse" #:year 1999
                           #:personal-site "http://www.ai.sri.com/~latendre/"
                           #:extra "(SRI International)")
-                @(alumnus "Joe Marshall"
+                @(alumnus "Joe Marshall" #:year 1999
                           #:extra "(Google)")
                 @(alumnus "Riccardo Pucella" #:year 2004
                           #:personal-site "http://www.ccs.neu.edu/home/riccardo/"
                           #:extra "(Olin College)"
                           #:dissertation "http://www.ccs.neu.edu/home/riccardo/papers/phd-thesis.pdf")
-              </ul>
-            </div>
+            )
           </div>
         </div>
         @footer
