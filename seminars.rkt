@@ -53,6 +53,16 @@
      @list{})
 
     (seminar
+     "The Secret Life of Mobile Applications"
+     "Julia Rubin"
+     "https://people.csail.mit.edu/mjulia/"
+     "MIT"
+     (datetime 2016 04 05 11 00)
+     "(time and room may change) WVH 366"
+     @list{As software becomes increasingly more complex and yet more pervasive, poor understanding of software behavior compromises the quality and the integrity of software systems that we use. In this talk, I will show that automated analysis techniques can help to identify and reason about software behavior characteristics that matter to humans. After a brief overview of my current research directions, I will focus on techniques for identifying privacy violations in mobile applications, i.e., leakages of sensitive information such as user location and shopping preferences. I will present a set of solutions that rely on contextual, functional and usage-based clues for improving the accuracy of leakage detection and for distinguishing between “legitimate” and “illegitimate” information distribution patterns.}
+     @list{Julia Rubin is a Postdoctoral Researcher in the EECS department at MIT. Prior to that, she was a Research Staff Member and, part of the time, a manager at IBM Research in Haifa, Israel. She received her PhD in Computer Science from the University of Toronto, Canada in 2014. Julia’s research interests are in software engineering, program analysis and software security, focusing on improving the quality and the integrity of modern software systems. Her recent work in this area won an ACM Distinguished Paper Award at ASE, two Best Paper Awards, at SPLC and CSMR, and was nominated for Facebook’s Internet Defense Prize at the USENIX Security Symposium.})
+
+    (seminar
      "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
      "Dominique Devriese"
      "https://distrinet.cs.kuleuven.be/people/dominiqu"
