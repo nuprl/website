@@ -718,9 +718,9 @@ MS Stanford University 1995<br />
                           #:personal-site "http://www.ccs.neu.edu/%7Esstrickl/"
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-strickland.pdf"
                           #:extra "(Brown University)")
-                @(alumnus "J. Ian Johnson" #:year 2015
-                          #:personal-site "http://www.ccs.neu.edu/home/ianj/"
-                          #:dissertation "http://www.ccs.neu.edu/home/ianj/diss.pdf"
+                @(alumnus "Dionna Amalie Glaze" #:year 2015
+                          #:personal-site "https://deeglaze.github.io"
+                          #:dissertation "https://deeglaze.github.io/diss.pdf"
                           #:extra "(LogicBlox)")
                 @(alumnus "Vincent St-Amour" #:year 2015
                           #:personal-site "http://users.eecs.northwestern.edu/~stamourv/"
