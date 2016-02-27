@@ -43,35 +43,35 @@
     @subpage-title{Staff}
 
     <div class="pn-main-wrapper">
-      <div class="content"> 
+      <div class="content">
         <div class="container">
-          
-          <div class="row pn-person">  
+
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/mitch_wand.jpg" title="Mitch Wand" alt="Mitch Wand" /> 
+                  <img src="img/mitch_wand.jpg" title="Mitch Wand" alt="Mitch Wand" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Mitch Wand</span><br />
                   Professor<br />
                   <a href="mailto:wand@"@"ccs.neu.edu">wand@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/wand">www.ccs.neu.edu/home/wand</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
+                  <a href="http://www.ccs.neu.edu/home/wand">www.ccs.neu.edu/home/wand</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
                     Joined Northeastern, 1985<br />
                     Joined Indiana University, 1973<br />
                     PhD, MIT, 1973<br />
                     SB, MIT, 1969
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>Over the years, I have worked on a variety of problems associated with semantics of programming languages. Here is a selected list, in roughly reverse chronological order: probabilistic programming languages, binding-safe programming, aspect-oriented programming, analysis-based program transformation, compiler correctness proofs, continuations, macros.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
           <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
@@ -107,87 +107,87 @@
             </div>
           </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/matthias_felleisen.jpg" title="Matthias Felleisen" alt="Matthias Felleisen" /> 
+                  <img src="img/matthias_felleisen.jpg" title="Matthias Felleisen" alt="Matthias Felleisen" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Matthias Felleisen</span><br />
                   Trustee Professor<br />
                   <a href="mailto:matthias@"@"ccs.neu.edu">matthias@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/matthias/">www.ccs.neu.edu/home/matthias</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
+                  <a href="http://www.ccs.neu.edu/home/matthias/">www.ccs.neu.edu/home/matthias</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
                     Joined Northeastern, 2001<br />
                     Joined Rice, 1987<br />
                     PhD, Indiana University, 1987<br />
                     Diplom TH Karlsruhe, 1984<br />
                     MS University of Arizona, 1981
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I explore all aspects of program design and programming language design.  My current research involves work on behavioral software contracts, gradual typing of scripting languages, language interoperability, language extensibility, and module systems. I also engage in educational outreach work. For the past 20 years, I have worked with middle schools, high schools, after-school programs, and college faculty on injecting design ideas into mathematics and computer science courses. Such educational interactions often inspire our research, and many research efforts end up improving my educational work.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/olin_shivers.jpg" title="Olin Shivers" alt="Olin Shivers" /> 
+                  <img src="img/olin_shivers.jpg" title="Olin Shivers" alt="Olin Shivers" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Olin Shivers</span><br />
                   Professor<br />
                   <a href="mailto:shivers@"@"ccs.neu.edu">shivers@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/shivers/">www.ccs.neu.edu/home/shivers</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
-                </div> 
+                  <a href="http://www.ccs.neu.edu/home/shivers/">www.ccs.neu.edu/home/shivers</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>My principal research interests include the construction of robust, complex software artifacts and the design of tools that assist programmers in this task; the interaction between systems and programming languages, primarily higher-order typed languages; the design and analysis of programming languages; and compilers. Before coming to Northeastern, I was a research scientist at MIT’s Artificial Intelligence Lab, a founder and CTO of the Smartleaf Corporation, and a faculty member at the Georgia Institute of Technology.</p>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
 
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/amal.jpg" title="Amal Ahmed" alt="Amal Ahmed" /> 
+                  <img src="img/amal.jpg" title="Amal Ahmed" alt="Amal Ahmed" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Amal Ahmed</span><br />
                   Professor<br />
                   <a href="mailto:amal@"@"ccs.neu.edu">amal@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/amal/">www.ccs.neu.edu/home/amal/</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
+                  <a href="http://www.ccs.neu.edu/home/amal/">www.ccs.neu.edu/home/amal/</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
 Joined Northeastern, 2011 <br />
 Joined Indiana University, 2009<br />
 Joined Toyota Technological Institute, 2006<br />
 PhD Princeton University, 2004<br />
 MS Stanford University 1995<br />
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages. </p>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
@@ -195,74 +195,74 @@ MS Stanford University 1995<br />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Ryan Culpepper</span><br />
                   Post-doctoral researcher<br />
                   <a href="mailto:ryanc@"@"ccs.neu.edu">ryanc@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/ryanc/">http://www.ccs.neu.edu/home/ryanc/</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
-                    Joined Northeastern, 2013<br />                    
+                  <a href="http://www.ccs.neu.edu/home/ryanc/">http://www.ccs.neu.edu/home/ryanc/</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
+                    Joined Northeastern, 2013<br />
                     PhD, Northeastern University, 2010<br />
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>Born in Houston, TX, left, went back to go to Rice University. Interested in PL and compilers. I read during the summer and play table tennis during the winter. I'm still looking for someone up here who has heard of disc golf.</p>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/stephen_chang.jpg" title="Stephen Chang" alt="Stephen Chang" /> 
+                  <img src="img/stephen_chang.jpg" title="Stephen Chang" alt="Stephen Chang" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Stephen Chang</span><br />
                   Post-doctoral researcher<br />
                   <a href="mailto:stchang@"@"ccs.neu.edu">stchang@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/stchang/">www.ccs.neu.edu/home/stchang</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
-                    Joined Northeastern, 2014<br />                    
+                  <a href="http://www.ccs.neu.edu/home/stchang/">www.ccs.neu.edu/home/stchang</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
+                    Joined Northeastern, 2014<br />
                     PhD, Northeastern University, 2014<br />
                     MS, Harvard University, 2008<br />
                     BSE, Princeton University, 2001
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I'm interested in the design of practical programming languages.</p>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/ben_lerner.jpg" title="Ben Lerner" alt="Ben Lerner" /> 
+                  <img src="img/ben_lerner.jpg" title="Ben Lerner" alt="Ben Lerner" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Ben Lerner</span><br />
                   Lecturer<br />
                   <a href="mailto:blerner@"@"ccs.neu.edu">blerner@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/blerner">www.ccs.neu.edu/home/blerner</a>    
-                </div> 
-                <div class="col-md-5 pn-muted col-md-offset-3"> 
+                  <a href="http://www.ccs.neu.edu/home/blerner">www.ccs.neu.edu/home/blerner</a>
+                </div>
+                <div class="col-md-5 pn-muted col-md-offset-3">
                     Joined Northeastern, 2014<br />
                     PhD, University of Washington, 2011
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I have worked on problems in web programming semantics, including designing and analyzing extensibility mechanisms for browsers, studying the interactions between extensions and each other or with intended browser behavior.  With colleagues at Brown, I have been helping to design and implement a language that focuses on the linguistic support needed for introductory-level pedagogy.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>            
+          </div>
 
           @(person #:name "Jan Vitek"
                    #:title "Professor"
@@ -295,10 +295,10 @@ MS Stanford University 1995<br />
         </div>
 
         <div class="pn-separator-img">
-           <h2>Students</h2>  
+           <h2>Students</h2>
         </div>
-          
-        <div class="container">  
+
+        <div class="container">
 
           <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
@@ -323,150 +323,150 @@ MS Stanford University 1995<br />
               </div>
             </div>
           </div>
-           
-          <div class="row pn-person">  
+
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/tony_jones.jpg" title="Tony Garnock-Jones" alt="Tony Garnock-Jones" /> 
+                  <img src="img/tony_jones.jpg" title="Tony Garnock-Jones" alt="Tony Garnock-Jones" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Tony Garnock-Jones</span><br />
                   Advisor: Matthias Felleisen<br />
                   <a href="mailto:tonyg@"@"ccs.neu.edu">tonyg@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/tonyg/">www.ccs.neu.edu/home/tonyg</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/tonyg/">www.ccs.neu.edu/home/tonyg</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2010
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I’m working on constructing programming languages that incorporate ideas from networking and from messaging middleware.</p>
-                </div> 
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/asumu_takikawa.jpg" title="Asumu Takikawa" alt="Asumu Takikawa" /> 
+                  <img src="img/asumu_takikawa.jpg" title="Asumu Takikawa" alt="Asumu Takikawa" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Asumu Takikawa</span><br />
                   Advisor: Matthias Felleisen<br />
                   <a href="mailto:asumu@"@"ccs.neu.edu">asumu@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/asumu/">www.ccs.neu.edu/home/asumu</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/asumu/">www.ccs.neu.edu/home/asumu</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2010
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>Racket developer, Oregonian, and PhD student at Northeastern University. Works on Typed Racket.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/jonathan_schuster.jpg" title="Jonathan Schuster" alt="Jonathan Schuster" /> 
+                  <img src="img/jonathan_schuster.jpg" title="Jonathan Schuster" alt="Jonathan Schuster" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Jonathan Schuster</span><br />
                   Advisor: Olin Shivers and Matthias Felleisen<br />
                   <a href="mailto:schuster@"@"ccs.neu.edu">schuster@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/schuster/">www.ccs.neu.edu/home/schuster</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/schuster/">www.ccs.neu.edu/home/schuster</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2011
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>Having come from a development background, my research interests lie in making software development easier by improving programming languages and the ecosystems surrounding them. Currently, I am researching ways to prevent concurrency-related bugs and enable type-system-like modular reasoning in actor-based programming languages by checking that components implement programmer-specified protocols.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Justin Slepak" alt="Justin Slepak" /> 
+                  <img src="img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Justin Slepak" alt="Justin Slepak" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Justin Slepak</span><br />
                   Advisor: Olin Shivers<br />
                   <a href="mailto:jrslepak@"@"ccs.neu.edu">jrslepak@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/jrslepak/">www.ccs.neu.edu/home/jrslepak</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/jrslepak/">www.ccs.neu.edu/home/jrslepak</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2011
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I came to Northeastern after spending several years studying in Upper Michigan. My current work focuses on array-oriented languages as an expressive way to write data-parallel numeric processing code.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>           
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/william_bowman.jpg" title="William J. Bowman" alt="William J. Bowman" /> 
+                  <img src="img/william_bowman.jpg" title="William J. Bowman" alt="William J. Bowman" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">William J. Bowman</span><br />
                   Advisor: Amal Ahmed<br />
                   <a href="mailto:wilbowma@"@"ccs.neu.edu">wilbowma@"@"ccs.neu.edu</a><br />
-                  <a href="https://www.williamjbowman.com/">www.williamjbowman.com</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="https://www.williamjbowman.com/">www.williamjbowman.com</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2012
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I want to make programs easier to design, read, and write. I currently work on verifying compilers for advanced languages, and sometimes dabble in meta-programming.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/leif_andersen.jpg" title="Leif Andersen" alt="Leif Andersen" /> 
+                  <img src="img/leif_andersen.jpg" title="Leif Andersen" alt="Leif Andersen" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Leif Andersen</span><br />
                   Advisor: Matthias Felleisen<br />
                   <a href="mailto:leif@"@"ccs.neu.edu">leif@"@"ccs.neu.edu</a><br />
-                  <a href="http://leif.pl">leif.pl</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://leif.pl">leif.pl</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2014
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>Objects in the Rear View Mirror May Appear Closer than They Are.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
           <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
@@ -497,153 +497,153 @@ MS Stanford University 1995<br />
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
                   <img src="img/ben_greenman.jpg" title="Ben Greenman" alt="Ben Greenman" />
-                </div> 
+                </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Ben Greenman</span><br />
                   Advisor: Matthias Felleisen<br />
                   <a href="mailto:types@"@"ccs.neu.edu">types@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/types">www.ccs.neu.edu/home/types</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/types">www.ccs.neu.edu/home/types</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2014
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I like constructions. My current goal is to lower the huge run-time cost of gradual typing. I believe that safely mixing languages is the way of the future.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>           
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/max_new.jpg" title="Max New" alt="Max New" /> 
+                  <img src="img/max_new.jpg" title="Max New" alt="Max New" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Max New</span><br />
                   Advisor: Amal Ahmed<br />
                   <a href="mailto:maxnew@"@"ccs.neu.edu">maxnew@"@"ccs.neu.edu</a><br />
-                  <a href="http://maxsnew.github.io/">maxsnew.github.io</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://maxsnew.github.io/">maxsnew.github.io</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2014
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I like reasonable programming languages.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div> 
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/sam_caldwell.jpg" title="Sam Caldwell" alt="Sam Caldwell" /> 
+                  <img src="img/sam_caldwell.jpg" title="Sam Caldwell" alt="Sam Caldwell" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Sam Caldwell</span><br />
                   Advisor: Matthias Felleisen<br />
                   <a href="mailto:samc@"@"ccs.neu.edu">samc@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/samc">www.ccs.neu.edu/home/samc</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://www.ccs.neu.edu/home/samc">www.ccs.neu.edu/home/samc</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2015
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I came to Northeastern from Austin, Texas, where I did my undergrad and spent several years working in embedded software. I’m interested in using ideas and tools from programming languages to make the world a better place for everyone that uses computers.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>  
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/benjamin_chung.jpg" title="Benjamin Chung" alt="Benjamin Chung" /> 
+                  <img src="img/benjamin_chung.jpg" title="Benjamin Chung" alt="Benjamin Chung" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Benjamin Chung</span><br />
                   Advisor: Jan Vitek<br />
                   <a href="mailto:bchung@"@"ccs.neu.edu">bchung@"@"ccs.neu.edu</a><br />
-                  <a href="http://benchung.github.io">benchung.github.io</a>    
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                  <a href="http://benchung.github.io">benchung.github.io</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2015
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I usually work on types, currently focusing on gradual type systems.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>           
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/olivier_fluckiger.jpg" title="Olivier Flückiger" alt="Olivier Flückiger" /> 
+                  <img src="img/olivier_fluckiger.jpg" title="Olivier Flückiger" alt="Olivier Flückiger" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Olivier Flückiger</span><br />
                   Advisor: Jan Vitek<br />
                   <a href="mailto:o@"@"o1o.ch">o@"@"o1o.ch</a><br />
                   <a href="http://www.o1o.ch/about">www.o1o.ch/about</a>
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2015
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>My passion lies in language implementation &ndash; creating the tools and techniques required to get from powerful abstractions to efficient execution.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>  
+          </div>
 
-          <div class="row pn-person">  
+          <div class="row pn-person">
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/joe_sackett.jpg" title="Joe Sackett" alt="Joe Sackett" /> 
+                  <img src="img/joe_sackett.jpg" title="Joe Sackett" alt="Joe Sackett" />
                 </div>
               </div>
               <div class="col-md-9">
-                <div class="col-md-4 pn-contact"> 
+                <div class="col-md-4 pn-contact">
                   <span class="pn-name">Joe Sackett</span><br />
                   Advisor: Jan Vitek<br />
                   <a href="mailto:jsackett@"@"ccs.neu.edu">jsackett@"@"ccs.neu.edu</a><br />
                   <a href="http://www.sackett.com">www.sackett.com</a>
-                </div> 
-                <div class="col-md-3 pn-muted col-md-offset-5"> 
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
                     Joined 2015
-                </div> 
+                </div>
                 <div class="col-md-12 pn-bio">
                   <p>I am returning to academia after many years as a software developer. My research is in programming language and virtual machine constructs providing seamless concurrency scaling and distribution.</p>
-                </div> 
+                </div>
               </div>
             </div>
-          </div>            
-          
-        </div>   
+          </div>
+
+        </div>
 
         <div class="pn-separator-img">
            <h2>PRL Alumni and Former Members</h2>
         </div>
-        
-        <div class="container"> 
-          <div class="row">  
+
+        <div class="container">
+          <div class="row">
             <div class="col-md-4">
               <ul>
                 @(alumnus "Dino Oliva" #:year 1992
@@ -699,7 +699,7 @@ MS Stanford University 1995<br />
               </ul>
             </div>
             <div class="col-md-4">
-              <ul>                  
+              <ul>
                 @(alumnus "Peter Dillinger" #:year 2010
                           #:personal-site "http://www.peterd.org/"
                           #:dissertation "http://www.peterd.org/pcd-diss.pdf"
@@ -805,9 +805,9 @@ MS Stanford University 1995<br />
           </div>
         </div>
 
-        <div class="container"> 
+        <div class="container">
           <div class="row">
-            <h3 style="text-align: center;">Former Associates (Research Scientists, Post-Docs)</h3>   
+            <h3 style="text-align: center;">Former Associates (Research Scientists, Post-Docs)</h3>
             <div class="col-md-4">
               <ul>
                 @(alumnus "Kenichi Asai"
@@ -839,9 +839,9 @@ MS Stanford University 1995<br />
               </ul>
             </div>
           </div>
-        </div>        
+        </div>
         @footer
       </div>
-    </div>  
+    </div>
   </body>
 </html>
