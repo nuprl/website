@@ -63,6 +63,16 @@
      @list{Julia Rubin is a Postdoctoral Researcher in the EECS department at MIT. Prior to that, she was a Research Staff Member and, part of the time, a manager at IBM Research in Haifa, Israel. She received her PhD in Computer Science from the University of Toronto, Canada in 2014. Julia’s research interests are in software engineering, program analysis and software security, focusing on improving the quality and the integrity of modern software systems. Her recent work in this area won an ACM Distinguished Paper Award at ASE, two Best Paper Awards, at SPLC and CSMR, and was nominated for Facebook’s Internet Defense Prize at the USENIX Security Symposium.})
 
     (seminar
+     "TBD"
+     "Nada Amin"
+     ""
+     ""
+     (datetime 2016 03 02 11 45)
+     "WVH 366"
+     @list{}
+     @list{})
+
+    (seminar
      "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
      "Dominique Devriese"
      "https://distrinet.cs.kuleuven.be/people/dominiqu"
