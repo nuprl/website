@@ -48,7 +48,7 @@
 @(define (alumnus-list . a-unsorted*)
   (define a* (sort a-unsorted* alumnus<?))
   (define num-groups 3)
-  (define group-size (round (/ (length a*) 3)))
+  (define group-size (round (+ 1 (/ (length a*) 3))))
   (define a-str* (let group-alum* ([a* a*])
                    (if (>= group-size (length a*))
                      (list (alumnus*->ul a*))
@@ -764,7 +764,7 @@ MS Stanford University 1995<br />
                           #:extra "(Google)"
                           #:personal-site "http://dimvar.github.io/"
                           #:dissertation "http://dimvar.github.io/papers/diss.pdf")
-                @(alumnus "Ahmed Abdelmeged" #:year 2012
+                @(alumnus "Ahmed Abdelmeged" #:year 2014
                           #:personal-site "http://www.ccs.neu.edu/home/mohsen/HomePage/index.html")
                 @(alumnus "Phillip Mates" #:year 2015
                           #:personal-site "http://www.ccs.neu.edu/home/mates/"
@@ -791,49 +791,38 @@ MS Stanford University 1995<br />
                           #:extra "(Ochanomizu University)"
                           #:dissertation "http://www.is.ocha.ac.jp/~asai/papers/thesis.ps.gz")
                 @(alumnus "Eli Barzilay" #:year 2005
-                          #:personal-site "http://www.barzilay.org/"
-                          #:dissertation "http://www.barzilay.org/misc/thesis.pdf")
+                          #:personal-site "http://www.barzilay.org/")
                 @(alumnus "Kathi Fisler" #:year 1996
                           #:personal-site "http://www.cs.wpi.edu/~kfisler/"
-                          #:dissertation "https://web.cs.wpi.edu/~kfisler/Pubs/dissertation.ps"
                           #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
                 @(alumnus "Mark Krentel" #:year 1989
                           #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
                           #:extra "(Rice University)")
                 @(alumnus "David van Horn" #:year 2009
-                          #:dissertation "http://arxiv.org/pdf/1311.4733"
                           #:extra "(University of Maryland)"
                           #:personal-site "http://www.cs.umd.edu/~dvanhorn/")
                 @(alumnus "Matthew Flatt" #:year 1999
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-flatt.ps.gz"
                           #:personal-site "http://www.cs.utah.edu/~mflatt/"
                           #:extra "(University of Utah)")
                 @(alumnus "Robby Findler" #:year 2002
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-robby.pdf"
                           #:personal-site "https://www.eecs.northwestern.edu/~robby/"
                           #:extra "(Northwestern University)")
                 @(alumnus "Cormac Flanagan" #:year 1997
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-flanagan.ps.gz"
                           #:personal-site "https://users.soe.ucsc.edu/~cormac/"
                           #:extra "(UC Santa Cruz)")
                 @(alumnus "Shriram Krishnamurthi" #:year 2001
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-shriram.ps.gz"
                           #:personal-site "https://cs.brown.edu/~sk/"
                           #:extra "(Brown University)")
                 @(alumnus "Rebecca Parsons" #:year 1992
                           #:personal-site "https://www.thoughtworks.com/profiles/rebecca-parsons"
-                          #:dissertation "https://scholarship.rice.edu/handle/1911/16541"
                           #:extra "(ThoughtWorks)")
                 @(alumnus "Amr Sabry" #:year 1994
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-sabry.ps.gz"
                           #:personal-site "http://www.cs.indiana.edu/~sabry/"
                           #:extra "(Indiana University)")
                 @(alumnus "Dorai Sitaram" #:year 1994
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-sitaram.ps.gz"
                           #:personal-site "https://ds26gte.github.io/"
                           #:extra "(Verizon Labs, Waltham, MA)")
                 @(alumnus "Andrew K. Wright" #:year 1994
-                          #:dissertation "http://www.ccs.neu.edu/racket/pubs/thesis-wright.ps.gz"
                           #:extra "(Cisco)")
                 @(alumnus "Mario Latendresse" #:year 1999
                           #:personal-site "http://www.ai.sri.com/~latendre/"
@@ -842,8 +831,7 @@ MS Stanford University 1995<br />
                           #:extra "(Google)")
                 @(alumnus "Riccardo Pucella" #:year 2004
                           #:personal-site "http://www.ccs.neu.edu/home/riccardo/"
-                          #:extra "(Olin College)"
-                          #:dissertation "http://www.ccs.neu.edu/home/riccardo/papers/phd-thesis.pdf")
+                          #:extra "(Olin College)")
             )
           </div>
         </div>
