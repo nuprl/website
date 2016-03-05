@@ -1,5 +1,5 @@
 # Required: Should NOT end in trailing slash.
-scheme/host = prl.ccs.neu.edu/blog
+scheme/host = http://prl.ccs.neu.edu
 
 # A path prepended to URIs, including those specified here in .frogrc
 # such as `permalink` and `posts-index-uri`. Defaults to `/`. This is
