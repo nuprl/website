@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    @;{ The at-exp reader for a template treats this as a comment.
+        Also, notice the use template variables like @title,
+        @description etc. }
+    <meta charset="utf-8">
+    <title>@|title|</title>
+    <meta name="description" content="@|description|">
+    <meta name="author"      content="@|author|">
+    <meta name="keywords"    content="@|keywords|">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="../img/favicon.ico">
+    <link rel="canonical" href="@|full-uri|">
+    @(when rel-next @list{<link rel="next" href="@|rel-next|">})
+    @(when rel-prev @list{<link rel="prev" href="@|rel-prev|">})
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="../css/custom.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="./feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="./feeds/all.rss.xml" title="RSS Feed">
+    <!-- JS -->
+    @google-universal-analytics["UA-xxxxx"]
+  </head>
+  <body>
+    <!-- A standard Twitter Bootstrap nav bar -->
+    <header class="navbar navbar-default navbar-inverse"
+            role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button"
+                  class="navbar-toggle"
+                  data-toggle="collapse"
+                  data-target=".our-nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="./index.html" class="navbar-brand">PRL Blog</a>
+        </div>
+        <div class="collapse navbar-collapse our-nav-collapse"
+             role="navigation">
+          <ul class="nav navbar-nav">
+            @;{ We can define Racket functions to "DRY". Here's one to
+                emit HMTL for a nav item, adding class="active" iff
+                this page's @|uri-path| is the same as the nav link. }
+            @(define (ni uri label [a-attribs ""])
+              @list{
+                <li@(when (string-ci=? uri uri-path) " class=\"active\"")>
+                  <a href="@|uri|"@|a-attribs|>@|label|</a>
+                </li> })
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                Tags <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="./index.html">All Posts</a></li>
+                @|tags-list-items|
+              </ul>
+            </li>
+            @ni["../index.html" "About"]
+            <li><a href="./feeds/all.atom.xml">Atom</a></li>
+            <li><a href="./feeds/all.rss.xml">RSS</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <div class="container">
+      <div class="row">
+        @;{ Remember that Twitter Bootstrap has a 12 cell model. The
+            col-md-N classes should add up to 12.  For instance 3
+            "col-md-4" divs, or 2 "col-md-6" divs. }
+        <!-- Main column -->
+        <div id="content" class="col-md-12">
+          @;{ To put something only on the home page, check for
+              @uri-path being "index.html" }
+          @(when (string-ci=? uri-path (string-append uri-prefix "/index.html"))
+            @list{
+              <h1>PRL Blog</h1>
+              <p>Reading between the parentheses</p>})
+          @;{ Index pages for posts have @tag that's not #f }
+          @(when tag
+            @list{<h1>Posts tagged <em>@|tag|</em></h1>})
+          @;{ The main page contents are in @contents }
+          @|contents|
+        </div>
+      </div>
+      <footer>
+        <hr />
+        <p>@twitter-follow-button["racketlang" "Follow RacketLang"]</p>
+        <p>Blog generated
+        by <a href="https://github.com/greghendershott/frog">Frog</a>,
+        using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+        <p>© Copyright Programming Research Laboratory 2015-2016 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
+      </footer>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/custom.js"></script>
+  </body>
+</html>

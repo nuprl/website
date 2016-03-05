@@ -2,6 +2,14 @@
  * Catch Exception s.r.o.
  */
 
+article
+{
+  width: 100%;
+  background-color: #051122;
+  padding: 15px;
+  padding-top: 1px;
+}
+
 body
 {
   font-family: 'PT Sans', sans-serif;
@@ -239,7 +247,7 @@ ul
     display: inline-block;  
 }
 
-.pn-main-wrapper 
+.pn-main-wrapper
 {
   width: 100%;
   background-color: #051122;
