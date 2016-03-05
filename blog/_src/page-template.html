@@ -10,19 +10,19 @@
     <meta name="author"      content="@|author|">
     <meta name="keywords"    content="@|keywords|">
     <meta name="viewport"    content="width=device-width, initial-scale=1.0">
-    <link rel="icon"      href="../img/favicon.ico">
+    <link rel="icon"      href="/img/favicon.ico">
     <link rel="canonical" href="@|full-uri|">
     @(when rel-next @list{<link rel="next" href="@|rel-next|">})
     @(when rel-prev @list{<link rel="prev" href="@|rel-prev|">})
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../css/pygments.css">
-    <link rel="stylesheet" type="text/css" href="../css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
     <!-- Feeds -->
     <link rel="alternate" type="application/atom+xml"
-          href="./feeds/all.atom.xml" title="Atom Feed">
+          href="@|uri-prefix|/feeds/all.atom.xml" title="Atom Feed">
     <link rel="alternate" type="application/rss+xml"
-          href="./feeds/all.rss.xml" title="RSS Feed">
+          href="@|uri-prefix|/feeds/all.rss.xml" title="RSS Feed">
     <!-- JS -->
     @google-universal-analytics["UA-xxxxx"]
   </head>
@@ -40,7 +40,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="./index.html" class="navbar-brand">PRL Blog</a>
+          <a href="@|uri-prefix|/index.html" class="navbar-brand">PRL Blog</a>
         </div>
         <div class="collapse navbar-collapse our-nav-collapse"
              role="navigation">
@@ -57,13 +57,13 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                 Tags <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li><a href="./index.html">All Posts</a></li>
+                <li><a href="@|uri-prefix|/index.html">All Posts</a></li>
                 @|tags-list-items|
               </ul>
             </li>
-            @ni["../index.html" "About"]
-            <li><a href="./feeds/all.atom.xml">Atom</a></li>
-            <li><a href="./feeds/all.rss.xml">RSS</a></li>
+            @ni["/index.html" "About"]
+            <li><a href="@|uri-prefix|/feeds/all.atom.xml">Atom</a></li>
+            <li><a href="@|uri-prefix|/feeds/all.rss.xml">RSS</a></li>
           </ul>
         </div>
       </div>
@@ -99,7 +99,7 @@
     </div>
     <!-- </body> JS -->
     <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../js/custom.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
   </body>
 </html>
