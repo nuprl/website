@@ -412,7 +412,7 @@ MS Stanford University 1995<br />
                     Joined 2011
                 </div>
                 <div class="col-md-12 pn-bio">
-                  <p>Having come from a development background, my research interests lie in making software development easier by improving programming languages and the ecosystems surrounding them. Currently, I am researching ways to prevent concurrency-related bugs and enable type-system-like modular reasoning in actor-based programming languages by checking that components implement programmer-specified protocols.</p>
+                  <p>Having come from a development background, my research interests lie in making software development easier by improving programming languages and the ecosystems surrounding them. Currently, my research focuses on verifying actor-based programs (such as those written in Erlang or the Akka framework) against behavioral specifications expressed as simple name-passing automata.</p>
                 </div>
               </div>
             </div>
