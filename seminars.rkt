@@ -43,6 +43,24 @@
 @(define seminars
    (splice
     (seminar
+     "Internet of Things: From Small- to Large-Scale Orchestration"
+     "Charles Consel"
+     "http://phoenix.inria.fr/charles-consel"
+     "Bordeaux Institute of Technology"
+     (datetime 2016 05 02 11 45)
+     "(time and room may change) WVH 366"
+     @list{The domain of Internet of Things (IoT) is rapidly expanding beyond research and becoming a major industrial market with such stakeholders as major manufacturers of chips and connected objects, and fast-growing operators of low-power wide-area networks. Importantly, this emerging domain is driven by applications that leverage the infrastructure to provide users with innovative, high-value services. Because of this application-centric approach, software development plays a key role to realize the full potential of IoT.
+
+In this talk, we argue that there is a continuum between orchestrating connected objects in the small and in the large, fostering a unified approach to application development. We examine the requirements for orchestrating connected objects and address them with domain-specific design concepts. We then show how to map these design concepts into dedicated programming patterns and runtime mechanisms.
+
+Our work revolves around domain-specific notations integrated into a tool-based design methodology, dedicated to develop IoT applications. We have applied our work across a spectrum of infrastructure sizes; we present examples, ranging from an automated pilot in avionics, to an assisted living platform for the home of seniors, to a parking management system in a smart city.}
+     @list{Charles Consel is a professor of Computer Science at Bordeaux Institute of Technology. He served on the faculty of Yale University, Oregon Graduate Institute and the University of Rennes.
+
+His research contributions cover programming languages, software engineering, operating systems, pervasive computing, and assistive computing.
+
+He leads the Phoenix group at Inria that conducts multi-disciplinary research to design, develop, deploy and assess assistive computing support. This research combines (1) Cognitive Science to study user needs and make a rigorous assessment of assistive services; (2) Sensing and actuating expertise to support the user, based on accurate and rich interactions with the environment; (3) Computer Science to support and guide the development process of the assistive services.})
+
+    (seminar
      "TBD"
      "Alex Aiken"
      ""
@@ -400,7 +418,7 @@ defined networks.
         <!-- ROW -->
         <div class="row">
           @seminars
-         
+
           <div class="col-md-12 pn-seminar compact finished">
             <div class="pn-main-informations">
               <a onclick="return false;" class="pn-title">Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software</a>
