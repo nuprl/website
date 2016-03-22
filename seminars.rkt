@@ -40,6 +40,7 @@
 })
 
 @; TODO Have seminar return a struct; sort it by date, then create output.
+@; TODO: Have seminars contain a datetime range, rather than just a start time.
 @(define seminars
    (splice
     (seminar
