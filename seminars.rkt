@@ -48,8 +48,8 @@
      "Charles Consel"
      "http://phoenix.inria.fr/charles-consel"
      "Bordeaux Institute of Technology"
-     (datetime 2016 05 02 11 45)
-     "(time and room may change) WVH 366"
+     (datetime 2016 05 02 11 00)
+     "WVH 366"
      @list{The domain of Internet of Things (IoT) is rapidly expanding beyond research and becoming a major industrial market with such stakeholders as major manufacturers of chips and connected objects, and fast-growing operators of low-power wide-area networks. Importantly, this emerging domain is driven by applications that leverage the infrastructure to provide users with innovative, high-value services. Because of this application-centric approach, software development plays a key role to realize the full potential of IoT.
 
 In this talk, we argue that there is a continuum between orchestrating connected objects in the small and in the large, fostering a unified approach to application development. We examine the requirements for orchestrating connected objects and address them with domain-specific design concepts. We then show how to map these design concepts into dedicated programming patterns and runtime mechanisms.
