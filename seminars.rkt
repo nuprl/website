@@ -62,14 +62,34 @@ His research contributions cover programming languages, software engineering, op
 He leads the Phoenix group at Inria that conducts multi-disciplinary research to design, develop, deploy and assess assistive computing support. This research combines (1) Cognitive Science to study user needs and make a rigorous assessment of assistive services; (2) Sensing and actuating expertise to support the user, based on accurate and rich interactions with the environment; (3) Computer Science to support and guide the development process of the assistive services.})
 
     (seminar
-     "TBD"
+     "STOKE: Search-Based Compiler Optimization"
      "Alex Aiken"
-     ""
+     "https://theory.stanford.edu/~aiken/"
      "Stanford University"
      (datetime 2016 04 15 11 00)
      "WVH 366"
-     @list{}
-     @list{})
+     @list{The optimization component of a compiler takes a program as input and
+produces another, hopefully faster, program as output.  At a high level,
+optimizers solve a search problem over a space of programs, but the
+traditional architecture of a compiler's optimizer does no search at
+all.  This talk will present the STOKE project, which is exploring the
+use of Monte Carlo search methods as the basis of a modern compiler
+optimizer.  We will show that search-based program optimization can
+consistently improve, sometimes substantially, on current production
+compilers at their highest levels of optimization and can even compete
+with expert, hand-written  assembly.  We will also discuss the unique
+and challenging verification problems that arise when a compiler
+produces code using a random process.}
+     @list{Alex Aiken is the Alcatel-Lucent Professor and the current
+Tencent Chair of the Computer Science Department at Stanford. Alex
+received his Bachelors degree in Computer Science and Music from
+Bowling Green State University in 1983 and his Ph.D. from Cornell
+University in 1988. Alex was a Research Staff Member at the IBM
+Almaden Research Center (1988-1993) and a Professor in the EECS
+department at UC Berkeley (1993-2003) before joining the Stanford
+faculty in 2003. His research interest is in areas related to
+programming languages. He is an ACM Fellow, a recipient of Phi Beta
+Kappa's Teaching Award, and a former National Young Investigator.})
 
     (seminar
      "The Secret Life of Mobile Applications"
