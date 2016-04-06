@@ -62,6 +62,22 @@ His research contributions cover programming languages, software engineering, op
 He leads the Phoenix group at Inria that conducts multi-disciplinary research to design, develop, deploy and assess assistive computing support. This research combines (1) Cognitive Science to study user needs and make a rigorous assessment of assistive services; (2) Sensing and actuating expertise to support the user, based on accurate and rich interactions with the environment; (3) Computer Science to support and guide the development process of the assistive services.})
 
     (seminar
+     "Algebraic Effect Handlers"
+     "Gabriel Scherer"
+     "http://gallium.inria.fr/~scherer/"
+     "Northeastern University"
+     (datetime 2016 04 27 11 45)
+     "WVH 366"
+     @list{TBD}
+     @list{
+Gabriel is interested in theoretical aspects of type systems,
+programming language implementation, general programming language
+concepts, and even some syntactic aspects. He has a preference for the
+formalizable aspects, or formalizable approaches to programming
+language aspects, rather than the often subjective appeal to taste or
+intuition.})
+
+    (seminar
      "STOKE: Search-Based Compiler Optimization"
      "Alex Aiken"
      "https://theory.stanford.edu/~aiken/"
