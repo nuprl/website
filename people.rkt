@@ -309,6 +309,7 @@ MS Stanford University 1995<br />
           @(person #:name "Gabriel Scherer"
                    #:title "Post-doctoral researcher"
                    #:e-mail "gabriel.scherer@gmail.com"
+                   #:website "http://www.ccs.neu.edu/home/gasche/index.html"
                    #:history "Joined Northeastern, 2016"
                    #:img "gabriel_scherer.jpg"
                    #:bio "I'm interested in theoretical aspects of type systems, programming language implementation, general programming language concepts, and even some syntactic aspects. I have a preference for the formalizable aspects, or formalizable approaches to programming language aspects, rather than the often subjective appeal to taste or intuition."
