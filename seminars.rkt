@@ -44,6 +44,46 @@
 @(define seminars
    (splice
     (seminar
+     "New language ideas for user-defined side-effects: algebraic effect handlers."
+     "Gabriel Scherer"
+     "http://gallium.inria.fr/~scherer/"
+     "Northeastern University"
+     (datetime 2016 05 11 11 45)
+     "WVH 366"
+     @list{This talk reports on some cool ideas I learned during a week-long
+seminar in Dagstuhl last month; it will present other people's work,
+not my own. It is aimed at an audience interested in programming
+language design in general, but not familiar with the theoretical
+treatment of pure languages and side-effects.
+
+We shall start with *demos* first, explaining short code examples in
+three programming languages: ML with exceptions as a warmup, then the
+new language 'Eff' of Matija Pretnar and Andrej Bauer, that first
+implemented so-called effect handlers, and finally the language
+'Frank' of Conor McBride, that integrates these handlers in a more
+uniform style of "effectful call-by-value programming".
+
+Only second will we discuss some *theory*, in an accessible way:
+monads and algebraic effects, which are two distinct ways to formalize
+side-effects, and the difference between "direct" and "indirect" style
+of effectful programming.
+
+Underlying this talk are two larger, important questions of
+programming language design, that will be touched during the talk and
+we can discuss further afterwards:
+- Do programming language need a facility for user-defined side-effects?
+- When should we encode new design ideas as libraries/macros in an
+  expressive language, and when should we design languages afresh for
+  them?}
+     @list{
+Gabriel is interested in theoretical aspects of type systems,
+programming language implementation, general programming language
+concepts, and even some syntactic aspects. He has a preference for the
+formalizable aspects, or formalizable approaches to programming
+language aspects, rather than the often subjective appeal to taste or
+intuition.})
+
+    (seminar
      "Internet of Things: From Small- to Large-Scale Orchestration"
      "Charles Consel"
      "http://phoenix.inria.fr/charles-consel"
@@ -60,22 +100,6 @@ Our work revolves around domain-specific notations integrated into a tool-based 
 His research contributions cover programming languages, software engineering, operating systems, pervasive computing, and assistive computing.
 
 He leads the Phoenix group at Inria that conducts multi-disciplinary research to design, develop, deploy and assess assistive computing support. This research combines (1) Cognitive Science to study user needs and make a rigorous assessment of assistive services; (2) Sensing and actuating expertise to support the user, based on accurate and rich interactions with the environment; (3) Computer Science to support and guide the development process of the assistive services.})
-
-    (seminar
-     "Algebraic Effect Handlers"
-     "Gabriel Scherer"
-     "http://gallium.inria.fr/~scherer/"
-     "Northeastern University"
-     (datetime 2016 04 27 11 45)
-     "WVH 366"
-     @list{TBD}
-     @list{
-Gabriel is interested in theoretical aspects of type systems,
-programming language implementation, general programming language
-concepts, and even some syntactic aspects. He has a preference for the
-formalizable aspects, or formalizable approaches to programming
-language aspects, rather than the often subjective appeal to taste or
-intuition.})
 
     (seminar
      "STOKE: Search-Based Compiler Optimization"
