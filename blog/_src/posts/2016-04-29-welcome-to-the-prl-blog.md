@@ -1,6 +1,6 @@
     Title: Welcome to the PRL blog
     Date: 2016-04-29T14:50:29
-    Tags: about, 1st blog post
+    Tags: about, 1st blog post, by Ben Greenman
 
 Greetings, ground rules, hopes, dreams, and notes for contributors.
 Welcome aboard.
