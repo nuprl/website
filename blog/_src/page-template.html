@@ -55,34 +55,42 @@
         </div>
       </div>
     </nav>
-    <div class="container">
-      <div class="row">
-        @;{ Remember that Twitter Bootstrap has a 12 cell model. The
-            col-md-N classes should add up to 12.  For instance 3
-            "col-md-4" divs, or 2 "col-md-6" divs. }
-        <!-- Main column -->
-        <div id="content" class="col-md-12">
-          @;{ To put something only on the home page, check for
-              @uri-path being "index.html" }
-          @(when (string-ci=? uri-path (string-append uri-prefix "/index.html"))
-            @list{
-              <h1>Inside PRL</h1>
-              <p>Reading between the parentheses</p>})
-          @;{ Index pages for posts have @tag that's not #f }
-          @(when tag
-            @list{<h1>Posts tagged <em>@|tag|</em></h1>})
-          @;{ The main page contents are in @contents }
-          @|contents|
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <h1>Inside PRL</h1>
+            <p>Reading between the parentheses</p>
+          </div>
         </div>
       </div>
-      <footer>
-        <hr />
-        <p>@twitter-follow-button["racketlang" "Follow RacketLang"]</p>
-        <p>Blog generated
-        by <a href="https://github.com/greghendershott/frog">Frog</a>,
-        using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
-        <p>© Copyright Programming Research Laboratory 2015-2016 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
-      </footer>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+            @;{ Remember that Twitter Bootstrap has a 12 cell model. The
+                col-md-N classes should add up to 12.  For instance 3
+                "col-md-4" divs, or 2 "col-md-6" divs. }
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+              @;{ Index pages for posts have @tag that's not #f }
+              @(when tag
+                @list{<h1>Posts tagged <em>@|tag|</em></h1>})
+              @;{ The main page contents are in @contents }
+              @|contents|
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p>@twitter-follow-button["racketlang" "Follow RacketLang"]</p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by <a href="http://www.catchexception.cz/" target="_blank">Catchexception s.r.o.</a></p>
+        </footer>
+      </div>
     </div>
     <!-- </body> JS -->
     <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
