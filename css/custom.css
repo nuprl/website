@@ -4,10 +4,14 @@
 
 article
 {
-  width: 100%;
+  width: 80%;
   background-color: #051122;
   padding: 15px;
   padding-top: 1px;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 300;
+  margin: 0 auto;
 }
 
 body
