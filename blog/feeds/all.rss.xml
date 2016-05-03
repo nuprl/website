@@ -4,9 +4,29 @@
   <title>PRL Blog: PRL Blog</title>
   <description>PRL Blog: PRL Blog</description>
   <link>http://prl.ccs.neu.edu/blog/index.html</link>
-  <lastBuildDate>Fri, 29 Apr 2016 18:50:29 UT</lastBuildDate>
-  <pubDate>Fri, 29 Apr 2016 18:50:29 UT</pubDate>
+  <lastBuildDate>Tue, 03 May 2016 12:21:07 UT</lastBuildDate>
+  <pubDate>Tue, 03 May 2016 12:21:07 UT</pubDate>
   <ttl>1800</ttl>
+  <item>
+   <title>NEPLS on May 31st at UMass, Amherst</title>
+   <link>http://prl.ccs.neu.edu/blog/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/?utm_source=all&amp;utm_medium=RSS</link>
+   <guid>urn:http-prl-ccs-neu-edu:-blog-blog-2016-05-03-nepls-on-may-31st-at-umass-amherst</guid>
+   <pubDate>Tue, 03 May 2016 12:21:07 UT</pubDate>
+   <description>&lt;html&gt;
+&lt;p&gt;It is my pleasure to relay the following announcement for the next edition of the New England Programming Language Seminer (NEPLS), to be held on Tuesday May 31st at UMass, Amherst, organized by Arjun Guha. Venez nombreux!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The next New England Programming Languages and Systems Symposium will take place on Tuesday, May 31st 2016 at University of Massachusetts, Amherst. Please mark it in your calendars!&lt;/p&gt;
+ &lt;p&gt;The speaker selection committee solicits talks for this meeting. To propose yourself or someone else, send a title, list of authors, and a brief description. You may provide UP TO ONE PAGE of description, but you can keep it as short as a paragraph. We particularly invite talks by researchers from outside the area who are visiting on the date of the NEPLS meeting.&lt;/p&gt;
+ &lt;p&gt;Talks can vary in length. Though 30-minute conference-style slots are traditional, speakers may request slots of as little as 5 minutes; we encourage the shorter formats. This variety permits the presentation of smaller results, preliminary work, progress reports on ongoing projects (such as language standards and compiler toolkits), and updates to past presentations. In general, NEPLS talks need not sound like conference presentations.&lt;/p&gt;
+ &lt;p&gt;The submission deadline is Tuesday, May 17th. Send your proposal to talks@nepls.org.&lt;/p&gt;
+ &lt;p&gt;More details about NEPLS are available on the NEPLS webpage:&lt;/p&gt;
+ &lt;p&gt; http://www.nepls.org/&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I&amp;rsquo;m personally fond of such regional events, which is a great time to learn about the research around us in a less formal and exhausting setting than a 200-attendees conference.&lt;/p&gt;
+
+&lt;p&gt;If you are in the area, please consider applying to talk about your work. If one of your colleague is working on something you find exciting, please invite them to apply!&lt;/p&gt;&lt;/html&gt;</description></item>
   <item>
    <title>Welcome to the PRL blog</title>
    <link>http://prl.ccs.neu.edu/blog/blog/2016/04/29/welcome-to-the-prl-blog/?utm_source=all&amp;utm_medium=RSS</link>
