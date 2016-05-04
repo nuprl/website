@@ -49,7 +49,8 @@
  &lt;li&gt;Check out a new git branch for your post&lt;/li&gt;
  &lt;li&gt;Run &lt;code&gt;cd blog; raco frog -n "TITLE"&lt;/code&gt; to build a template for a new post&lt;/li&gt;
  &lt;li&gt;Add content to the new markdown file (under &lt;code&gt;_src/posts&lt;/code&gt;)&lt;/li&gt;
- &lt;li&gt;Rebuild the blog with &lt;code&gt;raco frog -b&lt;/code&gt;, view your changes at &lt;code&gt;index.html&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;Rebuild the blog with &lt;code&gt;raco frog -b&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;Run &lt;code&gt;cd ..; raco frog -p&lt;/code&gt; to start a web server and view your changes at &lt;a href="http://localhost:3000/"&gt;http://localhost:3000/&lt;/a&gt;&lt;/li&gt;
  &lt;li&gt;Send a pull request to the &lt;a href="https://github.com/nuprl/nuprl.github.io"&gt;nuprl.github.io&lt;/a&gt; repo&lt;/li&gt;&lt;/ol&gt;
 
 &lt;p&gt;An open pull request is the best place to ask questions about the formatting or content of a post. We promise that within a few days of opening a PR someone with push access will reply with feedback or merge the request.&lt;/p&gt;
