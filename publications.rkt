@@ -1,9 +1,7 @@
 #lang scribble/text
 @(require racket/match
+          "publication-data.rkt"
           "templates.rkt")
-
-@; string string string number (maybe string) -> elem?
-@(define-struct publication (title authors venue year link) #:prefab)
 
 @(define OOPSLA "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)")
 @(define PLDI "Programming Language Design and Implementation (PLDI)")
@@ -510,10 +508,59 @@
                   2007
                   "http://www.ccs.neu.edu/home/amal/papers/htthol.pdf")))
 
+@(define jan-pubs
+   (list
+    (publication "The real software crisis: repeatability as a core value."
+                 "Shriram Krishnamurthi and Jan Vitek"
+                 "Commun. ACM"
+                 2015
+                 "http://doi.acm.org/10.1145/2658987")
+    (publication "Concrete Types for TypeScript."
+                 "Gregor Richards, Francesco Zappa Nardelli, and Jan Vitek"
+                 "European Conference on Object-Oriented Programming (ECOOP)"
+                 2015
+                 "http://dx.doi.org/10.4230/LIPIcs.ECOOP.2015.76")
+    (publication "Cooking the Books: Formalizing JMM Implementation Recipes."
+                 "Gustavo Petri, Jan Vitek, and Suresh Jagannathan"
+                 "European Conference on Object-Oriented Programming (ECOOP)"
+                 2015
+                 "http://dx.doi.org/10.4230/LIPIcs.ECOOP.2015.445")
+    (publication "Repeatability, reproducibility and rigor in CS research."
+                 "Jan Vitek"
+                 "PLMW@POPL"
+                 2015
+                 "http://doi.acm.org/10.1145/2792434.2792446")
+    (publication "Atomicity Refinement for Verified Compilation."
+                 "Suresh Jagannathan, Vincent Laporte, Gustavo Petri, David Pichardie, and Jan Vitek"
+                 "ACM Trans. Program. Lang. Syst."
+                 2014
+                 "http://doi.acm.org/10.1145/2601339")
+    (publication "M3: high-performance memory management from off-the-shelf components"
+                 "David Terei, Alex Aiken, and Jan Vitek"
+                 "ISMM"
+                 2014
+                 "http://doi.acm.org/10.1145/2602988.2602995")
+    (publication "Atomicity refinement for verified compilation."
+                 "Suresh Jagannathan, Gustavo Petri, Jan Vitek, David Pichardie, and Vincent Laporte"
+                 "Programming Language Design and Implementation (PLDI)"
+                 2014
+                 "http://doi.acm.org/10.1145/2594291.2594346")
+    (publication "A fast abstract syntax tree interpreter for R."
+                 "Tomas Kalibera, Petr Maj, Flor, and Jan Vitek"
+                 "VEE"
+                 2014
+                 "http://doi.acm.org/10.1145/2576195.2576205")
+    (publication "The case for the three R's of systems research: repeatability, reproducibility and rigor."
+                 "Jan Vitek"
+                 "VEE"
+                 2014
+                 "http://doi.acm.org/10.1145/2576195.2576216")))
+
 @(define publications
    (flatten (list mf-pubs
+                  old-site-pubs
                   amal-pubs
-                  old-site-pubs)))
+                  jan-pubs)))
 
 @(define (publication->html pub)
    (match-define (publication title authors venue year link) pub)
