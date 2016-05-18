@@ -43,7 +43,7 @@ papers and other resources.
 At a high level, the talks covered four major facets of gradual typing:
 expressiveness, performance, usability, and implementation techniques.
 
----
+## Expressiveness
 
 By expressiveness, I mean what kinds of language features a gradual type
 system supports and the richness of the reasoning that the type system provides.
@@ -80,7 +80,7 @@ Typed Racket, which would allow correct-by-construction programming using
 a Nuprl-like proof system (he had a very cool GUI proof assistant demo in
 his slides!).
 
----
+## Performance
 
 One of the key practical concerns about gradual typing is its performance overhead.
 It's a concern because in order to ensure type safety, a gradually-typed language
@@ -108,7 +108,7 @@ uses RPython/PyPy to dramatically lower the overhead of gradual typing (also see
 [recording](https://www.youtube.com/watch?v=GOfIY8NHAqg) of Spenser's
 talk on the topic at RacketCon and his [ICFP paper](http://homes.soic.indiana.edu/samth/pycket-draft.pdf)).
 
----
+## Usability
 
 On the usability side, both Shriram Krishnamurthi and Ambrose Bonnaire-Sergeant
 made observations on what it takes to get gradual typing in the hands of real
@@ -133,7 +133,7 @@ from tests (you may also be interested in Ambrose's
 recent [ESOP paper](http://frenchy64.github.io/papers/esop16-short.pdf)
 on Typed Clojure).
 
----
+## Implementation Techniques
 
 Finally, several talks focused on alternative implementation techniques for gradual
 typing that provide a variety of software engineering benefits for implementers.
@@ -172,9 +172,9 @@ against inconsistencies with untyped code. The great thing about this implementa
 technique is that it doesn't demand any specialized support from the underlying language runtime
 and is therefore easy to port to other languages (like JavaScript).
 
----
+## Conclusion
 
-That concludes the summary. Hopefully this helps provide a better picture of the state
+Hopefully this helps provide a better picture of the state
 of gradual typing research. The exciting thing about gradual typing is that it contains
 both interesting theoretical problems and also connects to the practical needs of
 software developers. I'm hopeful that the Gradual Typing Across the Spectrum effort
