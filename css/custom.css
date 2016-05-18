@@ -2,6 +2,9 @@
  * Catch Exception s.r.o.
  */
 
+/* for blog */
+@import url(https://fonts.googleapis.com/css?family=Fira+Sans:300);
+
 article
 {
   width: 80%;
@@ -12,6 +15,7 @@ article
   line-height: 25px;
   font-weight: 300;
   margin: 0 auto;
+  font-family: "Fira Sans", sans-serif;
 }
 
 body
