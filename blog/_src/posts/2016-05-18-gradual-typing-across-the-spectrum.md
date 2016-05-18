@@ -5,7 +5,7 @@
 > Instead of being Pythonistas, Rubyists, or Racketeers we have to
 > be scientists. -- Matthias Felleisen
 
-Yesterday we hosted a PI meeting for the Gradual Typing Across the Spectrum
+Yesterday we hosted a PI meeting for the [Gradual Typing Across the Spectrum](http://prl.ccs.neu.edu/gtp/)
 NSF grant, gathering researchers from a number of institutions who work on
 gradual typing. In case you aren't familiar with gradual typing, the idea is
 to augment dynamically typed languages (think Python or Ruby) with static
@@ -74,7 +74,7 @@ that takes gradual typing beyond ordinary typed reasoning with dependent types.
 Andrew presented an extension of Typed Racket that adds type refinements that can
 check rich properties (like vector bounds) that are found in real Racket code
 (see his RacketCon [talk](https://www.youtube.com/watch?v=ejFJIAsvdEg) and
-recent [ESOP paper](http://arxiv.org/pdf/1511.07033.pdf)).
+recent [PLDI paper](http://arxiv.org/pdf/1511.07033.pdf)).
 David Christiansen followed with a talk about adding dependent type theory to
 Typed Racket, which would allow correct-by-construction programming using
 a Nuprl-like proof system (he had a very cool GUI proof assistant demo in
@@ -166,7 +166,7 @@ on the _transient_ implementation of gradual typing (first described in his
 have implemented their dynamic checks using [proxy](https://en.wikipedia.org/wiki/Proxy_pattern)
 objects that wrap method implementations with both pre- and post-checks. Unfortunately, this
 implementation technique often conflicts with the underlying language. Since proxying changes
-the identity of an object, this can interfere with object equality tests. Instead, the transient
+the identity of an object it can interfere with object equality tests. Instead, the transient
 approach bakes the dynamic checks into and throughout the typed code to implement a "defense in depth"
 against inconsistencies with untyped code. The great thing about this implementation
 technique is that it doesn't demand any specialized support from the underlying language runtime
@@ -174,7 +174,7 @@ and is therefore easy to port to other languages (like JavaScript).
 
 ## Conclusion
 
-Hopefully this helps provide a better picture of the state
+Hopefully this blog post helps provide a better picture of the state
 of gradual typing research. The exciting thing about gradual typing is that it contains
 both interesting theoretical problems and also connects to the practical needs of
 software developers. I'm hopeful that the Gradual Typing Across the Spectrum effort
