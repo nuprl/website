@@ -500,7 +500,7 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/jiu_rf_photo_of_cat_licking_its_chops.jpg" title="Andrew Cobb" alt="Andrew Cobb" />
+                  <img src="img/Andrew-square.jpg" title="Andrew Cobb" alt="Andrew Cobb" />
                 </div>
               </div>
               <div class="col-md-9">
