@@ -28,6 +28,8 @@ and the [University of Maryland](http://www.cs.umd.edu/projects/PL/).
 The languages that we work on cover a broad subset of the dynamically-typed
 languages: Clojure, JavaScript, R, Racket, Ruby, Pyret, and Python.
 
+![](/img/2016-day-slide-4.png)
+
 The specific research artifacts that were represented include
 [Reticulated Python](https://github.com/mvitousek/reticulated),
 [RDL](https://github.com/plum-umd/rdl),
@@ -81,6 +83,8 @@ a Nuprl-like proof system (he had a very cool GUI proof assistant demo in
 his slides!).
 
 ## Performance
+
+![](/img/2016-day-slide-8.png)
 
 One of the key practical concerns about gradual typing is its performance overhead.
 It's a concern because in order to ensure type safety, a gradually-typed language
@@ -173,6 +177,8 @@ technique is that it doesn't demand any specialized support from the underlying 
 and is therefore easy to port to other languages (like JavaScript).
 
 ## Conclusion
+
+![](/img/2016-day-slide-3.png)
 
 Hopefully this blog post helps provide a better picture of the state
 of gradual typing research. The exciting thing about gradual typing is that it contains
