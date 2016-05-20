@@ -18,6 +18,12 @@ article
   font-family: "Fira Sans", sans-serif;
 }
 
+article img {
+  display: block;
+  margin: 0 auto;
+  padding: 30px;
+}
+
 body
 {
   font-family: 'PT Sans', sans-serif;
