@@ -7,7 +7,8 @@
 
 Yesterday we hosted a PI meeting for the [Gradual Typing Across the Spectrum](http://prl.ccs.neu.edu/gtp/)
 NSF grant, gathering researchers from a number of institutions who work on
-gradual typing. In case you aren't familiar with gradual typing, the idea is
+gradual typing (the meeting program can be found [here](http://prl.ccs.neu.edu/gtp/pi2016/pi2016.html)).
+In case you aren't familiar with gradual typing, the idea is
 to augment dynamically typed languages (think Python or Ruby) with static
 type annotations (as documentation, for debugging, or for tool support)
 that are guaranteed to be sound.
