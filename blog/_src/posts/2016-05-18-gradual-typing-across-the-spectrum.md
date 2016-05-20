@@ -32,7 +32,7 @@ languages: Clojure, JavaScript, R, Racket, Ruby, Pyret, and Python.
 
 The specific research artifacts that were represented include
 [Reticulated Python](https://github.com/mvitousek/reticulated),
-[RDL](https://github.com/plum-umd/rdl),
+[RDL](https://github.com/plum-umd/rdl) (contracts for Ruby),
 [StrongScript](http://plg.uwaterloo.ca/~dynjs/strongscript/),
 [Typed Clojure](http://typedclojure.org/),
 and [Typed Racket](http://docs.racket-lang.org/ts-guide/index.html).
@@ -128,7 +128,7 @@ lets CS beginners think in terms of types (the approach spearheaded by
 without having to battle a typechecker from the start.
 
 For professional software developers, a major concern with gradual typing is that
-writing type annotations is a tedious and time intensive task. Ambrose, who
+writing type annotations may be a tedious and time intensive task. Ambrose, who
 is the creator of Typed Clojure, shared some
 preliminary work on how to cut down on the tedium by inferring gradual type
 annotations by instrumenting programs for a dynamic analysis. The hope is to
@@ -183,5 +183,4 @@ and is therefore easy to port to other languages (like JavaScript).
 Hopefully this blog post helps provide a better picture of the state
 of gradual typing research. The exciting thing about gradual typing is that it contains
 both interesting theoretical problems and also connects to the practical needs of
-software developers. I'm hopeful that the Gradual Typing Across the Spectrum effort
-will have an impact on both academia and the software industry.
+software developers.
