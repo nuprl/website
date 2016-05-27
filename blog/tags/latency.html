@@ -3,13 +3,13 @@
   <head>
 
     <meta charset="utf-8">
-    <title>Posts tagged 'conference'</title>
-    <meta name="description" content="Posts tagged 'conference'">
+    <title>Posts tagged 'latency'</title>
+    <meta name="description" content="Posts tagged 'latency'">
     <meta name="author"      content="PRL">
-    <meta name="keywords"    content="conference">
+    <meta name="keywords"    content="latency">
     <meta name="viewport"    content="width=device-width, initial-scale=1.0">
     <link rel="icon"      href="/img/favicon.ico">
-    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/tags/conference.html">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/tags/latency.html">
 
 
     <!-- CSS -->
@@ -68,18 +68,35 @@
             <!-- Main column -->
             <div id="content" class="col-md-12">
 
-              <h1>Posts tagged <em>conference</em></h1>
+              <h1>Posts tagged <em>latency</em></h1>
 
               <article>
   <header>
-    <h2><a href='/blog/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/'>NEPLS on May 31st at UMass, Amherst</a></h2>
+    <h2><a href='/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/'>Measuring GC latencies in Haskell, OCaml, Racket</a></h2>
     <p class='date-and-tags'>
-<time datetime="2016-05-03" pubdate="true">2016-05-03</time> :: <span class="tags"><a href="/blog/tags/NEPLS.html">NEPLS</a>, <a href="/blog/tags/conference.html">conference</a>, <a href="/blog/tags/by-Gabriel-Scherer.html">by Gabriel Scherer</a></span></p>
+<time datetime="2016-05-24" pubdate="true">2016-05-24</time> :: <span class="tags"><a href="/blog/tags/garbage-collection.html">garbage collection</a>, <a href="/blog/tags/latency.html">latency</a>, <a href="/blog/tags/instrumentation.html">instrumentation</a>, <a href="/blog/tags/haskell.html">haskell</a>, <a href="/blog/tags/ghc.html">ghc</a>, <a href="/blog/tags/ocaml.html">ocaml</a>, <a href="/blog/tags/racket.html">racket</a>, <a href="/blog/tags/by-Gabriel-Scherer.html">by Gabriel Scherer</a></span></p>
   </header>
 
-<p>It is my pleasure to relay the following announcement for the next edition of the New England Programming Language Seminer (NEPLS), to be held on Tuesday May 31st at UMass, Amherst, organized by Arjun Guha. Venez nombreux!</p>
+<p>James Fisher has a blog post on a case where GHC&rsquo;s runtime system imposed unpleasant latencies on their Haskell program:</p>
+
+<blockquote>
+ <p><a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/">Low latency, large working set, and GHC&rsquo;s garbage collector: pick two of three</a></p></blockquote>
+
+<p>The blog post proposes a very simple, synthetic benchmark that exhibits the issue &mdash; basically, latencies incurred by copy time &mdash; with latencies of 50ms that are considered excessive. I thought it would be amusing to reproduce the synthetic benchmark in OCaml and Racket, to see how other GCs handle this.</p>
+
+<p>Without further ado, the main take-away are as follows: the OCaml GC has no issue with large objects in its old generation, as it uses a mark&amp;sweep instead of copying collection, and exhibits less than 3ms worst-case pauses on this benchmark.</p>
+
+<p>The Racket GC also does not copy the old generation, but its incremental GC is still in infancy (compared to the throughput-oriented settings which works well) so the results are less good. It currently suffer from a &ldquo;ramp-up&rdquo; effect that I will describe, that causes large pauses at the beginning of the benchmark (up to 120ms latency), but in its steady state the longest pause are around 22ms.</p>
+
+<p>Please keep in mind that the original benchmark is designed to exercise a very specific workflow that exercises worst-case behavior for GHC&rsquo;s garbage collector. This does not mean that GHC&rsquo;s latencies are bad in general, or that the other tested languages have smaller latencies in general.</p>
+
+<p>The implementations I use, with a Makefile encapsulating the logic for running and analyzing them, are available in a Gitlab repository:</p>
+
+<ul>
+ <li>git: <a href="https://gitlab.com/gasche/gc-latency-experiment.git">https://gitlab.com/gasche/gc-latency-experiment.git</a></li>
+ <li>files: <a href="https://gitlab.com/gasche/gc-latency-experiment/tree/master">https://gitlab.com/gasche/gc-latency-experiment/tree/master</a></li></ul>
   <footer>
-    <a href='/blog/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/'>&hellip; more &hellip;</a>
+    <a href='/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/'>&hellip; more &hellip;</a>
   </footer>
 </article>
             </div>
