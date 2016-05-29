@@ -37,6 +37,11 @@ body a, body a:hover
   color: #5eb6ef;
 }
 
+li.next a, li.previous a
+{
+   color: #23527c;
+}
+
 h1, h2, h3, h4
 {
   font-family: 'Ubuntu', sans-serif;
