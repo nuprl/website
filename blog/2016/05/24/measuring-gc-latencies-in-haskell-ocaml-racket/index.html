@@ -102,28 +102,60 @@
 <p>James Fisher&rsquo;s Haskell benchmark is very simple: it creates an association table in which medium-size strings are inserted repeatedly &mdash; a million times. When the channel reaches 200_000 messages, a string is deleted each time a string is created, to keep the total working size constant.</p>
 
 <div class="brush: haskell">
- <pre><code>import qualified Control.Exception as Exception
-import qualified Control.Monad as Monad
-import qualified Data.ByteString as ByteString
-import qualified Data.Map.Strict as Map
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Control.Exception</span> <span class="k">as</span> <span class="n">Exception</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Control.Monad</span> <span class="k">as</span> <span class="n">Monad</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.ByteString</span> <span class="k">as</span> <span class="n">ByteString</span>
+<span class="kr">import</span> <span class="k">qualified</span> <span class="nn">Data.Map.Strict</span> <span class="k">as</span> <span class="n">Map</span>
 
-data Msg = Msg !Int !ByteString.ByteString
+<span class="kr">data</span> <span class="kt">Msg</span> <span class="ow">=</span> <span class="kt">Msg</span> <span class="o">!</span><span class="kt">Int</span> <span class="o">!</span><span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span>
 
-type Chan = Map.Map Int ByteString.ByteString
+<span class="kr">type</span> <span class="kt">Chan</span> <span class="ow">=</span> <span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span> <span class="kt">Int</span> <span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span>
 
-message :: Int -&gt; Msg
-message n = Msg n (ByteString.replicate 1024 (fromIntegral n))
+<span class="nf">message</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Msg</span>
+<span class="nf">message</span> <span class="n">n</span> <span class="ow">=</span> <span class="kt">Msg</span> <span class="n">n</span> <span class="p">(</span><span class="kt">ByteString</span><span class="o">.</span><span class="n">replicate</span> <span class="mi">1024</span> <span class="p">(</span><span class="n">fromIntegral</span> <span class="n">n</span><span class="p">))</span>
 
-pushMsg :: Chan -&gt; Msg -&gt; IO Chan
-pushMsg chan (Msg msgId msgContent) =
-  Exception.evaluate $
-    let inserted = Map.insert msgId msgContent chan in
-      if 200000 &lt; Map.size inserted
-      then Map.deleteMin inserted
-      else inserted
+<span class="nf">pushMsg</span> <span class="ow">::</span> <span class="kt">Chan</span> <span class="ow">-&gt;</span> <span class="kt">Msg</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="kt">Chan</span>
+<span class="nf">pushMsg</span> <span class="n">chan</span> <span class="p">(</span><span class="kt">Msg</span> <span class="n">msgId</span> <span class="n">msgContent</span><span class="p">)</span> <span class="ow">=</span>
+  <span class="kt">Exception</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">$</span>
+    <span class="kr">let</span> <span class="n">inserted</span> <span class="ow">=</span> <span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">msgId</span> <span class="n">msgContent</span> <span class="n">chan</span> <span class="kr">in</span>
+      <span class="kr">if</span> <span class="mi">200000</span> <span class="o">&lt;</span> <span class="kt">Map</span><span class="o">.</span><span class="n">size</span> <span class="n">inserted</span>
+      <span class="kr">then</span> <span class="kt">Map</span><span class="o">.</span><span class="n">deleteMin</span> <span class="n">inserted</span>
+      <span class="kr">else</span> <span class="n">inserted</span>
 
-main :: IO ()
-main = Monad.foldM_ pushMsg Map.empty (map message [1..1000000])</code></pre></div>
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="kt">Monad</span><span class="o">.</span><span class="n">foldM_</span> <span class="n">pushMsg</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="p">(</span><span class="n">map</span> <span class="n">message</span> <span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">1000000</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>To compile and run the program (<code>make run-haskell</code> also works in my repository):</p>
 
@@ -139,25 +171,54 @@ main = Monad.foldM_ pushMsg Map.empty (map message [1..1000000])</code></pre></d
 <p>I initially worked around this by storing count and minimum-key information in the ported versions, but in fact it&rsquo;s much nicer to write a variant of the benchmark, with the same behavior, that does not require these specific features:</p>
 
 <div class="brush: haskell">
- <pre><code>type Msg = ByteString.ByteString
-type Chan = Map.Map Int Msg
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kr">type</span> <span class="kt">Msg</span> <span class="ow">=</span> <span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span>
+<span class="kr">type</span> <span class="kt">Chan</span> <span class="ow">=</span> <span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span> <span class="kt">Int</span> <span class="kt">Msg</span>
 
-windowSize = 200000
-msgCount = 1000000
+<span class="nf">windowSize</span> <span class="ow">=</span> <span class="mi">200000</span>
+<span class="nf">msgCount</span> <span class="ow">=</span> <span class="mi">1000000</span>
 
-message :: Int -&gt; Msg
-message n = ByteString.replicate 1024 (fromIntegral n)
+<span class="nf">message</span> <span class="ow">::</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">Msg</span>
+<span class="nf">message</span> <span class="n">n</span> <span class="ow">=</span> <span class="kt">ByteString</span><span class="o">.</span><span class="n">replicate</span> <span class="mi">1024</span> <span class="p">(</span><span class="n">fromIntegral</span> <span class="n">n</span><span class="p">)</span>
 
-pushMsg :: Chan -&gt; Int -&gt; IO Chan
-pushMsg chan highId =
-  Exception.evaluate $
-    let lowId = highId - windowSize in
-    let inserted = Map.insert highId (message highId) chan in
-    if lowId &lt; 0 then inserted
-    else Map.delete lowId inserted
+<span class="nf">pushMsg</span> <span class="ow">::</span> <span class="kt">Chan</span> <span class="ow">-&gt;</span> <span class="kt">Int</span> <span class="ow">-&gt;</span> <span class="kt">IO</span> <span class="kt">Chan</span>
+<span class="nf">pushMsg</span> <span class="n">chan</span> <span class="n">highId</span> <span class="ow">=</span>
+  <span class="kt">Exception</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">$</span>
+    <span class="kr">let</span> <span class="n">lowId</span> <span class="ow">=</span> <span class="n">highId</span> <span class="o">-</span> <span class="n">windowSize</span> <span class="kr">in</span>
+    <span class="kr">let</span> <span class="n">inserted</span> <span class="ow">=</span> <span class="kt">Map</span><span class="o">.</span><span class="n">insert</span> <span class="n">highId</span> <span class="p">(</span><span class="n">message</span> <span class="n">highId</span><span class="p">)</span> <span class="n">chan</span> <span class="kr">in</span>
+    <span class="kr">if</span> <span class="n">lowId</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="kr">then</span> <span class="n">inserted</span>
+    <span class="kr">else</span> <span class="kt">Map</span><span class="o">.</span><span class="n">delete</span> <span class="n">lowId</span> <span class="n">inserted</span>
 
-main :: IO ()
-main = Monad.foldM_ pushMsg Map.empty [0..msgCount]</code></pre></div>
+<span class="nf">main</span> <span class="ow">::</span> <span class="kt">IO</span> <span class="nb">()</span>
+<span class="nf">main</span> <span class="ow">=</span> <span class="kt">Monad</span><span class="o">.</span><span class="n">foldM_</span> <span class="n">pushMsg</span> <span class="kt">Map</span><span class="o">.</span><span class="n">empty</span> <span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="n">msgCount</span><span class="p">]</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>This variant has the same running times and worst-case pause, 50ms, as the original program.</p>
 
@@ -174,23 +235,50 @@ main = Monad.foldM_ pushMsg Map.empty [0..msgCount]</code></pre></div>
 <p>The code can easily be ported into OCaml, for example as follows:</p>
 
 <div class="brush: ocaml">
- <pre><code>open Batteries
-module IMap = Map.Make(Int)
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="k">open</span> <span class="nc">Batteries</span>
+<span class="k">module</span> <span class="nc">IMap</span> <span class="o">=</span> <span class="nn">Map</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">Int</span><span class="o">)</span>
 
-let message n = String.make 1024 (Char.chr (n mod 256))
+<span class="k">let</span> <span class="n">message</span> <span class="n">n</span> <span class="o">=</span> <span class="nn">String</span><span class="p">.</span><span class="n">make</span> <span class="mi">1024</span> <span class="o">(</span><span class="nn">Char</span><span class="p">.</span><span class="n">chr</span> <span class="o">(</span><span class="n">n</span> <span class="ow">mod</span> <span class="mi">256</span><span class="o">))</span>
 
-let window_size = 200_000
-let msg_count = 1_000_000
+<span class="k">let</span> <span class="n">window_size</span> <span class="o">=</span> <span class="mi">200_000</span>
+<span class="k">let</span> <span class="n">msg_count</span> <span class="o">=</span> <span class="mi">1_000_000</span>
 
-let push_msg chan high_id =
-  let low_id = high_id - window_size in
-  let inserted = IMap.add high_id (message high_id) chan in
-  if low_id &lt; 0 then inserted
-  else IMap.remove low_id inserted
+<span class="k">let</span> <span class="n">push_msg</span> <span class="n">chan</span> <span class="n">high_id</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">low_id</span> <span class="o">=</span> <span class="n">high_id</span> <span class="o">-</span> <span class="n">window_size</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">inserted</span> <span class="o">=</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">add</span> <span class="n">high_id</span> <span class="o">(</span><span class="n">message</span> <span class="n">high_id</span><span class="o">)</span> <span class="n">chan</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="n">low_id</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">inserted</span>
+  <span class="k">else</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">remove</span> <span class="n">low_id</span> <span class="n">inserted</span>
 
-let () =
-  Seq.init msg_count (fun i -&gt; i)
-  |&gt; Seq.fold_left push_msg IMap.empty |&gt; ignore</code></pre></div>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span>
+  <span class="nn">Seq</span><span class="p">.</span><span class="n">init</span> <span class="n">msg_count</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span><span class="o">)</span>
+  <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">push_msg</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">empty</span> <span class="o">|&gt;</span> <span class="n">ignore</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>Evaluating throughput is not the point, and the balanced maps used by the Haskell and OCaml are certainly implemented in slightly different ways that would explain any performance difference, but I was still amused to see the total runtime be essentially the same: 1.5s.</p>
 
@@ -229,22 +317,48 @@ OCAML_INSTR_LOG=ocaml.log ./main.native</code></pre>
 <p>The other approach to measure latency for this program, which works on older OCaml versions without an instrumented runtime, is just to insert explicit timing calls and compute the worst-case time of an iteration &mdash; as an over-approximation over the max pause time, assuming that the actual insertion/deletion time is small.</p>
 
 <div class="brush: ocaml">
- <pre><code>let worst = ref 0.
-let time f =
-  let before = Unix.gettimeofday () in
-  let result = f () in
-  let after = Unix.gettimeofday () in
-  worst := max !worst (after -. before);
-  result
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="k">let</span> <span class="n">worst</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">0</span><span class="o">.</span>
+<span class="k">let</span> <span class="n">time</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">before</span> <span class="o">=</span> <span class="nn">Unix</span><span class="p">.</span><span class="n">gettimeofday</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">f</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">after</span> <span class="o">=</span> <span class="nn">Unix</span><span class="p">.</span><span class="n">gettimeofday</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="n">worst</span> <span class="o">:=</span> <span class="n">max</span> <span class="o">!</span><span class="n">worst</span> <span class="o">(</span><span class="n">after</span> <span class="o">-.</span> <span class="n">before</span><span class="o">);</span>
+  <span class="n">result</span>
 
-let push_msg chan high_id = time @@ fun () -&gt;
-  let low_id = high_id - window_size in
-  let inserted = IMap.add high_id (message high_id) chan in
-  if low_id &lt; 0 then inserted
-  else IMap.remove low_id inserted
+<span class="k">let</span> <span class="n">push_msg</span> <span class="n">chan</span> <span class="n">high_id</span> <span class="o">=</span> <span class="n">time</span> <span class="o">@@</span> <span class="k">fun</span> <span class="bp">()</span> <span class="o">-&gt;</span>
+  <span class="k">let</span> <span class="n">low_id</span> <span class="o">=</span> <span class="n">high_id</span> <span class="o">-</span> <span class="n">window_size</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">inserted</span> <span class="o">=</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">add</span> <span class="n">high_id</span> <span class="o">(</span><span class="n">message</span> <span class="n">high_id</span><span class="o">)</span> <span class="n">chan</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="n">low_id</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">inserted</span>
+  <span class="k">else</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">remove</span> <span class="n">low_id</span> <span class="n">inserted</span>
 
-(* ..main loop.. *)
-let () = Printf.printf "Worst pause: %.2E\n" !worst</code></pre></div>
+<span class="c">(* ..main loop.. *)</span>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">"Worst pause: %.2E</span><span class="se">\n</span><span class="s2">"</span> <span class="o">!</span><span class="n">worst</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>Running this version reports a worst-case latency of 2ms seconds on my machine (I use the <code>%E</code> formatter for scientific notation, so it gets printed as <code>2.03E-03</code>), which is in line with the instrumented runtime &mdash; actually slightly lower, as the instrumentation may add some overhead.</p>
 
@@ -261,25 +375,54 @@ let () = Printf.printf "Worst pause: %.2E\n" !worst</code></pre></div>
 <p>Max New wrote a first version of Racket port of this benchmark &mdash; he had to explicitly keep track of the map count and minimum key to match the original GHC version. I adapted his code to my simplified variant, and it looks rather similar to the other implementations.</p>
 
 <div class="brush: scheme">
- <pre><code>#lang racket/base
-(require racket/match)
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">racket/base</span>
+<span class="p">(</span><span class="nf">require</span> <span class="nv">racket/match</span><span class="p">)</span>
 
-(define window-size 200000)
-(define msg-count  2000000)
+<span class="p">(</span><span class="k">define </span><span class="nv">window-size</span> <span class="mi">200000</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">msg-count</span>  <span class="mi">2000000</span><span class="p">)</span>
 
-(define (message n) (make-bytes 1024 (modulo n 256)))
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">message</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">make-bytes</span> <span class="mi">1024</span> <span class="p">(</span><span class="nb">modulo </span><span class="nv">n</span> <span class="mi">256</span><span class="p">)))</span>
 
-(define (push-msg chan id-high)
-  (define id-low (id-high . - . window-size))
-  (define inserted (hash-set chan id-high (message id-high)))
-  (if (id-low . &lt; . 0) inserted
-      (hash-remove inserted id-low)))
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">push-msg</span> <span class="nv">chan</span> <span class="nv">id-high</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="nv">id-low</span> <span class="p">(</span><span class="nf">id-high</span> <span class="o">.</span> <span class="nv">-</span> <span class="o">.</span> <span class="nv">window-size</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="nv">inserted</span> <span class="p">(</span><span class="nf">hash-set</span> <span class="nv">chan</span> <span class="nv">id-high</span> <span class="p">(</span><span class="nf">message</span> <span class="nv">id-high</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">id-low</span> <span class="o">.</span> <span class="nv">&lt;</span> <span class="o">.</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">inserted</span>
+      <span class="p">(</span><span class="nf">hash-remove</span> <span class="nv">inserted</span> <span class="nv">id-low</span><span class="p">)))</span>
 
-(define _
-  (for/fold
-     ([chan (make-immutable-hash)])
-     ([i (in-range msg-count)])
-     (push-msg chan i)))</code></pre></div>
+<span class="p">(</span><span class="k">define </span><span class="nv">_</span>
+  <span class="p">(</span><span class="nf">for/fold</span>
+     <span class="p">([</span><span class="nv">chan</span> <span class="p">(</span><span class="nf">make-immutable-hash</span><span class="p">)])</span>
+     <span class="p">([</span><span class="nv">i</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">msg-count</span><span class="p">)])</span>
+     <span class="p">(</span><span class="nf">push-msg</span> <span class="nv">chan</span> <span class="nv">i</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>I initially used the poor man approach of explicit timing calls to measure latency, but then switched to two better methods:</p>
 
@@ -342,13 +485,30 @@ GC: 0:MAJ @ 1,406,514K(+149,645K)[+1,560K]; free 577,765K(-577,765K) 21ms @ 5069
 <p>I experimented a bit and found that the peak pause issue could be partly mitigated by inserting explicit GC calls around the change of regime &mdash; around the iteration count that corresponds to the maximal channel size. I defined a function doing just that</p>
 
 <div class="brush: scheme">
- <pre><code>(define (maybe-gc i)
-  (when (and gc-during-rampup
-             (i . &gt; . (window-size . / . 2))
-             (i . &lt; . (window-size . * . 2))
-             (zero? (modulo i 50)))
-        (collect-garbage 'incremental)
-        (collect-garbage 'minor)))</code></pre></div>
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre>1
+2
+3
+4
+5
+6
+7</pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">maybe-gc</span> <span class="nv">i</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">when</span> <span class="p">(</span><span class="k">and </span><span class="nv">gc-during-rampup</span>
+             <span class="p">(</span><span class="nf">i</span> <span class="o">.</span> <span class="nv">&gt;</span> <span class="o">.</span> <span class="p">(</span><span class="nf">window-size</span> <span class="o">.</span> <span class="nv">/</span> <span class="o">.</span> <span class="mi">2</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">i</span> <span class="o">.</span> <span class="nv">&lt;</span> <span class="o">.</span> <span class="p">(</span><span class="nf">window-size</span> <span class="o">.</span> <span class="nv">*</span> <span class="o">.</span> <span class="mi">2</span><span class="p">))</span>
+             <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">modulo </span><span class="nv">i</span> <span class="mi">50</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">collect-garbage</span> <span class="ss">&#39;incremental</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">collect-garbage</span> <span class="ss">&#39;minor</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
 
 <p>which is controlled by a <code>gc-during-rampup</code> parameter that you can explicitly set to <code>#t</code> to experiment &mdash; explicit GC calls are disabled by default in my benchmark code. Then I just inserted a <code>(maybe-gc i)</code> call in the main loop.</p>
 
