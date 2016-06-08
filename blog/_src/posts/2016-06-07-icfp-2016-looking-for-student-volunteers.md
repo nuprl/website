@@ -57,7 +57,7 @@ a Captain is too much work.
 
 The main downside of being a volunteer is some of the shifts are at
 the registration desk, and they may imply missing some of the talks --
-and also you have to get up early for your duties. The upsides are
+and also you may have to get up early for your duties. The upsides are
 many.  You get belong to a small group of nice people. You have
 interactions with many people without much effort; you will enjoy the
 sparks of gratitude in the eyes of the "Where is Workshop Room B2?"
@@ -73,8 +73,8 @@ for more details.
 
 Another thing you should think about is applying to
 [PLMW](http://conf.researchr.org/track/icfp-2016/PLMW-ICFP-2016), the
-Programming Languages Mentoring Workshop that happens at ICFP and
-POPL. PLMW funding covers the whole conference cost (travel, housing,
-registration, dinners), so if you get PLMW funding you do not need to
-be a student volunteer. This year, PLMW focuses on early career
+Programming Languages Mentoring Workshop that happens at ICFP, POPL,
+and PLDI. PLMW funding covers the whole conference cost (travel, housing,
+registration, dinners), so if you get PLMW funding you have no financial
+motivation to be a student volunteer. This year, PLMW focuses on early career
 graduate students.
