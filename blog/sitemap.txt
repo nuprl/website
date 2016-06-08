@@ -1,4 +1,0 @@
-http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/
-http://prl.ccs.neu.edu/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/
-http://prl.ccs.neu.edu/blog/2016/04/29/welcome-to-the-prl-blog/
-http://prl.ccs.neu.edu/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/
