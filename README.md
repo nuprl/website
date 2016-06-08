@@ -3,7 +3,8 @@
 Overview
 ========
 
-This is the website for the Northeastern University Programming Research Lab,
+This is the **source code** for the website for the
+Northeastern University Programming Research Lab,
 hosted at prl.ccs.neu.edu.
 
 Building
