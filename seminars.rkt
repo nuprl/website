@@ -44,6 +44,29 @@
 @(define seminars
    (splice
     (seminar
+     "A Coq Library For Internal Verification of Running-Times"
+     "Jay McCarthy"
+     "https://jeapostrophe.github.io/home/"
+     "U. Massachusetts, Lowell"
+     (datetime 2016 05 17 13 30)
+     "WVH 366"
+     @list{We present a Coq library that lifts an abstract yet precise
+notion of running-time into the type of a function. Our library is
+based on a monad that counts abstract steps, controlled by one of the
+monadic operations. The monad's computational content, however, is
+simply that of the identity monad so programs written in our
+monad (that recur on the natural structure of their arguments) extract
+into idiomatic OCaml code. We evaluated the expressiveness of the
+library by proving that red-black tree insertion and search, merge
+sort, insertion sort, Fibonacci, iterated list insertion, BigNum
+addition, and Okasaki's Braun Tree algorithms all have their expected
+running times.}
+     @list{Jay McCarthy is an associate professor at UMass Lowell in the Computer
+Science Department. He is a member of the PLT research group and works
+on the Racket programming language. He is passionate about computer
+science education & diversity, formal verification, programming
+language expressiveness, and his wonderful family.})
+    (seminar
      "New language ideas for user-defined side-effects: algebraic effect handlers."
      "Gabriel Scherer"
      "http://gallium.inria.fr/~scherer/"
