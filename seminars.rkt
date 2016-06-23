@@ -44,6 +44,17 @@
 @(define seminars
    (splice
     (seminar
+     "Leveraging Fine-grained Data Flows in Web Applications"
+     "James Mickens"
+     "http://mickens.seas.harvard.edu/"
+     "Harvard University"
+     (datetime 2016 07 05 13 30)
+     "WVH 366"
+     @list{
+A modern web page contains megabytes of HTML, CSS, images, and JavaScript. Loading such a page requires a browser to evaluate a complex dependency graph involving those resources; once the page is loaded, subsequent interactions between those resources and the user can lead to tricky-to-diagnose bugs. In this talk, I'll describe how tracking fine-grained data flows can allow us to reduce page load times by prioritizing the loads of the highest ancestors in the data flow graph. I'll also describe initial work in using data flows to assist with time-travel debugging (in which developers use a logging-and-replay framework to analyze buggy program executions).}
+  @list{James Mickens is an IEEE Knight of the Republic, an ACM Templar for Non-Open Access, and a Royal Proceeding of Her Majesty’s Royal Proceedings. His appreciation for syntactically correct code has led him to be called “a semicolon in human form.” His online shopping habits have too many dimensions to be k-means clustered, so he is only shown ads about dinosaurs and ancient siege machines. This does not bother James Mickens, and explains why he spends his summers attacking France with triceratops horns.})
+
+    (seminar
      "A Coq Library For Internal Verification of Running-Times"
      "Jay McCarthy"
      "https://jeapostrophe.github.io/home/"
