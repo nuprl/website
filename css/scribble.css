@@ -1,0 +1,131 @@
+/* Excerpts from the main Scribble CSS file */
+
+.stt {
+  font-family: monospace;
+  color: #333;
+  /* format like @racket[] bits */
+  padding: 2px 4px;
+  background-color: #f9f2f4;
+  border-radius: 4px;
+  font-size: 80%;
+}
+
+/* ---------------------------------------- */
+
+p, .SIntrapara {
+  display: block;
+  margin: 1em 0;
+}
+
+/* ---------------------------------------- */
+/* Some inline styles */
+
+.indexlink {
+  text-decoration: none;
+}
+
+.nobreak {
+  white-space: nowrap;
+}
+
+.SCodeFlow {
+  display: block;
+  background: #EEE;
+  padding: 0.5em;
+  border-radius: 10px;
+  margin-left: 3em;
+  margin-bottom: 0.5em;
+  margin-right: 3em;
+  margin-top: 0.5em;
+  white-space: nowrap;  
+  overflow: scroll;
+}
+
+.SCodeFlow td {
+  /* override custom.css */
+  padding: 0;
+}
+
+.SCodeFlow p {
+  margin: 0px;
+}
+
+.SVInsetFlow {
+  display: block;
+  margin-left: 0em;
+  margin-bottom: 0em;
+  margin-right: 0em;
+  margin-top: 0em;
+}
+
+.SubFlow {
+  display: block;
+  margin: 0em;
+}
+
+.boxed {
+  width: 100%;
+  background-color: #E8E8FF;
+}
+
+.hspace {
+}
+
+.slant {
+  font-style: oblique;
+}
+
+.badlink {
+  text-decoration: underline;
+  color: red;
+}
+
+.SCentered {
+  text-align: center;
+}
+
+.imageleft {
+  float: left;
+  margin-right: 0.3em;
+}
+
+.Smaller {
+  font-size: 82%;
+}
+
+.Larger {
+  font-size: 122%;
+}
+
+/* A hack, inserted to break some Scheme ids: */
+.mywbr {
+  display: inline-block;
+  height: 0;
+  width: 0;
+  font-size: 1px;
+}
+
+.compact li p {
+  margin: 0em;
+  padding: 0em;
+}
+
+.noborder img {
+  border: 0;
+}
+
+.SAuthorListBox {
+  position: relative;
+  float: right;
+  left: 2em;
+  top: -2.5em;
+  height: 0em;
+  width: 13em;
+  margin: 0em -13em 0em 0em;
+}
+.SAuthorList {
+  font-size: 82%;
+}
+.SAuthorList:before {
+  content: "by ";
+}
