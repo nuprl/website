@@ -38,7 +38,7 @@ p, .SIntrapara {
   margin-right: 3em;
   margin-top: 0.5em;
   white-space: nowrap;  
-  overflow: scroll;
+  overflow: auto;
 }
 
 .SCodeFlow td {
