@@ -4,7 +4,7 @@ TARGETS=contact.html index.html new-members.html people.html seminars.html softw
 all: setup blog $(TARGETS)
 
 setup:
-	raco pkg install --auto --skip-installed frog gregor
+	raco pkg install --auto --skip-installed gregor
 
 %.html: %.rkt templates/*.html
 	if [ -f $@ ]; then chmod +w $@; fi
@@ -12,7 +12,7 @@ setup:
 	chmod -w $@
 
 blog:
-	cd blog && raco frog -b
+	cd blog && make
 
 clean:
 	rm -f $(TARGETS)
