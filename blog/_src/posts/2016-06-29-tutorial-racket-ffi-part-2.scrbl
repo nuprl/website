@@ -233,7 +233,7 @@ For some more advanced FFI hacking, let's consider the problem of drawing some
 text into a predetermined space. In particular, we have our usual 256x256
 bitmap that we want to draw some text into:
 
-@examples[#:eval ev
+@examples[#:eval ev #:label #f
 (define txt-bt (make-bitmap 256 256))
 (define txt-surface (send txt-bt get-handle))
 (define txt-ctx (cairo-create txt-surface))
