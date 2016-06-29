@@ -80,6 +80,8 @@ code:blank
   (linewidth 2 (frame (bitmap bt))))
 ]
 
+@section[#:style 'unnumbered]{Dashes and array arguments}
+
 To start off, let's look at another C example from the Cairo
 @hyperlink["https://www.cairographics.org/samples/"]{samples page}.
 This time we will look at the "dash" example, which has a
@@ -225,7 +227,7 @@ code:blank
 (show bt)
 ]
 
-@section{Result arguments and C structs}
+@section[#:style 'unnumbered]{Result arguments and C structs}
 
 For some more advanced FFI hacking, let's consider the problem of drawing some
 text into a predetermined space. In particular, we have our usual 256x256
