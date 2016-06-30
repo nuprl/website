@@ -17,6 +17,7 @@ Tags: Racket, FFI, tutorial, by Asumu Takikawa
 @(define-dummy _cairo_line_cap_t)
 @(define-dummy _cairo_text_extents_t)
 @(define-dummy _cairo_text_extents_t-pointer)
+@(define-dummy _cairo_text_extents_t-pointer/null)
 
 This is part 2 of my tutorial on using the Racket FFI. If you haven't read
 part 1 yet, you can find it
@@ -242,7 +243,7 @@ bitmap that we want to draw some text into:
 Our challenge is to make a Racket function that takes a string (let's
 assume we can draw it in one line) and draws it into this bitmap.
 Since we are taking an arbitrary string, we will need to figure out
-how to scale the text to fit. To make it simple, let's just scale it the
+how to scale the text to fit. To make it simple, let's just scale the
 text to fit the width and assume the height will be okay.
 
 To implement the key step of measuring the text size, we can use the
@@ -274,9 +275,9 @@ typedef struct {
 } cairo_text_extents_t;
 }|
 
-We haven't yet seen how to handle C structs with the FFI, but that won't be much
-of a problem: support for structs
-comes built-in and is pretty straightforward too. We can directly translate the documented
+We haven't yet seen how to handle C structs with the FFI, but it's not
+too tricky. Support for C structs comes built-in and will look familiar
+if you're used to Racket structs. We can directly translate the documented
 definition above into a @racket[define-cstruct] declaration:
 
 @examples[#:eval ev #:label #f
@@ -291,7 +292,7 @@ definition above into a @racket[define-cstruct] declaration:
 ]
 
 This declaration does a couple of things. First, it defines a bunch of handy C types
-for us for the struct:
+related to the struct for us:
 
 @examples[#:eval ev #:label #f
 _cairo_text_extents_t
@@ -304,9 +305,13 @@ _cairo_text_extents_t-pointer/null
 Along with functions that look like regular Racket struct operations:
 
 @examples[#:eval ev #:label #f
+(code:comment "a struct constructor")
 make-cairo_text_extents_t
+(code:comment "a field selector")
 cairo_text_extents_t-width
+(code:comment "a predicate for the struct")
 cairo_text_extents_t?
+(code:comment "a field mutation function")
 set-cairo_text_extents_t-width!
 ]
 
@@ -365,8 +370,9 @@ a pointer.
 The strangest part of this example is that there are now two uses of the
 @racket[->] form! By providing a second arrow, we can customize what the FFI wrapper
 returns. The expression to the right of the second arrow is just Racket code that can
-reference previously named arguments. In this case, we return the struct that
-was allocated for us.
+reference previously named arguments. The result of evaluating this
+expression is used instead of the normal return result for calls to the
+wrapped function. In this case, we just return the struct that was allocated for us.
 
 Using this new version of the wrapper is much simpler:
 
