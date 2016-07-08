@@ -44,6 +44,33 @@
 @(define seminars
    (splice
     (seminar
+     "A Categorical Perspective on Type Refinement"
+     "Noam Zeilberger"
+     "Inria Ecole Polytechnique"
+     "http://noamz.org/"
+     (datetime 2016 07 13 11 45)
+     "WVH 366"
+     @list{
+<p>A "type refinement system" is a type system built on top of
+a typed programming language, as an extra layer of typing.  Over the
+past few years Paul-André Melliès and I have investigated a
+categorical foundation for type refinement systems, which is based on
+the idea of looking at a type refinement system "backwards", in terms
+of the functor which erases the extra layer of types.  The talk will
+give an introduction to this framework as well as to some of the
+insights that it offers, such as:
+</p>
+<p>* The idea of viewing Hoare logic as a type refinement system</p>
+<p>* The importance of the bifibrational operations of "pushing forward" and
+  "pulling back" (which generalize strongest postconditions and weakest preconditions)</p>
+<p>* How those operations can be combined with a monoidal closed structure, to
+  model type refinement systems built over pure lambda calculus</p>
+<p>I will not assume any prior background in category theory, although as background reading audience
+members may be interested in the lecture notes for my recent course at OPLSS
+(http://noamz.org/oplss16/refinements-notes.pdf, especially Ch.3).</p>}
+     @list{Since receiving his PhD from Carnegie Mellon in 2009, Noam Zeilberger has been actively pursuing a career as an itinerant postdoc, with gigs in Paris (Laboratoire PPS), Madrid (IMDEA Software), Princeton (IAS), and back in Paris (MSR-Inria).  He is currently a member of Inria Team Parsifal at Ecole Polytechnique.  In his free time, he enjoys enumerating lambda terms, and his favorite combinators are B, C and I.}) 
+
+    (seminar
      "Leveraging Fine-grained Data Flows in Web Applications"
      "James Mickens"
      "http://mickens.seas.harvard.edu/"
