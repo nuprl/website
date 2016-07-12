@@ -75,7 +75,6 @@ Anyhow, here's the prologue code:
 @examples[#:eval ev #:lang
 racket
 (require racket/draw
-         racket/gui/base
          ffi/unsafe
          (code:comment "avoid conflict with below")
          (except-in ffi/unsafe/define
