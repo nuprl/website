@@ -552,4 +552,5 @@ for more details on
 and
 @hyperlink["http://docs.racket-lang.org/foreign/ctype.html"]{custom C types}.
 
-@emph{Thanks to Ben Greenman for suggestions and feedback!}
+@emph{Thanks to Ben Greenman for suggestions/feedback and to Sam
+Tobin-Hochstadt for suggesting to cover union types!}

@@ -22,6 +22,8 @@ Tags: Racket, FFI, tutorial, by Asumu Takikawa
 This is part 2 of my tutorial on using the Racket FFI. If you haven't read
 part 1 yet, you can find it
 @hyperlink["http://prl.ccs.neu.edu/blog/2016/06/27/tutorial-using-racket-s-ffi/"]{here}.
+@bold{Update:} part 3 is also now available
+@hyperlink["http://prl.ccs.neu.edu/blog/2016/07/11/tutorial-racket-ffi-part-3/"]{here}.
 
 Part 2 will continue with more Cairo examples. In this installment, I plan to
 go over some more advanced FFI hacking such as handling computed argument

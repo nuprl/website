@@ -16,6 +16,11 @@ Tags: Racket, FFI, tutorial, by Asumu Takikawa
 @(define-dummy _cairo_t)
 @(define-dummy _cairo_line_cap_t)
 
+@bold{Update:} this post is now part of a series. Part 2 is
+@hyperlink["http://prl.ccs.neu.edu/blog/2016/06/29/tutorial-racket-ffi-part-2/"]{here}
+and part 3 is
+@hyperlink["http://prl.ccs.neu.edu/blog/2016/07/11/tutorial-racket-ffi-part-3/"]{here}.
+
 I've seen several people ask for a tutorial on Racket's foreign
 function interface (FFI), which allows you to dynamically load
 C libraries for use in Racket code. While I think the
