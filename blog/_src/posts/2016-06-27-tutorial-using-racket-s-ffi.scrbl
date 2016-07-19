@@ -102,7 +102,7 @@ argument to @racket[ffi-lib]. Normally you supply the name of a shared
 library file such as @racket["libcairo"]:
 
 @racketblock[
-(define cairo-lib (ffi-lib "libcairo" '(#f 2)))
+(define cairo-lib (ffi-lib "libcairo" '("2" #f)))
 ]
 
 The last list argument specifies the accepted versions (@racket[#f] allows
