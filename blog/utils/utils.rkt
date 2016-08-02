@@ -11,12 +11,16 @@
                      [-racketmodname racketmodname])
          reftech
          ffitech
-         define-dummy)
+         define-dummy
+         section*)
 
 (define (reftech . x)
   (apply tech x #:doc '(lib "scribblings/reference/reference.scrbl")))
 (define (ffitech . x)
   (apply tech x #:doc '(lib "scribblings/foreign/foreign.scrbl")))
+
+(define (section* . x)
+  (apply section x #:style 'unnumbered))
 
 ; Dummy defs to disable underscore emphasis
 (define-syntax (define-dummy stx)
