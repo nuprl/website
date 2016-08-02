@@ -11,8 +11,8 @@
   (define-type Words (Listof String))
   (define-type Lines (Listof Words))
 
-  (: kwik-read : Path-String -> (Listof String))
-  (define (kwik-read filename)
+  (: kwic-read : Path-String -> (Listof String))
+  (define (kwic-read filename)
     (with-input-from-file filename
       (λ ()
         (for/list ([line (in-lines)])
@@ -27,20 +27,20 @@
           (displayln "a cruising yawl,")
           (displayln "swung to her anchor without a flutter of sails,")
           (displayln "and was at rest.")))
-      (define actual (kwik-read tmpfile))
+      (define actual (kwic-read tmpfile))
       (define expect (file->lines tmpfile))
       (delete-file tmpfile)
       (check-equal? actual expect)))
 
-  (: kwik-split : (Listof String) -> Lines)
-  (define (kwik-split lines)
+  (: kwic-split : (Listof String) -> Lines)
+  (define (kwic-split lines)
     (map #{string-split :: (String -> Words)} lines))
 
   (module+ test
     (check-equal?*
-      [(kwik-split '())
+      [(kwic-split '())
        '()]
-      [(kwik-split '("hello    world"))
+      [(kwic-split '("hello    world"))
        '(("hello" "world"))]))
 
   ; Move first element to last position
@@ -95,8 +95,8 @@
       [(shift<? '("A" "B") '("A" "C"))
        #t]))
 
-  (: kwik-display : Lines -> Void)
-  (define (kwik-display all-sorted-shifts)
+  (: kwic-display : Lines -> Void)
+  (define (kwic-display all-sorted-shifts)
     (: display-words : Words -> Void)
     (define (display-words words)
       (display (first words))
@@ -109,7 +109,7 @@
 
   (module+ test
     (parameterize ([current-output-port (open-output-string)])
-      (kwik-display '(("A") ("B" "C")))
+      (kwic-display '(("A") ("B" "C")))
       (check-equal?
         (get-output-string (current-output-port))
         "A\nB C\n")))
@@ -123,11 +123,11 @@
       (all-circular-shifts* '(("A" "B" "C") ("D")))
       '((("C" "A" "B") ("B" "C" "A") ("A" "B" "C")) (("D")))))
 
-  (: kwik-index : Path-String -> Void)
-  (define (kwik-index file-name)
-    (define all-lines (kwik-split (kwik-read file-name)))
+  (: kwic-index : Path-String -> Void)
+  (define (kwic-index file-name)
+    (define all-lines (kwic-split (kwic-read file-name)))
     (define all-shifts (append* (all-circular-shifts* all-lines)))
-    (kwik-display (alphabetize all-shifts)))
+    (kwic-display (alphabetize all-shifts)))
 
   (module+ test
     (parameterize ([current-output-port (open-output-string)])
@@ -136,7 +136,7 @@
         (λ ()
           (displayln "imagine if this")
           (displayln "took 2 weeks to write")))
-      (kwik-index tmpfile)
+      (kwic-index tmpfile)
       (delete-file tmpfile)
       (check-equal?
         (get-output-string (current-output-port))
@@ -155,7 +155,7 @@
     (: *output-to* (Parameterof Any))
     (define *output-to* (make-parameter #f))
     (command-line
-      #:program "kwik index"
+      #:program "kwic index"
       #:once-each
       [("-o" "--output")
        output-to
@@ -168,6 +168,6 @@
           (open-output-file output-to #:exists 'replace)
           (current-output-port)))
       (parameterize ([current-output-port out-port])
-        (kwik-index (cast file-name Path-String)))
+        (kwic-index (cast file-name Path-String)))
       (when (string? output-to)
         (close-output-port out-port))))

@@ -65,7 +65,7 @@ A KWIC index system
 The first circular shift of a line @racket{A B C} is the line @racket{B C A}.
 The second circular shift is @racket{C A B}.
 
-Building a KWIK index is a historical problem.
+Building a KWIC index is a historical problem.
 According to @hyperlink["https://www.cs.umd.edu/class/spring2003/cmsc838p/Design/criteria.pdf"]{D.L. Parnas (1972)}:
 
 @nested{Except under extreme circumstances (huge data base, no supporting software)
@@ -87,7 +87,7 @@ To start, open a file and type:
   #lang racket
 }
 
-You can name the file anything, like @tt{kwik.rkt} or @tt{rkt.kwik} or @tt{foo}.
+You can name the file anything, like @tt{kwic.rkt} or @tt{rkt.kwic} or @tt{foo}.
 Racket doesn't care,
  but it does need the @tt{#lang} line to read the contents of the file.
 
@@ -101,7 +101,7 @@ The built-in function @hyperlink["http://docs.racket-lang.org/reference/Filesyst
 @(begin
   #reader scribble/comment-reader
   (racketblock
-    (define (kwik-read filename)
+    (define (kwic-read filename)
       (with-input-from-file filename
         (λ ()
           (for/list ([line (in-lines)])
@@ -121,7 +121,7 @@ Here we'll just use library functions.
 @(begin
   #reader scribble/comment-reader
   (racketblock
-    (define (kwik-split lines)
+    (define (kwic-split lines)
       (map string-split lines))
 ))
 
@@ -166,7 +166,7 @@ Second, we alphabetize and print the shifts.
           (and (string=? s1 s2)
                (shift<? shift1-rest shift2-rest)))]))
 
-  (define (kwik-display all-sorted-shifts)
+  (define (kwic-display all-sorted-shifts)
     (define (display-words words)
       (display (first words))
       (for ([word (in-list (cdr words))])
@@ -186,14 +186,14 @@ Gluing it all together, here's the full script (with type annotations in comment
   ; type Lines = (Listof Words)
 
   ; Path-String -> (Listof String)
-  (define (kwik-read filename)
+  (define (kwic-read filename)
     (with-input-from-file filename
       (λ ()
         (for/list ([line (in-lines)])
           line))))
 
   ; (Listof String) -> Lines
-  (define (kwik-split lines)
+  (define (kwic-split lines)
     (map string-split lines))
 
   ; Words -> (Listof Words)
@@ -227,7 +227,7 @@ Gluing it all together, here's the full script (with type annotations in comment
                (shift<? shift1-rest shift2-rest)))]))
 
   ; Lines -> Void
-  (define (kwik-display all-sorted-shifts)
+  (define (kwic-display all-sorted-shifts)
     (define (display-words words)
       (display (first words))
       (for ([word (in-list (cdr words))])
@@ -241,10 +241,10 @@ Gluing it all together, here's the full script (with type annotations in comment
     (map all-circular-shifts lines))
 
   ; Path-String -> Void
-  (define (kwik-index file-name)
-    (define all-lines (kwik-split (kwik-read file-name)))
+  (define (kwic-index file-name)
+    (define all-lines (kwic-split (kwic-read file-name)))
     (define all-shifts (append* (all-circular-shifts* all-lines)))
-    (kwik-display (alphabetize all-shifts)))
+    (kwic-display (alphabetize all-shifts)))
 
   ; End-to-end test
   ; -> Void
@@ -256,7 +256,7 @@ Gluing it all together, here's the full script (with type annotations in comment
         (λ ()
           (displayln "imagine if this")
           (displayln "took 2 weeks to write"))))
-    (kwik-index test-file))
+    (kwic-index test-file))
 
   (run-test)
 }
@@ -325,13 +325,13 @@ If you prefer to run tests only in a specific context, and not when the
         '("B" "C" "A")))
 ))
 
-Running the module normally via @tt{racket kwik.rkt} will not run code
+Running the module normally via @tt{racket kwic.rkt} will not run code
  in the submodule.
 Instead, use @tt{raco test} to run the tests.
 
 @codeblock{
->  raco test kwik.rkt
-raco test: (submod "kwik.rkt" test)
+>  raco test kwic.rkt
+raco test: (submod "kwic.rkt" test)
 1 test passed
 }
 
@@ -382,16 +382,16 @@ Every unit test we've written uses @hyperlink["http://docs.racket-lang.org/racku
 
     (module+ test
       (check-equal?
-        (kwik-split '())
+        (kwic-split '())
         '())
       (check-equal?
-        (kwik-split '("hello    world"))
+        (kwic-split '("hello    world"))
         '(("hello" "world")))
       (check-equal?
-        (kwik-split '(" lost " " in " "space"))
+        (kwic-split '(" lost " " in " "space"))
         '(("lost") ("in") ("space")))
       (check-equal?
-        (kwik-split '("something"))
+        (kwic-split '("something"))
         '()))
 ))
 
@@ -408,13 +408,13 @@ These tests follow a simple pattern that we can express as a @emph{syntax rule}.
           ...))
 
       (check-equal?*
-        [(kwik-split '())
+        [(kwic-split '())
          '()]
-        [(kwik-split '("hello    world"))
+        [(kwic-split '("hello    world"))
          '(("hello" "world"))]
-        [(kwik-split '(" out " " in " "the ozone"))
+        [(kwic-split '(" out " " in " "the ozone"))
          '(("out") ("in") ("the" "ozone"))]
-        [(kwik-split '("something"))
+        [(kwic-split '("something"))
          '()]))
 ))
 
@@ -450,8 +450,8 @@ Note: @hyperlink["http://docs.racket-lang.org/ts-reference/Typed_Regions.html"]{
       ; - function parameters
       ; - for-loop return types
 
-      (: kwik-read : Path-String -> (Listof String))
-      (define (kwik-read filename)
+      (: kwic-read : Path-String -> (Listof String))
+      (define (kwic-read filename)
         (with-input-from-file filename
           (λ ()
             (for/list ([line (in-lines)])
@@ -463,7 +463,7 @@ Note: @hyperlink["http://docs.racket-lang.org/ts-reference/Typed_Regions.html"]{
       (provide (all-defined-out)))
     (require 't)
 
-    (define (kwik-split lines)
+    (define (kwic-split lines)
       (map string-split lines))
 
     ; <rest of file omitted>
@@ -482,13 +482,13 @@ By @hyperlink["https://docs.racket-lang.org/style/Units_of_Code.html"]{conventio
 
     #lang typed/racket
 
-    (provide kwik-index)
+    (provide kwic-index)
 
     ; <definitions here>
 }
 
-Then any typed or untyped module can use @racket[kwik-index] by writing
- @racket[(require "kwik.rkt")].
+Then any typed or untyped module can use @racket[kwic-index] by writing
+ @racket[(require "kwic.rkt")].
 
 As a finishing touch, we can use the @hyperlink["http://docs.racket-lang.org/reference/Command-Line_Parsing.html"]{racket/cmdline} library
  inside a @tt{main} submodule to give a basic front-end interface.
@@ -512,8 +512,8 @@ The @racket[main] submodule is at the bottom.
   (define-type Words (Listof String))
   (define-type Lines (Listof Words))
 
-  (: kwik-read : Path-String -> (Listof String))
-  (define (kwik-read filename)
+  (: kwic-read : Path-String -> (Listof String))
+  (define (kwic-read filename)
     (with-input-from-file filename
       (λ ()
         (for/list ([line (in-lines)])
@@ -528,20 +528,20 @@ The @racket[main] submodule is at the bottom.
           (displayln "a cruising yawl,")
           (displayln "swung to her anchor without a flutter of sails,")
           (displayln "and was at rest.")))
-      (define actual (kwik-read tmpfile))
+      (define actual (kwic-read tmpfile))
       (define expect (file->lines tmpfile))
       (delete-file tmpfile)
       (check-equal? actual expect)))
 
-  (: kwik-split : (Listof String) -> Lines)
-  (define (kwik-split lines)
+  (: kwic-split : (Listof String) -> Lines)
+  (define (kwic-split lines)
     (map #{string-split :: (String -> Words)} lines))
 
   (module+ test
     (check-equal?*
-      [(kwik-split '())
+      [(kwic-split '())
        '()]
-      [(kwik-split '("hello    world"))
+      [(kwic-split '("hello    world"))
        '(("hello" "world"))]))
 
   ; Move first element to last position
@@ -596,8 +596,8 @@ The @racket[main] submodule is at the bottom.
       [(shift<? '("A" "B") '("A" "C"))
        #t]))
 
-  (: kwik-display : Lines -> Void)
-  (define (kwik-display all-sorted-shifts)
+  (: kwic-display : Lines -> Void)
+  (define (kwic-display all-sorted-shifts)
     (: display-words : Words -> Void)
     (define (display-words words)
       (display (first words))
@@ -609,7 +609,7 @@ The @racket[main] submodule is at the bottom.
 
   (module+ test
     (parameterize ([current-output-port (open-output-string)])
-      (kwik-display '(("A") ("B" "C")))
+      (kwic-display '(("A") ("B" "C")))
       (check-equal?
         (get-output-string (current-output-port))
         "A\nB C\n")))
@@ -623,11 +623,11 @@ The @racket[main] submodule is at the bottom.
       (all-circular-shifts* '(("A" "B" "C") ("D")))
       '((("C" "A" "B") ("B" "C" "A") ("A" "B" "C")) (("D")))))
 
-  (: kwik-index : Path-String -> Void)
-  (define (kwik-index file-name)
-    (define all-lines (kwik-split (kwik-read file-name)))
+  (: kwic-index : Path-String -> Void)
+  (define (kwic-index file-name)
+    (define all-lines (kwic-split (kwic-read file-name)))
     (define all-shifts (append* (all-circular-shifts* all-lines)))
-    (kwik-display (alphabetize all-shifts)))
+    (kwic-display (alphabetize all-shifts)))
 
   (module+ test
     (parameterize ([current-output-port (open-output-string)])
@@ -636,7 +636,7 @@ The @racket[main] submodule is at the bottom.
         (λ ()
           (displayln "imagine if this")
           (displayln "took 2 weeks to write")))
-      (kwik-index tmpfile)
+      (kwic-index tmpfile)
       (delete-file tmpfile)
       (check-equal?
         (get-output-string (current-output-port))
@@ -655,7 +655,7 @@ The @racket[main] submodule is at the bottom.
     (: *output-to* (Parameterof Any))
     (define *output-to* (make-parameter #f))
     (command-line
-      #:program "kwik index"
+      #:program "kwic index"
       #:once-each
       [("-o" "--output")
        output-to ; user-supplied input
@@ -668,18 +668,18 @@ The @racket[main] submodule is at the bottom.
           (open-output-file output-to #:exists 'replace)
           (current-output-port)))
       (parameterize ([current-output-port out-port])
-        (kwik-index (cast file-name Path-String)))
+        (kwic-index (cast file-name Path-String)))
       (when (string? output-to)
         (close-output-port out-port))))
 }
 
 Sample interactions:
 @codeblock{
-> racket kwik.rkt
-kwik index: expects 1 <file-name> on the command line, given 0 arguments
+> racket kwic.rkt
+kwic index: expects 1 <file-name> on the command line, given 0 arguments
 
 > echo "It is a truth universally acknowledged" > pride-and-prejudice.txt
-> racket kwik.rkt -o index.out pride-and-prejudice.txt
+> racket kwic.rkt -o index.out pride-and-prejudice.txt
 > wc -l index.out
 6 index.out
 }
