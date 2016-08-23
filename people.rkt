@@ -640,6 +640,31 @@ MS Stanford University 1995<br />
             </div>
           </div>
 
+          <div class="row pn-person">
+            <div class="col-md-12 pn-row-eq-height">
+              <div class="col-md-3 pn-photo">
+                <div class="img-wrapper">
+                  <img src="img/daniel_patterson.jpg" title="Daniel Patterson" alt="Daniel Patterson" />
+                </div>
+              </div>
+              <div class="col-md-9">
+                <div class="col-md-4 pn-contact">
+                  <span class="pn-name">Daniel Patterson</span><br />
+                  Advisor: Amal Ahmed<br />
+                  <a href="mailto:dbp@"@"ccs.neu.edu">dbp@"@"ccs.neu.edu</a><br />
+                  <a href="https://dbp.io">dbp.io</a>
+                </div>
+                <div class="col-md-3 pn-muted col-md-offset-5">
+                    Joined 2016
+                </div>
+                <div class="col-md-12 pn-bio">
+                  <p>I'm interested in language and type system interoperability - in particular, languages with very different type systems interacting easily and safely.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
         <div class="pn-separator-img">
