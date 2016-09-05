@@ -332,30 +332,6 @@ MS Stanford University 1995<br />
             <div class="col-md-12 pn-row-eq-height">
               <div class="col-md-3 pn-photo">
                 <div class="img-wrapper">
-                  <img src="img/paul_stansifer.jpg" title="Paul Stansifer" alt="Paul Stansifer" />
-                </div>
-              </div>
-              <div class="col-md-9">
-                <div class="col-md-4 pn-contact">
-                  <span class="pn-name">Paul Stansifer</span><br />
-                  Advisor: Mitch Wand<br />
-                  <a href="mailto:pauls@"@"ccs.neu.edu">pauls@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/~pauls">www.ccs.neu.edu/~pauls</a>
-                </div>
-                <div class="col-md-3 pn-muted col-md-offset-5">
-                   Joined 2009
-                </div>
-                <div class="col-md-12 pn-bio">
-                  <p>I am working with Mitch on macros that can extend the underlying syntax of their language. I like cookies. And burritos.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row pn-person">
-            <div class="col-md-12 pn-row-eq-height">
-              <div class="col-md-3 pn-photo">
-                <div class="img-wrapper">
                   <img src="img/tony_jones.jpg" title="Tony Garnock-Jones" alt="Tony Garnock-Jones" />
                 </div>
               </div>
@@ -371,30 +347,6 @@ MS Stanford University 1995<br />
                 </div>
                 <div class="col-md-12 pn-bio">
                   <p>I’m working on constructing programming languages that incorporate ideas from networking and from messaging middleware.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="row pn-person">
-            <div class="col-md-12 pn-row-eq-height">
-              <div class="col-md-3 pn-photo">
-                <div class="img-wrapper">
-                  <img src="img/asumu_takikawa.jpg" title="Asumu Takikawa" alt="Asumu Takikawa" />
-                </div>
-              </div>
-              <div class="col-md-9">
-                <div class="col-md-4 pn-contact">
-                  <span class="pn-name">Asumu Takikawa</span><br />
-                  Advisor: Matthias Felleisen<br />
-                  <a href="mailto:asumu@"@"ccs.neu.edu">asumu@"@"ccs.neu.edu</a><br />
-                  <a href="http://www.ccs.neu.edu/home/asumu/">www.ccs.neu.edu/home/asumu</a>
-                </div>
-                <div class="col-md-3 pn-muted col-md-offset-5">
-                    Joined 2010
-                </div>
-                <div class="col-md-12 pn-bio">
-                  <p>Racket developer, Oregonian, and PhD student at Northeastern University. Works on Typed Racket.</p>
                 </div>
               </div>
             </div>
@@ -785,6 +737,13 @@ MS Stanford University 1995<br />
                 @(alumnus "Philippe Meunier" #:year 2006
                           #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-meunier.pdf"
                           #:extra "(Sirindhorn International Institute of Technology, Tahmmasat University)")
+                @(alumnus "Paul Stansifer" #:year 2016
+                          #:dissertation "https://repository.library.northeastern.edu/files/neu:cj82mb52h"
+                          #:personal-site "http://www.ccs.neu.edu/home/pauls/")
+                @(alumnus "Asumu Takikawa" #:year 2016
+                          #:dissertation "https://repository.library.northeastern.edu/files/neu:cj82n981x"
+                          #:personal-site "http://www.ccs.neu.edu/home/asumu/"
+                          #:extra "(Igalia)")
              )
           </div>
         </div>
