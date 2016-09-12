@@ -362,7 +362,7 @@ MS Stanford University 1995<br />
               <div class="col-md-9">
                 <div class="col-md-4 pn-contact">
                   <span class="pn-name">Jonathan Schuster</span><br />
-                  Advisor: Olin Shivers and Matthias Felleisen<br />
+                  Advisor: Olin Shivers<br />
                   <a href="mailto:schuster@"@"ccs.neu.edu">schuster@"@"ccs.neu.edu</a><br />
                   <a href="http://www.ccs.neu.edu/home/schuster/">www.ccs.neu.edu/home/schuster</a>
                 </div>
