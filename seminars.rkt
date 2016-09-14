@@ -44,6 +44,16 @@
 @(define seminars
    (splice
     (seminar
+     "Performance in Julia"
+     "Jan Vitek"
+     "Northeastern University"
+     "http://janvitek.org/"
+     (datetime 2016 09 15 12 30)
+     "WVH 366"
+     @list{<p>Julia, like R, is a dynamic language for scientific computing but, unlike R, it was explicitly designed to deliver performance competitive to traditional batch-compiled languages. To achieve this Julia's designers made a number of unusual choices, including the presence of a set of type annotations that are used for dispatching methods and speed up code, but not for type-checking. The result is that many Julia programs are competitive with equivalent programs written in C. This talk gives a brief overview of the key points of Julia's design and considers whether similar ideas could be adopted in R.</p>}
+     @list{<p>Jan Vitek, http://janvitek.org/, is a Professor at Northeastern University CCIS. He works on the design and implementation of programming abstractions for areas and in languages that are *terrifying*. For instance, he has worked on a real-time JVM for running Java on an actual embedding real-time system, on understanding JavaScript to make it more secure, and on getting R (yes R) to be scalable for data analysis. Apparently he does these things because they are used in the "real world" to "solve problems". He also has an excellent sense of humor and didn't give me a bio, so I took some liberties and hope he doesn't mind.</p>})
+
+    (seminar
      "A Categorical Perspective on Type Refinement"
      "Noam Zeilberger"
      "Inria Ecole Polytechnique"
