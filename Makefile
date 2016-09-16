@@ -6,7 +6,7 @@ all: setup blog $(TARGETS)
 setup:
 	raco pkg install --auto --skip-installed gregor
 
-%.html: %.rkt templates/*.html
+%.html: %.rkt
 	if [ -f $@ ]; then chmod +w $@; fi
 	racket -t $< > $@
 	chmod -w $@

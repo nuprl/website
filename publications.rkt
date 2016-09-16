@@ -1,4 +1,4 @@
-#lang scribble/text
+#lang scribble/html
 @(require racket/match
           "templates.rkt")
 
@@ -517,22 +517,17 @@
 
 @(define (publication->html pub)
    (match-define (publication title authors venue year link) pub)
-   @list{
-<div class="pn-publication">
-  <div class="pn-main-informations">
-    <span class="pn-pub-title">@|title|</span>
-    @(when link
-       @list{
-         <span class="pn-pub-link">
-           [<a class="pn-url" href="@|link|">link</a>]
-         </span>})
-    <br />
-    <span class="pn-authors">@|authors|</span>
-    <br />
-    <span class="pn-venue">@|venue|</span>
-  </div>
-</div>
-})
+   @div[class: "pn-publication"]{
+     @div[class: "pn-main-informations"]{
+       @span[class: "pn-pub-title" title]
+       @(when link
+          @list{
+            @span[class: "pn-pub-link"]{
+              [@a[class: "pn-url" href: link link]]}})
+       @br{}
+       @span[class: "pn-authors" authors]
+       @br{}
+       @span[class: "pn-venue" venue]}})
 
 @(define-struct publication-group (publications year) #:prefab)
 
@@ -547,27 +542,21 @@
                         (publication-year (first pubs)))))
 
 @(define (publication-group->html pub-group)
-   @list{
-<div class="pn-pub-group col-md-12 compact">
-  <span class="pn-pub-year ">@(publication-group-year pub-group)</span>
-  <br />
-  @(map publication->html (publication-group-publications pub-group))
-</div>
-})
+   @div[class: "pn-pub-group col-md-12 compact"]{
+     @span[class: "pn-pub-year " (publication-group-year pub-group)]
+     @br{}
+     @(map publication->html (publication-group-publications pub-group))})
 
-<!DOCTYPE html>
-<html lang="en">
+@doctype{html}
+@html[lang: "en"]{
   @header{Publications}
-  <body id="pn-top">
+  @body[id: "pn-top"]{
    @navbar{Publications}
    @subpage-title{Publications}
 
-    <div class="pn-main-wrapper">
-      <div class="row">
-        @(map publication-group->html
-              (arrange-publications publications))
-      </div>
-    </div>
-    @footer
-  </body>
-</html>
+   @div[class: "pn-main-wrapper"]{
+     @div[class: "row"]{
+       @(map publication-group->html
+             (arrange-publications publications))}}
+   @footer{}
+}}
