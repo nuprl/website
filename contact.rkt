@@ -26,9 +26,11 @@
 
 <h4>Student Rep on Hiring</h4> <a href="mailto:wilbowma@"@"ccs.neu.edu">William Bowman</a>
 
-<h4>Publication Page Maintainer</h4> <a href="mailto:schuster@"@"ccs.neu.edu">Jonathan Schuster</a>
+<h4>Blog Maintainer</h4> <a href="mailto:types@"@"ccs.neu.edu">Ben Greenman</a>
 
 <h4>People Page Maintainer</h4> <a href="mailto:bchung@"@"ccs.neu.edu">Ben Chung</a>
+
+<h4>Publication Page Maintainer</h4> <a href="mailto:schuster@"@"ccs.neu.edu">Jonathan Schuster</a>
 
 <h4>Software Page Maintainer</h4> <a href="mailto:leif@"@"ccs.neu.edu">Leif Andersen</a>
 
