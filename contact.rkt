@@ -9,24 +9,30 @@
         @subpage-title{Contact}
 
     <div class="pn-main-wrapper">
-        <div class="content">        
-            
+        <div class="content">
+
             <div class="container">
                 <div class="row">  
 		  <h2>Who's in charge?</h2>
 
 <center>
-<h4>Webmaster</h4> <a href="mailto:schuster@"@"ccs.neu.edu">Jonathan Schuster</a>
+<h4>Webmaster</h4> <a href="mailto:types@"@"ccs.neu.edu">Ben Greenman</a>
 
-<h4>PL Seminar</h4>  <a href="mailto:wilbowma@"@"ccs.neu.edu">William J. Bowman</a> and Amal Ahmed
+<h4>PL Seminar</h4>  <a href="mailto:dbp@"@"ccs.neu.edu">Daniel Patterson</a>
 
-<h4>PL Seminar, Junior</h4> <a href="mailto:leif@"@"ccs.neu.edu">Leif Andersen</a>
+<h4>PL Seminar, Junior</h4> <a href="mailto:samc@"@"ccs.neu.edu">Sam Caldwell</a>
 
-<h4>Happy Hour</h4> <a href="mailto:asumu@"@"ccs.neu.edu">Asumu Takikawa</a>
+<h4>Happy Hour</h4> <a href="mailto:maxnew@"@"ccs.neu.edu">Max New</a>
 
-<h4>Social Hour</h4> <a href="mailto:types@"@"ccs.neu.edu">Ben Greenman</a>
+<h4>Student Rep on Hiring</h4> <a href="mailto:wilbowma@"@"ccs.neu.edu">William Bowman</a>
 
-<h4>Student Rep on Hiring</h4> <a href="mailto:jrslepak@"@"ccs.neu.edu">Justin Slepak</a>
+<h4>Publication Page Maintainer</h4> <a href="mailto:schuster@"@"ccs.neu.edu">Jonathan Schuster</a>
+
+<h4>People Page Maintainer</h4> <a href="mailto:bchung@"@"ccs.neu.edu">Ben Chung</a>
+
+<h4>Software Page Maintainer</h4> <a href="mailto:leif@"@"ccs.neu.edu">Leif Andersen</a>
+
+<h4>Teaching Page Maintainer</h4> <a href="mailto:davis.mil@"@"husky.neu.edu">Milo Davis</a>
 
 <h4>Applications for internship, PhD, Postdoc</h4>
 <a href="mailto:j.vitek@"@"neu.edu">Jan Vitek</a>
