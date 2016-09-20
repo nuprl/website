@@ -589,13 +589,11 @@
 
 @; (listof publications) -> (listof publication-group)
 @(define (arrange-publications pubs)
-   ;; most recent first
-   (define grouped
-     (group-by publication-year pubs)
-     #;(reverse (sort pubs #:key publication-year)))
-   (for/list ([pubs (in-list grouped)])
-     (publication-group (sort pubs string<? #:key publication-venue)
-                        (publication-year (first pubs)))))
+   (define unsorted-groups
+     (for/list ([pubs (in-list (group-by publication-year pubs))])
+       (publication-group (sort pubs string<? #:key publication-venue)
+                          (publication-year (first pubs)))))
+   (sort unsorted-groups > #:key publication-group-year))
 
 @(define (publication-group->html pub-group)
    @list{
