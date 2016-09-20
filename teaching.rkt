@@ -94,7 +94,14 @@
              @div[class: "col-md-6"]{
                @ul{
                  @li{
+                   @strong{7680} Special Topics in Computer Systems
+                   @br{}
+                   @indent{} F 2016 Programming Models for Distributed Computing @a[href: "http://heather.miller.am/teaching/cs7680/" target: "_blank"]{link} @instructor{Heather Miller}
+                 }
+                 @li{
                    @strong{7480} Special Topics in Programming Languages
+                   @br{}
+                   @indent{} F 2016 Advanced Program Analysis @a[href: "https://docs.google.com/document/d/1JeYoC-dmCxLgYuQcv5tU1rfez6IRf_OKO4ipeRtQd7o" target: "_blank"]{link} @instructor{Frank Tip}
                    @br{}
                    @indent{} F 2015 Types, Contracts, and Gradual Typing @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-f15/" target: "_blank"]{link} @instructor{Amal Ahmed}
                    @br{}
@@ -152,7 +159,9 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
-                     @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs2500f15/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs2500f16/" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed, Ben Lerner} @br{}
+                     @indent{} F 2016 accelerated @a[href: "http://www.ccs.neu.edu/course/cs2500accelf16/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs2500hfa15/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent{} F 2015 honors @a[href: "http://www.ccs.neu.edu/course/cs2500f15/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500f14/index.html" target: "_blank"]{link} @instructor{Olin Shivers, Amal Ahmed, Ben Lerner} @br{}
                      @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500sp14/index.html" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
