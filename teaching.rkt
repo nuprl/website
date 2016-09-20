@@ -10,6 +10,9 @@
 @(define (indent)
    @(make-list 4 nbsp))
 
+@(define (instructor . name)
+   @span[class: "pn-muted" name])
+
 @doctype{html}
 @html[lang: "en"]{
   @header{Teaching}
@@ -91,70 +94,79 @@
              @div[class: "col-md-6"]{
                @ul{
                  @li{
+                   @strong{7680} Special Topics in Computer Systems
+                   @br{}
+                   @indent{} F 2016 Programming Models for Distributed Computing @a[href: "http://heather.miller.am/teaching/cs7680/" target: "_blank"]{link} @instructor{Heather Miller}
+                 }
+                 @li{
                    @strong{7480} Special Topics in Programming Languages
                    @br{}
-                   @indent{} F 2015 Types, Contracts, and Gradual Typing @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-f15/" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed}
+                   @indent{} F 2016 Advanced Program Analysis @a[href: "https://docs.google.com/document/d/1JeYoC-dmCxLgYuQcv5tU1rfez6IRf_OKO4ipeRtQd7o" target: "_blank"]{link} @instructor{Frank Tip}
                    @br{}
-                   @indent{} S 2012 Type Systems @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s12/" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed}
+                   @indent{} F 2015 Types, Contracts, and Gradual Typing @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-f15/" target: "_blank"]{link} @instructor{Amal Ahmed}
+                   @br{}
+                   @indent{} S 2012 Type Systems @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s12/" target: "_blank"]{link} @instructor{Amal Ahmed}
                  }
                  @li{
                    @strong{7400} Intensive Principles of Programming Languages
                    @br{}
-                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s15/" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed} @br{}
-                   @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-s14/" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen} @br{}
-                   @indent{} F 2012 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-f12/" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen} @br{}
-                   @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-f11/" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen}
+                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s15/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                   @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-s14/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
+                   @indent{} F 2012 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-f12/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
+                   @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-f11/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
                    @strong{6515} Software Design and Development @br{}
-                   @indent{} S 2013 @a[href: "http://www.ccs.neu.edu/home/matthias/6515-s13/" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen}
+                   @indent{} S 2013 @a[href: "http://www.ccs.neu.edu/home/matthias/6515-s13/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
                    @strong{6240} Parallel Data Processing in MapReduce @br{}
-                   @indent{} S 2015 @a[href: "https://sites.google.com/site/mapreduce15s/" target: "_blank"]{link} @span[class: "pn-muted"]{Jan Vitek}
+                   @indent{} S 2015 @a[href: "https://sites.google.com/site/mapreduce15s/" target: "_blank"]{link} @instructor{Jan Vitek}
                  }
                  @li{
                    @strong{5010} Program Design Paradigms @br{}
-                   @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010f15" target: "_blank"]{link} @span[class: "pn-muted"]{Mitch Wand, William D. Clinger} @br{}
-                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010sp15" target: "_blank"]{link} @span[class: "pn-muted"]{Stephen Chang} @br{}
-                   @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010f14" target: "_blank"]{link} @span[class: "pn-muted"]{Mitch Wand, Stephen Chang, Jan Vitek} @br{}
-                   @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010sp14/" target: "_blank"]{link} @span[class: "pn-muted"]{Ryan Culpepper} @br{}
-                   @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs5010f13/" target: "_blank"]{link} @span[class: "pn-muted"]{Ryan Culpepper}
+                   @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010f15" target: "_blank"]{link} @instructor{Mitch Wand, William D. Clinger} @br{}
+                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010sp15" target: "_blank"]{link} @instructor{Stephen Chang} @br{}
+                   @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010f14" target: "_blank"]{link} @instructor{Mitch Wand, Stephen Chang, Jan Vitek} @br{}
+                   @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010sp14/" target: "_blank"]{link} @instructor{Ryan Culpepper} @br{}
+                   @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs5010f13/" target: "_blank"]{link} @instructor{Ryan Culpepper}
                  }
                  @li{
                    @strong{4620} Building Extensible Systems @br{}
-                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/matthias/4620-s15/" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen}
+                   @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/matthias/4620-s15/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
              }}
              @div[class: "col-md-6"]{
                @ul{
                  @li{
                      @strong{4410} Compilers @br{}
-                     @indent[] F 2013 @a[href: "http://www.ccs.neu.edu/home/amal/course/4410-s13/" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed} @br{}
-                     @indent[] S 2012 @a[href: "http://www.ccs.neu.edu/course/csu4410/" target: "_blank"]{link} @span[class: "pn-muted"]{Olin Shivers}
+                     @indent[] F 2013 @a[href: "http://www.ccs.neu.edu/home/amal/course/4410-s13/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                     @indent[] S 2012 @a[href: "http://www.ccs.neu.edu/course/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers}
                  }
                  @li{
                      @strong{3800} Theory of Computation @br{}
-                     @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3800f15wc/" target: "_blank"]{link} @span[class: "pn-muted"]{William D. Clinger}
+                     @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3800f15wc/" target: "_blank"]{link} @instructor{William D. Clinger}
                  }
                  @li{
                      @strong{3500} Object Oriented Design @br{}
-                     @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3500/" target: "_blank"]{link} @span[class: "pn-muted"]{Ben Lerner}
+                     @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3500/" target: "_blank"]{link} @instructor{Ben Lerner}
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
-                     @indent[] S 2015 @a[href: "http://www.ccs.neu.edu/course/cs2510sp15/" target: "_blank"]{link} @span[class: "pn-muted"]{Ben Lerner} @br{}
-                     @indent[] F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2510f14/" target: "_blank"]{link} @span[class: "pn-muted"]{Ben Lerner} @br{}
-                     @indent[] S 2014 honors @a[href: "http://www.ccs.neu.edu/home/cs2510hsp14/" target: "_blank"]{link} @span[class: "pn-muted"]{Ben Lerner}
+                     @indent[] S 2015 @a[href: "http://www.ccs.neu.edu/course/cs2510sp15/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2510f14/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] S 2014 honors @a[href: "http://www.ccs.neu.edu/home/cs2510hsp14/" target: "_blank"]{link} @instructor{Ben Lerner}
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
-                     @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs2500f15/" target: "_blank"]{link} @span[class: "pn-muted"]{Olin Shivers} @br{}
-                     @indent{} F 2015 honors @a[href: "http://www.ccs.neu.edu/course/cs2500f15/" target: "_blank"]{link} @span[class: "pn-muted"]{Ben Lerner} @br{}
-                     @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500f14/index.html" target: "_blank"]{link} @span[class: "pn-muted"]{Olin Shivers, Amal Ahmed, Ben Lerner} @br{}
-                     @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500sp14/index.html" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed} @br{}
-                     @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs2500f13/index.html" target: "_blank"]{link} @span[class: "pn-muted"]{Matthias Felleisen, Amal Ahmed} @br{}
-                     @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/course/csu211/" target: "_blank"]{link} @span[class: "pn-muted"]{Amal Ahmed}
+                     @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs2500f16/" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed, Ben Lerner} @br{}
+                     @indent{} F 2016 accelerated @a[href: "http://www.ccs.neu.edu/course/cs2500accelf16/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs2500hfa15/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2015 honors @a[href: "http://www.ccs.neu.edu/course/cs2500f15/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500f14/index.html" target: "_blank"]{link} @instructor{Olin Shivers, Amal Ahmed, Ben Lerner} @br{}
+                     @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500sp14/index.html" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                     @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs2500f13/index.html" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed} @br{}
+                     @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/course/csu211/" target: "_blank"]{link} @instructor{Amal Ahmed}
                  }}}}}
 
          @div[class: "pn-separator-img-2-short"]
