@@ -3,6 +3,10 @@
           "publication-data.rkt"
           "templates.rkt")
 
+@;; NOTE: For now, the policy is that a paper should be on this page if one of
+@;; the authors was a member of the lab when it was published (although many of
+@;; the older papers have not followed this policy).
+
 @(define OOPSLA "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)")
 @(define PLDI "Programming Language Design and Implementation (PLDI)")
 @(define ICFP "International Conference on Functional Programming (ICFP)")
