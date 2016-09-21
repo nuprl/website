@@ -37,10 +37,20 @@
 @(define seminars
    (splice
     (seminar
+     "LaCasa: Lightweight Affinity and Object Capabilities in Scala"
+     "Philipp Haller"
+     "http://www.csc.kth.se/~phaller/"
+     "KTH Royal Institute of Technology"
+     (datetime 2016 09 29 12 30)
+     "WVH 366"
+     @list{@p{Aliasing is a known source of challenges in the context of imperative object-oriented languages, which have led to important advances in type systems for aliasing control. However, their large-scale adoption has turned out to be a surprisingly difficult challenge. While new language designs show promise, they do not address the need of aliasing control in existing languages.}
+           @p{This paper presents a new approach to isolation and uniqueness in an existing, widely-used language, Scala. The approach is unique in the way it addresses some of the most important obstacles to the adoption of type system extensions for aliasing control. First, adaptation of existing code requires only a minimal set of annotations. Only a single bit of information is required per class. Surprisingly, the paper shows that this information can be provided by the object-capability discipline, widely-used in program security. We formalize our approach as a type system and prove key soundness theorems. The type system is implemented for the full Scala language, providing, for the first time, a sound integration with Scala’s local type inference. Finally, we empirically evaluate the conformity of existing Scala open-source code on a corpus of over 75,000 LOC.}}
+     @list{@p{Philipp Haller is an assistant professor in the theoretical computer science group at KTH Royal Institute of Technology, the leading technical university in Sweden. His main research interests are programming languages, type systems, concurrent, and distributed programming. Philipp is co-author of Scala's async/await extension for asynchronous computations, and one of the lead designers of Scala's futures and promises library. As main author of the book "Actors in Scala," he created Scala's first widely-used actors library. Philipp was co-chair of the 2013 and 2014 editions of the Scala Workshop, and co-chair of the 2015 ACM SIGPLAN Scala Symposium. Previously, he has held positions at Typesafe, Stanford University, and EPFL. He received a PhD in computer science from EPFL in 2010.}})
+    (seminar
      "Performance in Julia"
      "Jan Vitek"
-     "Northeastern University"
      "http://janvitek.org/"
+     "Northeastern University"
      (datetime 2016 09 15 12 30)
      "WVH 366"
      @list{@p{Julia, like R, is a dynamic language for scientific computing but, unlike R, it was explicitly designed to deliver performance competitive to traditional batch-compiled languages. To achieve this Julia's designers made a number of unusual choices, including the presence of a set of type annotations that are used for dispatching methods and speed up code, but not for type-checking. The result is that many Julia programs are competitive with equivalent programs written in C. This talk gives a brief overview of the key points of Julia's design and considers whether similar ideas could be adopted in R.}}
@@ -49,8 +59,8 @@
     (seminar
      "A Categorical Perspective on Type Refinement"
      "Noam Zeilberger"
-     "Inria Ecole Polytechnique"
      "http://noamz.org/"
+     "Inria Ecole Polytechnique"
      (datetime 2016 07 13 11 45)
      "WVH 366"
      @list{
