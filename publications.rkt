@@ -32,6 +32,11 @@
 @(define MSCS "Mathematical Structures in Computer Science (MSCS)")
 @(define LICS "Logic in Computer Science (LICS)")
 @(define DBPL "Database Programming Languages (DBPL)")
+@(define TCS "Theoretical Computer Science")
+@(define VMCAI "Verification, Model Checking, and Abstract Interpretation (VMCAI)")
+@(define HOSC "Higher-Order and Symbolic Computation")
+@(define LFP "LISP and Functional Programming (LFP)")
+@(define SOCP "Science of Computer Programming")
 
 @(define old-site-pubs
    (list
@@ -385,7 +390,7 @@
                   "http://www.ccs.neu.edu/racket/pubs/icfp07-fyff.pdf")
      (publication "Implementation and Use of the PLT Scheme Web Server"
                   "Shriram Krishnamurthi, Peter Walton Hopkins, Jay McCarthy, Paul T. Graunke, Greg Pettyjohn, Matthias Felleisen"
-                  "Journal of Higher-Order and Symbolic Computing"
+                  HOSC
                   2007
                   "http://www.ccs.neu.edu/racket/pubs/hosc07-sk-mf.pdf")))
 
@@ -491,12 +496,12 @@
    (list
     (publication "Concrete Types for TypeScript"
                  "Gregor Richards, Francesco Zappa Nardelli, and Jan Vitek"
-                 "European Conference on Object-Oriented Programming (ECOOP)"
+                 ECOOP
                  2015
                  "http://dx.doi.org/10.4230/LIPIcs.ECOOP.2015.76")
     (publication "Cooking the Books: Formalizing JMM Implementation Recipes"
                  "Gustavo Petri, Jan Vitek, and Suresh Jagannathan"
-                 "European Conference on Object-Oriented Programming (ECOOP)"
+                 ECOOP
                  2015
                  "http://dx.doi.org/10.4230/LIPIcs.ECOOP.2015.445")
     (publication "Repeatability, reproducibility and rigor in CS research"
@@ -506,7 +511,7 @@
                  "http://doi.acm.org/10.1145/2792434.2792446")
     (publication "Atomicity Refinement for Verified Compilation"
                  "Suresh Jagannathan, Vincent Laporte, Gustavo Petri, David Pichardie, and Jan Vitek"
-                 "ACM Trans. Program. Lang. Syst"
+                 TOPLAS
                  2014
                  "http://doi.acm.org/10.1145/2601339")
     (publication "M3: high-performance memory management from off-the-shelf components"
@@ -516,7 +521,7 @@
                  "http://doi.acm.org/10.1145/2602988.2602995")
     (publication "Atomicity refinement for verified compilation"
                  "Suresh Jagannathan, Gustavo Petri, Jan Vitek, David Pichardie, and Vincent Laporte"
-                 "Programming Language Design and Implementation (PLDI)"
+                 PLDI
                  2014
                  "http://doi.acm.org/10.1145/2594291.2594346")
     (publication "A fast abstract syntax tree interpreter for R"
@@ -534,7 +539,7 @@
    (list
     (publication "An Array-Oriented Language with Static Rank Polymorphism"
                  "Justin Slepak, Olin Shivers, and Panagiotis Manolios"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  2014
                  "http://dx.doi.org/10.1007/978-3-642-54833-8_3")
     (publication "CFA2: a Context-Free Approach to Control-Flow Analysis"
@@ -544,12 +549,12 @@
                  "http://www.ccs.neu.edu/home/dimvar/papers/cfa2-NU-CCIS-10-01.pdf")
     (publication "Modular rollback through control logging: a pair of twin functional pearls"
                  "Olin Shivers and Aaron Joseph Turon"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2011
                  "http://doi.acm.org/10.1145/2034773.2034783")
     (publication "Pushdown flow analysis of first-class control"
                  "Dimitrios Vardoulakis and Olin Shivers"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2011
                  "http://www.ccs.neu.edu/home/dimvar/papers/cfa2-1st-class.pdf")
     (publication "Ordering multiple continuations on the stack"
@@ -559,22 +564,22 @@
                  "http://www.ccs.neu.edu/home/dimvar/papers/rcps-NU-CCIS-11-01.pdf")
     (publication "Bottom-up beta-reduction: Uplinks and lambda-DAGs"
                  "Olin Shivers and Mitchell Wand"
-                 "Fundam. Inform"
+                 "Fundamenta Informaticae"
                  2010
                  "http://dx.doi.org/10.3233/FI-2010-328")
     (publication "CFA2: A Context-Free Approach to Control-Flow Analysis"
                  "Dimitrios Vardoulakis and Olin Shivers"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  2010
                  "http://dx.doi.org/10.1007/978-3-642-11957-6_30")
     (publication "Building language towers with Ziggurat"
                  "David Fisher and Olin Shivers"
-                 "J. Funct. Program"
+                 JFP
                  2008
                  "http://dx.doi.org/10.1017/S0956796808006928")
     (publication "Exploiting reachability and cardinality in higher-order flow analysis"
                  "Matthew Might and Olin Shivers"
-                 "J. Funct. Program"
+                 JFP
                  2008
                  "http://dx.doi.org/10.1017/S0956796808006941")
     (publication "Why teach programming languages"
@@ -589,37 +594,37 @@
                  "http://dx.doi.org/10.1007/978-3-540-88479-8_56")
     (publication "Analyzing the environment structure of higher-order languages using frame strings"
                  "Matthew Might and Olin Shivers"
-                 "Theor. Comput. Sci"
+                 TCS
                  2007
                  "http://dx.doi.org/10.1016/j.tcs.2006.12.031")
     (publication "Model Checking Via GammaCFA"
                  "Matthew Might, Benjamin Chambers, and Olin Shivers"
-                 "VMCAI"
+                 VMCAI
                  2007
                  "http://dx.doi.org/10.1007/978-3-540-69738-1_4")
     (publication "Multi-return function call"
                  "Olin Shivers and David Fisher"
-                 "J. Funct. Program"
+                 JFP
                  2006
                  "http://dx.doi.org/10.1017/S0956796806006009")
     (publication "Improving flow analyses via GammaCFA: abstract garbage collection and counting"
                  "Matthew Might and Olin Shivers"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2006
                  "http://doi.acm.org/10.1145/1159803.1159807")
     (publication "Static analysis for syntax objects"
                  "David Fisher and Olin Shivers"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2006
                  "http://doi.acm.org/10.1145/1159803.1159817")
     (publication "Continuations and transducer composition"
                  "Olin Shivers and Matthew Might"
-                 "Programming Language Design and Implementation (PLDI)"
+                 PLDI
                  2006
                  "http://doi.acm.org/10.1145/1133981.1134016")
     (publication "Environment analysis via Delta CFA"
                  "Matthew Might and Olin Shivers"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  2006
                  "http://doi.acm.org/10.1145/1111037.1111049")))
 
@@ -627,12 +632,12 @@
    (list
     (publication "Romeo: a system for more flexible binding-safe programming"
                  "Paul Stansifer and Mitchell Wand"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2014
                  "http://doi.acm.org/10.1145/2628136.2628162")
     (publication "A Resource Analysis of the π-calculus"
                  "Aaron Joseph Turon and Mitchell Wand"
-                 "Electr. Notes Theor. Comput. Sci"
+                 "Mathematical Foundations of Programming Semantics (MFPS)"
                  2011
                  "http://dx.doi.org/10.1016/j.entcs.2011.09.028")
     (publication "Parsing reflective grammars"
@@ -642,12 +647,12 @@
                  "http://doi.acm.org/10.1145/1988783.1988793")
     (publication "A separation logic for refining concurrent objects"
                  "Aaron Joseph Turon and Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  2011
                  "http://doi.acm.org/10.1145/1926385.1926415")
     (publication "The Higher-Order Aggregate Update Problem"
                  "Christos Dimoulas and Mitchell Wand"
-                 "VMCAI"
+                 VMCAI
                  2009
                  "http://dx.doi.org/10.1007/978-3-540-93900-9_8")
     (publication "Essentials of programming languages (3. ed.)"
@@ -667,52 +672,52 @@
                  "http://www.ccs.neu.edu/home/dimvar/papers/orc-coord.pdf")
     (publication "A Theory of Hygienic Macros"
                  "David Herman and Mitchell Wand"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  2008
                  "http://dx.doi.org/10.1007/978-3-540-78739-6_4")
     (publication "On the correctness of the Krivine machine"
                  "Mitchell Wand"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  2007
                  "http://dx.doi.org/10.1007/s10990-007-9019-8")
     (publication "Bisimulations for Untyped Imperative Objects"
                  "Vasileios Koutavas and Mitchell Wand"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  2006
                  "http://dx.doi.org/10.1007/11693024_11")
     (publication "Small bisimulations for reasoning about higher-order imperative programs"
                  "Vasileios Koutavas and Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  2006
                  "http://doi.acm.org/10.1145/1111037.1111050")
     (publication "Selectors Make Set-Based Analysis Too Hard"
                  "Philippe Meunier, Robert Bruce Findler, Paul Steckler, and Mitchell Wand"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  2005
                  "http://dx.doi.org/10.1007/s10990-005-4876-5")
     (publication "A semantics for advice and dynamic join points in aspect-oriented programming"
                  "Mitchell Wand, Gregor Kiczales, and Christopher Dutchyn"
-                 "ACM Trans. Program. Lang. Syst"
+                 TOPLAS
                  2004
                  "http://doi.acm.org/10.1145/1018203.1018208")
     (publication "Relating models of backtracking"
                  "Mitchell Wand and Dale Vaillancourt"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2004
                  "http://doi.acm.org/10.1145/1016850.1016861")
     (publication "CPS transformation of flow information"
                  "Jens Palsberg and Mitchell Wand"
-                 "J. Funct. Program"
+                 JFP
                  2003
                  "http://dx.doi.org/10.1017/S0956796802004513")
     (publication "Understanding aspects: extended abstract"
                  "Mitchell Wand"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2003
                  "http://doi.acm.org/10.1145/944705.944732")
     (publication "A Modular, Extensible Proof Method for Small-Step Flow Analyses"
                  "Mitchell Wand and Galen B. Williamson"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  2002
                  "http://dx.doi.org/10.1007/3-540-45927-8_16")
     (publication "Essentials of programming languages (2. ed.)"
@@ -722,7 +727,7 @@
                  #f)
     (publication "Set constraints for destructive array update optimization"
                  "Mitchell Wand and William D. Clinger"
-                 "J. Funct. Program"
+                 JFP
                  2001
                  "http://dx.doi.org/10.1017/S0956796801003938")
     (publication "A Semantics for Advice and Dynamic Join Points in Aspect-Oriented Programming"
@@ -742,27 +747,27 @@
                  "http://doi.acm.org/10.1145/340855.341042")
     (publication "Continuation-Based Multiprocessing Revisited"
                  "Mitchell Wand"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  1999
                  "http://dx.doi.org/10.1023/A:1010049917750")
     (publication "Continuation-Based Multiprocessing"
                  "Mitchell Wand"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  1999
                  "http://dx.doi.org/10.1023/A:1010093700911")
     (publication "Trampolined Style"
                  "Steven E. Ganz, Daniel P. Friedman, and Mitchell Wand"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  1999
                  "http://doi.acm.org/10.1145/317636.317779")
     (publication "A Language for Specifying Recursive Traversals of Object Structures"
                  "Johan Ovlinger and Mitchell Wand"
-                 "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)"
+                 OOPSLA
                  1999
                  "http://doi.acm.org/10.1145/320384.320391")
     (publication "Constraint Systems for Useless Variable Elimination"
                  "Mitchell Wand and Igor Siveroni"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1999
                  "http://doi.acm.org/10.1145/292540.292567")
     (publication "The Theory of Fexprs is Trivial"
@@ -772,7 +777,7 @@
                  #f)
     (publication "Revised Report on the Algorithmic Language Scheme"
                  "Harold Abelson, R. Kent Dybvig, Christopher T. Haynes, Guillermo Juan Rozas, N. I. Adams IV, Daniel P. Friedman, Eugene E. Kohlbecker, Guy L. Steele Jr., David H. Bartley, Robert H. Halstead Jr., Don Oxley, Gerald J. Sussman, G. Brooks, Chris Hanson, Kent M. Pitman, and Mitchell Wand"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  1998
                  "http://dx.doi.org/10.1023/A:1010051815785")
     (publication "Set Constraints for Destructive Array Update Optimization"
@@ -782,17 +787,17 @@
                  #f)
     (publication "Type Inference with Non-Structural Subtyping"
                  "Jens Palsberg, Mitchell Wand, and Patrick O'Keefe"
-                 "Formal Asp. Comput"
+                 "Formal Aspects of Computing"
                  1997
                  "http://dx.doi.org/10.1007/BF01212524")
     (publication "Lightweight Closure Conversion"
                  "Paul Steckler and Mitchell Wand"
-                 "ACM Trans. Program. Lang. Syst"
+                 TOPLAS
                  1997
                  "http://doi.acm.org/10.1145/239912.239915")
     (publication "Denotational Semantics Using an Operationally-Based Term Model"
                  "Mitchell Wand and Gregory T. Sullivan"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1997
                  "http://doi.acm.org/10.1145/263699.263755")
     (publication "Untyped Lambda-Calculus with Input-Output"
@@ -807,7 +812,7 @@
                  "http://dx.doi.org/10.1007/3-540-61052-9_49")
     (publication "Modeling Subobject-based Inheritance"
                  "Jonathan G. Rossie Jr., Daniel P. Friedman, and Mitchell Wand"
-                 "European Conference on Object-Oriented Programming (ECOOP)"
+                 ECOOP
                  1996
                  "http://dx.doi.org/10.1007/BFb0053065")
     (publication "VLISP: A Verified Implementation of Scheme"
@@ -832,12 +837,12 @@
                  "http://doi.acm.org/10.1145/224164.224193")
     (publication "Conditional Lambda-Theories and the Verification of Static Properties of Programs"
                  "Mitchell Wand and Zheng-Yu Wang"
-                 "Inf. Comput"
+                 "Information and Computation"
                  1994
                  "http://dx.doi.org/10.1006/inco.1994.1072")
     (publication "Selective and Lightweight Closure Conversion"
                  "Mitchell Wand and Paul Steckler"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1994
                  "http://doi.acm.org/10.1145/174675.178044")
     (publication "Selective Thunkification"
@@ -847,12 +852,12 @@
                  "http://dx.doi.org/10.1007/3-540-58485-4_39")
     (publication "Specifying the Correctness of Binding-Time Analysis"
                  "Mitchell Wand"
-                 "J. Funct. Program"
+                 JFP
                  1993
                  "http://dx.doi.org/10.1017/S0956796800000782")
     (publication "Specifying the Correctness of Binding-Time Analysis"
                  "Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1993
                  "http://doi.acm.org/10.1145/158511.158614")
     (publication "Type Reconstruction with Recursive Types and Atomic Subtyping"
@@ -867,22 +872,22 @@
                  #f)
     (publication "Type Inference for Partial Types is Decidable"
                  "Patrick O'Keefe and Mitchell Wand"
-                 "European Symposium on Programming (ESOP)"
+                 ESOP
                  1992
                  "http://dx.doi.org/10.1007/3-540-55253-7_24")
     (publication "Proving the Correctness of Storage Representations"
                  "Mitchell Wand and Dino Oliva"
-                 "LISP and Functional Programming"
+                 LFP
                  1992
                  "http://doi.acm.org/10.1145/141471.141528")
     (publication "Type Inference for Record Concatenation and Multiple Inheritance"
                  "Mitchell Wand"
-                 "Inf. Comput"
+                 "Information and Computation"
                  1991
                  "http://dx.doi.org/10.1016/0890-5401(91)90050-C")
     (publication "Correctness of Static Flow Analysis in Continuation Semantics"
                  "Margaret Montenyohl and Mitchell Wand"
-                 "Sci. Comput. Program"
+                 SOCP
                  1991
                  "http://dx.doi.org/10.1016/0167-6423(91)90021-O")
     (publication "Automatic Dimensional Inference"
@@ -892,22 +897,22 @@
                  #f)
     (publication "Correctness of Procedure Representations in Higher-Order Assembly Language"
                  "Mitchell Wand"
-                 "MFPS"
+                 "Mathematical Foundations of Programming Semantics (MFPS)"
                  1991
                  "http://dx.doi.org/10.1007/3-540-55511-0_15")
     (publication "A Short Proof of the Lexical Addressing Algorithm"
                  "Mitchell Wand"
-                 "Inf. Process. Lett"
+                 "Information Processing Letters"
                  1990
                  "http://dx.doi.org/10.1016/0020-0190(90)90165-T")
     (publication "Conditional Lambda-Theories and the Verification of Static Properties of Programs"
                  "Mitchell Wand and Zheng-Yu Wang"
-                 "Logic in Computer Science (LICS)"
+                 LICS
                  1990
                  "http://dx.doi.org/10.1109/LICS.1990.113758")
     (publication "Incorporating Static Analysis in a Combinator-Based Compiler"
                  "Margaret Montenyohl and Mitchell Wand"
-                 "Inf. Comput"
+                 "Information and Computation"
                  1989
                  "http://dx.doi.org/10.1016/0890-5401(89)90052-7")
     (publication "On the Complexity of Type Inference with Coercion"
@@ -917,7 +922,7 @@
                  "http://doi.acm.org/10.1145/99370.99394")
     (publication "Type Inference for Record Concatenation and Multiple Inheritance"
                  "Mitchell Wand"
-                 "Logic in Computer Science (LICS)"
+                 LICS
                  1989
                  "http://dx.doi.org/10.1109/LICS.1989.39162")
     (publication "The Mystery of the Tower Revealed: A Nonreflective Description of the Reflective Tower"
@@ -927,47 +932,47 @@
                  #f)
     (publication "Abstract Continuations: A Mathematical Semantics for Handling Full Jumps"
                  "Matthias Felleisen, Mitchell Wand, Daniel P. Friedman, and Bruce F. Duba"
-                 "LISP and Functional Programming"
+                 LFP
                  1988
                  "http://doi.acm.org/10.1145/62678.62684")
     (publication "Corrigendum: Complete Type Inference for Simple Objects"
                  "Mitchell Wand"
-                 "Logic in Computer Science (LICS)"
+                 LICS
                  1988
                  "http://dx.doi.org/10.1109/LICS.1988.5111")
     (publication "Correct Flow Analysis in Continuation Semantics"
                  "Margaret Montenyohl and Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1988
                  "http://doi.acm.org/10.1145/73560.73578")
     (publication "Linear Future Semantics and Its Implementation"
                  "Stefan K and Mitchell Wand"
-                 "Sci. Comput. Program"
+                 SOCP
                  1987
                  "http://dx.doi.org/10.1016/0167-6423(87)90005-0")
     (publication "Complete Type Inference for Simple Objects"
                  "Mitchell Wand"
-                 "Logic in Computer Science (LICS)"
+                 LICS
                  1987
                  #f)
     (publication "Macro-by-Example: Deriving Syntactic Transformations from their Specifications"
                  "Eugene E. Kohlbecker and Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1987
                  "http://doi.acm.org/10.1145/41625.41632")
     (publication "Obtaining Coroutines with Continuations"
                  "Christopher T. Haynes, Daniel P. Friedman, and Mitchell Wand"
-                 "Comput. Lang"
+                 "Computer Languages"
                  1986
                  "http://dx.doi.org/10.1016/0096-0551(86)90007-X")
     (publication "The Mystery of the Tower Revealed: A Non-Reflective Description of the Reflective Tower"
                  "Mitchell Wand and Daniel P. Friedman"
-                 "LISP and Functional Programming"
+                 LFP
                  1986
                  #f)
     (publication "Finding the Source of Type Errors"
                  "Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1986
                  "http://doi.acm.org/10.1145/512644.512648")
     (publication "Continuation Semantics in Typed Lambda-Calculi (Summary)"
@@ -982,7 +987,7 @@
                  "http://dx.doi.org/10.1007/3-540-16446-4_17")
     (publication "Embedding Type Structure in Semantics"
                  "Mitchell Wand"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1985
                  "http://doi.acm.org/10.1145/318593.318602")))
 
@@ -990,17 +995,17 @@
    (list
     (publication "Bounded-latency regional garbage collection"
                  "Felix S. Klock II and William D. Clinger"
-                 "Dynamic Languages Symposium (DLS)"
+                 DLS
                  2011
                  "http://doi.acm.org/10.1145/2047849.2047859")
     (publication "Linear combinations of radioactive decay models for generational garbage collection"
                  "William D. Clinger and Fabio V. Rojas"
-                 "Sci. Comput. Program"
+                 SOCP
                  2006
                  "http://dx.doi.org/10.1016/j.scico.2006.02.005")
     (publication "An experimental study of renewal-older-first garbage collection"
                  "Lars Thomas Hansen and William D. Clinger"
-                 "International Conference on Functional Programming (ICFP)"
+                 ICFP
                  2002
                  "http://doi.acm.org/10.1145/581478.581502")
     (publication "Concurrent Remembered Set Refinement in Generational Garbage Collection"
@@ -1010,27 +1015,27 @@
                  "http://www.usenix.org/publications/library/proceedings/javavm02/detlefs.html")
     (publication "Implementation Strategies for First-Class Continuations"
                  "William D. Clinger, Anne Hartheimer, and Eric Ost"
-                 "Higher-Order and Symbolic Computation"
+                 HOSC
                  1999
                  "http://dx.doi.org/10.1023/A:1010016816429")
     (publication "Proper Tail Recursion and Space Efficiency"
                  "William D. Clinger"
-                 "Programming Language Design and Implementation (PLDI)"
+                 PLDI
                  1998
                  "http://doi.acm.org/10.1145/277650.277719")
     (publication "Generational Garbage Collection and the Radioactive Decay Model"
                  "William D. Clinger and Lars Thomas Hansen"
-                 "Programming Language Design and Implementation (PLDI)"
+                 PLDI
                  1997
                  "http://doi.acm.org/10.1145/258915.258925")
     (publication "Lambda, the Ultimate Label or a Simple Optimizing Compiler for Scheme"
                  "William D. Clinger and Lars Thomas Hansen"
-                 "LISP and Functional Programming"
+                 LFP
                  1994
                  "http://doi.acm.org/10.1145/182409.156786")
     (publication "Parallel Destructive Updating in Strict Functional Languages"
                  "A. V. S. Sastry and William D. Clinger"
-                 "LISP and Functional Programming"
+                 LFP
                  1994
                  "http://doi.acm.org/10.1145/182409.182486")
     (publication "Order-of-evaluation Analysis for Destructive Updates in Strict Functional Languages with Flat Aggregates"
@@ -1040,12 +1045,12 @@
                  "http://doi.acm.org/10.1145/165180.165222")
     (publication "Macros That Work"
                  "William D. Clinger and Jonathan Rees"
-                 "Principles of Programming Languages (POPL)"
+                 POPL
                  1991
                  "http://doi.acm.org/10.1145/99583.99607")
     (publication "How to Read Floating-Point Numbers Accurately"
                  "William D. Clinger"
-                 "Programming Language Design and Implementation (PLDI)"
+                 PLDI
                  1990
                  "http://doi.acm.org/10.1145/93542.93557")
     (publication "How to read floating point numbers accurately (with retrospective)"
@@ -1055,7 +1060,7 @@
                  "http://doi.acm.org/10.1145/989393.989430")
     (publication "Implementation Strategies for Continuations"
                  "William D. Clinger, Anne Hartheimer, and Eric Ost"
-                 "LISP and Functional Programming"
+                 LFP
                  1988
                  "http://doi.acm.org/10.1145/62678.62692")
     (publication "Alternative Semantics for McCarthy's amb"
@@ -1065,7 +1070,7 @@
                  "http://dx.doi.org/10.1007/3-540-15670-4_22")
     (publication "The Scheme 311 Compiler: An Exercise in Denotational Semantics"
                  "William D. Clinger"
-                 "LISP and Functional Programming"
+                 LFP
                  1984
                  #f)
     (publication "Nondeterministic Call by Need is Neither Lazy Nor by Name"
