@@ -659,7 +659,7 @@
                  "Daniel P. Friedman and Mitchell Wand"
                  "MIT Press"
                  2008
-                 #f)
+                 "http://www.eopl3.com/")
     (publication "Programming languages: fundamental concepts for expanding and disciplining the mind"
                  "Mitchell Wand and Daniel P. Friedman"
                  "SIGPLAN Notices"
@@ -724,7 +724,7 @@
                  "Daniel P. Friedman, Mitchell Wand, and Christopher T. Haynes"
                  "MIT Press"
                  2001
-                 #f)
+                 "http://www.cs.indiana.edu/eopl/")
     (publication "Set constraints for destructive array update optimization"
                  "Mitchell Wand and William D. Clinger"
                  JFP
@@ -774,7 +774,7 @@
                  "Mitchell Wand"
                  "Lisp and Symbolic Computation"
                  1998
-                 #f)
+                 "http://www.ccs.neu.edu/home/wand/papers/fexprs.ps")
     (publication "Revised Report on the Algorithmic Language Scheme"
                  "Harold Abelson, R. Kent Dybvig, Christopher T. Haynes, Guillermo Juan Rozas, N. I. Adams IV, Daniel P. Friedman, Eugene E. Kohlbecker, Guy L. Steele Jr., David H. Bartley, Robert H. Halstead Jr., Don Oxley, Gerald J. Sussman, G. Brooks, Chris Hanson, Kent M. Pitman, and Mitchell Wand"
                  HOSC
@@ -784,7 +784,7 @@
                  "Mitchell Wand and William D. Clinger"
                  "ICCL"
                  1998
-                 #f)
+                 "http://www.ccs.neu.edu/home/wand/papers/jfp-01.ps")
     (publication "Type Inference with Non-Structural Subtyping"
                  "Jens Palsberg, Mitchell Wand, and Patrick O'Keefe"
                  "Formal Aspects of Computing"
@@ -819,12 +819,12 @@
                  "Joshua D. Guttman, John D. Ramsdell, and Mitchell Wand"
                  "Lisp and Symbolic Computation"
                  1995
-                 #f)
+                 "http://link.springer.com/article/10.1007/BF01128406")
     (publication "The VLISP Verified PreScheme Compiler"
                  "Dino Oliva, John D. Ramsdell, and Mitchell Wand"
                  "Lisp and Symbolic Computation"
                  1995
-                 #f)
+                 "http://link.springer.com/article/10.1007/BF01128408")
     (publication "Strong Normalization with Non-Structural Subtyping"
                  "Mitchell Wand, Patrick O'Keefe, and Jens Palsberg"
                  "Mathematical Structures in Computer Science"
@@ -869,7 +869,7 @@
                  "Daniel P. Friedman, Mitchell Wand, and Christopher T. Haynes"
                  "MIT Press"
                  1992
-                 #f)
+                 "http://www.cs.indiana.edu/eip/eopl.html")
     (publication "Type Inference for Partial Types is Decidable"
                  "Patrick O'Keefe and Mitchell Wand"
                  ESOP
@@ -894,7 +894,7 @@
                  "Mitchell Wand and Patrick O'Keefe"
                  "Computational Logic - Essays in Honor of Alan Robinson"
                  1991
-                 #f)
+                 "http://www.ccs.neu.edu/home/wand/papers/dimensions.ps")
     (publication "Correctness of Procedure Representations in Higher-Order Assembly Language"
                  "Mitchell Wand"
                  "Mathematical Foundations of Programming Semantics (MFPS)"
@@ -929,7 +929,7 @@
                  "Mitchell Wand and Daniel P. Friedman"
                  "Lisp and Symbolic Computation"
                  1988
-                 #f)
+                 "https://cs.au.dk/%7Ehosc/local/LaSC-1-1-pp11-37.pdf")
     (publication "Abstract Continuations: A Mathematical Semantics for Handling Full Jumps"
                  "Matthias Felleisen, Mitchell Wand, Daniel P. Friedman, and Bruce F. Duba"
                  LFP
@@ -954,7 +954,7 @@
                  "Mitchell Wand"
                  LICS
                  1987
-                 #f)
+                 "http://www.ccs.neu.edu/home/wand/papers/wand-lics-87.pdf")
     (publication "Macro-by-Example: Deriving Syntactic Transformations from their Specifications"
                  "Eugene E. Kohlbecker and Mitchell Wand"
                  POPL
@@ -969,7 +969,7 @@
                  "Mitchell Wand and Daniel P. Friedman"
                  LFP
                  1986
-                 #f)
+                 "https://www.cs.indiana.edu/ftp/techreports/TR196.pdf")
     (publication "Finding the Source of Type Errors"
                  "Mitchell Wand"
                  POPL
@@ -1072,12 +1072,12 @@
                  "William D. Clinger"
                  LFP
                  1984
-                 #f)
+                 "http://dl.acm.org/citation.cfm?id=802052")
     (publication "Nondeterministic Call by Need is Neither Lazy Nor by Name"
                  "William D. Clinger"
                  "Symposium on LISP and Functional Programming"
                  1982
-                 #f)))
+                 "http://dl.acm.org/citation.cfm?id=802154")))
 
 @(define publications
    (flatten (list mf-pubs
