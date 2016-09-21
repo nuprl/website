@@ -645,11 +645,6 @@
                  "Principles of Programming Languages (POPL)"
                  2011
                  "http://doi.acm.org/10.1145/1926385.1926415")
-    (publication "Bottom-up beta-reduction: Uplinks and lambda-DAGs"
-                 "Olin Shivers and Mitchell Wand"
-                 "Fundam. Inform"
-                 2010
-                 "http://dx.doi.org/10.3233/FI-2010-328")
     (publication "The Higher-Order Aggregate Update Problem"
                  "Christos Dimoulas and Mitchell Wand"
                  "VMCAI"
