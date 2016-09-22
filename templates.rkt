@@ -121,7 +121,7 @@
           @br{}
           @|title|
           @br{}
-          @a[href: "mailto:@|e-mail|" e-mail]
+          @a[href: (format "mailto:~a" e-mail) e-mail]
           @br{}
           @a[href: website website]}
         @div[class: "col-md-5 pn-muted col-md-offset-3"]{

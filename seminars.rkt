@@ -9,18 +9,18 @@
    (set! id (add1 id))
    @list[
      @div[id: @format["seminar-~a" id] class: "col-md-12 pn-seminar compact"]{
-       @script[type: "text/javascript"]|{
+       @script/inline[type: "text/javascript"]{
          if (new Date() >= new Date("@(datetime->iso8601 date)")) {
            document.getElementById("seminar-@|id|").classList.add('finished');
          }
-       }|
+       }
        @div[class: "pn-main-informations"]{
          @a[onclick: "return false;" class: "pn-title" title]
          @br[]
          @span[class: "pn-name" speaker]
          @br[]
          @span[class: "pn-affiliation" aff]
-         @a[class: "pn-url" target: "_blank" href: "@link" link]
+         @a[class: "pn-url" target: "_blank" href: link link]
          @span[class: "pn-datetime" (~t date "d MMMM, y h:mma")]
          @span[class: "pn-room" room]}
        @div[class: "pn-abstract-bio"]{
