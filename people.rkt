@@ -179,33 +179,6 @@
             I work on the design and implementation of programming languages. I led the implementation of the first real-time Java virtual machine to be flight-tested. With Noble and Potter, I proposed what became known as Ownership Types.  I tried to understand JavaScript by dynamic analysis and am now looking at supporting scalable data analysis in R.
           }
 
-          @person[#:name "Frank Tip"
-                  #:title "Professor"
-                  #:e-mail "tip@acm.org"
-                  #:website "http://www.franktip.org/"
-                  #:history @list[
-                  "Joined Northeastern, 2016"
-                  "Joined Samsung Research America, 2014"
-                  "Joined University of Waterloo, 2012"
-                  "Joined IBM T.J. Watson Research Center, 1995"
-                  "PhD University of Amsterdam, 1995"
-                  ]
-                  #:img "frank_tip.jpg"]{
-            My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
-          }
-
-          @person[#:name "Heather Miller"
-                  #:title "Assistant Professor"
-                  #:e-mail "heather@ccs.neu.edu"
-                  #:website "http://heather.miller.am"
-                  #:history @list[
-                  "Joined Northeastern, 2016"
-                  "PhD, EPFL, 2015"
-                  ]
-                  #:img "heather_miller.jpg"]{
-            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
-          }
-
           @person[#:name "Paley Li"
                  #:title "Post-doctoral researcher"
                  #:e-mail "pa.li@neu.edu"
@@ -237,6 +210,33 @@
                     "PhD, University of Nice Sophia-Antipolis, 2013"]
                   #:img "fillip_krikava.jpg"]{
             Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
+          }
+
+          @person[#:name "Frank Tip"
+                  #:title "Professor"
+                  #:e-mail "tip@acm.org"
+                  #:website "http://www.franktip.org/"
+                  #:history @list[
+                  "Joined Northeastern, 2016"
+                  "Joined Samsung Research America, 2014"
+                  "Joined University of Waterloo, 2012"
+                  "Joined IBM T.J. Watson Research Center, 1995"
+                  "PhD University of Amsterdam, 1995"
+                  ]
+                  #:img "frank_tip.jpg"]{
+            My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
+          }
+
+          @person[#:name "Heather Miller"
+                  #:title "Assistant Professor"
+                  #:e-mail "heather@ccs.neu.edu"
+                  #:website "http://heather.miller.am"
+                  #:history @list[
+                  "Joined Northeastern, 2016"
+                  "PhD, EPFL, 2015"
+                  ]
+                  #:img "heather_miller.jpg"]{
+            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
           }
         }
 
