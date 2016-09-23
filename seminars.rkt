@@ -37,6 +37,17 @@
 @(define seminars
    (splice
     (seminar
+     "Behavioral Non-Portability in Decision-Making Programs"
+     "Thomas Wahl"
+     "http://www.ccs.neu.edu/home/wahl/"
+     "Northeastern University"
+     (datetime 2016 10 13 12 30)
+     "WVH 366"
+     @list{@p{The precise semantics of floating-point arithmetic programs depends on the execution platform, including the compiler and the target hardware. Such platform dependencies infringe on the highly desirable goal of software portability (which is in fact promised by heterogeneous computing frameworks like OpenCL): the same program run on the same inputs on different platforms can produce different results. In other words, portability does not guarantee reproducibility, and this is a more or less accepted state of affairs.}
+           @p{Serious doubts on the portability of numeric applications arise when differences in results are behavioral, i.e. when they lead to changes in the control flow of a program. In this talk I will first present an algorithm that takes a numeric procedure and determines whether a given input can lead to different decisions depending merely on how the arithmetic in the procedure is compiled and executed. I will then show how this algorithm can be used in static and dynamic analyses of programs, to estimate their numeric stability. I will illustrate the results on examples characteristic of numeric computing where control flow divergence actually occurs across different execution platforms.}
+           @p{Joint with Yijia Gu, Mahsa Bayati, and Miriam Leeser, Northeastern University, Boston, USA}}
+     @list{@p{Thomas Wahl joined the faculty of Northeastern University in 2011. His research concerns the reliability (whatever that means) of complex computing systems. Two domains notorious for their fragility are concurrency and numerical computing. With colleagues, Wahl has investigated how floating-point arithmetic can "hijack" a program's computation when run on non-standard architectures, such as heterogeneous and custom-made embedded platforms. You will witness some hijacking attempts in the talk today.}})
+    (seminar
      "Concolic Testing: A Decade Later"
      "Koushik Sen"
       "https://www.cs.berkeley.edu/~ksen/"
