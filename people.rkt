@@ -115,22 +115,22 @@
           }
 
           @person[#:name "Amal Ahmed"
-                  #:title "Professor"
+                  #:title "Assistant Professor"
                   #:e-mail "amal@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/amal"
                   #:history @list[
                     "Joined Northeastern, 2011"
                     "Joined Indiana University, 2009"
                     "Joined Toyota Technological Institute, 2006"
+                    "Joined Harvard University, 2004"
                     "PhD Princeton University, 2004"
-                    "MS Stanford University 1995"
                   ]
                   #:img "amal.jpg"]{
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
           }
 
           @person[#:name "Ryan Culpepper"
-                  #:title "Post-doctoral researcher"
+                  #:title "Research Scientist"
                   #:e-mail "ryanc@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/ryanc"
                   #:history @list[
@@ -228,7 +228,7 @@
           }
 
           @person[#:name "Heather Miller"
-                  #:title "Assistant Professor"
+                  #:title "Assistant Clinical Professor"
                   #:e-mail "heather@ccs.neu.edu"
                   #:website "http://heather.miller.am"
                   #:history @list[
