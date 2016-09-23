@@ -71,7 +71,7 @@
                   #:title "Professor"
                   #:website "http://ccs.neu.edu/home/will"
                   #:e-mail "will@ccs.neu.edu"
-                  #:history @list[@a[href: "http://www.cesura17.net/~will/Professional/"]{www.cesura17.net/~will/Professional/}]
+                  #:history @list[]
                   #:img "Clinger.jpg"]{
             I focus on the design, specification, and implementation
             of functional and higher-order programming languages. My
@@ -127,33 +127,6 @@
                   ]
                   #:img "amal.jpg"]{
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
-          }
-
-          @person[#:name "Frank Tip"
-                  #:title "Professor"
-                  #:e-mail "tip@acm.org"
-                  #:website "http://www.franktip.org/"
-                  #:history @list[
-                  "Joined Northeastern, 2016"
-                  "Joined Samsung Research America, 2014"
-                  "Joined University of Waterloo, 2012"
-                  "Joined IBM T.J. Watson Research Center, 1995"
-                  "PhD University of Amsterdam, 1995"
-                  ]
-                  #:img "frank_tip.jpg"]{
-            My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
-          }
-
-          @person[#:name "Heather Miller"
-                  #:title "Assistant Professor"
-                  #:e-mail "heather@ccs.neu.edu"
-                  #:website "http://heather.miller.am"
-                  #:history @list[
-                  "Joined Northeastern, 2016"
-                  "PhD, EPFL, 2015"
-                  ]
-                  #:img "heather_miller.jpg"]{
-            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
           }
 
           @person[#:name "Ryan Culpepper"
@@ -237,6 +210,33 @@
                     "PhD, University of Nice Sophia-Antipolis, 2013"]
                   #:img "fillip_krikava.jpg"]{
             Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
+          }
+
+          @person[#:name "Frank Tip"
+                  #:title "Professor"
+                  #:e-mail "tip@acm.org"
+                  #:website "http://www.franktip.org/"
+                  #:history @list[
+                  "Joined Northeastern, 2016"
+                  "Joined Samsung Research America, 2014"
+                  "Joined University of Waterloo, 2012"
+                  "Joined IBM T.J. Watson Research Center, 1995"
+                  "PhD University of Amsterdam, 1995"
+                  ]
+                  #:img "frank_tip.jpg"]{
+            My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
+          }
+
+          @person[#:name "Heather Miller"
+                  #:title "Assistant Professor"
+                  #:e-mail "heather@ccs.neu.edu"
+                  #:website "http://heather.miller.am"
+                  #:history @list[
+                  "Joined Northeastern, 2016"
+                  "PhD, EPFL, 2015"
+                  ]
+                  #:img "heather_miller.jpg"]{
+            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
           }
         }
 
