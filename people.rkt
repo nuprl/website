@@ -228,7 +228,7 @@
           }
 
           @person[#:name "Heather Miller"
-                  #:title "Assistant Professor"
+                  #:title "Assistant Clinical Professor"
                   #:e-mail "heather@ccs.neu.edu"
                   #:website "http://heather.miller.am"
                   #:history @list[
