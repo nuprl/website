@@ -41,7 +41,7 @@
      "Thomas Wahl"
      "http://www.ccs.neu.edu/home/wahl/"
      "Northeastern University"
-     (datetime 2016 10 13 12 30)
+     (datetime 2016 10 13 12 00)
      "WVH 366"
      @list{@p{The precise semantics of floating-point arithmetic programs depends on the execution platform, including the compiler and the target hardware. Such platform dependencies infringe on the highly desirable goal of software portability (which is in fact promised by heterogeneous computing frameworks like OpenCL): the same program run on the same inputs on different platforms can produce different results. In other words, portability does not guarantee reproducibility, and this is a more or less accepted state of affairs.}
            @p{Serious doubts on the portability of numeric applications arise when differences in results are behavioral, i.e. when they lead to changes in the control flow of a program. In this talk I will first present an algorithm that takes a numeric procedure and determines whether a given input can lead to different decisions depending merely on how the arithmetic in the procedure is compiled and executed. I will then show how this algorithm can be used in static and dynamic analyses of programs, to estimate their numeric stability. I will illustrate the results on examples characteristic of numeric computing where control flow divergence actually occurs across different execution platforms.}
@@ -52,7 +52,7 @@
      "Koushik Sen"
       "https://www.cs.berkeley.edu/~ksen/"
       "University of California, Berkeley"
-      (datetime 2016 10 06 12 30)
+      (datetime 2016 10 06 12 00)
       "WVH 366"
       @list{@p{Symbolic execution, which was introduced more than four decades ago, is typically used in software testing to explore as many different program paths as possible in a given amount of time, and for each path to generate a set of concrete input values exercising it, and check for the presence of various kinds of errors including assertion violations, uncaught exceptions, security vulnerabilities, and memory corruption.  A key limitation of classical symbolic execution is that it cannot generate useful test inputs if the program under test uses complex operations such as pointer manipulations and non-linear arithmetic operations.}
             @p{Our research on Concolic Testing (also known as DART: Directed Automated Random Testing or Dynamic Symbolic Execution) alleviated the limitations of classical symbolic execution by combining concrete execution and symbolic execution.  We demonstrated that concolic testing is an effective technique for generating high-coverage test suites and for finding deep errors in complex software applications. The success of concolic testing in scalably and exhaustively testing real-world software was a major milestone in the ad hoc world of software testing and has inspired the development of several industrial and academic automated testing and security tools.}
