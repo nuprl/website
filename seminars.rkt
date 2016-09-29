@@ -37,6 +37,17 @@
 @(define seminars
    (splice
     (seminar
+     "Implementing a Functional Language for Flix"
+     "Ming-Ho Yee"
+     "http://mhyee.com"
+     "Northeastern University"
+     (datetime 2016 10 20 12 00)
+     "WVH 366"
+     @list{@p{Static program analysis is a powerful technique for maintaining software, with applications such as compiler optimizations, code refactoring, and bug finding. Static analyzers are typically implemented in general-purpose programming languages, such as C++ and Java; however, these analyzers are complex and often difficult to understand and maintain. An alternate approach is to use Datalog, a declarative language. Implementors can express analysis constraints declaratively, which makes it easier to understand and ensure correctness of the analysis. Furthermore, the declarative nature of the analysis allows multiple, independent analyses to be easily combined.}
+           @p{Flix is a programming language for static analysis, consisting of a logic language and a functional language. The logic language is inspired by Datalog, but supports user-defined lattices. The functional language allows implementors to write functions, something which is not supported in Datalog. These two extensions, user-defined lattices and functions, allow Flix to support analyses that cannot be expressed by Datalog, such as a constant propagation analysis. Datalog is limited to constraints on relations, and although it can simulate finite lattices, it cannot express lattices over an infinite domain. Finally, another advantage of Flix is that it supports interoperability with existing tools written in general-purpose programming languages.}
+           @p{This talk provides an overview of the implementation and evaluation of the Flix functional language. The implementation involves abstract syntax tree transformations, an interpreter back-end, and a code generator back-end, and must support a number of interesting language features, such as pattern matching, first-class functions, and interoperability. The evaluation compares the interpreter and code generator back-ends in terms of correctness and performance.}}
+     @list{@p{Ming-Ho Yee is a Ph.D. student at Northeastern University. He works on programming language design and implementation with Jan Vitek. He received a Bachelor of Software Engineering from the University of Waterloo, and then continued for a Master of Mathematics in Computer Science under the supervision of Ondřej Lhoták.}})
+    (seminar
      "Behavioral Non-Portability in Decision-Making Programs"
      "Thomas Wahl"
      "http://www.ccs.neu.edu/home/wahl/"
