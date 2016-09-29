@@ -80,36 +80,25 @@ else
       }, 1000 );
     }); 
 
-    $('.pn-seminar').click(function()
+    $('.pn-seminar .pn-title').click(function()
     {
-      $this = $(this);
+      $this = $(this).closest(".pn-seminar");
 
       if( $this.hasClass( 'compact' ) )
-      { 
-        $this.find('.pn-main-informations').fadeOut( function()
-        {      
-            $this.find('br').remove();    
-            $this.find('.pn-title, .pn-url').after('<br />');  
+      {
+            $this.find('br').remove();
+            $this.find('.pn-title, .pn-url').after('<br />');
 
-            $this.find('.pn-abstract-bio').slideDown();    
-            $this.find('.pn-main-informations').fadeIn();
-            
-            $this.removeClass( 'compact' );   
-        });      
+            $this.find('.pn-abstract-bio').show();
+
+            $this.removeClass( 'compact' );
       }
       else
-      { 
-        $this.find('.pn-abstract-bio').slideUp( function()
-        {
-            $this.find('.pn-main-informations').fadeOut( function()
-            {
-                $this.find('br').remove();   
-                $this.find('.pn-name').after('<br />').before('<br />');       
-                
-                $this.find('.pn-main-informations').fadeIn();
-                $this.addClass( 'compact' );  
-            });
-        });
+      {
+        $this.find('.pn-abstract-bio').hide();
+        $this.find('br').remove();
+        $this.find('.pn-name').after('<br />').before('<br />');
+        $this.addClass( 'compact' );
       }
     });
   });
