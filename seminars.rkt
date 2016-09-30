@@ -39,7 +39,7 @@
     (seminar
      "Implementing a Functional Language for Flix"
      "Ming-Ho Yee"
-     "http://mhyee.com"
+     "http://mhyee.com/"
      "Northeastern University"
      (datetime 2016 10 20 12 00)
      "WVH 366"

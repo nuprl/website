@@ -1,0 +1,33 @@
+language: generic
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.racket
+
+env:
+  global:
+    - RACKET_DIR=~/racket
+    - RACKET_VERSION=6.6
+    - secure: "CRLYvfIn2Ql3hcwxgel6VHBbi76lWHPS41o3YMLnH95u7E1m4L94vxeDt8maMs8YZZLDh8BIHS+F45eYd9YbbttMqOqTP1P6denw04qS+URT+DFnx0J8WcRootBfVz5UKZu78JcYrt/LVPHmxb/DcXVxxgqcolndxSy5bDc9cMcVI+2x7nEgT2SGJX+TnO2WGwfdZT7JpfmDu02kq6IMg+Nt5fOdSbabcAfsbpJM8294Z9OxnKxYD4w+IX+gup/2IWTmfjnS3KG4SGzwKPL4UbeohzVHB3E+QMTekLz4/BJpli4VbPfIxf3QesehtyWsDZQrY+yDyFHKpMgSKmknBc1JrweYNvdjZHINsDiFCSdVmVS4BJh/3ka73Wk4kHAGQE0OZK8mqsM78nc7LnuMCGpAEAMlOMC7VOVTBOLIrLHfGps3tImkkgrpNXqDkJKrUsS0NkQuxYBGvgbMSyrCf18yi/hsQjzQizvoG/YFP+C4YBr7z+Ataft6XJcuVu+l/RLfN8K4VRc9aNH3X6HHyrWpOIad95mdmTXKft72QAMq5JSVjRViUVxATYY8xVnHCoJX0nr0BJWetbgNn45xMlk/+h9n7xvjY/ep5vR2kxJ2i2QV09UNmw0Vws/z3NwkHbztpo52spumJs/MSqAF3csDSJkrb6s5/xXutEUxG+A="
+
+# NOTE(dbp 2016-09-30): frog seems to need a running X server... :(
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - ./install-racket.sh
+  - export PATH="${RACKET_DIR}/bin:${PATH}"
+
+install:
+  - make all && cd $TRAVIS_BUILD_DIR
+
+script:
+  - echo 0
+
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: ./deploy.sh
+  on:
+    branch: master
