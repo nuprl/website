@@ -3,12 +3,12 @@ set -e
 
 tee ~/.netrc > /dev/null <<EOF
 machine github.com
-login dbp
+login prl-bot
 password $GH_TOKEN
 EOF
 
 git remote add deploy https://github.com/nuprl/nuprl.github.io.git
-git config --global user.email "prl-bot@ccs.neu.edu"
+git config --global user.email "dbp@ccs.neu.edu"
 git config --global user.name "PRL Bot"
 
 REV="** deploy nuprl/website@$TRAVIS_COMMIT"
