@@ -188,6 +188,16 @@
 
 @(define mf-pubs
    (list
+     (publication "Oh Lord, Please Don’t Let Contracts Be Misunderstood (Functional Pearl)"
+                  "Christos Dimoulas, Max S. New, Robert Bruce Findler, and Matthias Felleisen"
+                  ICFP
+                  2016
+                  "http://www.ccs.neu.edu/racket/pubs/icfp16-dnff.pdf")
+     (publication "Coordinated Concurrent Programming in Syndicate"
+                  "Tony Garnock-Jones and Matthias Felleisen"
+                  ESOP
+                  2016
+                  "http://www.ccs.neu.edu/racket/pubs/esop16-gjf.pdf")
      (publication "Is sound gradual typing dead?"
                   "Asumu Takikawa, Daniel Feltey, Ben Greenman, Max S. New, Jan Vitek, and Matthias Felleisen"
                   POPL
@@ -396,6 +406,11 @@
 
 @(define amal-pubs
    (list
+     (publication "Fully Abstract Compilation via Universal Embedding"
+                  "Max New, William J. Bowman, and Amal Ahmed"
+                  ICFP
+                  2016
+                  "http://www.ccs.neu.edu/home/amal/papers/facue.pdf")
      (publication "Noninterference for Free"
                   "William J. Bowman and Amal Ahmed"
                   ICFP
