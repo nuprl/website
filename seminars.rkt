@@ -36,6 +36,43 @@
 @; TODO: Have seminars contain a datetime range, rather than just a start time.
 @(define seminars
    (splice
+    ;; (seminar
+    ;;  "TITLE"
+    ;;  "AUTHOR"
+    ;;  "WEBSITE"
+    ;;  "INSTITUTION"
+    ;;  (datetime 2016 10 20 12 00)
+    ;;  "WVH 366"
+    ;;  @list{@p{ABSTRACT}}
+    ;;  @list{@p{BIO}})
+    (seminar
+     "Declarative, Convergent Edge Computation"
+     "Christopher Meiklejohn"
+     "https://christophermeiklejohn.com/"
+     "Université Catholique
+de Louvain"
+     (datetime 2016 10 27 12 00)
+     "WVH 366"
+     @list{@p{Consistency is hard and coordination is expensive. As we move into the
+world of connected 'Internet of Things' style applications, or
+large-scale mobile applications, devices have less power, periods of
+limited connectivity, and operate over unreliable asynchronous
+networks. This poses a problem with shared state: how do we handle
+concurrent operations over shared state, while clients are offline,
+and ensure that values converge to a desirable result without making
+the system unavailable?}
+             @p{We look at a new programming model, called Lasp. This programming
+model combines distributed convergent data structures with a dataflow
+execution model designed for distribution over large-scale
+applications. This model supports arbitrary placement of processing
+node: this enables the user to author applications that can be
+distributed across data centers and pushed to the edge.}}
+     @list{@p{Christopher Meiklejohn loves distributed systems and programming
+languages. Previously, Christopher worked at Basho Technologies, Inc.
+on the distributed key-value store, Riak. Christopher develops a
+programming model for distributed computation, called Lasp.
+Christopher is currently a Ph.D. student at the Université Catholique
+de Louvain in Belgium.}})
     (seminar
      "Implementing a Functional Language for Flix"
      "Ming-Ho Yee"
