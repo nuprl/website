@@ -10,7 +10,7 @@ compiler but would rather not read its source code, this post is for you.
 (This is a public service announcement.)
 
 Last fall, I gave a short lecture on the 2006 paper ["Formal Certification of a Compiler Back-End"](http://gallium.inria.fr/~xleroy/publi/compiler-certif.pdf) by Xavier Leroy for Amal Ahmed's ["Special Topics in Programming Languages"](http://www.ccs.neu.edu/home/amal/course/7480-f15/) class.
-Rather than present CompCert as it existed in 2006, I read the documentation and source code for [CompCert 2.5](https://github.com/AbsInt/CompCert/releases/tag/v2.5).
+Rather than present CompCert as it existed in 2006, I read the documentation and source code for [CompCert 2.5](https://github.com/AbsInt/CompCert/releases/tag/v2.5) (released June 2015).
 The lecture then focused on three questions:
 
 - What subset of C does CompCert handle, today?
