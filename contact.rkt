@@ -22,6 +22,8 @@
 
               @h4{Happy Hour} @a[href: "mailto:maxnew@ccs.neu.edu"]{Max New}
 
+              @h4{Coffee Czar} @a[href: "mailto:tonyg@ccs.neu.edu"]{Tony Garnock-Jones}
+
               @h4{Student Rep on Hiring} @a[href: "mailto:wilbowma@ccs.neu.edu"]{William Bowman}
 
               @h4{Blog Maintainer} @a[href: "mailto:types@ccs.neu.edu"]{Ben Greenman}
