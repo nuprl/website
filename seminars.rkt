@@ -45,6 +45,8 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+
+
     (seminar
      "Declarative, Convergent Edge Computation"
      "Christopher Meiklejohn"
@@ -73,6 +75,15 @@ on the distributed key-value store, Riak. Christopher develops a
 programming model for distributed computation, called Lasp.
 Christopher is currently a Ph.D. student at the Université Catholique
 de Louvain in Belgium.}})
+    (seminar
+     "The Hack Experiment"
+     "Julien Verlaguet"
+     "http://hacklang.org/"
+     "Facebook"
+     (datetime 2016 10 25 13 30)
+     "WVH 366"
+     @list{@p{Facebook released a new programming language called Hack. Hack is a gradually typed language that interoperates seamlessly with PHP. More importantly, Hack has been designed to scale on a very large codebases.}}
+     @list{@p{Julien hacks languages at Facebook.}})
     (seminar
      "Implementing a Functional Language for Flix"
      "Ming-Ho Yee"
