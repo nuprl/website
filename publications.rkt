@@ -407,7 +407,7 @@
 @(define amal-pubs
    (list
      (publication "Fully Abstract Compilation via Universal Embedding"
-                  "Max New, William J. Bowman, and Amal Ahmed"
+                  "Max S. New, William J. Bowman, and Amal Ahmed"
                   ICFP
                   2016
                   "http://www.ccs.neu.edu/home/amal/papers/facue.pdf")
