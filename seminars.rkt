@@ -46,7 +46,6 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
 
-
     (seminar
      "Declarative, Convergent Edge Computation"
      "Christopher Meiklejohn"
@@ -75,15 +74,16 @@ on the distributed key-value store, Riak. Christopher develops a
 programming model for distributed computation, called Lasp.
 Christopher is currently a Ph.D. student at the Université Catholique
 de Louvain in Belgium.}})
+
     (seminar
-     "The Hack Experiment"
-     "Julien Verlaguet"
+     "The Hack Experiment & HHVM, Then And Now"
+     "Julien Verlaguet & Brett Simmers"
      "http://hacklang.org/"
      "Facebook"
      (datetime 2016 10 25 13 30)
      "WVH 366"
-     @list{@p{Facebook released a new programming language called Hack. Hack is a gradually typed language that interoperates seamlessly with PHP. More importantly, Hack has been designed to scale on a very large codebases.}}
-     @list{@p{Julien hacks languages at Facebook.}})
+     @list{@p{The Hack programming language developed at Facebook is an evolution of PHP. With tens of millions  of lines of PHP code in house, the lack of type and poor IDE support were felt to be major threats to Facebook. We designed Hack gradually, adding feature at regular intervals and encouraging developers to adopt them in their code. This talk will touch on the design of the Hack language, its type system, the implementation of the type checker, and the social processes involved in converting 20 millions lines of untyped code to a rich type system.}@p{HHVM is an open source virtual machine for PHP and Hack programs. It was developed by Facebook but is also used by Wikipedia, Baidu, Etsy, and many others. This talk will discuss the history of the project, what goes on behind the scenes while executing your PHP code, and what we're currently working on.}}
+     @list{@p{Julien Verlaguet is a OCaml programmer with a Master from Université Pierre et Marie Curie in Paris. Before joining Facebook in 2011, he worked at Esterl technologies on verified compilation.  At Facebook he designed the Hack programming language, a typed offspring of PHP and managed to convince the majority of developers in the company to add types to their code.}@p{Brett Simmers is a Software Engineer at Facebook, where he's been working on HHVM for the past five years. He primarily works on the internals of the JIT compiler and HHVM's profile-guided optimizations. Before joining Facebook he spent two years at VMware working on the Linux version of VMware Workstation.}})
     (seminar
      "Implementing a Functional Language for Flix"
      "Ming-Ho Yee"
