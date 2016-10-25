@@ -47,6 +47,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "Contextual Equivalence of Probabilistic Programs"
+     "Ryan Culpepper"
+     "http://www.ccs.neu.edu/home/ryanc/"
+     "Northeastern University"
+     (datetime 2016 11 03 12 00)
+     "WVH 366"
+     @list{@p{
+In this talk I introduce a probabilistic programming language with continuous random variables and soft constraints, define contextual equivalence for the language, and then present a logical relation that is sound with respect to contextual equivalence.}@p{The question of equivalence for probabilistic programs is interesting and difficult because the meaning of a program is a measure defined by integrating over the space of all of the program's possible evaluations. Thus creating a workable logical relation requires proving integral equalities involving intermediate measures that are ``equal enough'' but still respect contextual equivalence.}}
+     @list{@p{Ryan Culpepper is a research scientist at Northeastern University.  He works on probabilistic programming as well as extensible languages and tools for building domain-specific languages. He received his PhD at Northeastern and did a postdoc at the University of Utah.}})
+
+    (seminar
      "Declarative, Convergent Edge Computation"
      "Christopher Meiklejohn"
      "https://christophermeiklejohn.com/"
