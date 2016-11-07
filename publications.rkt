@@ -435,77 +435,7 @@
                   "Aaron Turon, Jacob Thamsborg, Amal Ahmed, Lars Birkedal, Derek Dreyer"
                   POPL
                   2013
-                  "http://www.ccs.neu.edu/home/amal/papers/relcon.pdf")
-     (publication "An Equivalence-Preserving CPS Translation via Multi-Language Semantics"
-                  "Amal Ahmed and Matthias Blume"
-                  ICFP
-                  2011
-                  "http://www.ccs.neu.edu/home/amal/papers/epc.pdf")
-     (publication "Logical Step-Indexed Logical Relations"
-                  "Derek Dreyer, Amal Ahmed, and Lars Birkedal"
-                  LMCS
-                  2011
-                  "http://www.ccs.neu.edu/home/amal/papers/lslr-lmcs.pdf")
-     (publication "Blame for All"
-                  "Amal Ahmed, Robert Bruce Findler, Jeremy Siek, and Philip Wadler"
-                  POPL
-                  2011
-                  "http://plt.eecs.northwestern.edu/blame-for-all/")
-     (publication "Provenance as Dependency Analysis"
-                  "James Cheney, Amal Ahmed, and Umut Acar"
-                  MSCS
-                  2011
-                  "http://www.ccs.neu.edu/home/amal/papers/provdep-mscs.pdf")
-     (publication "Semantic Foundations for Typed Assembly Languages."
-                  "Amal Ahmed, Andrew W. Appel, Christopher Richards, Kedar Swadi, Gang Tan, Daniel Wang"
-                  TOPLAS
-                  2010
-                  "http://portal.acm.org/citation.cfm?doid=1709093.1709094")
-     (publication "Logical Step-Indexed Logical Relations"
-                  "Derek Dreyer, Amal Ahmed, and Lars Birkedal"
-                  LICS
-                  2009
-                  "http://www.ccs.neu.edu/home/amal/papers/lslr.pdf")
-     (publication "Blame for All"
-                  "Amal Ahmed, Robert Bruce Findler, Jacob Matthews, and Philip Wadler"
-                  "Workshop on Script to Program Evolution (STOP)"
-                  2009
-                  "http://www.ccs.neu.edu/home/amal/papers/blame-all.pdf")
-     (publication "State-Dependent Representation Independence"
-                  "Amal Ahmed, Derek Dreyer, and Andreas Rossberg"
-                  POPL
-                  2009
-                  "http://www.ccs.neu.edu/home/amal/papers/sdri.pdf")
-     (publication "Typed Closure Conversion Preserves Observational Equivalence"
-                  "Amal Ahmed and Matthias Blume"
-                  ICFP
-                  2008
-                  "http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf")
-     (publication "Parametric Polymorphism Through Run-Time Sealing, or, Theorems for Low, Low Prices!"
-                  "Jacob Matthews and Amal Ahmed"
-                  ESOP
-                  2008
-                  "http://www.ccs.neu.edu/home/amal/papers/parpolyseal.pdf")
-     (publication "Imperative Self-Adjusting Computation"
-                  "Umut Acar, Amal Ahmed, and Matthias Blume"
-                  POPL
-                  2008
-                  "http://www.ccs.neu.edu/home/amal/papers/impselfadj.pdf")
-     (publication "Provenance as Dependency Analysis"
-                  "James Cheney, Amal Ahmed, and Umut Acar"
-                  DBPL
-                  2007
-                  "http://www.ccs.neu.edu/home/amal/papers/provdep.pdf")
-     (publication "L3: A Linear Language with Locations"
-                  "Amal Ahmed, Matthew Fluet, and Greg Morrisett"
-                  "Fundamenta Informaticae"
-                  2007
-                  "http://www.ccs.neu.edu/home/amal/papers/linloc-fi07.pdf")
-     (publication "Abstract Predicates and Mutable ADTs in Hoare Type Theory"
-                  "Aleksander Nanevski, Amal Ahmed, Greg Morrisett, and Lars Birkedal"
-                  ESOP
-                  2007
-                  "http://www.ccs.neu.edu/home/amal/papers/htthol.pdf")))
+                  "http://www.ccs.neu.edu/home/amal/papers/relcon.pdf")))
 
 @(define jan-pubs
    (list
@@ -1042,57 +972,7 @@
                  "William D. Clinger and Lars Thomas Hansen"
                  PLDI
                  1997
-                 "http://doi.acm.org/10.1145/258915.258925")
-    (publication "Lambda, the Ultimate Label or a Simple Optimizing Compiler for Scheme"
-                 "William D. Clinger and Lars Thomas Hansen"
-                 LFP
-                 1994
-                 "http://doi.acm.org/10.1145/182409.156786")
-    (publication "Parallel Destructive Updating in Strict Functional Languages"
-                 "A. V. S. Sastry and William D. Clinger"
-                 LFP
-                 1994
-                 "http://doi.acm.org/10.1145/182409.182486")
-    (publication "Order-of-evaluation Analysis for Destructive Updates in Strict Functional Languages with Flat Aggregates"
-                 "A. V. S. Sastry, William D. Clinger, and Zena M. Ariola"
-                 "FPCA"
-                 1993
-                 "http://doi.acm.org/10.1145/165180.165222")
-    (publication "Macros That Work"
-                 "William D. Clinger and Jonathan Rees"
-                 POPL
-                 1991
-                 "http://doi.acm.org/10.1145/99583.99607")
-    (publication "How to Read Floating-Point Numbers Accurately"
-                 "William D. Clinger"
-                 PLDI
-                 1990
-                 "http://doi.acm.org/10.1145/93542.93557")
-    (publication "How to read floating point numbers accurately (with retrospective)"
-                 "William D. Clinger"
-                 "Best of PLDI"
-                 1990
-                 "http://doi.acm.org/10.1145/989393.989430")
-    (publication "Implementation Strategies for Continuations"
-                 "William D. Clinger, Anne Hartheimer, and Eric Ost"
-                 LFP
-                 1988
-                 "http://doi.acm.org/10.1145/62678.62692")
-    (publication "Alternative Semantics for McCarthy's amb"
-                 "William D. Clinger and Charles Halpern"
-                 "Seminar on Concurrency"
-                 1984
-                 "http://dx.doi.org/10.1007/3-540-15670-4_22")
-    (publication "The Scheme 311 Compiler: An Exercise in Denotational Semantics"
-                 "William D. Clinger"
-                 LFP
-                 1984
-                 "http://dl.acm.org/citation.cfm?id=802052")
-    (publication "Nondeterministic Call by Need is Neither Lazy Nor by Name"
-                 "William D. Clinger"
-                 "Symposium on LISP and Functional Programming"
-                 1982
-                 "http://dl.acm.org/citation.cfm?id=802154")))
+                 "http://doi.acm.org/10.1145/258915.258925")))
 
 @(define publications
    (flatten (list mf-pubs
