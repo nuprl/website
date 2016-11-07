@@ -2,9 +2,14 @@
     Date: 2016-11-02T21:10:18
     Tags: lambda,calculus,beta,reduction,semantics,by Milo Davis
 
-This post came about because of a research project I became involved with around a year and a half ago in the PRL.  At the time, I had just completed my freshman year and the field of programming languages was completely new to me.  The project involved proving confluence for a restricted subset of β-reduction.  The concepts I had to work with weren't ones that I was familiar with, so I looked online for an approachable explanation, but none existed.  This series of posts is my attempt to rectify this.  This initial post introduces the λ-calculus and β-reduction.  In a follow up post, I will discuss the proofs.
+The λ-calculus is often introduced by showing how to build a real programming language from it's simple syntactic forms.  In this series of post, I attempt to introduce it as a tool for modeling semantics.  So if you're opening Barendregt for the first time, trying to understand a lecture from a programming languages or functional programming class, or just starting to become involved in PL research, I hope this post will help you understand evaluation by substitution (β-reduction).
 
 <!-- more -->
+
+# Introduction
+This post is aimed at myself around 18 months ago.  At the time, I had spent a fair amount of time programming, taken a funcitonal programming class, and been introduced to the λ-calculus.  Despite that, I didn't really understand how the λ-calculus was really used in PL research and how it really worked.  When I was asked to prove a novel theorem about β-reduction, I really struggled.  I spent a lot of time looking online for an explanation of the proofs I could understand.  This series of posts is my attempt to rectify that.  
+
+This first post briefly introduces the λ-calculus and explains β-reduction through a formally defined semantics and examples in Racket, OCaml, and Haskell.  My goal in this post is to develop an intuition about what β-reduction is and how it works.  In a followup post, I'll explain how to prove that β-reduction is confluent.
 
 
 # The λ-Calculus
@@ -16,11 +21,11 @@ e ::= x
    | λx.e
    | e e
 ```
-In the above BNF, x is a metavariable, standing for any variable.  In this post, I use x, y, z, a, and b as variables in my examples.  The λx.e term represents a function with a single parameter x.  When you apply this function to an argument, you substitute the argument for every occurrence of x in the function's body, which is the expression after the period.  We say that x is bound in e.  It is possible to have unbound variables in the λ-calculus, though for the most part, we can ignore them in our discussion of this topic.  Finally, applications consist of two expressions.  The first expression evaluates to a function and the second to its argument.  Parentheses can be added for clarity.
+In the above BNF, x is a metavariable, standing for any variable.  In this post, I use x, y, z, a, and b as variables in my examples.  The λx.e term represents a function with a single parameter x.  We say that the parameter, x is bound in e.  It is possible to have unbound variables in the λ-calculus, though for the most part, we can ignore them in our discussion of this topic.  Finally, applications consist of two expressions.  The first expression is the function and the second is its argument.  Parenthesis are often added for clarity.
 
-If you program regularly in a functional language, this might look fairly familiar to you.  In fact, you can encode every construct in whatever programming languages you use into just the above constructs.  The λ-calculus is Turing complete.  Of course, you wouldn't want to do program in this language as it's significantly harder than just using built in language constructs like numbers.  I'm not going to discuss these ideas in detail, but if you're interested in how to add numbers, booleans, conditionals, and recursion to the λ-calculus, Matt Might has a few great posts about how to do this using equivalent constructs in [Python](http://matt.might.net/articles/python-church-y-combinator/), [Scheme](http://matt.might.net/articles/church-encodings-demo-in-scheme/), and [JavaScript](http://matt.might.net/articles/js-church/).
+If you program regularly in a functional language, this might look fairly familiar to you.  In fact, you compute anything in the λ-calculus that you can in any other language.  In other words, the λ-calculus is Turing complete.  Of course, you wouldn't want to do program in this language as it's significantly harder to encode some of these constructs than just using built in language constructs like numbers.  I'm not going to discuss these ideas in detail, but if you're interested in how to add numbers, booleans, conditionals, and recursion to the λ-calculus, Matt Might has a few great posts about how to do this using equivalent constructs in [Python](http://matt.might.net/articles/python-church-y-combinator/), [Scheme](http://matt.might.net/articles/church-encodings-demo-in-scheme/), and [JavaScript](http://matt.might.net/articles/js-church/).
 
-Now that we've discussed the syntax of the language, we can look at the semantics, or how terms evaluate?  Below I have the evaluation rules for the λ-calculus.  The arrow represents β-reduction which is the subject of this post.  The semantics rely on substitution which is depicted with brackets.  Below, I define the substitution function.  I'm assuming the Barendregt variable convention which states that every bound variable is distinct from every free variable.
+Now that we've discussed the syntax of the language, we can look at the semantics, or how terms evaluate.  Below I have the evaluation rules for the λ-calculus.  The arrow represents β-reduction which is the subject of this post.  The semantics rely on substitution which is depicted with brackets.  I have also defined the substitution function.  I'm assuming the Barendregt variable convention which states that every bound variable is distinct from every free variable.
 
 ```
 x[ x := e ] = e
@@ -48,7 +53,7 @@ These rules mean that if you have a call in which you have a function applied to
 
 # What is β-reduction?
 
-More generally, what is reduction?  Intuitively, a reduction system is a set of rules that determine how a term is stepped forwards in the computation.  β-reduction is probably the most common reduction system used in programming languages.  It is essentially just the substitution semantics we saw above.  A single β-reduction is as follows
+More generally, what is reduction?  Intuitively, a reduction system is a set of rules that determine how a term is stepped forwards in the computation.  β-reduction is Church's name for removing the λ from a function and substituting the argument for the parameter in the function body.  More formally, we can define β-reduction as follows:
 
 ```
 (λx.e1) e2 = e1[ x := e2 ]
@@ -181,4 +186,4 @@ Finally, in the λ-calculus, things can go a few different ways.
 ->β (λz.z)
 ```
 
-There's a very interesting property of all of those examples: they all evaluate to the same thing, regardless of the reduction order taken.  This is because β-reduction has the weak Church-Rosser Property.  In systems that have this property, if a reduction sequence terminates, it will always evaluate to the same term, regardless of the path taken.  A weaker property is called confluence, which states that all reduction sequences can be stepped to a common term.  At the beginning of this post, I said that the λ-calculus is a model for programming languages.  This is generally true.  There are proofs that the λ-calculus has this property, but people don't tend to prove such things about their actual languages, it is usually enough to build them knowing that their theoretical model has the property.  In a follow up post, I'll explain the proofs that the λ-calculus does indeed have these properties.
+There's a very interesting property of all of those examples: they all evaluate to the same thing, regardless of the reduction order taken.  This is because β-reduction of the λ-calculus has the weak Church-Rosser Property.  In systems that have this property, if a reduction sequence terminates, it will always evaluate to the same term, regardless of the path taken.  A weaker property is called confluence, which states that all reduction sequences can be stepped to a common term.  At the beginning of this post, I said that the λ-calculus is used as a model for real programming languages.  This is generally true.  There are proofs that the λ-calculus has this property, but people don't tend to prove such things about their actual languages, it is usually enough to build them knowing that their theoretical model has the property.  In a follow up post, I'll explain the proofs that the λ-calculus does indeed have these properties.
