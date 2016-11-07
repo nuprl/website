@@ -7,7 +7,7 @@ The λ-calculus is often introduced by showing how to build a real programming l
 <!-- more -->
 
 # Introduction
-This post is aimed at myself around 18 months ago.  At the time, I had spent a fair amount of time programming, taken a funcitonal programming class, and been introduced to the λ-calculus.  Despite that, I didn't really understand how the λ-calculus was really used in PL research and how it really worked.  When I was asked to prove a novel theorem about β-reduction, I really struggled.  I spent a lot of time looking online for an explanation of the proofs I could understand.  This series of posts is my attempt to rectify that.  
+This post is aimed at myself around 18 months ago.  At the time, I had spent a fair amount of time programming, taken a funcitonal programming class, and been introduced to the λ-calculus.  Despite that, I didn't really understand how the λ-calculus was really used in PL research and how it really worked.  When I was asked to prove a novel theorem about β-reduction, I really struggled.  I spent a lot of time looking online for an explanation of the proofs I could understand.  This series of posts is my attempt to rectify that.
 
 This first post briefly introduces the λ-calculus and explains β-reduction through a formally defined semantics and examples in Racket, OCaml, and Haskell.  My goal in this post is to develop an intuition about what β-reduction is and how it works.  In a followup post, I'll explain how to prove that β-reduction is confluent.
 
@@ -23,7 +23,7 @@ e ::= x
 ```
 In the above BNF, x is a metavariable, standing for any variable.  In this post, I use x, y, z, a, and b as variables in my examples.  The λx.e term represents a function with a single parameter x.  We say that the parameter, x is bound in e.  It is possible to have unbound variables in the λ-calculus, though for the most part, we can ignore them in our discussion of this topic.  Finally, applications consist of two expressions.  The first expression is the function and the second is its argument.  Parenthesis are often added for clarity.
 
-If you program regularly in a functional language, this might look fairly familiar to you.  In fact, you compute anything in the λ-calculus that you can in any other language.  In other words, the λ-calculus is Turing complete.  Of course, you wouldn't want to do program in this language as it's significantly harder to encode some of these constructs than just using built in language constructs like numbers.  I'm not going to discuss these ideas in detail, but if you're interested in how to add numbers, booleans, conditionals, and recursion to the λ-calculus, Matt Might has a few great posts about how to do this using equivalent constructs in [Python](http://matt.might.net/articles/python-church-y-combinator/), [Scheme](http://matt.might.net/articles/church-encodings-demo-in-scheme/), and [JavaScript](http://matt.might.net/articles/js-church/).
+If you program regularly in a functional language, this might look fairly familiar to you.  In fact, you can compute anything in the λ-calculus that you can in any other language.  In other words, the λ-calculus is Turing complete.  Of course, you wouldn't want to do program in this language as it's significantly harder to encode some of these constructs than just using built in language constructs like numbers.  I'm not going to discuss these ideas in detail, but if you're interested in how to add numbers, booleans, conditionals, and recursion to the λ-calculus, Matt Might has a few great posts about how to do this using equivalent constructs in [Python](http://matt.might.net/articles/python-church-y-combinator/), [Scheme](http://matt.might.net/articles/church-encodings-demo-in-scheme/), and [JavaScript](http://matt.might.net/articles/js-church/).
 
 Now that we've discussed the syntax of the language, we can look at the semantics, or how terms evaluate.  Below I have the evaluation rules for the λ-calculus.  The arrow represents β-reduction which is the subject of this post.  The semantics rely on substitution which is depicted with brackets.  I have also defined the substitution function.  I'm assuming the Barendregt variable convention which states that every bound variable is distinct from every free variable.
 
@@ -49,17 +49,17 @@ With the substitution function defined, we can write a semantics for evaluation:
   e1 e2 ->β e1 e2'
 ```
 
-These rules mean that if you have a call in which you have a function applied to the argument, you substitute the argument into the function.  The next two rules say that if you can perform an evaluation step in either the first or second term, you can perform that step.  Notice that both the second and third rules might apply to a single term.  These rules are nondeterministic and in these cases it is fine to use whichever rule you want.
+These rules mean that if you have a call in which you have a function applied to the argument, you substitute the argument into the function.  The next two rules say that if you can apply an evaluation rule to either the first or second subterm, you may do so.  Notice that both the second and third rules might apply to a single term.  These rules are nondeterministic and in these cases it is fine to use whichever rule you want (see below).
 
 # What is β-reduction?
 
-More generally, what is reduction?  Intuitively, a reduction system is a set of rules that determine how a term is stepped forwards in the computation.  β-reduction is Church's name for removing the λ from a function and substituting the argument for the parameter in the function body.  More formally, we can define β-reduction as follows:
+More generally, what is reduction?  Reduction is a model for computation that consists of a set of rules that determine how a term is stepped forwards.  β-reduction is reduction by function application.  When you β-reduce, you remove the λ from the function and substitute the argument for the function's parameter in its body.  More formally, we can define β-reduction as follows:
 
 ```
 (λx.e1) e2 = e1[ x := e2 ]
 ```
 
-Given that definition, lets look at a simple example.  I've written the examples in the λ-calculus, Racket, OCaml, and Haskell.  It's important to note that these languages have more restricted semantics than the original λ-calculus.  In Racket and OCaml, it is not possible to substitute with anything except for a value, meaning you need to evaluate the argument until it is a function before substituting.  This makes the evaluation reduce left to right before substituting.  Haskell, in contrast, no reduction occurs in arguments, meaning that we would omit the third rule.  
+Given that definition, lets look at a few examples.  I've written the examples in the λ-calculus, Racket[1], OCaml, and Haskell.  It's important to note that these languages have more restricted semantics than the original λ-calculus.  These restrictions are called reduction strategies.  In Racket and OCaml, it is not possible to substitute with anything except for a value, meaning you need to evaluate the argument until it is a function before substituting.  This makes the evaluation reduce left to right before substituting.  This restriction is called "call by value".  In Haskell, no reduction occurs in arguments, meaning that we would omit the third rule.  This could potentially require an expression to be evaluated multiple times.  In reality, Haskell caches the results of these evaluations so each expression is only evaluated once, but I'm going to ignore that here and give you the more theoretical version.  The theoretical version of Haskell's semantics is called "call by name" and the optimization is called "call by need".
 
 # Some Examples
 The first example evaluates the same way in all of the languages.
@@ -186,4 +186,12 @@ Finally, in the λ-calculus, things can go a few different ways.
 ->β (λz.z)
 ```
 
-There's a very interesting property of all of those examples: they all evaluate to the same thing, regardless of the reduction order taken.  This is because β-reduction of the λ-calculus has the weak Church-Rosser Property.  In systems that have this property, if a reduction sequence terminates, it will always evaluate to the same term, regardless of the path taken.  A weaker property is called confluence, which states that all reduction sequences can be stepped to a common term.  At the beginning of this post, I said that the λ-calculus is used as a model for real programming languages.  This is generally true.  There are proofs that the λ-calculus has this property, but people don't tend to prove such things about their actual languages, it is usually enough to build them knowing that their theoretical model has the property.  In a follow up post, I'll explain the proofs that the λ-calculus does indeed have these properties.
+There's a very interesting property of all of those examples: they all evaluate to the same thing, regardless of the reduction order taken.  This is because β-reduction of the λ-calculus has the weak Church-Rosser Property.  In systems that have this property, if a reduction sequence terminates, it will always evaluate to the same term, regardless of the path taken.  This property does not necessarily hold if the term does not terminate.  See if you can work out what happens to this term with each reduction strategies:
+
+```
+(λx.λy.y) ((λa.a a) (λb.b b))
+```
+
+A weaker property is called confluence, which states that all reduction sequences can be stepped to a common term.  At the beginning of this post, I said that the λ-calculus is used as a model for real programming languages.  This is generally true.  There are proofs that the λ-calculus has this property, but people don't tend to prove such things about their actual languages, it is usually enough to build them knowing that their theoretical model has the property.  In a follow up post, I'll explain the proofs that the λ-calculus does indeed have these properties.
+
+P.S. In Racket, you can look at the examples using the [stepper](http://docs.racket-lang.org/stepper/) which will allow you to interactively run the term and see how it reduces.
