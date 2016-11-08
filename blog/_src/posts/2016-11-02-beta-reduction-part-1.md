@@ -7,14 +7,14 @@ The λ-calculus is often introduced by showing how to build a real programming l
 <!-- more -->
 
 # Introduction
-This post is aimed at myself around 18 months ago.  At the time, I had spent a fair amount of time programming, taken a funcitonal programming class, and been introduced to the λ-calculus.  Despite that, I didn't really understand how the λ-calculus was really used in PL research and how it really worked.  When I was asked to prove a novel theorem about β-reduction, I really struggled.  I spent a lot of time looking online for an explanation of the proofs I could understand.  This series of posts is my attempt to rectify that.
+This post is aimed at myself around 18 months ago.  At the time, I had spent a fair amount of time programming, taken a functional programming class, and been introduced to the λ-calculus.  Despite that, I didn't really understand how the λ-calculus was really used in PL research and how it really worked.  When I was asked to prove a novel theorem about β-reduction, I really struggled.  I spent a lot of time looking online for an explanation of the proofs I could understand.  This series of posts is my attempt to rectify that.
 
-This first post briefly introduces the λ-calculus and explains β-reduction through a formally defined semantics and examples in Racket, OCaml, and Haskell.  My goal in this post is to develop an intuition about what β-reduction is and how it works.  In a followup post, I'll explain how to prove that β-reduction is confluent.
+This first post briefly introduces the λ-calculus and explains β-reduction through a formally defined semantics and examples in [Racket](https://racket-lang.org/), [OCaml](http://ocaml.org/), and [Haskell](https://www.haskell.org/).  My goal in this post is to develop an intuition about what β-reduction is and how it works.  In a followup post, I'll explain how to prove that β-reduction is confluent.
 
 
 # The λ-Calculus
 
-The λ-calculus is a simple model of computation developed by Alonzo Church.  The λ-calculus has three different syntactic forms: variables, anonymous functions (lambdas), and function application.  The BNF for the λ-calculus is as follows:
+The λ-calculus is a simple model of computation developed by [Alonzo Church](https://en.wikipedia.org/wiki/Alonzo_Church).  The λ-calculus has three different syntactic forms: variables, anonymous functions (lambdas), and function application.  The [BNF](http://matt.might.net/articles/grammars-bnf-ebnf/) for the λ-calculus is as follows:
 
 ```
 e ::= x
@@ -59,7 +59,7 @@ More generally, what is reduction?  Reduction is a model for computation that co
 (λx.e1) e2 = e1[ x := e2 ]
 ```
 
-Given that definition, lets look at a few examples.  I've written the examples in the λ-calculus, Racket[1], OCaml, and Haskell.  It's important to note that these languages have more restricted semantics than the original λ-calculus.  These restrictions are called reduction strategies.  In Racket and OCaml, it is not possible to substitute with anything except for a value, meaning you need to evaluate the argument until it is a function before substituting.  This makes the evaluation reduce left to right before substituting.  This restriction is called "call by value".  In Haskell, no reduction occurs in arguments, meaning that we would omit the third rule.  This could potentially require an expression to be evaluated multiple times.  In reality, Haskell caches the results of these evaluations so each expression is only evaluated once, but I'm going to ignore that here and give you the more theoretical version.  The theoretical version of Haskell's semantics is called "call by name" and the optimization is called "call by need".
+Given that definition, lets look at a few examples.  I've written the examples in the λ-calculus, Racket, OCaml, and Haskell.  It's important to note that these languages have more restricted semantics than the original λ-calculus.  These restrictions are called reduction strategies.  In Racket and OCaml, it is not possible to substitute with anything except for a value, meaning you need to evaluate the argument until it is a function before substituting.  This makes the evaluation reduce left to right before substituting.  This restriction is called "call by value".  In Haskell, no reduction occurs in arguments, meaning that we would omit the third rule.  This could potentially require an expression to be evaluated multiple times.  In reality, Haskell caches the results of these evaluations so each expression is only evaluated once, but I'm going to ignore that here.  This presentation of Haskell's semantics is called "call by name" and the optimization is called "call by need".  This [paper](http://www.ccs.neu.edu/racket/pubs/esop12-cf.pdf) discusses lazy evaluation in more detail, if you're interested.
 
 # Some Examples
 The first example evaluates the same way in all of the languages.
