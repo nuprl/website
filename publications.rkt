@@ -115,26 +115,11 @@
                  JFP
                  2009
                  "http://www.ccs.neu.edu/home/turon/re-deriv.pdf")
-    (publication "The Complexity of Flow Analysis in Higher-Order Languages"
-                 "David Van Horn"
-                 "PhD Dissertation, Brandeis University"
-                 2009
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-dissertation.pdf")
     (publication "A Type System for Functional Traversal-Based Aspects"
                  "Bryan Chadwick and Karl Lieberherr"
                  "FOAL Workshop"
                  2009
                  "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/foal09-final.pdf")
-    (publication "Deciding kCFA is complete for EXPTIME"
-                 "David Van Horn and Harry G. Mairson"
-                 ICFP
-                 2008
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-icfp08.pdf")
-    (publication "Flow Analysis, Linearity, and PTIME"
-                 "David Van Horn and Harry G. Mairson"
-                 "Static Analysis Symposium"
-                 2008
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-sas08.pdf")
     (publication "Variable-Arity Generic Interfaces"
                  "T. Stephen Strickland and Richard Cobbe and Matthias Felleisen"
                  "(tech report) Northeastern University College of Computer and Information Science no. NU-CCIS-08-01"
@@ -155,21 +140,11 @@
                  "PhD Dissertation, Northeastern University"
                  2008
                  "http://www.ccs.neu.edu/racket/pubs/dissertation-cobbe.pdf")
-    (publication "Metaprogramming with Traits"
-                 "John Reppy and Aaron Turon"
-                 ECOOP
-                 2007
-                 "http://www.ccs.neu.edu/home/turon/ecoop07-meta-traits.pdf")
     (publication "Advanced Macrology and the Implementation of Typed Scheme"
                  "Ryan Culpepper, Sam Tobin-Hochstadt and Matthew Flatt"
                  "Scheme Workshop"
                  2007
                  "http://www.ccs.neu.edu/racket/pubs/scheme2007-ctf.pdf")
-    (publication "Relating Complexity and Precision in Control Flow Analysis"
-                 "David Van Horn and Harry G. Mairson"
-                 ICFP
-                 2007
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-mairson-icfp07.pdf")
     (publication "Status Report: Specifying JavaScript with ML"
                  "David Herman and Cormac Flanagan"
                  "Workshop on ML"
