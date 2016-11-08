@@ -7,6 +7,10 @@
 @;; the authors was a member of the lab when it was published (although many of
 @;; the older papers have not followed this policy).
 
+@;; NOTE: Papers are sorted by in reverse chronological order (although there is
+@;; no sorting within a year, because we don't track that information). Please
+@;; follow this policy when adding new papers.
+
 @(define OOPSLA "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)")
 @(define PLDI "Programming Language Design and Implementation (PLDI)")
 @(define ICFP "International Conference on Functional Programming (ICFP)")
@@ -38,130 +42,7 @@
 @(define LFP "LISP and Functional Programming (LFP)")
 @(define SOCP "Science of Computer Programming")
 
-@(define old-site-pubs
-   (list
-    (publication "Seeing the futures: profiling shared-memory parallel Racket"
-                 "James Swaine, Burke Fetscher, Vincent St-Amour, Robby Findler and Matthew Flatt"
-                 "Functional High-Performance Computing (FHPC)"
-                 2012
-                 "http://www.ccs.neu.edu/home/stamourv/papers/seeing-the-futures.pdf")
-    (publication "Practical Programming with Substructural Types"
-                 "Jesse A. Tov"
-                 "PhD Dissertation, Northeastern University"
-                 2012
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/dissertation/")
-    (publication "A Family of Abstract Interpretations for Static Analysis of Concurrent Higher-Order Programs"
-                 "Matthew Might and David Van Horn"
-                 "The 18th International Static Analysis Symposium"
-                 2011
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/might-vanhorn-sas11.pdf")
-    (publication "A Theory of Substructural Types and Control"
-                 "Jesse A. Tov and Riccardo Pucella"
-                 OOPSLA
-                 2011
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/substructural-control")
-    (publication "Practical Affine Types"
-                 "Jesse A. Tov and Riccardo Pucella"
-                 POPL
-                 2011
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/alms")
-    (publication "Abstracting Abstract Machines"
-                 "David Van Horn and Matthew Might"
-                 ICFP
-                 2010
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-might-icfp10.pdf")
-    (publication "Pushdown Control-Flow Analysis of Higher-Order Programs"
-                 "Christopher Earl, Matthew Might and David Van Horn"
-                 "Scheme and Functional Programming Workshop"
-                 2010
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/earl-might-vanhorn-sfp10.pdf")
-    (publication "Resolving and Exploiting the k-CFA Paradox"
-                 "Matthew Might, Yannis Smaragdakis and David Van Horn"
-                 PLDI
-                 2010
-                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/might-smaragdakis-vanhorn-pldi10.pdf")
-    (publication "Evaluating Call By Need on the Control Stack"
-                 "Stephen Chang, David Van Horn and Matthias Felleisen"
-                 TFP
-                 2010
-                 "http://www.ccs.neu.edu/home/stchang/pubs/Chang-VanHorn-Felleisen-TFP2010.pdf")
-    (publication "Functional Adaptive Programming"
-                 "Bryan Chadwick"
-                 "PhD Dissertation, Northeastern University"
-                 2010
-                 "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf")
-    (publication "Algorithms for Traversal-Based Generic Programming"
-                 "Bryan Chadwick and Karl Lieberherr"
-                 "Workshop on Generic Programming"
-                 2010
-                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/wgp10-final.pdf")
-    (publication "Weaving Generic Programming and Traversal Performance"
-                 "Bryan Chadwick and Karl Lieberherr"
-                 "AOSD"
-                 2010
-                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/aosd10-final.pdf")
-    (publication "Stateful Contracts for Affine Types"
-                 "Jesse A. Tov and Riccardo Pucella"
-                 ESOP
-                 2010
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/affine-contracts/affinecontracts10-bw.pdf")
-    (publication "All-Terimation(T)"
-                 "Panagiotis Manolios and Aaron Turon"
-                 "TACAS"
-                 2009
-                 "http://www.ccs.neu.edu/home/turon/tacas09.pdf")
-    (publication "Regular expression derivatives reexamined"
-                 "Scott Owens, John Reppy and Aaron Turon"
-                 JFP
-                 2009
-                 "http://www.ccs.neu.edu/home/turon/re-deriv.pdf")
-    (publication "A Type System for Functional Traversal-Based Aspects"
-                 "Bryan Chadwick and Karl Lieberherr"
-                 "FOAL Workshop"
-                 2009
-                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/foal09-final.pdf")
-    (publication "Variable-Arity Generic Interfaces"
-                 "T. Stephen Strickland and Richard Cobbe and Matthias Felleisen"
-                 "(tech report) Northeastern University College of Computer and Information Science no. NU-CCIS-08-01"
-                 2008
-                 "http://www.ccs.neu.edu/racket/pubs/NU-CCIS-08-01.pdf")
-    (publication "Haskell Session Types with (Almost) No Class"
-                 "Riccardo Pucella and Jesse A. Tov"
-                 "SIGPLAN Symposium on Haskell"
-                 2008
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/haskell-session-types/")
-    (publication "Caml-Shcaml: An OCaml Library for Unix Shell Programming"
-                 "Alec Heller and Jesse A. Tov"
-                 "SIGPLAN workshop on ML"
-                 2008
-                 "http://users.eecs.northwestern.edu/~jesse/pubs/caml-shcaml/")
-    (publication "Much Ado about Nothing: Putting Java's Null in its Place"
-                 "Richard Cobbe"
-                 "PhD Dissertation, Northeastern University"
-                 2008
-                 "http://www.ccs.neu.edu/racket/pubs/dissertation-cobbe.pdf")
-    (publication "Advanced Macrology and the Implementation of Typed Scheme"
-                 "Ryan Culpepper, Sam Tobin-Hochstadt and Matthew Flatt"
-                 "Scheme Workshop"
-                 2007
-                 "http://www.ccs.neu.edu/racket/pubs/scheme2007-ctf.pdf")
-    (publication "Status Report: Specifying JavaScript with ML"
-                 "David Herman and Cormac Flanagan"
-                 "Workshop on ML"
-                 2007
-                 "http://www.ccs.neu.edu/home/dherman/research/papers/ml07-javascript.pdf")
-    (publication "Functional Pearl: The Great Escape. Or, How to Jump the Border Without Getting Caught"
-                 "David Herman"
-                 ICFP
-                 2007
-                 "http://www.ccs.neu.edu/home/dherman/research/papers/icfp07-great-escape.pdf")
-    (publication "Space-Efficient Gradual Typing"
-                 "David Herman, Aaron Tomb and Cormac Flanagan"
-                 TFP
-                 2007
-                 "http://www.ccs.neu.edu/home/dherman/research/papers/tfp07-gradual-typing.pdf")))
-
-@(define pubs
+@(define publications
    (list
     (publication "Fully Abstract Compilation via Universal Embedding"
                  "Max S. New, William J. Bowman, and Amal Ahmed"
@@ -328,6 +209,16 @@
                  TOPLAS
                  2011
                  "http://www.ccs.neu.edu/racket/pubs/df-toplas11.pdf")
+    (publication "Seeing the futures: profiling shared-memory parallel Racket"
+                 "James Swaine, Burke Fetscher, Vincent St-Amour, Robby Findler and Matthew Flatt"
+                 "Functional High-Performance Computing (FHPC)"
+                 2012
+                 "http://www.ccs.neu.edu/home/stamourv/papers/seeing-the-futures.pdf")
+    (publication "Practical Programming with Substructural Types"
+                 "Jesse A. Tov"
+                 "PhD Dissertation, Northeastern University"
+                 2012
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/dissertation/")
     (publication "Run Your Research"
                  "Casey Klein, John Clements, Christos Dimoulas, Carl Eastlund, Matthias Felleisen, Matthew Flatt, Jay McCarthy, Jon Rafkind, Sam Tobin-Hochstadt, Robert Bruce Findler"
                  POPL
@@ -338,6 +229,21 @@
                  PADL
                  2012
                  "http://www.ccs.neu.edu/racket/pubs/padl12-stff.pdf")
+    (publication "A Family of Abstract Interpretations for Static Analysis of Concurrent Higher-Order Programs"
+                 "Matthew Might and David Van Horn"
+                 "The 18th International Static Analysis Symposium"
+                 2011
+                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/might-vanhorn-sas11.pdf")
+    (publication "A Theory of Substructural Types and Control"
+                 "Jesse A. Tov and Riccardo Pucella"
+                 OOPSLA
+                 2011
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/substructural-control")
+    (publication "Practical Affine Types"
+                 "Jesse A. Tov and Riccardo Pucella"
+                 POPL
+                 2011
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/alms")
     (publication "Languages as Libraries"
                  "Sam Tobin-Hochstadt, Vincent St-Amour, Ryan Culpepper, Matthew Flatt, Matthias Felleisen"
                  PLDI
@@ -383,6 +289,46 @@
                  DLS
                  2011
                  "http://doi.acm.org/10.1145/2047849.2047859")
+    (publication "Abstracting Abstract Machines"
+                 "David Van Horn and Matthew Might"
+                 ICFP
+                 2010
+                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/vanhorn-might-icfp10.pdf")
+    (publication "Pushdown Control-Flow Analysis of Higher-Order Programs"
+                 "Christopher Earl, Matthew Might and David Van Horn"
+                 "Scheme and Functional Programming Workshop"
+                 2010
+                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/earl-might-vanhorn-sfp10.pdf")
+    (publication "Resolving and Exploiting the k-CFA Paradox"
+                 "Matthew Might, Yannis Smaragdakis and David Van Horn"
+                 PLDI
+                 2010
+                 "http://www.ccs.neu.edu/home/dvanhorn/pubs/might-smaragdakis-vanhorn-pldi10.pdf")
+    (publication "Evaluating Call By Need on the Control Stack"
+                 "Stephen Chang, David Van Horn and Matthias Felleisen"
+                 TFP
+                 2010
+                 "http://www.ccs.neu.edu/home/stchang/pubs/Chang-VanHorn-Felleisen-TFP2010.pdf")
+    (publication "Functional Adaptive Programming"
+                 "Bryan Chadwick"
+                 "PhD Dissertation, Northeastern University"
+                 2010
+                 "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf")
+    (publication "Algorithms for Traversal-Based Generic Programming"
+                 "Bryan Chadwick and Karl Lieberherr"
+                 "Workshop on Generic Programming"
+                 2010
+                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/wgp10-final.pdf")
+    (publication "Weaving Generic Programming and Traversal Performance"
+                 "Bryan Chadwick and Karl Lieberherr"
+                 "AOSD"
+                 2010
+                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/aosd10-final.pdf")
+    (publication "Stateful Contracts for Affine Types"
+                 "Jesse A. Tov and Riccardo Pucella"
+                 ESOP
+                 2010
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/affine-contracts/affinecontracts10-bw.pdf")
     (publication "Bottom-up beta-reduction: Uplinks and lambda-DAGs"
                  "Olin Shivers and Mitchell Wand"
                  "Fundamenta Informaticae"
@@ -428,6 +374,21 @@
                  TLDI
                  2010
                  "http://www.ccs.neu.edu/racket/pubs/tldi10-f.pdf")
+    (publication "All-Terimation(T)"
+                 "Panagiotis Manolios and Aaron Turon"
+                 "TACAS"
+                 2009
+                 "http://www.ccs.neu.edu/home/turon/tacas09.pdf")
+    (publication "Regular expression derivatives reexamined"
+                 "Scott Owens, John Reppy and Aaron Turon"
+                 JFP
+                 2009
+                 "http://www.ccs.neu.edu/home/turon/re-deriv.pdf")
+    (publication "A Type System for Functional Traversal-Based Aspects"
+                 "Bryan Chadwick and Karl Lieberherr"
+                 "FOAL Workshop"
+                 2009
+                 "http://www.ccs.neu.edu/home/chadwick/demeterf/papers/foal09-final.pdf")
     (publication "Nested and Dynamic Contract Boundaries"
                  "T. Stephen Strickland, Matthias Felleisen"
                  IFL
@@ -483,6 +444,26 @@
                  PADL
                  2009
                  "http://www.ccs.neu.edu/racket/pubs/padl09-ef.pdf")
+    (publication "Variable-Arity Generic Interfaces"
+                 "T. Stephen Strickland and Richard Cobbe and Matthias Felleisen"
+                 "(tech report) Northeastern University College of Computer and Information Science no. NU-CCIS-08-01"
+                 2008
+                 "http://www.ccs.neu.edu/racket/pubs/NU-CCIS-08-01.pdf")
+    (publication "Haskell Session Types with (Almost) No Class"
+                 "Riccardo Pucella and Jesse A. Tov"
+                 "SIGPLAN Symposium on Haskell"
+                 2008
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/haskell-session-types/")
+    (publication "Caml-Shcaml: An OCaml Library for Unix Shell Programming"
+                 "Alec Heller and Jesse A. Tov"
+                 "SIGPLAN workshop on ML"
+                 2008
+                 "http://users.eecs.northwestern.edu/~jesse/pubs/caml-shcaml/")
+    (publication "Much Ado about Nothing: Putting Java's Null in its Place"
+                 "Richard Cobbe"
+                 "PhD Dissertation, Northeastern University"
+                 2008
+                 "http://www.ccs.neu.edu/racket/pubs/dissertation-cobbe.pdf")
     (publication "Essentials of programming languages (3. ed.)"
                  "Daniel P. Friedman and Mitchell Wand"
                  "MIT Press"
@@ -568,6 +549,26 @@
                  HOSC
                  2007
                  "http://www.ccs.neu.edu/racket/pubs/hosc07-sk-mf.pdf")
+    (publication "Advanced Macrology and the Implementation of Typed Scheme"
+                 "Ryan Culpepper, Sam Tobin-Hochstadt and Matthew Flatt"
+                 "Scheme Workshop"
+                 2007
+                 "http://www.ccs.neu.edu/racket/pubs/scheme2007-ctf.pdf")
+    (publication "Status Report: Specifying JavaScript with ML"
+                 "David Herman and Cormac Flanagan"
+                 "Workshop on ML"
+                 2007
+                 "http://www.ccs.neu.edu/home/dherman/research/papers/ml07-javascript.pdf")
+    (publication "Functional Pearl: The Great Escape. Or, How to Jump the Border Without Getting Caught"
+                 "David Herman"
+                 ICFP
+                 2007
+                 "http://www.ccs.neu.edu/home/dherman/research/papers/icfp07-great-escape.pdf")
+    (publication "Space-Efficient Gradual Typing"
+                 "David Herman, Aaron Tomb and Cormac Flanagan"
+                 TFP
+                 2007
+                 "http://www.ccs.neu.edu/home/dherman/research/papers/tfp07-gradual-typing.pdf")
     (publication "Bisimulations for Untyped Imperative Objects"
                  "Vasileios Koutavas and Mitchell Wand"
                  ESOP
@@ -933,8 +934,6 @@
                  POPL
                  1985
                  "http://doi.acm.org/10.1145/318593.318602")))
-
-@(define publications (append pubs old-site-pubs))
 
 @(define (publication->html pub)
    (match-define (publication title authors venue year link) pub)
