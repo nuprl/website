@@ -44,6 +44,16 @@
 
 @(define publications
    (list
+    (publication "Type Systems as Macros"
+                 "Stephen Chang, Alex Knauth, Ben Greenman"
+                 POPL
+                 2017
+                 "http://www.ccs.neu.edu/home/stchang/pubs/ckg-popl2017.pdf")
+    (publication "Deciding equivalence with sums and the empty type"
+                 "Gabriel Scherer"
+                 POPL
+                 2017
+                 "https://arxiv.org/pdf/1610.01213")
     (publication "Fully Abstract Compilation via Universal Embedding"
                  "Max S. New, William J. Bowman, and Amal Ahmed"
                  ICFP
