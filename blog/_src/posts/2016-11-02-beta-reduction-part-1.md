@@ -29,7 +29,7 @@ Now that we've discussed the syntax of the language, we can look at the semantic
 
 ```
 x[ x := e ] = e
-x[ y := e ] = y
+y[ x := e ] = y
 (λx.e1)[ x := e2 ] = (λx.e1[ x := e2 ])
 (e1 e2)[ x := e3 ] = (e1[ x := e3 ] e2[ x := e3 ])
 ```
