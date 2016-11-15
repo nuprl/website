@@ -15,5 +15,5 @@ Building
 
 Build Prerequisites: [Racket](http://racket-lang.org/)
 
-To preview your changes locally, you can regenerate the templated
-pages by running `make`.
+To preview your changes locally, you can build and start a local
+server with the generated site using `make preview`

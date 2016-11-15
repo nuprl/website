@@ -3,6 +3,9 @@ TARGETS=contact.html index.html new-members.html people.html seminars.html softw
 
 all: setup blog $(TARGETS)
 
+preview: all
+	raco frog -p
+
 setup:
 	raco pkg install --auto --skip-installed gregor
 
