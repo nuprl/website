@@ -97,12 +97,12 @@ where \\(\Delta \\) means the *diagonal*, or equality relation on the set:
 
 \\[\Delta(X) = \{(x_1,x_2) \in X | x_1 = x_2 \} \\]
 
-So we just need to unravel what (1) and (2) mean above. Unwinding
-(1), we get that for any \\(x \in X\\), there exists a \\(y \in Y \\)
-such that \\((x,y) \in R \\) and \\((y,x) \in Q\\). This tells us for
-one that \\(R \\) is a "right-total" relation and \\(Q \\) is a
-"left-total". Every \\(x \\) is related to some \\( y\\) by \\( R \\)
-and \\( Q\\).
+So we just need to unravel what (1) and (2) mean above. Unwinding (1),
+we get that for any \\(x \in X\\), there exists a \\(y \in Y \\) such
+that \\((x,y) \in R \\) and \\((y,x) \in Q\\). This tells us for one
+that \\(R \\) is a "right-total" relation and \\(Q \\) is a
+"left-total" relation. Every \\(x \\) is related to some \\( y\\) by
+\\( R \\) and \\( Q\\).
 
 If we unwind (2), we get that for any \\(y,y' \in Y\\) if there's some
 \\(x \in X \\) such that \\((x,y) \in R \\) and \\((y',x) \in Q \\)
@@ -136,7 +136,7 @@ argument, where instead of relations we have "monotone relations", i.e.,
 downward-closed \\(R \subset A^{\text{op}} \times B \\). Then you can
 interpret the definition of adjunction in that universe and get that
 it's the same as a Kleisli Galois connection and that a similar
-argument to that above argument shows that the "left adjoint" is
+argument to the above shows that the "left adjoint" is
 represented by a monotone function \\(f : A \to B \\):
 
 \\[R = \{(x,y) | y \le f(x) \} \\]
