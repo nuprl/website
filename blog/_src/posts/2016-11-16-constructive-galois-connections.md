@@ -61,7 +61,7 @@ Now to "de-posetize" this, we'll take sets \\(X,Y \\) and let \\(P(Y) \\)
 mean the powerset of \\(Y\\), that is the set of all subsets of
 \\(Y \\). Then a function \\(f : X \to P(Y) \\) is actually exactly
 the same thing as a relation \\(R \subset X \times Y \\). From \\(f :
-X \to P(Y) \\) we can take \\(R = \{(x,y) \in X\times Y | y=f(x)\} \\)
+X \to P(Y) \\) we can take \\(R = \{(x,y) \in X\times Y | y\in f(x)\} \\)
 and from \\(R\\) we can construct \\(f(x) = \{y \in Y | (x,y) \in R \}\\).
 
 Furthermore, the "Kleisli composition" is the same as composition of
