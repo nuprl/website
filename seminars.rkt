@@ -47,6 +47,26 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "Analysis of Android hybrid applications and other fun with WALA"
+     "Julian Dolby"
+     "http://researcher.ibm.com/person/us-dolby"
+     "IBM Research"
+     (datetime 2016 12 1 12 00)
+     "Richards Hall 140"
+     @list{@p{Hybrid apps help developers build multiple apps for different platforms with less duplicated effort, by providing platform-specific functionality via native code and user interactions via javascript code. however, most hybrid apps are developed in multiple programming languages with different semantics, complicating programming. moreover, untrusted javascript code may access device-specific features via native code, exposing hybrid apps to attacks. Unfortunately, there are no existing tools to detect such vulnerabilities. In this paper, we present HybriDroid, the first static analysis framework for Android hybrid apps. First, we investigate the semantics of interoperation of Android Java and JavaScript. Then, we design and implement a static analysis framework that analyzes inter-communication between Android Java and JavaScript. We demonstrate HybriDroid with a bug detector that identifies programmer errors due to the hybrid semantics, and a taint analyzer that finds information leaks cross language boundaries. Our empirical evaluation shows that the tools are practically usable in that they found previously uncovered bugs in real-world Android hybrid apps and possible information leaks via a widely-used advertising platform.}@p{The bulk of this presentation will focus on ASE 2016 work on analysis of hybrid apps (1), a blend of per-platform native code and portable JavaScript. I will also briefly discuss two other recent projects involving WALA: ASE 2015 work on a practically tunable static analysis framework for large-scale JavaScript applications (2), and ISSTA 2015 work on scalable and precise taint analysis for Android (3).}@p{1: Sungho Lee, Julian Dolby, Sukyoung Ryu: HybriDroid: static analysis framework for Android hybrid applications. ASE 2016: 250-261}@p{2: Yoonseok Ko, Hongki Lee, Julian Dolby, Sukyoung Ryu: Practically Tunable Static Analysis Framework for Large-Scale JavaScript Applications (T). ASE 2015: 541-551}@p{3: Wei Huang, Yao Dong, Ana Milanova, Julian Dolby: Scalable and precise taint analysis for Android. ISSTA 2015: 106-117}}
+     @list{@p{Julian Dolby is a Research Staff Member at the IBM Thomas J. Watson Research Center, where he works on a range of topics, including static program analysis, software testing, concurrent programming models and the semantic Web. He is one of the primary authors of the publically available Watson Libraries for Analysis (WALA) program analysis infrastructure, and his recent WALA work has focused on creating the WALA Mobile infrastructure.}@p{His program analysis work has recently focused on scripting languages like JavaScript and on security analysis of Web applications; this work has been included in IBM products, most notably Rational AppScan, Standard Edition and Source Edition. He was educated at the University of Illinois at Urbana-Champaign as a graduate student where he worked with Professor Andrew Chien on programming systems for massively-parallel machines.}})
+
+    (seminar
+     "TBD"
+     "Zena Ariola"
+     "http://ix.cs.uoregon.edu/~ariola/"
+     "University of Oregon"
+     (datetime 2016 11 28 12 00)
+     "WVH 110"
+     @list{@p{TBD}}
+     @list{@p{TBD}})
+
+    (seminar
      "Contextual Equivalence of Probabilistic Programs"
      "Ryan Culpepper"
      "http://www.ccs.neu.edu/home/ryanc/"
