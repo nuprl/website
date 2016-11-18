@@ -287,13 +287,13 @@
                   #:website "http://ccs.neu.edu/home/leif"
                   #:history @list["Joined 2014"]
                   #:img "leif_andersen.jpg"]{
-            Objects in the Rear View Mirror May Appear Closer than They Are.
+            I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
           }
 
           @person[#:name "Andrew Cobb"
                   #:title "Advisor: Olin Shivers"
                   #:e-mail "andrew.cobb@gmail.com"
-                  #:website "http://"
+                  #:website ""
                   #:history @list["Joined 2014"]
                   #:img "Andrew-square.jpg"]{
           }
@@ -321,7 +321,7 @@
                   #:e-mail "samc@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/samc"
                   #:history @list["Joined 2015"]
-                  #:img "sam_caldwell.jpg"]{
+                  #:img "Samuel-Caldwell-Index-Image.jpg"]{
             I came to Northeastern from Austin, Texas, where I did my undergrad and spent several years working in embedded software. I’m interested in using ideas and tools from programming languages to make the world a better place for everyone that uses computers.
           }
 
@@ -330,17 +330,26 @@
                   #:e-mail "bchung@ccs.neu.edu"
                   #:website "http://benchung.github.io"
                   #:history @list["Joined 2015"]
-                  #:img "benjamin_chung.jpg"]{
+                  #:img "Benjamin-Chung-Index-Image.jpg"]{
             I usually work on types, currently focusing on gradual type systems.
           }
 
           @person[#:name "Olivier Flückiger"
                   #:title "Advisor: Jan Vitek"
-                  #:e-mail "o@"@"o1o.ch"
+                  #:e-mail "o@o1o.ch"
                   #:website "http://www.o1o.ch/about"
                   #:history @list["Joined 2015"]
                   #:img "olivier_fluckiger.jpg"]{
             My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
+          }
+                                                
+          @person[#:name "Ming-Ho Yee"
+                  #:title "Advisor: Jan Vitek"
+                  #:e-mail "mh@mhyee.com"
+                  #:website "http://mhyee.com/"
+                  #:history @list["Joined 2016"]
+                  #:img "yee-crop.jpg"]{
+            I work on the design and implementation of programming languages. My previous work also involved static program analysis, and building tools for programmers to make software development easier.
           }
 
           @person[#:name "Daniel Patterson"
