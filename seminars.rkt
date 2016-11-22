@@ -73,13 +73,25 @@ intuition.}})
      @list{@p{Julian Dolby is a Research Staff Member at the IBM Thomas J. Watson Research Center, where he works on a range of topics, including static program analysis, software testing, concurrent programming models and the semantic Web. He is one of the primary authors of the publically available Watson Libraries for Analysis (WALA) program analysis infrastructure, and his recent WALA work has focused on creating the WALA Mobile infrastructure.}@p{His program analysis work has recently focused on scripting languages like JavaScript and on security analysis of Web applications; this work has been included in IBM products, most notably Rational AppScan, Standard Edition and Source Edition. He was educated at the University of Illinois at Urbana-Champaign as a graduate student where he worked with Professor Andrew Chien on programming systems for massively-parallel machines.}})
 
     (seminar
-     "TBD"
+     "Sequent calculus as a programming language"
      "Zena Ariola"
      "http://ix.cs.uoregon.edu/~ariola/"
      "University of Oregon"
      (datetime 2016 11 28 12 00)
      "WVH 110"
-     @list{@p{TBD}}
+     @list{@p{We will present and demonstrate the usefulness of the sequent
+calculus as a formal model of computation based on interactions
+between producers and consumers of results. This model leads
+to a better understanding of call-by-name evaluation by
+reconciling the conflicting principles of extensionality and
+weak-head evaluation, thus internalizing a known parametricity
+result. It allows one to explore two dualities of computation:
+the duality between call-by-name and call-by-value, and the
+duality between construction and deconstruction. This ultimately
+leads to a better linguistic foundation for co-induction as dual
+to induction. From a more practical point of view, the sequent
+calculus provides a useful inspiration for the design of
+intermediate languages.}}
      @list{@p{TBD}})
 
     (seminar
