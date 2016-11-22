@@ -2,9 +2,9 @@
     Date: 2016-11-17T13:52:52
     Tags: by Gabriel Scherer
 
-Max New and Daniel Patterson just wrote two two-page abstracts on what
-they are working on right now. Come have a look -- and any feedback is
-welcome!
+Max New, Daniel Patterson and Benjamin Greenman recently wrote three
+two-page abstracts on what they are working on right now. Come have
+a look -- and any feedback is welcome!
 
 <!-- more -->
 
@@ -100,6 +100,19 @@ Daniel Patterson
 > intricacies of either the compiler or the particular language they
 > are linking with.
 
+## Pruning Contracts with Rosette
+
+[Pruning Contracts with Rosette](http://www.ccs.neu.edu/home/types/resources/popl2017-src.pdf)
+Benjamin Greenman
+2016
+
+> Contracts are a pragmatic tool for managing software systems, but
+> programs using contracts suffer runtime overhead. If this overhead
+> becomes a performance bottleneck, programmers must manually edit or
+> remove their contracts. This is no good. Rather, the contracts
+> should identify their own inefficiencies and remove unnecessary
+> dynamic checks. Implementing contracts with Rosette is a promising
+> way to build such self-aware contracts.
 
 ## While we're at it let's rant on SRCs
 
