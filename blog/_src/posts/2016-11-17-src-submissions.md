@@ -25,7 +25,7 @@ Max New
 > It has long been noted that there is much similarity between work on
 > contracts and gradual typing, and the use of retracts in domain
 > theory which were used to relate models of untyped and typed lambda
-> calculus in [Scott(1976)] and [Scott(1980)]. Here we take this
+> calculus in [Scott(1976)](https://pdfs.semanticscholar.org/359e/ca57fe42d97cbb67f0b5591869abe5eb5421.pdf) and [Scott(1980)](http://andrewkish-name.s3.amazonaws.com/scott80.pdf). Here we take this
 > connection seriously and consider how judgments in modern gradually
 > typed languages can be framed in terms of retractions. While
 > retractions in programming languages were originally studied in
@@ -38,10 +38,12 @@ Max New
 > precision of gradual types, a common judgment in gradually typed
 > languages (sometimes called naive subtyping for
 > historical reasons). We relate it to a previous definition from
-> [Wadler and Findler(2009)] that defines type precision in terms of
-> blame. We show that our definition decomposes in a similar way into
-> “positive” and “negative” type precision, but without depending on
-> a specific notion of blame in the language.
+> [Wadler and
+> Findler(2009)](https://www.eecs.northwestern.edu/%7Erobby/pubs/papers/esop2009-wf.pdf)
+> that defines type precision in terms of blame. We show that our
+> definition decomposes in a similar way into “positive” and
+> “negative” type precision, but without depending on a specific
+> notion of blame in the language.
 
 ## Linking Types: Specifying Safe Interoperability and Equivalences
 
@@ -78,13 +80,15 @@ Daniel Patterson
 Benjamin Greenman
 2016
 
-> Contracts are a pragmatic tool for managing software systems, but
-> programs using contracts suffer runtime overhead. If this overhead
-> becomes a performance bottleneck, programmers must manually edit or
-> remove their contracts. This is no good. Rather, the contracts
-> should identify their own inefficiencies and remove unnecessary
-> dynamic checks. Implementing contracts with Rosette is a promising
-> way to build such self-aware contracts.
+> [Contracts](http://www.ccs.neu.edu/racket/pubs/icfp16-dnff.pdf) are
+> a pragmatic tool for managing software systems, but programs using
+> contracts suffer runtime overhead. If this overhead becomes
+> a performance bottleneck, programmers must manually edit or remove
+> their contracts. This is no good. Rather, the contracts should
+> identify their own inefficiencies and remove unnecessary dynamic
+> checks. Implementing contracts with
+> [Rosette](https://emina.github.io/rosette/) is a promising way to
+> build such self-aware contracts.
 
 ## While we're at it let's rant on SRCs
 
