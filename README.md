@@ -17,3 +17,9 @@ Build Prerequisites: [Racket](http://racket-lang.org/)
 
 To preview your changes locally, you can build and start a local
 server with the generated site using `make preview`
+
+
+Blog
+====
+
+See <blog/README.md>
