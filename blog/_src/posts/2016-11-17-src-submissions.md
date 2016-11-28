@@ -10,7 +10,7 @@ a look -- and any feedback is welcome!
 
 ## Gradual Type Precision as Retraction
 
-[Gradual Type Precision as Retraction]()  
+[Gradual Type Precision as Retraction](http://maxsnew.github.io/docs/precision-as-retraction.pdf)  
 Max New  
 2016
 
@@ -44,29 +44,6 @@ Max New
 > a specific notion of blame in the language.
 
 ## Linking Types: Specifying Safe Interoperability and Equivalences
-
-We in Amal's sub-group believe that full abstraction is a great way to
-specify what it means for two languages to interoperate gracefully:
-the embedding from each language to the multi-language should preserve
-equational reasoning. But sometimes it is very restrictive, because
-for example the function types of the two languages may have
-completely different expectations (one is pure functions, one
-is effectful), and only ground data can safely be exchanged.
-
-Daniel's idea is that when a typed language don't have expressive
-enough types to safely represent values from another language,
-there should be a principled, minimal way to extend the type
-system to have enough common ground to talk about the
-interaction. If the user's language is pure and the language they
-are trying to link with is impure, you extend the user's
-language to have both pure and impure arrows. In particular, you
-can use those richer types in source programs to allow
-interaction: if you abstract over a function in the pure
-language, but annotate it with the extended "impure function"
-type, you make your interaction expectations explicit, and can
-safely link with functions in the other language. Formally, you
-now have a fully-abstract embedding from the extended language
-to the multi-language.
 
 [Linking Types: Specifying Safe Interoperability and Equivalences](https://dbp.io/pubs/2016/linking-types-poplsrc2017-proposal.pdf)  
 Daniel Patterson  
