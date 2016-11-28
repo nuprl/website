@@ -10,13 +10,6 @@ a look -- and any feedback is welcome!
 
 ## Gradual Type Precision as Retraction
 
-Max's idea is to use category-theory to explain some aspects of
-gradual typing. The abstract is short, written to be readable by
-people that don't know category theory, it explains some things about
-the bazillions of more-or-less-subtyping relations in existing gradual
-typing work, and it ends with an interesting mismatch with existing
-definitions. Go read it!
-
 [Gradual Type Precision as Retraction]()  
 Max New  
 2016
