@@ -3,13 +3,13 @@
           "publication-data.rkt"
           "templates.rkt")
 
-@;; NOTE: For now, the policy is that a paper should be on this page if one of
-@;; the authors was a member of the lab when it was published (although many of
-@;; the older papers have not followed this policy).
-
 @;; NOTE: Papers are sorted by in reverse chronological order (although there is
 @;; no sorting within a year, because we don't track that information). Please
-@;; follow this policy when adding new papers.
+@;; follow this policy when adding new papers -- in particular, recent
+@;; papers should go at the top.
+
+@;; NOTE: For now, the policy is that a paper should be on this page if one of
+@;; the authors was a member of the lab when it was published.
 
 @(define OOPSLA "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)")
 @(define PLDI "Programming Language Design and Implementation (PLDI)")
@@ -44,6 +44,16 @@
 
 @(define publications
    (list
+    (publication "Type Systems as Macros"
+                 "Stephen Chang, Alex Knauth, Ben Greenman"
+                 POPL
+                 2017
+                 "http://www.ccs.neu.edu/home/stchang/pubs/ckg-popl2017.pdf")
+    (publication "Deciding equivalence with sums and the empty type"
+                 "Gabriel Scherer"
+                 POPL
+                 2017
+                 "https://arxiv.org/pdf/1610.01213")
     (publication "Fully Abstract Compilation via Universal Embedding"
                  "Max S. New, William J. Bowman, and Amal Ahmed"
                  ICFP
