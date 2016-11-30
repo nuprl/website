@@ -5,22 +5,23 @@
    "templates.rkt")
 
 @(define id 0)
-@(define (seminar title speaker link aff date room abstract bio)
+@(define (seminar anchor title speaker link aff date room abstract bio)
    (set! id (add1 id))
    @list[
-     @div[id: @format["seminar-~a" id] class: "col-md-12 pn-seminar compact"]{
+     @div[id: @format["seminar-~a" id] class: "col-md-12 pn-seminar"]{
        @script/inline[type: "text/javascript"]{
          if (new Date() >= new Date("@(datetime->iso8601 date)")) {
-           document.getElementById("seminar-@|id|").classList.add('finished');
+            document.getElementById("seminar-@|id|").classList.add("finished");
          }
        }
+       @a[name: anchor]
        @div[class: "pn-main-informations"]{
          @a[onclick: "return false;" class: "pn-title" title]
          @br[]
          @span[class: "pn-name" speaker]
-         @br[]
          @span[class: "pn-affiliation" aff]
          @a[class: "pn-url" target: "_blank" href: link link]
+         @br[]
          @span[class: "pn-datetime" (~t date "d MMMM, y h:mma")]
          @span[class: "pn-room" room]}
        @div[class: "pn-abstract-bio"]{
@@ -37,6 +38,7 @@
 @(define seminars
    (splice
     ;; (seminar
+    ;;  "IDENTIFIER"
     ;;  "TITLE"
     ;;  "AUTHOR"
     ;;  "WEBSITE"
@@ -47,6 +49,7 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "scherer-emptytype"
      "Deciding program equivalence with sums and the empty type"
      "Gabriel Scherer"
      "http://www.ccs.neu.edu/home/gasche/"
@@ -63,6 +66,7 @@ intuition.}})
 
 
     (seminar
+     "dolby-wala"
      "Analysis of Android hybrid applications and other fun with WALA"
      "Julian Dolby"
      "http://researcher.ibm.com/person/us-dolby"
@@ -73,6 +77,7 @@ intuition.}})
      @list{@p{Julian Dolby is a Research Staff Member at the IBM Thomas J. Watson Research Center, where he works on a range of topics, including static program analysis, software testing, concurrent programming models and the semantic Web. He is one of the primary authors of the publically available Watson Libraries for Analysis (WALA) program analysis infrastructure, and his recent WALA work has focused on creating the WALA Mobile infrastructure.}@p{His program analysis work has recently focused on scripting languages like JavaScript and on security analysis of Web applications; this work has been included in IBM products, most notably Rational AppScan, Standard Edition and Source Edition. He was educated at the University of Illinois at Urbana-Champaign as a graduate student where he worked with Professor Andrew Chien on programming systems for massively-parallel machines.}})
 
     (seminar
+     "ariola-sequent"
      "Sequent calculus as a programming language"
      "Zena Ariola"
      "http://ix.cs.uoregon.edu/~ariola/"
@@ -95,6 +100,7 @@ intermediate languages.}}
      @list{@p{TBD}})
 
     (seminar
+     "culpepper-probablistic"
      "Contextual Equivalence of Probabilistic Programs"
      "Ryan Culpepper"
      "http://www.ccs.neu.edu/home/ryanc/"
@@ -106,6 +112,7 @@ In this talk I introduce a probabilistic programming language with continuous ra
      @list{@p{Ryan Culpepper is a research scientist at Northeastern University.  He works on probabilistic programming as well as extensible languages and tools for building domain-specific languages. He received his PhD at Northeastern and did a postdoc at the University of Utah.}})
 
     (seminar
+     "meiklejohn-computation"
      "Declarative, Convergent Edge Computation"
      "Christopher Meiklejohn"
      "https://christophermeiklejohn.com/"
@@ -135,6 +142,7 @@ Christopher is currently a Ph.D. student at the Université Catholique
 de Louvain in Belgium.}})
 
     (seminar
+     "verlaguet-hack"
      "The Hack Experiment & HHVM, Then And Now"
      "Julien Verlaguet & Brett Simmers"
      "http://hacklang.org/"
@@ -144,6 +152,7 @@ de Louvain in Belgium.}})
      @list{@p{The Hack programming language developed at Facebook is an evolution of PHP. With tens of millions  of lines of PHP code in house, the lack of type and poor IDE support were felt to be major threats to Facebook. We designed Hack gradually, adding feature at regular intervals and encouraging developers to adopt them in their code. This talk will touch on the design of the Hack language, its type system, the implementation of the type checker, and the social processes involved in converting 20 millions lines of untyped code to a rich type system.}@p{HHVM is an open source virtual machine for PHP and Hack programs. It was developed by Facebook but is also used by Wikipedia, Baidu, Etsy, and many others. This talk will discuss the history of the project, what goes on behind the scenes while executing your PHP code, and what we're currently working on.}}
      @list{@p{Julien Verlaguet is a OCaml programmer with a Master from Université Pierre et Marie Curie in Paris. Before joining Facebook in 2011, he worked at Esterel technologies on verified compilation.  At Facebook he designed the Hack programming language, a typed offspring of PHP and managed to convince the majority of developers in the company to add types to their code.}@p{Brett Simmers is a Software Engineer at Facebook, where he's been working on HHVM for the past five years. He primarily works on the internals of the JIT compiler and HHVM's profile-guided optimizations. Before joining Facebook he spent two years at VMware working on the Linux version of VMware Workstation.}})
     (seminar
+     "yee-flix"
      "Implementing a Functional Language for Flix"
      "Ming-Ho Yee"
      "http://mhyee.com"
@@ -154,7 +163,8 @@ de Louvain in Belgium.}})
            @p{Flix is a programming language for static analysis, consisting of a logic language and a functional language. The logic language is inspired by Datalog, but supports user-defined lattices. The functional language allows implementors to write functions, something which is not supported in Datalog. These two extensions, user-defined lattices and functions, allow Flix to support analyses that cannot be expressed by Datalog, such as a constant propagation analysis. Datalog is limited to constraints on relations, and although it can simulate finite lattices, it cannot express lattices over an infinite domain. Finally, another advantage of Flix is that it supports interoperability with existing tools written in general-purpose programming languages.}
            @p{This talk provides an overview of the implementation and evaluation of the Flix functional language. The implementation involves abstract syntax tree transformations, an interpreter back-end, and a code generator back-end, and must support a number of interesting language features, such as pattern matching, first-class functions, and interoperability. The evaluation compares the interpreter and code generator back-ends in terms of correctness and performance.}}
      @list{@p{Ming-Ho Yee is a Ph.D. student at Northeastern University. He works on programming language design and implementation with Jan Vitek. He received a Bachelor of Software Engineering from the University of Waterloo, and then continued for a Master of Mathematics in Computer Science under the supervision of Ondřej Lhoták.}})
-    (seminar
+     (seminar
+      "wahl-decisions"
      "Behavioral Non-Portability in Decision-Making Programs"
      "Thomas Wahl"
      "http://www.ccs.neu.edu/home/wahl/"
@@ -166,6 +176,7 @@ de Louvain in Belgium.}})
            @p{Joint with Yijia Gu, Mahsa Bayati, and Miriam Leeser, Northeastern University, Boston, USA}}
      @list{@p{Thomas Wahl joined the faculty of Northeastern University in 2011. His research concerns the reliability (whatever that means) of complex computing systems. Two domains notorious for their fragility are concurrency and numerical computing. With colleagues, Wahl has investigated how floating-point arithmetic can "hijack" a program's computation when run on non-standard architectures, such as heterogeneous and custom-made embedded platforms. You will witness some hijacking attempts in the talk today.}})
     (seminar
+     "sen-concolic"
      "Concolic Testing: A Decade Later"
      "Koushik Sen"
       "https://www.cs.berkeley.edu/~ksen/"
@@ -176,7 +187,8 @@ de Louvain in Belgium.}})
             @p{Our research on Concolic Testing (also known as DART: Directed Automated Random Testing or Dynamic Symbolic Execution) alleviated the limitations of classical symbolic execution by combining concrete execution and symbolic execution.  We demonstrated that concolic testing is an effective technique for generating high-coverage test suites and for finding deep errors in complex software applications. The success of concolic testing in scalably and exhaustively testing real-world software was a major milestone in the ad hoc world of software testing and has inspired the development of several industrial and academic automated testing and security tools.}
             @p{One of the key challenges of concolic testing is the huge number of programs paths in all but the smallest programs, which is usually exponential in the number of static branches in the code.  In this talk I will describe MultiSE, a new technique for merging states incrementally during symbolic execution, without using auxiliary variables. The key idea of MultiSE is based on an alternative representation of the state, where we map each variable, including the program counter, to a set of guarded symbolic expressions called a value summary. MultiSE has several advantages over conventional symbolic execution and state merging techniques: 1) value summaries enable sharing of symbolic expressions and path constraints along multiple paths, 2) value-summaries avoid redundant execution, 3) MultiSE does not introduce auxiliary symbolic values, which enables it to make progress even when merging values not supported by the constraint solver, such as floating point or function values.  We have implemented MultiSE for JavaScript programs in a publicly available open-source tool. Our evaluation of MultiSE on several programs shows that MultiSE can run significantly faster than traditional symbolic execution.}}
       @list{@p{Koushik Sen is an associate professor in the Department of Electrical Engineering and Computer Sciences at the University of California, Berkeley. His research interest lies in Software Engineering, Programming Languages, and Formal methods. He is interested in developing software tools and methodologies that improve programmer productivity and software quality. He is best known for his work on ³DART: Directed Automated Random Testing² and concolic testing. He has received a NSF CAREER Award in 2008, a Haifa Verification Conference (HVC) Award in 2009, a IFIP TC2 Manfred Paul Award for Excellence in Software: Theory and Practice in 2010, a Sloan Foundation Fellowship in 2011, a Professor R. Narasimhan Lecture Award in 2014, and an Okawa Foundation Research Grant in 2015. He has won several ACM SIGSOFT Distinguished Paper Awards. He received the C.L. and Jane W-S. Liu Award in 2004, the C. W. Gear Outstanding Graduate Award in 2005, and the David J. Kuck Outstanding Ph.D. Thesis Award in 2007, and a Distinguished Alumni Educator Award in 2014 from the UIUC Department of Computer Science. He holds a B.Tech from Indian Institute of Technology, Kanpur, and M.S. and Ph.D. in CS from University of Illinois at Urbana-Champaign.}})
-    (seminar
+     (seminar
+      "haller-lacasa"
      "LaCasa: Lightweight Affinity and Object Capabilities in Scala"
      "Philipp Haller"
      "http://www.csc.kth.se/~phaller/"
@@ -187,6 +199,7 @@ de Louvain in Belgium.}})
            @p{This paper presents a new approach to isolation and uniqueness in an existing, widely-used language, Scala. The approach is unique in the way it addresses some of the most important obstacles to the adoption of type system extensions for aliasing control. First, adaptation of existing code requires only a minimal set of annotations. Only a single bit of information is required per class. Surprisingly, the paper shows that this information can be provided by the object-capability discipline, widely-used in program security. We formalize our approach as a type system and prove key soundness theorems. The type system is implemented for the full Scala language, providing, for the first time, a sound integration with Scala’s local type inference. Finally, we empirically evaluate the conformity of existing Scala open-source code on a corpus of over 75,000 LOC.}}
      @list{@p{Philipp Haller is an assistant professor in the theoretical computer science group at KTH Royal Institute of Technology, the leading technical university in Sweden. His main research interests are programming languages, type systems, concurrent, and distributed programming. Philipp is co-author of Scala's async/await extension for asynchronous computations, and one of the lead designers of Scala's futures and promises library. As main author of the book "Actors in Scala," he created Scala's first widely-used actors library. Philipp was co-chair of the 2013 and 2014 editions of the Scala Workshop, and co-chair of the 2015 ACM SIGPLAN Scala Symposium. Previously, he has held positions at Typesafe, Stanford University, and EPFL. He received a PhD in computer science from EPFL in 2010.}})
     (seminar
+     "vitek-julia"
      "Performance in Julia"
      "Jan Vitek"
      "http://janvitek.org/"
@@ -197,6 +210,7 @@ de Louvain in Belgium.}})
      @list{@p{Jan Vitek, @url{"http://janvitek.org/"}, is a Professor at Northeastern University CCIS. He works on the design and implementation of programming abstractions for areas and in languages that are *terrifying*. For instance, he has worked on a real-time JVM for running Java on an actual embedding real-time system, on understanding JavaScript to make it more secure, and on getting R (yes R) to be scalable for data analysis. Apparently he does these things because they are used in the "real world" to "solve problems". He also has an excellent sense of humor and didn't give me a bio, so I took some liberties and hope he doesn't mind.}})
 
     (seminar
+     "zeilberger-refinement"
      "A Categorical Perspective on Type Refinement"
      "Noam Zeilberger"
      "http://noamz.org/"
@@ -225,6 +239,7 @@ de Louvain in Belgium.}})
      @list{Since receiving his PhD from Carnegie Mellon in 2009, Noam Zeilberger has been actively pursuing a career as an itinerant postdoc, with gigs in Paris (Laboratoire PPS), Madrid (IMDEA Software), Princeton (IAS), and back in Paris (MSR-Inria).  He is currently a member of Inria Team Parsifal at Ecole Polytechnique.  In his free time, he enjoys enumerating lambda terms, and his favorite combinators are B, C and I.})
 
     (seminar
+     "mickens-dataflow"
      "Leveraging Fine-grained Data Flows in Web Applications"
      "James Mickens"
      "http://mickens.seas.harvard.edu/"
@@ -236,6 +251,7 @@ de Louvain in Belgium.}})
      @list{James Mickens is an IEEE Knight of the Republic, an ACM Templar for Non-Open Access, and a Royal Proceeding of Her Majesty’s Royal Proceedings. His appreciation for syntactically correct code has led him to be called “a semicolon in human form.” His online shopping habits have too many dimensions to be k-means clustered, so he is only shown ads about dinosaurs and ancient siege machines. This does not bother James Mickens, and explains why he spends his summers attacking France with triceratops horns.})
 
     (seminar
+     "mccarthy-runtime"
      "A Coq Library For Internal Verification of Running-Times"
      "Jay McCarthy"
      "https://jeapostrophe.github.io/home/"
@@ -260,6 +276,7 @@ science education & diversity, formal verification, programming
 language expressiveness, and his wonderful family.})
 
     (seminar
+     "scherer-effects"
      "New language ideas for user-defined side-effects: algebraic effect handlers."
      "Gabriel Scherer"
      "http://gallium.inria.fr/~scherer/"
@@ -300,6 +317,7 @@ language aspects, rather than the often subjective appeal to taste or
 intuition.})
 
     (seminar
+     "consel-iot"
      "Internet of Things: From Small- to Large-Scale Orchestration"
      "Charles Consel"
      "http://phoenix.inria.fr/charles-consel"
@@ -318,6 +336,7 @@ His research contributions cover programming languages, software engineering, op
 He leads the Phoenix group at Inria that conducts multi-disciplinary research to design, develop, deploy and assess assistive computing support. This research combines (1) Cognitive Science to study user needs and make a rigorous assessment of assistive services; (2) Sensing and actuating expertise to support the user, based on accurate and rich interactions with the environment; (3) Computer Science to support and guide the development process of the assistive services.})
 
     (seminar
+     "aiken-stoke"
      "STOKE: Search-Based Compiler Optimization"
      "Alex Aiken"
      "https://theory.stanford.edu/~aiken/"
@@ -348,6 +367,7 @@ programming languages. He is an ACM Fellow, a recipient of Phi Beta
 Kappa's Teaching Award, and a former National Young Investigator.})
 
     (seminar
+     "rubin-mobile"
      "The Secret Life of Mobile Applications"
      "Julia Rubin"
      "https://people.csail.mit.edu/mjulia/"
@@ -358,6 +378,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      @list{Julia Rubin is a Postdoctoral Researcher in the EECS department at MIT. Prior to that, she was a Research Staff Member and, part of the time, a manager at IBM Research in Haifa, Israel. She received her PhD in Computer Science from the University of Toronto, Canada in 2014. Julia’s research interests are in software engineering, program analysis and software security, focusing on improving the quality and the integrity of modern software systems. Her recent work in this area won an ACM Distinguished Paper Award at ASE, two Best Paper Awards, at SPLC and CSMR, and was nominated for Facebook’s Internet Defense Prize at the USENIX Security Symposium.})
 
     (seminar
+     "devriese-capabilities"
      "Reasoning about Object Capabilities with Logical Relations and Effect Parametricity"
      "Dominique Devriese"
      "https://distrinet.cs.kuleuven.be/people/dominiqu"
@@ -368,6 +389,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      @list{Dominique is a postdoctoral researcher in the research group DistriNet, part of the Computer Science department of the Katholieke Universiteit Leuven. He holds a postdoctoral research fellowship of the Research Foundation - Flanders (FWO). He works on formalising properties of object-oriented and object-capability programming languages---specifically a property called effect parametricity--is the author of the grammar-combinators Haskell parsing library, and has added instance arguments to the programming language/proof assistant Agda. He is interested in information flow security, secure compilation,full abstraction, and functional and dependently typed programming languages.})
 
     (seminar
+     "chandra-javascript"
      "JavaScript in the Small"
      "Satish Chandra"
      "https://sites.google.com/site/schandraacmorg/"
@@ -379,6 +401,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
            Satish Chandra obtained a PhD from the University of Wisconsin-Madison in 1997, and a B.Tech from the Indian Institute of Technology-Kanpur in 1991, both in computer science. From 1997 to 2002, he was a member of technical staff at Bell Laboratories, where his research focused on program analysis, domain-specific languages, and data-communication protocols. From 2002 to 2013, he was a research staff member at IBM Research, where his research focused on bug finding and verification, software synthesis, and test automation. He joined Samsung Electronics in 2013, where he leads the advanced programming tools research team. He is an ACM Distinguished Scientist.})
 
     (seminar
+     "ryu-bugs"
      "Journey to Find Bugs in Real-World Web Applications in the Wild"
      "Sukyoung Ryu"
      "http://plrg.kaist.ac.kr/ryu"
@@ -389,6 +412,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      @list{})
 
     (seminar
+     "lahav-consistency"
      "Taming release-acquire consistency"
      "Ori Lahav"
      "https://www.mpi-sws.org/~orilahav/"
@@ -402,6 +426,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      @list{Ori Lahav is a postdoctoral researcher at MPI-SWS. He obtained his PhD from Tel Aviv University in the area of non-classical logics. His current research interests are in programming languages generally, with specific focus on memory models, concurrency, verification, and logic.})
 
     (seminar
+     "patrignani-pma"
      "Secure Compilation to Protected Module Architectures"
      "Marco Patrignani"
      "http://www.mpi-sws.org/~marcopat/"
@@ -412,6 +437,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      @list{Marco Patrignani did his bachelor and masters study in Bologna, then he obtained a Ph.D. in computer science from the KU Leuven, Belgium. There, with his advisors Dave Clarke and Frank Piessens, he studied secure (fully-abstract) compilation for Intel-SGX like architectures, i.e., untyped assembly languages extended with a memory isolation mechanism. Additionally, he investigated trace-based characterisation of the behaviour of those architectures. He is now a post-doc at MPI-SWS, Germany working on more secure-compilation-related topics with Deepak Garg.})
 
     (seminar
+     "vafeiadis-weakmemory"
      "Program verification under weak memory consistency"
      "Viktor Vafeiadis"
      "http://www.mpi-sws.org/~viktor/"
@@ -425,6 +451,7 @@ Kappa's Teaching Award, and a former National Young Investigator.})
      })
 
     (seminar
+     "nagarakatte-llvm"
      "Lightweight Formal Methods for LLVM Verification"
      "Santosh Nagarakatte"
      "http://www.cs.rutgers.edu/~santosh.nagarakatte/"
@@ -465,6 +492,7 @@ compiler developer.}}
      @list{Santosh Nagarakatte is an Assistant Professor of Computer Science at Rutgers University. He obtained his PhD from the University of Pennsylvania. His research interests are in Hardware-Software Interfaces spanning Programming Languages, Compilers, Software Engineering, and Computer Architecture. His papers have been selected as IEEE MICRO TOP Picks papers of computer architecture conferences in 2010 and 2013. He has received the NSF CAREER Award in 2015, PLDI 2015 Distinguished Paper Award, and the Google Faculty Research Award in 2014 for his research on incorporating lightweight formal methods for LLVM compiler verification.})
 
      (seminar
+      "andersen-profiling"
       "Feature Specific Profiling for R"
       "Leif Andersen"
       "http://leifandersen.net"
@@ -489,6 +517,7 @@ Northeastern University, studying programming language with Matthias
 Felleisen.})
 
      (seminar
+      "berger-performance"
       "Performance Matters"
       "Emery Berger"
       "http://emeryberger.com/"
@@ -555,6 +584,7 @@ Felleisen.})
                      })
 
      (seminar
+      "guha-networks"
       "Programming Languages Meets Programmable Networks"
       "Arjun Guha"
       "https://people.cs.umass.edu/~arjun/home/"
@@ -593,6 +623,7 @@ defined networks.
                   College in 2006.})
 
      (seminar
+      "jagannathan-consistency"
       "Declarative Programming for Eventual Consistency"
       "Suresh Jagannathan"
       "https://www.cs.purdue.edu/homes/suresh/"
@@ -643,6 +674,7 @@ defined networks.
                       runtimes, and architectures (BRASS).}})
 
      (seminar
+      "serrano-hop"
       "Hop.js: multitier programming in JavaScript"
       "Manuel Serrano"
       "http://www-sop.inria.fr/members/Manuel.Serrano/"
@@ -662,6 +694,7 @@ defined networks.
             Manuel is a researcher at INRIA Sophia Antipolis, he used to work on Scheme.})
 
      (seminar
+       "kirsch-scalloc"
        "Scalloc and Selfie: Fast Memory Allocation and Self-referential Systems Software"
        "Christoph Kirsch"
        "http://cs.uni-salzburg.at/~ck/"
@@ -688,6 +721,7 @@ defined networks.
         }})
 
      (seminar
+       "garnock-jones-syndicate"
        "Coordinated Concurrent Programming in Syndicate"
        "Tony Garnock-Jones"
        "http://www.ccs.neu.edu/home/tonyg/"
@@ -709,6 +743,7 @@ between actors and threads.
        })
 
      (seminar
+       "payer-corruption"
        "Memory corruption: why protection is hard"
        "Mathias Payer"
        "https://nebelwelt.net"
@@ -758,6 +793,7 @@ a Dr. sc. ETH in 2012.
        })
 
      (seminar
+       "vitek-llvm"
        "Using LLVM as a backend for R"
        "Jan Vitek"
        "http://janvitek.org"
@@ -772,6 +808,7 @@ a Dr. sc. ETH in 2012.
        }})
 
      (seminar
+       "ushey-rstudio"
        "Completions and Diagnostics in RStudio"
        "Kevin Ushey"
        "https://kevinushey.github.io/"
@@ -788,6 +825,7 @@ a Dr. sc. ETH in 2012.
        }})
 
      (seminar
+       "tierney-rengine"
        "Some New Developments for the R Engine"
        "Luke Tierney"
        "http://homepage.stat.uiowa.edu/~luke/"
@@ -809,6 +847,7 @@ a Dr. sc. ETH in 2012.
        }})
 
      (seminar
+       "summers-permissions"
        "Verification Infrastructure for Permission-based Reasoning"
        "Alex Summers"
        "http://people.inf.ethz.ch/summersa/wiki/"
@@ -856,6 +895,7 @@ a Dr. sc. ETH in 2012.
        }})
 
      (seminar
+       "samanta-tracesets"
        "Concurrent Trace Sets for Synchronization Synthesis"
        "Roopsha Samanta"
        "http://pub.ist.ac.at/~rsamanta/"

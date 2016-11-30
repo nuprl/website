@@ -101,6 +101,7 @@ else
         $this.addClass( 'compact' );
       }
     });
+
+    $(".finished .pn-title").click();
   });
 }
-
