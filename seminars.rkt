@@ -54,8 +54,8 @@
      "Gabriel Scherer"
      "http://www.ccs.neu.edu/home/gasche/"
      "Northeastern University"
-     (datetime 2016 12 8 12 00)
-     "WVH 366"
+     (datetime 2016 12 7 12 00)
+     "WVH 110"
      @list{@p{The simply-typed λ-calculus, with only function types, is strongly normalizing, and its program equivalence relation is decidable: unlike in more advanced type system with polymorphism or effects, the natural "syntactic" equivalence (βη-equivalence) corresponds to natural "semantic" equivalence (observational or contextual equivalence), and is decidable. Adding product types (pairs) is easy and preserves these properties, but sums (disjoint unions) are, surprisingly, harder. It is only in 1995 that Neil Ghani proved that the equivalence in presence of sums is decidable, and the situation in presence of the empty type (zero-ary sum) was unknown.}@p{We propose an equivalence algorithm for sums and the empty type that takes inspiration from a proof-theoretic technique, named "focusing",designed for proof search. The exposition will be introductory; I will present the difficulties caused by sums and the empty type, present some of the existing approaches for sums in the literature, introduce focusing, and give a high-level intuition of our saturation-based algorithm and its termination argument. No previous knowledge of focusing is assumed. I expect some familiarity with typed lambda-calculi, but will recall all concepts used (for example, βη-equivalence) during the talk.}}
      @list{@p{Gabriel is interested in theoretical aspects of type systems,
 programming language implementation, general programming language
