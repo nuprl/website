@@ -49,6 +49,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "new-retractionsblame"
+     "Retractions and Blame"
+     "Max New"
+     "http://maxsnew.github.io/"
+     "Northeastern University"
+     (datetime 2016 12 15 12 00)
+     "Behrakis 105"
+     @list{@p{It has long been noted that research on contracts and gradual typing bears a striking resemblance to Dana Scott's work on retracts in domain theory. However, a concrete relationship has been elusive, especially since the notion of *blame* has seemingly no counterpart in domain theory.}@p{We connect these fields by means of gradual type precision, which has been characterized previously using blame in [1]. We propose a definition in terms of section-retraction pairs, allowing us to relate blame and retractions in a precise way. Our definition agrees with [1] on most rules, but differs in a way that suggests a modification to their definition of blame.}@p{[1] Wadler and Findler, Well-typed Programs can't Be Blamed:
+http://homepages.inf.ed.ac.uk/wadler/topics/blame.html#blame-esop}}
+     @list{@p{Max New is a PhD student at Northeastern University working on the semantic foundations of programming languages. He hates proving the same theorem twice and you should too.}})
+
+    (seminar
      "scherer-emptytype"
      "Deciding program equivalence with sums and the empty type"
      "Gabriel Scherer"
