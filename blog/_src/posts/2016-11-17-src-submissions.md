@@ -2,7 +2,7 @@
     Date: 2016-11-17T13:52:52
     Tags: by Gabriel Scherer
 
-Max New, Daniel Patterson and Benjamin Greenman recently wrote three
+Max New, Daniel Patterson and Ben Greenman recently wrote three
 two-page abstracts on what they are working on right now. Come have
 a look -- and any feedback is welcome!
 
@@ -76,8 +76,8 @@ Daniel Patterson
 
 ## Pruning Contracts with Rosette
 
-[Pruning Contracts with Rosette](http://www.ccs.neu.edu/home/types/resources/popl2017-src.pdf)
-Benjamin Greenman
+[Pruning Contracts with Rosette](http://www.ccs.neu.edu/home/types/resources/popl2017-src.pdf)  
+Ben Greenman  
 2016
 
 > [Contracts](http://www.ccs.neu.edu/racket/pubs/icfp16-dnff.pdf) are
