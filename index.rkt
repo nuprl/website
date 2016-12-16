@@ -12,7 +12,7 @@
           @div[class: "col-md-12"]{
             @img[src: "img/prl.png" alt: "Programming Research Laboratory"]{
             @h1{Programming Research Laboratory}
-            @h2{College of Computer and Information Science @a[href: "http://www.ccs.neu.edu/" target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: "font-size: 64%;" aria-hidden: "true"]}}
+            @h2{College of Computer and Information Science, WVH 308 @a[href: "http://www.ccs.neu.edu/" target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: "font-size: 64%;" aria-hidden: "true"]}}
             @h3{Northeastern University @a[href: "http://www.neu.edu/" target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: "font-size: 62%;" aria-hidden: "true"]}}
             @h4{Boston}}}}}}
 
