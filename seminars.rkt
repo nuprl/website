@@ -23,7 +23,8 @@
          @a[class: "pn-url" target: "_blank" href: link link]
          @br[]
          @span[class: "pn-datetime" (~t date "d MMMM, y h:mma")]
-         @span[class: "pn-room" room]}
+         @span[class: "pn-room" room]
+         @seminar-notes[anchor]}
        @div[class: "pn-abstract-bio"]{
          @p{
            @span[class: "pn-title-2"]{Abstract}
@@ -32,6 +33,16 @@
            @span[class: "pn-title-2"]{Bio}
            @span[@|bio|]}}}
      @br{}])
+
+@;; seminar-notes : String -> Element
+@;; Search for an .md file of talk notes using the "anchor" to a seminar.
+@;; If notes exist, return a link to them. Otherwise return an empty Element.
+@(define (seminar-notes anchor)
+   (define notes-link
+     (path-add-extension (build-path "seminar-notes" anchor) ".md"))
+   (if (file-exists? notes-link)
+     @span[class: "pn-room"]{| @a[class: "pn-url" target: "_blank" href: @path->string[notes-link]]{Notes}}
+     @span[class: "pn-room"]))
 
 @; TODO Have seminar return a struct; sort it by date, then create output.
 @; TODO: Have seminars contain a datetime range, rather than just a start time.
