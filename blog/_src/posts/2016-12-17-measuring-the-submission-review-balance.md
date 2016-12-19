@@ -15,11 +15,11 @@ I like to review academic papers. It is a very rewarding activity in
 many different ways. One gets to serve the academic community, helping
 it function smoothly. One gets a chance at acquiring a much better
 understanding of someone else's work than idle paper-skimming
-allows. One get to send feedback to our colleagues and help them
+allows. One gets to send feedback to our colleagues and help them
 improve their work and its presentation -- it is also an essential way
 in which we can participate to the formation of student researchers
 all over the world. Finally, doing reviews helped me develop the skill
-the judge someone else's work and of forcing oneself to come with
+the judge someone else's work and of forcing oneself to come up with
 a decisive opinion -- it is surprisingly difficult and only comes with
 training.
 
@@ -39,10 +39,10 @@ to invitations to review a new paper is not easy: in general I want to
 say "yes" (unless I can tell that I will not enjoy reading the paper
 at all), but it is not reasonable to say "yes" all the time, because
 I also need to spend time on other things. When should I say "no"
-because I have done "too much" reviews already?
+because I have done "too many" reviews already?
 
 We can count the number of reviews that we have done, and we can also
-estimate the number of reviews that we have demanded of other through
+estimate the number of reviews that we have demanded of others through
 our submissions. A natural goal for researchers is to produce at least
 as many reviews as they demand; if everyone reached this goal, the
 peer-review system would be at equilibrium without imposing too much
@@ -55,11 +55,11 @@ number of authors of the submissions.
 
 \\[ \sum_{p \in \mathtt{Submissions}} \frac{\mathtt{reviews}(p)}{\mathtt{authors}(p)} \\]
 
-Out of curiosity, I just measured this balance for myself: so far
-I have "demanded" 10 workshop reviews and 28.5 conference reviews, and
-"produced" 6 workshop reviews and 17 conference reviews. If you think
-that an article would interest me, you shouldn't feel bad about asking
-me to review it, for now.
+Out of curiosity, I just measured this balance for myself: over my
+years doing research I have "demanded" 10 workshop reviews and 28.5
+conference reviews, and "produced" 6 workshop reviews and 17
+conference reviews. If you think that an article would interest me,
+you shouldn't feel bad about asking me to review it, for now.
 
 Of course, a researcher's balance is highly dependent on where they
 are in their academic career -- maybe more so that on their personal
