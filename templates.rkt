@@ -61,6 +61,7 @@
 @(define (footer)
    @list{
      @element/not-empty['footer class: "footer"]{
+       @p[@twitter-follow-button["neu_prl" "Follow the PRL"]]
        @p{© Copyright Programming Research Laboratory 2015-2016 | made by @a[href: "http://www.catchexception.cz/" target: "_blank"]{Catchexception s.r.o.}}
        @a[class: "pn-top pn-dark" href: "#pn-top"]{
          @img[src: "img/up-arrow.png" alt: "top"]}}
@@ -70,6 +71,25 @@
      @script[src: "js/bootstrap.min.js"]
      @<!--{Custom scripts}
      @script[src: "js/custom.js"]})
+
+@; Copied from `frog/widgets.rkt`
+@(define (twitter-follow-button name label)
+   @list[
+     @a[href: (string-append "https://twitter.com/" name)
+        class: "twitter-follow-button"
+        data-show-count: "false"
+        data-lang: "en" label]
+     @script[type: "text/javascript" @literal|{
+       !function(d,s,id){
+           var js,fjs=d.getElementsByTagName(s)[0];
+           if(!d.getElementById(id)){
+               js=d.createElement(s);
+               js.id=id;
+               js.src="https://platform.twitter.com/widgets.js";
+               fjs.parentNode.insertBefore(js,fjs);
+           }
+       }(document,"script","twitter-wjs");
+     }|]])
 
 @(define nav-template ; (Listof (List String String))
    '(("./" . "Home")
@@ -81,11 +101,6 @@
      ("new-members.html" . "New Members")
      ("contact.html" . "Contact")
      ("blog/index.html" . "Blog")))
-
-@(define nav-extra
-   @div[@a[href: NuPRL-TWITTER]{@img[src: "img/twitter-logo.png" alt: "Twitter"]}
-        @nbsp @nbsp
-        @a[href: NuPRL-GITHUB]{@img[src: "img/github-logo.png" alt: "GitHub"]}])
 
 @(define (navbar current-page)
    (define rendered-nav-elements
@@ -103,8 +118,7 @@
              @span[class: "icon-bar"]
              @span[class: "icon-bar"]}}
          @div[id: "navbar" class: "navbar-collapse collapse"]{
-           @ul[class: "nav navbar-nav"]{
-             @(append rendered-nav-elements (list @li[role: "presentation" nav-extra]))}}}}})
+           @ul[class: "nav navbar-nav" rendered-nav-elements] }}}})
 
 @(define (subpage-title title)
    @div[class: "jumbotron subpages"]{
