@@ -21,8 +21,9 @@
          @span[class: "pn-affiliation" aff]
          @a[class: "pn-url" target: "_blank" href: link link]
          @br[]
-         @span[class: "pn-datetime"]{
-            @a[href: (string-join (list "#" anchor) "") (~t date "d MMMM, y h:mma")]}
+         @span[class: "pn-datetime" (~t date "d MMMM, y h:mma ")]{
+           @a[href: (string-join (list "#" anchor) "")]{
+             @span[class: "glyphicon glyphicon-link"]}}
          @span[class: "pn-room" room]
          @seminar-notes[anchor]}
        @div[class: "pn-abstract-bio"]{
