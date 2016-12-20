@@ -3,9 +3,9 @@
 
 @doctype{html}
 @html[lang: "en"]{
-  @header{"New Members"}
+  @header{New Members}
   @body[id: "pn-top"]{
-    @navbar{"New Members"}
+    @navbar{New Members}
     @subpage-title{New Members}
     @div[class: "pn-main-wrapper"]{
       @div[class: "content"]{
@@ -51,9 +51,12 @@
                 @li{
                   If you need a private place to store code, there is both a
                   @a[href: "https://github.ccs.neu.edu/"]{CCIS-managed GitHub instance}
-                  and a @a[href: "https://github.com/nuprl"]{NuPRL organization}
+                  and a @a[href: NuPRL-GITHUB]{NuPRL organization}
                   on GitHub. To get access to the @tt{nuprl}
                   organization, ask the webmaster to add you as a member.
+                }
+                @li{
+                  Follow @a[href: NuPRL-TWITTER @tt|{@neu_prl}|] on Twitter.
                 }
                 @li{
                   @p{

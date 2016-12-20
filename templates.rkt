@@ -8,6 +8,8 @@
   comment
   footer
   url
+  NuPRL-TWITTER
+  NuPRL-GITHUB
 ]
 
 @require[
@@ -15,6 +17,9 @@
 ]
 
 @; -----------------------------------------------------------------------------
+
+@(define NuPRL-TWITTER "https://twitter.com/neu_prl")
+@(define NuPRL-GITHUB "https://github.com/nuprl")
 
 @(define (comment . content)
    @literal[@list[" <!-- " content " --> "]])
@@ -66,7 +71,28 @@
      @<!--{Custom scripts}
      @script[src: "js/custom.js"]})
 
+@(define nav-template ; (Listof (List String String))
+   '(("./" . "Home")
+     ("people.html" . "People")
+     ("teaching.html" . "Teaching")
+     ("seminars.html" . "Seminars")
+     ("software.html" . "Software")
+     ("publications.html" . "Publications")
+     ("new-members.html" . "New Members")
+     ("contact.html" . "Contact")
+     ("blog/index.html" . "Blog")))
+
+@(define nav-extra
+   @div[@a[href: NuPRL-TWITTER]{@img[src: "img/twitter-logo.png" alt: "Twitter"]}
+        @nbsp @nbsp
+        @a[href: NuPRL-GITHUB]{@img[src: "img/github-logo.png" alt: "GitHub"]}])
+
 @(define (navbar current-page)
+   (define rendered-nav-elements
+     (for/list ([title-pair (in-list nav-template)])
+       (if (string=? (cdr title-pair) current-page)
+         @li[role: "presentation" class: "active"]{@a[href: "#"]{@cdr[title-pair]}}
+         @li[role: "presentation"]{@a[href: @car[title-pair]]{@cdr[title-pair]}})))
    @element/not-empty['nav class: "navbar navbar-inverse"]{
      @div[class: "container"]{
        @div[class: "row"]{
@@ -78,28 +104,14 @@
              @span[class: "icon-bar"]}}
          @div[id: "navbar" class: "navbar-collapse collapse"]{
            @ul[class: "nav navbar-nav"]{
-             @(for/list ([title-pair (in-list '(
-                                       ("./" . "Home")
-                                       ("people.html" . "People")
-                                       ("teaching.html" . "Teaching")
-                                       ("seminars.html" . "Seminars")
-                                       ("software.html" . "Software")
-                                       ("publications.html" . "Publications")
-                                       ("new-members.html" . "New Members")
-                                       ("contact.html" . "Contact")
-                                       ("blog/index.html" . "Blog")))])
-               (if (string=? (cdr title-pair) current-page)
-                 @li[role: "presentation" class: "active"]{
-                   @a[href: "#"]{@cdr[title-pair]}}
-                 @li[role: "presentation"]{
-                   @a[href: @car[title-pair]]{@cdr[title-pair]}}))}} }}})
+             @(append rendered-nav-elements (list @li[role: "presentation" nav-extra]))}}}}})
 
 @(define (subpage-title title)
    @div[class: "jumbotron subpages"]{
      @div[class: "container"]{
        @div[class: "row"]{
          @div[class: "col-md-12"]{
-           @h1{@|title|}}}}})
+           @h1[title]}}}})
 
 @; website should include https or http
 @;   should figure out a nice interface so it doesn't display the protocol on the page.
