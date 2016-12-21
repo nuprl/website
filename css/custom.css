@@ -340,6 +340,12 @@ ul
   text-decoration: underline;
 }
 
+.pn-seminar.compact a
+{
+  color: #B5B4B4;
+  text-decoration: none;
+}
+
 .pn-seminar .pn-title-2
 {
   font-family: 'Ubuntu', sans-serif;  

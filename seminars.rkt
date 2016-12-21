@@ -14,15 +14,16 @@
             document.getElementById("seminar-@|id|").classList.add("finished");
          }
        }
-       @a[name: anchor]
-       @div[class: "pn-main-informations"]{
+       @div[id: anchor class: "pn-main-informations"]{
          @a[onclick: "return false;" class: "pn-title" title]
          @br[]
          @span[class: "pn-name" speaker]
          @span[class: "pn-affiliation" aff]
          @a[class: "pn-url" target: "_blank" href: link link]
          @br[]
-         @span[class: "pn-datetime" (~t date "d MMMM, y h:mma")]
+         @span[class: "pn-datetime" (~t date "d MMMM, y h:mma ")]{
+           @a[href: (string-join (list "#" anchor) "")]{
+             @span[class: "glyphicon glyphicon-link"]}}
          @span[class: "pn-room" room]
          @seminar-notes[anchor]}
        @div[class: "pn-abstract-bio"]{
