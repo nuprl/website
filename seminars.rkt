@@ -35,15 +35,32 @@
            @span[@|bio|]}}}
      @br{}])
 
+@;; Valid file extensions for seminar notes
+@(define seminar-notes-extensions '(".md" ".txt" ".org"))
+
 @;; seminar-notes : String -> Element
-@;; Search for an .md file of talk notes using the "anchor" to a seminar.
+@;; Search for a file of talk notes using the "anchor" to a seminar.
 @;; If notes exist, return a link to them. Otherwise return an empty Element.
 @(define (seminar-notes anchor)
-   (define notes-link
-     (path-add-extension (build-path "seminar-notes" anchor) ".md"))
-   (if (file-exists? notes-link)
-     @span[class: "pn-room"]{| @a[class: "pn-url" target: "_blank" href: @path->string[notes-link]]{Notes}}
-     @span[class: "pn-room"]))
+   (define notes-path-no-ext (build-path "seminar-notes" anchor))
+   (define all-notes-paths
+     (for/fold ([acc '()])
+               ([ext (in-list seminar-notes-extensions)])
+       (define p (path-add-extension notes-path-no-ext ext))
+       (if (file-exists? p) (cons p acc) acc)))
+   (cond
+    [(null? all-notes-paths)
+     @span[class: "pn-room"]]
+    [(not (null? (cdr all-notes-paths)))
+     (raise-user-error 'seminar-notes "Found multiple notes files for seminar '~a'. Delete (or merge) the extras and rebuild." anchor)]
+    [else
+     @span[class: "pn-room"]{| @a[class: "pn-url" target: "_blank" href: @path->github-url[(car all-notes-paths)]]{Notes}}]))
+
+@; path->github-url : Path -> String
+@; Convert a filepath (relative to the root of the `nuprl/website` repository)
+@;  to a URL to the same file on GitHub.
+@(define (path->github-url p)
+   (string-append "https://github.com/nuprl/website/blob/master/" (path->string p)))
 
 @; TODO Have seminar return a struct; sort it by date, then create output.
 @; TODO: Have seminars contain a datetime range, rather than just a start time.
