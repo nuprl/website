@@ -342,15 +342,6 @@
                   #:img "olivier_fluckiger.jpg"]{
             My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
           }
-                                                
-          @person[#:name "Ming-Ho Yee"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "mh@mhyee.com"
-                  #:website "http://mhyee.com/"
-                  #:history @list["Joined 2016"]
-                  #:img "yee-crop.jpg"]{
-            I work on the design and implementation of programming languages. My previous work also involved static program analysis, and building tools for programmers to make software development easier.
-          }
 
           @person[#:name "Daniel Patterson"
                   #:title "Advisor: Amal Ahmed"
@@ -359,6 +350,15 @@
                   #:history @list["Joined 2016"]
                   #:img "daniel_patterson.jpg"]{
             I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
+          }
+
+          @person[#:name "Ming-Ho Yee"
+                  #:title "Advisor: Jan Vitek"
+                  #:e-mail "mhyee@ccs.neu.edu"
+                  #:website "http://mhyee.com/"
+                  #:history @list["Joined 2016"]
+                  #:img "yee-crop.jpg"]{
+            I'm interested in programming language design and implementation, as well as static program analysis.
           }
         }
 
