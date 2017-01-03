@@ -1,14 +1,19 @@
     Title: Fall 2016 PL Junior Retrospective
     Date: 2017-01-02T16:39:37
-    Tags: PL Junior
+    Tags: PL Junior, by Ben Chung, Milo Davis, Ming-Ho Yee, Sam Caldwell
 
-The Programming Language Seminar, Junior (or “PL Junior”), is a
+The [Programming Language Seminar, Junior] [10] (or “PL Junior”), is a
 seminar for junior students to learn and discuss topics at a pace more
 suitable to our background. This semester, we decided to study
-dependent types. We chose this topic because 1) working from the [TAPL]
+dependent types. We chose this topic because
+
+1. working from the [TAPL]
 [1] presentation of type systems, dependent types are a step up in
-difficulty (excepting F-omega-sub), and 2) they represent a
+difficulty (excepting F-omega-sub), and
+2. they represent a
 significant increase in the reasoning power of types over programs.
+
+<!-- more -->
 
 There was a preference for learning how to implement a dependent type
 system, instead of spending a significant amount of time reading
@@ -115,5 +120,4 @@ good introduction.
 [7]: https://www.cs.cmu.edu/~kw/scans/hurkens95tlca.pdf
 [8]: https://www.cs.uoregon.edu/research/summerschool/
 [9]: https://www.cis.upenn.edu/~bcpierce/attapl/
-
-<!-- more -->
+[10]: http://prl.ccs.neu.edu/seminars.html
