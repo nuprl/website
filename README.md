@@ -22,4 +22,4 @@ server with the generated site using `make preview`
 Blog
 ====
 
-See <blog/README.md>
+See `blog/README.md`
