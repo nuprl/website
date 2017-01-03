@@ -70,7 +70,9 @@
      @<!--{Include all compiled plugins (below), or include individual files as needed}
      @script[src: "js/bootstrap.min.js"]
      @<!--{Custom scripts}
-     @script[src: "js/custom.js"]})
+     @script[src: "js/custom.js"]
+     @script[src: "js/analytics.js"]
+  })
 
 @; Copied from `frog/widgets.rkt`
 @(define (twitter-follow-button name label)
