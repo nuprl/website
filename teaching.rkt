@@ -101,6 +101,8 @@
                  @li{
                    @strong{7480} Special Topics in Programming Languages
                    @br{}
+                   @indent{} S 2017 History of Programming Languages @a[href: "http://www.ccs.neu.edu/home/matthias/7480-s17/index.html" target: "_blank"]{link} @instructor{Matthias Fellsein}
+                   @br{}
                    @indent{} F 2016 Advanced Program Analysis @a[href: "https://docs.google.com/document/d/1JeYoC-dmCxLgYuQcv5tU1rfez6IRf_OKO4ipeRtQd7o" target: "_blank"]{link} @instructor{Frank Tip}
                    @br{}
                    @indent{} F 2015 Types, Contracts, and Gradual Typing @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-f15/" target: "_blank"]{link} @instructor{Amal Ahmed}
@@ -140,6 +142,7 @@
                @ul{
                  @li{
                      @strong{4410} Compilers @br{}
+                     @indent[] S 2017 @a[href: "http://www.ccs.neu.edu/course/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2013 @a[href: "http://www.ccs.neu.edu/home/amal/course/4410-s13/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                      @indent[] S 2012 @a[href: "http://www.ccs.neu.edu/course/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers}
                  }
