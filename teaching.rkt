@@ -126,6 +126,10 @@
                    @indent{} S 2015 @a[href: "https://sites.google.com/site/mapreduce15s/" target: "_blank"]{link} @instructor{Jan Vitek}
                  }
                  @li{
+                   @strong{5110} Introduction to Data Science @br{}
+                   @indent{} S 2017 @a[href: "http://janvitek.org/events/NEU/5110/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
+                 }
+                 @li{
                    @strong{5010} Program Design Paradigms @br{}
                    @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010f15" target: "_blank"]{link} @instructor{Mitch Wand, William D. Clinger} @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010sp15" target: "_blank"]{link} @instructor{Stephen Chang} @br{}
@@ -133,13 +137,13 @@
                    @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010sp14/" target: "_blank"]{link} @instructor{Ryan Culpepper} @br{}
                    @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs5010f13/" target: "_blank"]{link} @instructor{Ryan Culpepper}
                  }
+             }}
+             @div[class: "col-md-6"]{
+               @ul{
                  @li{
                    @strong{4620} Building Extensible Systems @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/matthias/4620-s15/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
-             }}
-             @div[class: "col-md-6"]{
-               @ul{
                  @li{
                      @strong{4410} Compilers @br{}
                      @indent[] S 2017 @a[href: "http://www.ccs.neu.edu/course/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
