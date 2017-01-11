@@ -79,7 +79,7 @@
                  @p{@i{Semantics Engineering with PLT Redex} is the first comprehensive presentation of reduction semantics in one volume. It also introduces the first reliable and easy-to-use tool set for such forms of semantics.}
                  @p{Automatic tool support is critical for rapid prototyping and modeling and this book is addressed to the working semantics engineer. With PLT Redex, semanticists can formulate models as grammars and reduction models on their computers with the ease of paper-and-pencil designs.}
                  @p{This text first presents a framework for the formulation of language models, focusing on equational calculi and abstract machines, then introduces PLT Redex, a suite of software tools for expressing these models as PLT Redex models. Finally, experts describe a range of models formulated in Redex.}
-                 @p{This is the primary textbook for our course @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s16/"]{CS 7400} - Intensive Principles of Programming Languages.}
+                 @p{This is the primary textbook for our course @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s17/"]{CS 7400} - Intensive Principles of Programming Languages.}
                  @p{@url{http://redex.racket-lang.org/}}
                  @br{} @br{}
                }}}}
@@ -112,6 +112,9 @@
                  @li{
                    @strong{7400} Intensive Principles of Programming Languages
                    @br{}
+                   @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s17/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                   @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-f16/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                   @indent{} S 2016 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s16/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s15/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                    @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-s14/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                    @indent{} F 2012 @a[href: "http://www.ccs.neu.edu/home/matthias/7400-f12/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
