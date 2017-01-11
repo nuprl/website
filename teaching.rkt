@@ -169,6 +169,7 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
+                     @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers, Nat Tuck} @br{}
                      @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs2500f16/" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed, Ben Lerner} @br{}
                      @indent{} F 2016 accelerated @a[href: "http://www.ccs.neu.edu/course/cs2500accelf16/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs2500hfa15/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
