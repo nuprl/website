@@ -78,6 +78,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "vilk-browsers"
+     "Making the Browser Reasonable for Sane Programmers"
+     "John Vilk"
+     "https://jvilk.com/"
+     "University of Massachusetts Amherst"
+     (datetime 2017 01 27 12 00)
+     "WVH 366"
+     @list{@p{Billions of people use browsers to access the web from a variety of devices, but it remains difficult to write and debug the client-side of web applications. The browser exposes unfamiliar, redundant, and incompatible abstractions for a variety of common tasks, preventing developers from adapting existing code written for other platforms. The browser environment is completely event-driven and pervasively concurrent, resulting in complex control flow and race conditions that are difficult to debug.}@p{In this talk, I will describe how my research makes it easier to write and debug web applications. Doppio is a JavaScript runtime system that lets developers run unaltered code written in general-purpose languages, such as Java and C/C++, directly inside the browser. Browsix further enhances Doppio with a kernel, processes, and shared operating system resources, letting multiple off-the-shelf programs concurrently interoperate on the same webpage. ReJS is a low-overhead and high-fidelity time-traveling debugger that lets developers instantaneously step forward and backward through a program's execution. ReJS accurately recreates the application's complete behavior, including the GUI and multiple types of race conditions, while producing miniscule and portable application traces. These resources transform the browser into a first-class application platform.}}
+     @list{@p{John Vilk is a Ph.D. candidate in the College of Information and Computer Sciences at the University of Massachusetts Amherst. He is a member of the PLASMA lab, and is advised by Emery Berger. John's research aims to improve the browser as an application platform by making it easier to write, debug, and optimize complex web applications. John is a Facebook Fellow (2015), and his work on Doppio: Breaking the Browser Language Barrier is a SIGPLAN Research Highlight (2014) and a PLDI Distinguished Artifact (2014). His research forms the basis of Microsoft ChakraCore's time-traveling debugger and lets millions of people interact with legacy software and games in their browser at the Internet Archive (https://archive.org/). John received his MS from the University of Massachusetts Amherst (2013) and his BS from Worcester Polytechnic Institute (2011).}@p{You can learn more about John at his website, https://jvilk.com/.}})
+
+
+    (seminar
      "new-retractionsblame"
      "Retractions and Blame"
      "Max New"
