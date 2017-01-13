@@ -134,6 +134,9 @@
                  }
                  @li{
                    @strong{5010} Program Design Paradigms @br{}
+                   @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs5010sp17" target: "_blank"]{link} @instructor{William D. Clinger} @br{}
+                   @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs5010f16" target: "_blank"]{link} @instructor{Mitch Wand, William D. Clinger, James Miller, Ezra Kilty} @br{}
+                   @indent{} S 2016 @a[href: "http://www.ccs.neu.edu/course/cs5010sp16" target: "_blank"]{link} @instructor{William D. Kevin Gold} @br{}
                    @indent{} F 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010f15" target: "_blank"]{link} @instructor{Mitch Wand, William D. Clinger} @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/course/cs5010sp15" target: "_blank"]{link} @instructor{Stephen Chang} @br{}
                    @indent{} F 2014 @a[href: "http://www.ccs.neu.edu/course/cs5010f14" target: "_blank"]{link} @instructor{Mitch Wand, Stephen Chang, Jan Vitek} @br{}
