@@ -129,6 +129,10 @@
                    @indent{} S 2015 @a[href: "https://sites.google.com/site/mapreduce15s/" target: "_blank"]{link} @instructor{Jan Vitek}
                  }
                  @li{
+                   @strong{5500} Managing Software Development @br{}
+                   @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs5500sp17/" target: "_blank"]{link} @instructor{Michael Weintraub, Frank Tip} @br{}
+                 }
+                 @li{
                    @strong{5110} Introduction to Data Science @br{}
                    @indent{} S 2017 @a[href: "http://janvitek.org/events/NEU/5110/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
                  }
