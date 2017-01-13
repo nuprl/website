@@ -163,8 +163,10 @@
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
-                     @indent[] S 2015 @a[href: "http://www.ccs.neu.edu/course/cs2510sp15/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
-                     @indent[] F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2510f14/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] S 2017 @a[href: "http://www.ccs.neu.edu/course/cs2510sp17/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Leena Razzaq, Clark Freifeld, Becca MacKenzie} @br{}
+                     @indent[] S 2016 @a[href: "http://www.ccs.neu.edu/course/cs2510f16/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Leena Razzaq, Magy Seif El-Nasr} @br{}
+                     @indent[] S 2015 @a[href: "http://www.ccs.neu.edu/course/cs2510sp15/" target: "_blank"]{link} @instructor{Ben Lerner, Leena Razzaq} @br{}
+                     @indent[] F 2014 @a[href: "http://www.ccs.neu.edu/course/cs2510f14/" target: "_blank"]{link} @instructor{Ben Lerner, Leena Razzaq} @br{}
                      @indent[] S 2014 honors @a[href: "http://www.ccs.neu.edu/home/cs2510hsp14/" target: "_blank"]{link} @instructor{Ben Lerner}
                  }
                  @li{
