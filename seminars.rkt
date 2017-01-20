@@ -78,6 +78,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "belyakova-oo"
+     "Comparative Study of Generic Programming Features in Object-Oriented Languages"
+     "Julia Belyakova"
+     "http://staff.mmcs.sfedu.ru/~juliet/index.en.html"
+     "Northeastern University"
+     (datetime 2017 2 3 12 00)
+     "WVH 366"
+     @list{@p{Earlier comparative studies of language support for generic programming (GP) have shown that mainstream object-oriented (OO) languages such as C# and Java provide weaker support for GP as compared with functional languages such as Haskell or SML.}@p{One reason is that generic mechanisms of C# and Java are based on F-bounded polymorphism, which has certain deficiencies. Some of these deficiencies are eliminated in more recent languages, such as Scala and Kotlin. However, there are peculiarities of object-oriented languages as a whole, which prevent them from being as expressible as Haskell in terms of generic programming.}@p{In this talk we will cover the main problems of language support for generic programming in C#/Java as well as other modern object-oriented languages, including Scala and Swift. It turns out that all of these languages follow the same approach to constraining type parameters, which leads to inevitable shortcomings. To overcome them, an alternative approach is suggested in several extensions for OO languages, in particular, JavaGenus. The advantages and drawbacks of both approaches will be discussed in the talk.}}
+     @list{@p{Julia Belyakova graduated in 2014 from Southern Federal University (Rostov-on-Don, Russia) as Master of Science in “Computer Science and Information Technologies”. She is enrolled for PhD program in Southern Federal University and came to Northeastern University as a visiting scientist. She is currently doing research in the area of generic programming for object-oriented languages.}})
+
+
+    (seminar
      "vilk-browsers"
      "Making the Browser Reasonable for Sane Programmers"
      "John Vilk"
