@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "sherman-patterns"
+     "Overlapping pattern matching for programming with continuous functions"
+     "Ben Sherman"
+     "http://www.ben-sherman.net/"
+     "MIT"
+     (datetime 2017 2 24 12 00)
+     "WVH 366"
+     @list{@p{Topology, when viewed from an unusual perspective (formal topology), describes how to compute with certain objects that are beyond the reach of induction, such as real numbers, probability distributions, streams, and function spaces. Accordingly, one gets a programming language whose types are spaces and whose functions are continuous maps.}@p{Does this language have pattern matching? In functional programming, pattern matching allows definition of a function by partitioning the input and defining the result in each case. We generalize to programming with spaces, where patterns need not represent decidable predicates and also may overlap, potentially allowing nondeterministic behavior in overlapping regions. These overlapping pattern matches are useful for writing a wide array of computer programs on spaces, such as programs that make approximate computations or decisions based on continuous values or that manipulate "partial" datatypes.}@p{This talk will introduce topology from a computational perspective, and explore some programs that can be built with this framework using overlapping pattern matching.}}
+     @list{@p{Ben Sherman is a second-year PhD student at MIT, advised by Adam Chlipala and Michael Carbin.}})
+
+    (seminar
      "belyakova-oo"
      "Comparative Study of Generic Programming Features in Object-Oriented Languages"
      "Julia Belyakova"
