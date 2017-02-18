@@ -1,6 +1,6 @@
     Title: Conversational Context and Concurrency
     Date: 2017-02-15T01:21:55
-    Tags: DRAFT, HOPL, by Tony Garnock-Jones
+    Tags: HOPL, by Tony Garnock-Jones
 
 <!-- more -->
 
