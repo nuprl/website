@@ -1,11 +1,11 @@
     Title: Datalog for Static Analysis
-    Date: 2017-02-15T01:22:04
-    Tags: DRAFT, HOPL, by Ben Greenman
+    Date: 2017-02-21T12:58:27
+    Tags: HOPL, by Ben Greenman
 
 <!-- more -->
 
 Datalog is an old DSL that frequently appears in work on static analysis.
-This edition of HOPL 2017 explores the origins of Datalog in general, its
+This edition of [HOPL 2017](/blog/2017/02/15/introducing-hopl-2017/) explores the origins of Datalog in general, its
 early use in program analysis, and why Datalog remains a useful tool.
 
 Full notes:
