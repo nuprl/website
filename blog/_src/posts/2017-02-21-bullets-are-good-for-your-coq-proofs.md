@@ -61,11 +61,11 @@ starts, so that Coq can fail loudly at the moment where it notices
 that this intent does not match reality, instead of at an arbitrary
 later time.
 
-(The `S*Case` tactics used in Software Foundations can solve this
-problem if used in a carefully, systematic way, and additionally
-provides naming. Alexandre Pilkiewicz implemented an even more
-powerful [cases](https://github.com/pilki/cases) plugin. Bullets are
-available in standard Coq since 8.4 (released in 2012), and can be
+(The `S*Case` tactics used in (older versions of) Software Foundations
+can solve this problem if used in a carefully, systematic way, and
+additionally provides naming. Alexandre Pilkiewicz implemented an even
+more powerful [cases](https://github.com/pilki/cases) plugin. Bullets
+are available in standard Coq since 8.4 (released in 2012), and can be
 used with no effort.)
 
 There is not much discussion of bullets around; see the
@@ -113,8 +113,9 @@ induction foo. (* this creates many subgoal *)
 }
 ```
 
-If you also want to make sure that the number of subgoals does not
-change, you can use an outer layer of braces:
+If you also want to make sure that an error occurs if the number of
+subgoals changes (for example if new constructors are added to the
+inductive type of `foo`), you can use an outer layer of braces:
 
 
 ```
@@ -128,7 +129,7 @@ change, you can use an outer layer of braces:
 } (* would fail if a new subgoal appeared *)
 ```
 
-## Bullets
+## List bullets
 
 A bullet, for example `--`, also focuses on the next subgoal. The
 difference is that when the subgoal is finished, you do not have
@@ -202,8 +203,8 @@ a brace before the tactic, and use a bullet for each subgoal.
 proof steps: I use both braces and bullets, but take only one
 indentation level each time.)
 
-As an exception, I may omit the braces around if we are at the
-toplevel of the proof (`Proof .. Qed` serve as braces).
+As an exception, I may omit the braces if we are at the toplevel of
+the proof (`Proof .. Qed` serve as braces).
 
 Note that omitting the braces here and using different bullets when
 you nest is also just fine. In my experience it gives proofs that are
