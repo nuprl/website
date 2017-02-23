@@ -15,7 +15,7 @@ style.
 
 <!-- more -->
 
-# Why bullets
+## Why bullets
 
 While you are doing a proof, Coq shows a list of subgoals that have to
 be proved before the whole proof is complete. Most proof steps will
@@ -86,13 +86,13 @@ cases and subgoals, and then I refine them to add more automation for
 robustness. I found bullets very useful for the first step, and during
 the refinement process.
 
-# Bullets
+## Bullets
 
 Bullets are actually a combination of two features, braces `{ ... }`
 and actually list bullets, `-`, `+`, or `*` or homogeneous repetitions
 of those, for example `--` or `***`.
 
-## Braces
+### Braces
 
 The opening brace `{` focuses the proof on the current subgoal. If you
 finish the proof of the subgoal, the following subgoal will not become
@@ -129,7 +129,7 @@ inductive type of `foo`), you can use an outer layer of braces:
 } (* would fail if a new subgoal appeared *)
 ```
 
-## List bullets
+### List bullets
 
 A bullet, for example `--`, also focuses on the next subgoal. The
 difference is that when the subgoal is finished, you do not have
@@ -166,7 +166,7 @@ features. You can use only braces, only bullets, braces and only one
 level of bullets, etc. My own style evolved with experience using the
 feature, and I will present the current status below.
 
-# My current bullet style
+## My current bullet style
 
 When deciding how to use bullets, one distinguishes the commands that
 preserve the number of subgoals and those that may create new
