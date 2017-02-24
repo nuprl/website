@@ -78,6 +78,29 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "hartzell-templates"
+     "Templates and Types in C++"
+     "Jimmy Hartzell"
+     ""
+     "Tower Research"
+     (datetime 2017 3 10 12 00)
+     "WVH 366"
+     @list{@p{Like many modern programming languages, C++ supports both generic
+                   programming (templates) and object-oriented programming (inheritance and
+              virtual functions). Unlike many modern programming languages, the generic
+             programming mechanism does not fully leverage or interact with the type
+              system. It amounts to compile-time duck typing: C++ function templates,
+              like functions from a non-statically typed programming language, have
+              their full interface implicit in their implementations -- making it hard
+              to discern what that interface actually is.  The concept of Concepts
+              (compile-time typeclasses) was slated for introduction into C++ in
+             the C++11 version of the standard, then C++14, then C++17, now C++20... What can
+            we do to work around their absence?}@p{Relatedly, how do we bridge the gap
+            between static and dynamic polymorphism? C++ provides both, and sometimes we
+            want to mix and mash them. Template tricks can also be done to accomplish this
+            as well.}} @list{@p{Jimmy Hartzell is a software developer and C++ instructor at Tower Research.}})
+
+    (seminar
      "sherman-patterns"
      "Overlapping pattern matching for programming with continuous functions"
      "Ben Sherman"
