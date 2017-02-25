@@ -463,9 +463,9 @@
                         #:dissertation "http://www.ccs.neu.edu/home/pnkfelix/thesis/klock11-diss.pdf"
                         #:extra "(Mozilla Research)")
               @(alumnus "Stevie Strickland" #:year 2012
-                        #:personal-site "http://www.ccs.neu.edu/%7Esstrickl/"
+                        #:personal-site "http://sstrickl.net/"
                         #:dissertation "http://www.ccs.neu.edu/racket/pubs/dissertation-strickland.pdf"
-                        #:extra "(Brown University)")
+                        #:extra "(Google)")
               @(alumnus "Dionna Amalie Glaze" #:year 2015
                         #:personal-site "https://deeglaze.github.io"
                         #:dissertation "https://deeglaze.github.io/diss.pdf"
