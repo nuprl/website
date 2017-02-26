@@ -248,7 +248,7 @@ Overlapping pattern matching:
 1. Coverings: all cases together must cover the entire space
 2. Gluing: because there are overlaps, the result space must have unions
 
-(Gluing doesn't necessarily mean that the output type must be a P✧⁺(_)
+(Gluing doesn't necessarily mean that the output type must be a `P✧⁺(_)`
 space. Other spaces have unions.)
 
 
@@ -285,10 +285,9 @@ f⊥(x) = case(x) of
 
 Another example: partial booleans.
 
-``` or : Bool⊥ * Bool⊥ →ᶜ Bool⊥
 ```
+or : Bool⊥ * Bool⊥ →ᶜ Bool⊥
 
-```
 or(p) = case(p) of
 | up(true), _ => up(true)
 | _, up(true) => up(true)
