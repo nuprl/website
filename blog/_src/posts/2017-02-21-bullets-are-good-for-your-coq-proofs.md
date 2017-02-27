@@ -89,7 +89,7 @@ the refinement process.
 ## Bullets
 
 Bullets are actually a combination of two features, braces `{ ... }`
-and actually list bullets, `-`, `+`, or `*` or homogeneous repetitions
+and actual list bullets -- `-`, `+`, `*`, or homogeneous repetitions
 of those, for example `--` or `***`.
 
 ### Braces
@@ -170,7 +170,7 @@ feature, and I will present the current status below.
 
 When deciding how to use bullets, one distinguishes the commands that
 preserve the number of subgoals and those that may create new
-subgoals. I do some further distinctions.
+subgoals. I use some additional distinctions.
 
 Some tactics, for example `assert`, create a number of subgoals that
 is *statically* known, always the same for the tactic. I then use
@@ -234,6 +234,6 @@ with a new bullet *without* increasing the indentation level.
 
 If you are the kind of programmer that is passionate about indentation
 style, I should now have tricked you to use bullets to propose
-a different variant. Otherwise, please consider using bullet anyway,
+a different variant. Otherwise, please consider using bullets anyway,
 for example by following the style above, it will make your life
 easier in the face of changing developments.
