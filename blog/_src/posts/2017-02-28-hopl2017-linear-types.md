@@ -1,6 +1,6 @@
     Title: Linear Types for Low-level Languages
-    Date: 2017-02-15T01:22:12
-    Tags: DRAFT, HOPL, by Dan Patterson
+    Date: 2017-02-28T09:51:55
+    Tags: HOPL, by Dan Patterson
 
 <!-- more -->
 
@@ -22,14 +22,14 @@ Notes:
 - - -
 
 Just after the talk, over lunch, we had a lab discussion about the phrase
-"low level". We concluded that:
+"low level". Here are some thoughts:
 
 - the phrase is relative, both over time and depending on the programming
   task at hand
 - a "low level" task is "one that you shouldn't need to worry about" while
   solving your current task
 
-More importantly, here are some example "low-level" tasks:
+And here are some example "low-level" tasks:
 
 - Time and space management is "low level" when designing a new algorithm
   (the first question is correctness)
