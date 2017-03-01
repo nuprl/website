@@ -238,6 +238,16 @@
                   #:img "heather_miller.jpg"]{
             I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
           }
+
+          @person[#:name "Konrad Siek"
+                  #:title "Post-doctoral researcher"
+                  #:e-mail "siekkonr@fit.cvut.cz"
+                  #:history @list[
+                    "Joined Northeastern, 2017"
+                    "PhD, Poznań University of Technology, 2017"]
+                  #:img "konrad.jpg"]{
+            Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
+          }
         }
 
         @div[class: "pn-separator-img"]{
