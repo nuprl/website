@@ -10,11 +10,11 @@ set out to answer.
 
 <!-- more -->
 
-The school will feature [twelves
+The school will feature [twelve
 speakers](https://pliss2017.github.io/speakers.html) versed in
 programming language practicae ranging from abstract interpretation to
 garbage collection and from compiler implementation to language
-design. The lectures will feature hands on exercises as well as lesson
+design. The lectures will feature hands on exercises as well as lessons
 learned from large scale industrial efforts.
 
 Lectures cover current research and future trends in programming
