@@ -20,14 +20,15 @@ learned from large scale industrial efforts.
 Lectures cover current research and future trends in programming
 language design and implementation, including:
 
-- Writing Just-in-time Compilers with LLVM
-- Performance Evaluation and Benchmarking
-- Designing a Commercial Actor Language
-- High-Performance Fully Concurrent Garbage Collection
-- Compiling Dynamic Languages
-- Language-support for Distributed Datastores
-- Testing Programming Language Implementations
-- Abstract Interpretation and Static Analysis
+- Writing Just-in-time Compilers with LLVM with Jan Vitek
+- Performance Evaluation and Benchmarking with Laurie Tratt
+- Designing a Commercial Actor Language with Sophia Drossopoulou and Heather Miller
+- High-Performance Fully Concurrent Garbage Collection with Richard Jones
+- Compiling Dynamic Languages with David Edelsohn
+- Language-support for Distributed Datastores with Suresh Jagannathan
+- Testing Programming Language Implementations with Alastair Donaldson
+- Abstract Interpretation and Static Analysis with lectures by Francesco Logozzo and Matt Might
+- The evolution of Scala with Martin Odersky
 
 A summer school is also an opportunity to get know the speakers and
 get ideas for research problems. Students will have the opportunity to
