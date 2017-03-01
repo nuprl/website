@@ -40,7 +40,7 @@ kept low and some fellowships are available to cover travel costs.
 
 More information at:
 
-https://pliss2017.github.io
+[https://pliss2017.github.io](https://pliss2017.github.io)
 
 (Oregon is a reference to the
 [OPLSS](https://www.cs.uoregon.edu/research/summerschool/summer17/),
