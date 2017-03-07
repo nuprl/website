@@ -22,6 +22,11 @@ article img {
   display: block;
   margin: 0 auto;
   padding: 30px;
+
+  /* make sure that images never take more width than the article width;
+     `height: auto` ensures the height is also resized proportionally. */
+  max-width: 100%;
+  height: auto;
 }
 
 body
