@@ -10,6 +10,8 @@ set out to answer.
 
 <!-- more -->
 
+<img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" />
+
 The school will feature [twelve
 speakers](https://pliss2017.github.io/speakers.html) versed in
 programming language practicae ranging from abstract interpretation to
