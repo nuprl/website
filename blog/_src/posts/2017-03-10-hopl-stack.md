@@ -32,7 +32,8 @@ the context of Haskell, and were later applied to higher-order stack-based
 languages. At the end, I give some avenues for extending the research on these
 systems, and list some pitfalls to be avoided in further research.
 
-Official Notes:
+Full notes (as PDF documents) -- see the [git repository](https://github.com/nuprl/hopl-s2017/tree/master/type-inference-for-stack-languages) for more documents:
 
-- [https://github.com/nuprl/hopl-s2017/blob/master/type-inference-for-stack-languages/talk-notes.pdf](https://github.com/nuprl/hopl-s2017/blob/master/type-inference-for-stack-languages/talk-notes.pdf)
+- [Talk notes](/blog/static/stack-languages-talk-notes.pdf)
+- [Annotated bibliography](/blog/static/stack-languages-annotated-bib.pdf)
 
