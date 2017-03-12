@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "chaudhuri-automatic"
+     "Learning to Program and Debug, Automatically"
+     "Swarat Chaudhuri"
+     "https://www.cs.rice.edu/~sc40/"
+     "Rice University"
+     (datetime 2017 3 24 12 00)
+     "WVH 366"
+     @list{@p{Automating programming and debugging are long-standing goals in computer science. In spite of significant progress in formal methods over the years, we remain very far from achieving these goals. For example, a freshman CS major will typically program circles around today's best program synthesizers. Debugging and verification tools rely on formal specifications, which are hard to provide in many important applications.}@p{Two critical components of the gap between human and machine programmers are that humans learn from experience, i.e., data, and can easily generalize from incomplete problem definitions. In this talk, I will present a general framework for formal methods, based on Bayesian statistical learning, that aims to eliminate these differences. In our framework, descriptions of programming tasks are seen to be "clues" towards a hidden (probabilistic) specification that fully defines the task. Large corpora of real-world programs are used to construct a statistical model that correlates specifications with the form and function of their implementations. The framework can be implemented in a variety of ways, but in particular, through a neural architecture called Bayesian variational encoder-decoders. Inferences made using the framework can be used to guide traditional algorithms for program synthesis and bug-finding.}@p{I will show that this data-driven approach can lead to giant leaps in the scope and performance of automated program synthesis and debugging algorithms.  Specifically, I will give a demo of Bayou, a system for Bayesian inductive synthesis of Java programs that goes significantly beyond the state of the art in program synthesis. I will also describe Salento, a debugging system based on our framework that can find subtle violations of API contracts without any kind of specification.}}
+     @list{@p{Swarat Chaudhuri is an Associate Professor of Computer Science at Rice University. His research lies at the interface of programming systems and artificial intelligence. Much of his recent work is on program synthesis, the problem of automatically generating computer programs from high-level specifications.}})
+
+    (seminar
      "hartzell-templates"
      "Templates and Types in C++"
      "Jimmy Hartzell"
