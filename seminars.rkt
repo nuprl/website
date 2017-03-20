@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "sagiv-protocols"
+     "Simple Invariants for proving the safety of  distributed protocols and networks"
+     "Mooly Sagiv"
+     "http://www.cs.tau.ac.il/~msagiv/"
+     "Tel Aviv University"
+     (datetime 2017 3 31 12 00)
+     "WVH 366"
+     @list{@p{Safety of a distributed protocol means that the protocol never reaches a bad state, e.g., a state where two nodes become leaders in a leader-election protocol. Proving safety is obviously undecidable since such protocols are run by an unbounded number of nodes, and their safety needs to be established for any number of nodes. I will describe a deductive approach for proving safety, based on the concept of universally quantified inductive invariants --- an adaptation of the mathematical concept of induction to the domain of programs. In the deductive approach, the programmer specifies a candidate inductive invariant and the system automatically checks if it is inductive. By restricting the invariants to be universally quantified, this approach can be effectively implemented with a SAT solver.}@p{This is a joint work with Ken McMillan (MSR), Oded Padon (TAU), Aurojit Panda(Berkeley) , and Sharon Shoham(TAU) and was integrated into the IVY system: http://www.cs.tau.ac.il/~odedp/ivy/. The work is inspired by Shachar Itzhaky's thesis available from http://people.csail.mit.edu/shachari/}}
+     @list{@p{Mooly Sagiv is a professor in the School of Computer Sciences at Tel-Aviv University. He is a leading researcher in the area of large scale (inter-procedural) program analysis, and one of the key contributors to shape analysis. His fields of interests include programming languages, compilers, abstract interpretation, profiling, pointer analysis, shape analysis, inter-procedural dataflow analysis, program slicing, and language-based programming environments. Sagiv is a recipient of a 2013 senior ERC research grant for Verifying and Synthesizing Software Composition. Prof. Sagiv served as Member of the Advisory Board of Panaya Inc acquired by Infosys. He received best-paper awards at PLDI'11 and PLDI'12  for his work on composing concurrent data structures and a ACM SIGSOFT Retrospective Impact Paper Award (2011) for program slicing. He is an ACM fellow and a recipient of Microsoft Research Outstanding Collaborator Award 2016.}})
+
+    (seminar
      "chaudhuri-automatic"
      "Learning to Program and Debug, Automatically"
      "Swarat Chaudhuri"
