@@ -78,6 +78,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "madsen-flix"
+     "From Datalog to Flix: A Declarative Language for Fixed Points on Lattices"
+     "Magnus Madsen"
+     "plg.uwaterloo.ca/~mmadsen/"
+     "University of Waterloo"
+     (datetime 2017 4 14 13 30)
+     "WVH 366"
+     @list{@p{We present FLIX, a declarative programming language for specifying and solving least fixed point problems, particularly static program analyses. FLIX is inspired by Datalog and extends it with lattices and monotone functions. Using FLIX,implementors of static analyses can express a broader range of analyses than is currently possible in pure Datalog, while retaining its familiar rule-based syntax. We define a model-theoretic semantics of FLIX as a natural extension of the Datalog semantics. This semantics captures the declarative meaning of FLIX programs without imposing any specific evaluation strategy. An efficient strategy is semi-naïve evaluation which we adapt for FLIX. We have implemented a compiler and runtime for FLIX, and used it to express several well-known static analyses, including the IFDS and IDE algorithms. The declarative nature of FLIX clearly exposes the similarity between these two algorithms.} @p{This work has previously been presented at PLDI 2016. The talk will cover some of that material as well as recent developments.}}
+   @list{@p{The speaker is a post doctoral fellow at the University of Waterloo.}})
+
+
+    (seminar
      "sagiv-protocols"
      "Simple Invariants for proving the safety of  distributed protocols and networks"
      "Mooly Sagiv"
@@ -1111,3 +1123,5 @@ a Dr. sc. ETH in 2012.
     }}}}}}
     @footer{}
 }}
+
+
