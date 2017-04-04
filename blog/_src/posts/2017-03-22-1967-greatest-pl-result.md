@@ -36,6 +36,6 @@ _thank you D.L. Parnas_
 
 
 ### Generic Programming
-_thank you Jean-Ives Girard and John C. Reynolds_
+_thank you Jean-Yves Girard and John C. Reynolds_
 
 
