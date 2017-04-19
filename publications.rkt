@@ -44,6 +44,16 @@
 
 @(define publications
    (list
+    (publication "FunTAL: Reasonably Mixing a Functional Language with Assembly"
+                 "Daniel Patterson, Jamie Perconti, Christos Dimoulas, and Amal Ahmed"
+                 PLDI
+                 2017
+                 "https://dbp.io/pubs/2017/funtal.pdf")
+    (publication "Linking Types for Multi-Language Software: Have Your Cake and Eat It Too"
+                 "Daniel Patterson and Amal Ahmed"
+                 SNAPL
+                 2017
+                 "https://dbp.io/pubs/2017/linking-types-snapl.pdf")
     (publication "Type Systems as Macros"
                  "Stephen Chang, Alex Knauth, Ben Greenman"
                  POPL
@@ -58,7 +68,7 @@
                  "Max S. New, William J. Bowman, and Amal Ahmed"
                  ICFP
                  2016
-                 "http://www.ccs.neu.edu/home/amal/papers/facue.pdf")
+                 "http://www.ccs.neu.edu/home/amal/papers/fabcc.pdf")
     (publication "Oh Lord, Please Don’t Let Contracts Be Misunderstood (Functional Pearl)"
                  "Christos Dimoulas, Max S. New, Robert Bruce Findler, and Matthias Felleisen"
                  ICFP
