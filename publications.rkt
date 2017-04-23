@@ -54,6 +54,11 @@
                  SNAPL
                  2017
                  "https://dbp.io/pubs/2017/linking-types-snapl.pdf")
+    (publication "Search for Program Structure"
+                 "Gariel Scherer"
+                 SNAPL
+                 2017
+                 "http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf")
     (publication "Type Systems as Macros"
                  "Stephen Chang, Alex Knauth, Ben Greenman"
                  POPL
