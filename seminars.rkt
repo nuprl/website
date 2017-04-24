@@ -77,6 +77,19 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
 
+
+    (seminar
+     "linear-experiment"
+     "Multi-language programming system: a linear experiment"
+     ""
+     ""
+     ""
+     (datetime 2017 5 5 12 00)
+     "WVH 366"
+     @list{@p{Programming language research keeps inventing more powerful dynamic and static features for programming language. Ideally, thorough language design should be able to propose a single, unified, powerful yet simple view of them as orthogonal aspects of a single programming language that would remain usable by everyone. In practice, it always takes much more time and effort to find the simple/orthogonal presentation than to come up with the desirable features, and we become emotionally attached to programming language monoliths (C++, Scala, GHC Haskell, OCaml, Common Lisp...) that suffer from feature creep. An alternative is to design programming systems as multi-language environment instead. This point of view makes it easier to detect flaws in a proposed programming system design: there is no clear objective definition of what "orthogonal features" really mean, but we have clear ideas of how multi-language systems should work. The Racket Manifesto says: "Each language and component must be able to protect its specific invariants".}@p{In this work we give a formal specification, in terms of full abstraction, for what it means for a new language added to the system to not introduce "abstraction leaks" in the other languages, and discuss scenarios where this translates in (informal) usability properties: having a nice teachable language subset, or gracefully introducing an advanced language for experts. We present a multi-language design that exhibits this formal property by adding a language L with linear types and linear state to a typical ML-style programming language U. L allows to write programs with resource usage guarantees (space consumption, typestate-style safety guarantees) that were not possible in U, without introducing abstraction leaks. We will demonstrate several useful examples, some of them that crucially rely on the fine-grained use of language boundaries, at a subterm level rather than whole-module level.}}
+     @list{@p{}})
+
+
     (seminar
      "madsen-flix"
      "From Datalog to Flix: A Declarative Language for Fixed Points on Lattices"
