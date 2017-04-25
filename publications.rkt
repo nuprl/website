@@ -59,6 +59,11 @@
                  SNAPL
                  2017
                  "http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf")
+    (publication "Migratory Typing: Ten Years Later"
+                 "Sam Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen Strickland, and Asumu Takikawa"
+                 SNAPL
+                 2017
+                 "http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf")
     (publication "Type Systems as Macros"
                  "Stephen Chang, Alex Knauth, Ben Greenman"
                  POPL
