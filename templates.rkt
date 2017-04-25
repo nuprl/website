@@ -104,6 +104,36 @@
      ("contact.html" . "Contact")
      ("blog/index.html" . "Blog")))
 
+@; Copied from `frog/widgets.rkt`
+@(define (twitter-follow-button name label)
+   @list[
+     @a[href: (string-append "https://twitter.com/" name)
+        class: "twitter-follow-button"
+        data-show-count: "false"
+        data-lang: "en" label]
+     @script[type: "text/javascript" @literal|{
+       !function(d,s,id){
+           var js,fjs=d.getElementsByTagName(s)[0];
+           if(!d.getElementById(id)){
+               js=d.createElement(s);
+               js.id=id;
+               js.src="https://platform.twitter.com/widgets.js";
+               fjs.parentNode.insertBefore(js,fjs);
+           }
+       }(document,"script","twitter-wjs");
+     }|]])
+
+@(define nav-template ; (Listof (List String String))
+   '(("./" . "Home")
+     ("people.html" . "People")
+     ("teaching.html" . "Teaching")
+     ("seminars.html" . "Seminars")
+     ("software.html" . "Software")
+     ("publications.html" . "Publications")
+     ("new-members.html" . "New Members")
+     ("contact.html" . "Contact")
+     ("blog/index.html" . "Blog")))
+
 @(define (navbar current-page)
    (define rendered-nav-elements
      (for/list ([title-pair (in-list nav-template)])
