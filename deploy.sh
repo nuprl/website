@@ -29,4 +29,5 @@ then
     git push deploy HEAD:refs/heads/master
 else
     echo "Aborting; detected race..."
+    exit 1
 fi
