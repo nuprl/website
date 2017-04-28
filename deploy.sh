@@ -20,6 +20,14 @@ git checkout HEAD -- blog/.gitignore
 git add .
 git status
 git commit -m "$REV"
-echo "Committing..."
 
-git push deploy HEAD:refs/heads/master
+git fetch origin
+CURRENT_HEAD=`git rev-parse origin/master`
+if [ "$TRAVIS_COMMIT" = "$CURRENT_HEAD" ]
+then
+    echo "Committing..."
+    git push deploy HEAD:refs/heads/master
+else
+    echo "Aborting; detected race..."
+    exit 1
+fi
