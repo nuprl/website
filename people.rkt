@@ -375,7 +375,7 @@
                   #:e-mail "goel.av@husky.neu.edu"
                   #:history @list["Joined 2017"]
                   #:img "aviral-goel.jpeg"]{
-            Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems and compilers.
+            Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
           }
         }
 
