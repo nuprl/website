@@ -370,6 +370,13 @@
                   #:img "yee-crop.jpg"]{
             I'm interested in programming language design and implementation, as well as static program analysis.
           }
+          @person[#:name "Aviral Goel"
+                  #:title "Advisor: Jan Vitek & Frank Tip"
+                  #:e-mail "goel.av@husky.neu.edu"
+                  #:history @list["Joined 2017"]
+                  #:img "aviral-goel.jpeg"]{
+            Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems and compilers.
+          }
         }
 
         @div[class: "pn-separator-img"]{
