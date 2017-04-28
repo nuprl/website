@@ -543,8 +543,7 @@
               @alumnus-list[
                 @(alumnus "Kenichi Asai" #:year 2004
                           #:personal-site "http://www.is.ocha.ac.jp/~asai/"
-                          #:extra "(Ochanomizu University)"
-                          #:dissertation "http://www.is.ocha.ac.jp/~asai/papers/thesis.ps.gz")
+                          #:extra "(Ochanomizu University)")
                 @(alumnus "Eli Barzilay" #:year 2005
                           #:personal-site "http://www.barzilay.org/")
                 @(alumnus "Kathi Fisler" #:year 1996
