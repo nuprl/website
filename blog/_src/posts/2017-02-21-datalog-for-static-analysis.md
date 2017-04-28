@@ -10,7 +10,8 @@ early use in program analysis, and why Datalog remains a useful tool.
 
 Full notes:
 
-- [https://github.com/nuprl/hopl-s2017/blob/master/datalog-for-static-analysis/datalog-for-static-analysis.pdf](https://github.com/nuprl/hopl-s2017/blob/master/datalog-for-static-analysis/datalog-for-static-analysis.pdf)
+- [Local Copy](/blog/static/datalog-for-static-analysis.pdf)
+- [Source of Truth](https://github.com/nuprl/hopl-s2017/tree/master/datalog-for-static-analysis)
 
 - - -
 
