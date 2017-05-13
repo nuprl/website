@@ -486,7 +486,7 @@
               @(alumnus "Dionna Amalie Glaze" #:year 2015
                         #:personal-site "https://deeglaze.github.io"
                         #:dissertation "https://deeglaze.github.io/diss.pdf"
-                        #:extra "(LogicBlox)")
+                        #:extra "(Google)")
               @(alumnus "Vincent St-Amour" #:year 2015
                         #:personal-site "http://users.eecs.northwestern.edu/~stamourv/"
                         #:dissertation "http://users.eecs.northwestern.edu/~stamourv/papers/dissertation.pdf"
