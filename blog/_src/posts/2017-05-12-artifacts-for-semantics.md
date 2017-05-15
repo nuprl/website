@@ -5,24 +5,16 @@
 [Gabriel Scherer](http://gallium.inria.fr/~scherer/) and I recently wrote
 an [artifact](https://dbp.io/artifacts/funtal) for a
 semantics [paper](https://dbp.io/pubs/2017/funtal.pdf) on a typed assembly
-language interoperating with a high-level functional language. Building
-artifacts to explore programming language semantics is nothing new for PRL --
-indeed, the PhD PL course at Northeastern is entirely taught
-using [Redex](https://redex.racket-lang.org/), but this post is about a
-different approach -- writing small-step interepreters in OCaml and compiling
-them to run on the web -- which has its own advantages.
+language interoperating with a high-level functional language. 
 
 <!-- more -->
 
-[Redex](https://redex.racket-lang.org/) is a wonderful tool for exploring
-programming language semantics, but rather than use Redex, we wrote a
-interpreter, typechecker, and parser in OCaml, compiled it to Javascript
-using [js_of_ocaml](http://ocsigen.org/js_of_ocaml/), and then put it on a
-webpage (with an editor with syntax highlighting and error reporting) that
-allows people to step through examples from the paper or write their own. While
-this probably involved more work on our part than Redex would have, we think it
-resulted in something that is more accessible to readers, and thus worth
-considering.
+We wrote a interpreter, typechecker, and parser in OCaml, compiled it to
+Javascript using [js_of_ocaml](http://ocsigen.org/js_of_ocaml/), and then put it
+on a webpage (with an editor with syntax highlighting and error reporting) that
+allows people to step through examples from the paper or write their own. (Feel
+free to start by playing a bit
+with [our artifact](https://dbp.io/artifacts/funtal)
 
 This post will summarize the different parts to make it easier for others to
 repeat this process. We think it was a total success, and have gotten feedback
@@ -39,7 +31,7 @@ The paper in question,
 appear in PLDI17), presents a multi-language that incorporates a typed assembly
 language and a simple functional language where each can be embedded within the
 other. The paper then develops a logical relation that can be used to reason
-about equivalence of such mixed programs. For example in the paper we show an
+about the equivalence of such mixed programs. For example in the paper we show an
 imperative register-based factorial and a functional factorial equivalent.
 
 Both the static and dynamic semantics are relatively complex. The typed assembly
@@ -65,17 +57,24 @@ to be able to reason about "components" that eventually return a value of a
 particular type, a necessity when embedding these components in a typed
 high-level program! However, it does mean that understanding it from a few
 typing rules alone is a tall order. Our functional language is more standard,
-though we use iso-recursive types to allow recursion, which can easily trip up
+though we use (iso)-recursive types to allow recursion, which can easily trip up
 people, especially when you don't have a type-checker to catch typos!
 
 For that reason, when working through examples for the paper I implemented a
 simple interpreter for the multi-language. I did this in OCaml, in the most
 straightforward way possible: by translating the definitions from the paper into
-type definitions, and the reduction relation into a "step" function that
+type definitions
+([for F](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L835) and
+[TAL](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1209)),
+and the reduction relation into
+a
+["step" function](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1155) that
 (assuming it wasn't stuck or a value), did one step of evaluation. Later, I did
-the same thing for the type-checker, translating rules into a type-checking
-function. The latter had to change in a few minor ways, as the typing rules we
-had in the paper were slightly not syntax directed. 
+the same thing for the type-checker, translating rules into
+a
+[type-checking function](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L282).
+The latter had to change in a few minor ways, as the typing rules we had in the
+paper were slightly not syntax directed.
 
 Having the interpreter and type-checker was very useful for me, as I could check
 that the examples from the paper did not contain typos, but it was much less
@@ -102,9 +101,7 @@ requires doing three things:
 3. Put it online! Don't require installing any software! Conveniently,
    implementing 2 is also made easier once done online. By using OCaml, we were
    able to easily use the
-   excellent [js_of_ocaml](http://ocsigen.org/js_of_ocaml/), though there are
-   other ways of getting Javascript versions of your artifacts (without actually
-   having to write them in Javascript). 
+   excellent [js_of_ocaml](http://ocsigen.org/js_of_ocaml/).
 
 The first was done by Gabriel, who wrote a grammar
 using [Menhir](http://gallium.inria.fr/~fpottier/menhir/), and then equipped it
@@ -141,10 +138,22 @@ CSS file, and a few javascript files for CodeMirror. It requires no server
 backend, is easy to archive and save, and will even run on smartphones! 
 
 The total time spent implementing the artifact was a small fraction of the time
-spent on the paper, and while it was not in any critical way essential for the
-success of the paper, it does make the paper much easier to read, and we would
-argue that all semantics papers would be better off with easy to use artifacts
-for experimentation.
+spent on the paper (probably 2 weeks person-time), and while it was not in any
+critical way essential for the success of the paper, it does make the paper much
+easier to read, and we would argue that all semantics papers would be better off
+with easy to use artifacts for experimentation. Also, while implementing the
+artifact we found a few mistakes in the typing judgments for the language. The
+most interesting one was for our `protect` TAL instruction, which exists to
+protect the tail of the stack in a fresh type variable. We had written this as a
+typing rule that type-checked the rest of the instruction sequence with the
+abstracted tail, but this never allowed the tail to be accessed again. By
+translating the typing judgments exactly into code, we realized that there was a
+problem, because examples that should have worked did not type-check! We were
+then able to fix the typing rule to conform to what we originally thought it
+achieved -- locally abstracting, but not abstracting from outside the component.
+What is interesting is that this did not come up in our proofs because the
+typing rule was perfectly valid -- it just did not allow non-trivial programs
+that used the `protect` instruction.
 
 To see the artifact online, visit:
 
