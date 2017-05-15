@@ -1,5 +1,5 @@
     Title: Artifacts for Semantics
-    Date: 2017-05-12T10:08:31
+    Date: 2017-05-15T10:08:31
     Tags: by Daniel Patterson
 
 [Gabriel Scherer](http://gallium.inria.fr/~scherer/) and I recently wrote
