@@ -14,7 +14,7 @@ Javascript using [js_of_ocaml](http://ocsigen.org/js_of_ocaml/), and then put it
 on a webpage (with an editor with syntax highlighting and error reporting) that
 allows people to step through examples from the paper or write their own. (Feel
 free to start by playing a bit
-with [our artifact](https://dbp.io/artifacts/funtal)
+with [our artifact](https://dbp.io/artifacts/funtal)).
 
 This post will summarize the different parts to make it easier for others to
 repeat this process. We think it was a total success, and have gotten feedback
@@ -29,7 +29,7 @@ equally well for semantics verified in Coq and then extracted to OCaml.
 The paper in question,
 [FunTAL: Reasonably Mixing a Functional Language with Assembly](https://dbp.io/pubs/2017/funtal.pdf) (to
 appear in PLDI17), presents a multi-language that incorporates a typed assembly
-language and a simple functional language where each can be embedded within the
+language (TAL) and a simple functional language where each can be embedded within the
 other. The paper then develops a logical relation that can be used to reason
 about the equivalence of such mixed programs. For example in the paper we show an
 imperative register-based factorial and a functional factorial equivalent.
@@ -55,17 +55,18 @@ This allows a good deal of low-level control-flow while still ensuring that
 calls will eventually return to the right place. This well-bracketing is vital
 to be able to reason about "components" that eventually return a value of a
 particular type, a necessity when embedding these components in a typed
-high-level program! However, it does mean that understanding it from a few
-typing rules alone is a tall order. Our functional language is more standard,
-though we use (iso)-recursive types to allow recursion, which can easily trip up
-people, especially when you don't have a type-checker to catch typos!
+high-level program! However, it does mean that understanding the static and
+dynamic semantics from a few rules alone is a tall order. Our functional
+language is more standard, though we use (iso)-recursive types to allow
+recursion, which can easily trip up people, especially when you don't have a
+type-checker to catch typos!
 
 For that reason, when working through examples for the paper I implemented a
 simple interpreter for the multi-language. I did this in OCaml, in the most
 straightforward way possible: by translating the definitions from the paper into
 type definitions
 ([for F](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L835) and
-[TAL](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1209)),
+[for TAL](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1209)),
 and the reduction relation into
 a
 ["step" function](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1155) that
@@ -73,8 +74,8 @@ a
 the same thing for the type-checker, translating rules into
 a
 [type-checking function](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L282).
-The latter had to change in a few minor ways, as the typing rules we had in the
-paper were slightly not syntax directed.
+The latter had to deviate from the rules in the paper in a few minor ways, as
+the typing rules we had in the paper were slightly not syntax directed.
 
 Having the interpreter and type-checker was very useful for me, as I could check
 that the examples from the paper did not contain typos, but it was much less
@@ -92,15 +93,16 @@ requires doing three things:
 
 1. Allow reading/writing programs in a notation as close to the paper as
    possible. In our paper we use superscripts, subscripts, and a few greek
-   letters, but ended up with a syntax very close to the paper -- the biggest
+   letters, but ended up with a syntax otherwise very close to the paper -- the biggest
    differences were a few extra delimiters introduced to reduce ambiguity. 
 2. Present an interface that highlights type errors at the location they
    occurred in, and allow a reader to step forward and backwards through the
    evaluation. Printing console output traces is fine for authors, but adds too
    much effort for readers.
 3. Put it online! Don't require installing any software! Conveniently,
-   implementing 2 is also made easier once done online. By using OCaml, we were
-   able to easily use the
+   implementing 2 is also made easier once done online, as we could use existing
+   editor tooling to present the code, highlight errors, etc. By using OCaml, we
+   were able to easily use the
    excellent [js_of_ocaml](http://ocsigen.org/js_of_ocaml/).
 
 The first was done by Gabriel, who wrote a grammar
@@ -115,7 +117,7 @@ tests were used to ensure that the parser/pretty-printer would round-trip proper
 
 For the interface, I built a simple web page that had
 the [CodeMirror](https://codemirror.net/) editor equipped with a very simple
-syntax highlighter (8 lines of code to highlight keywords & atoms, plus a
+syntax highlighter ([8 lines of code](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L247) to highlight keywords & atoms, plus a
 CodeMirror extension to highlight matching brackets) and error highlighting
 (which is triggered by the OCaml code). I then made a simple "machine state" UI
 that showed, in pretty-printed format, the heap, stack, registers, context, and
@@ -127,7 +129,7 @@ are
 [50 lines of Javascript](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L246) and
 about
 [150 lines of OCaml](https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/web.ml) that
-handle the logic of the editor.
+handle the logic for this interactive UI.
 
 Putting it online was very easy, based on the choice of tools used earlier. We
 compile the main file
@@ -138,22 +140,24 @@ CSS file, and a few javascript files for CodeMirror. It requires no server
 backend, is easy to archive and save, and will even run on smartphones! 
 
 The total time spent implementing the artifact was a small fraction of the time
-spent on the paper (probably 2 weeks person-time), and while it was not in any
-critical way essential for the success of the paper, it does make the paper much
-easier to read, and we would argue that all semantics papers would be better off
-with easy to use artifacts for experimentation. Also, while implementing the
-artifact we found a few mistakes in the typing judgments for the language. The
-most interesting one was for our `protect` TAL instruction, which exists to
-protect the tail of the stack in a fresh type variable. We had written this as a
-typing rule that type-checked the rest of the instruction sequence with the
-abstracted tail, but this never allowed the tail to be accessed again. By
-translating the typing judgments exactly into code, we realized that there was a
-problem, because examples that should have worked did not type-check! We were
-then able to fix the typing rule to conform to what we originally thought it
-achieved -- locally abstracting, but not abstracting from outside the component.
-What is interesting is that this did not come up in our proofs because the
-typing rule was perfectly valid -- it just did not allow non-trivial programs
-that used the `protect` instruction.
+spent on the paper (probably 15 days of person-time), and while it was not in
+any critical way essential for the success of the paper, it does make the paper
+much easier to read, and we would argue that all semantics papers would be
+better off with easy to use artifacts for experimentation. Also, while
+implementing the artifact we found a few mistakes in the typing judgments for
+the language. The most interesting one was for our `protect` TAL instruction,
+which exists to protect the tail of the stack in a fresh type variable. We had
+written this as a typing rule that type-checked the rest of the instruction
+sequence with the abstracted tail, but this never allowed the tail to be
+accessed again. By translating the typing judgments exactly into code, we
+realized that there was a problem, because examples that should have worked did
+not type-check! We were then able to fix the typing rule to conform to what we
+originally thought it achieved -- locally abstracting, but not abstracting from
+outside the component. What is interesting is that this did not come up in our
+proofs because the typing rule was perfectly valid -- it just did not allow
+non-trivial programs that used the `protect` instruction. It's quite possible we
+would have noticed this without implementing the artifact, but the artifact
+certainly made it easier!
 
 To see the artifact online, visit:
 
