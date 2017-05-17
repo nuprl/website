@@ -370,12 +370,22 @@
                   #:img "yee-crop.jpg"]{
             I'm interested in programming language design and implementation, as well as static program analysis.
           }
+
           @person[#:name "Aviral Goel"
                   #:title "Advisor: Jan Vitek & Frank Tip"
                   #:e-mail "goel.av@husky.neu.edu"
                   #:history @list["Joined 2017"]
                   #:img "aviral-goel.jpeg"]{
             Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
+          }
+
+          @person[#:name "Aaron Weiss"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "weiss@ccs.neu.edu"
+                  #:website "https://aaronweiss.us/"
+                  #:history @list["Joined 2017"]
+                  #:img "aaron_weiss.jpg"]{
+            I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
           }
         }
 
