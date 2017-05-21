@@ -5,7 +5,7 @@
 @html[lang: "en"]{
   @header{Home}
   @body[id: "pn-top"]{
-    @navbar{"Home"}
+    @navbar{Home}
     @div[class: "jumbotron"]{
       @div[class: "container"]{
         @div[class: "row"]{
