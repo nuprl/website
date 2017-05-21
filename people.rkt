@@ -560,7 +560,7 @@
                           #:personal-site "http://www.cs.wpi.edu/~kfisler/"
                           #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
                 @(alumnus "Mark Krentel" #:year 1989
-                          #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W: "
+                          #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
                           #:extra "(Rice University)")
                 @(alumnus "David van Horn" #:year 2009
                           #:extra "(University of Maryland)"
