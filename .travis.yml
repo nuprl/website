@@ -12,6 +12,11 @@ env:
     - RACKET_VERSION=6.6
     - secure: "ZD05u6G77v1POOF2bl423H/vqgS5e/9ok/UCG57dDITBoIXun2hj0cJKBT8SFoW58yyYNd3Ji+mbNvwXRZ6f0+OkLB5rIZqWDaz9tlVcnDk4BfwlXbo7v0uMnmqehp+ftaZKhyDJSYhOR9cMNxaTmSeINuTX3rT1lk8QxQy5MW5u+ouwkVQia0dFe66mWbGFH0u55t8Wwxgo+l0mb1OSpri7AbgOou3+0BPoHB0G65uhRXGyE033CXo9WodMcMtZJDslbQ80ZOec/XHSXAszItc/HPdBzt4h8aGOFm7gW/TmpF76uWsgshDyxVtUJsdlwvb65A6FB8B9/NTSkw55/n8FUImhg5A1fuSdwLfV7SpjzWbjuHhMisuXJ7JatWk2FD7pclEP97HmMRSVlDFacQ1sqUwqX3R8i3OXd1/K4RNDYExabl2qzQ+PLiaZPXf/lOX2VJvd64BcGveQIoGEYr/+SPhSn/ss9rlY3MH4unTHUqZ77iZKFhT782nREpLZkaRr27OcH5P511X6hzkynTYlRjyfKBns5b1uMYE1rWBYshAxlWhZVY2pZkj7axvzM/XOkzC4AnrxmmBVFF1vKDPtn1OydrCmTvdAVxdLy9VNz6QRDHB6lKJWgUvqKdKqtfOz3aBCyMFWxqH0mpTywPeXah558LgP571sCuHbIUo="
 
+addons:
+  apt:
+    packages:
+    - python-pygments
+
 # NOTE(dbp 2016-09-30): frog seems to need a running X server... :(
 before_install:
   - "export DISPLAY=:99.0"

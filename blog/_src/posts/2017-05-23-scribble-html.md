@@ -79,14 +79,14 @@ These functions have the same name as the corresponding HTML tag.
 
 Example program:
 
-```
+```racket
 #lang scribble/html
 @p{Hello World}
 ```
 
 Running this program prints:
 
-```
+```html
 <p>Hello World</p>
 ```
 
@@ -98,14 +98,14 @@ Every tag-rendering function accepts "Racket mode" arguments that specify
 
 For example:
 
-```
+```racket
 #lang scribble/html
 @p[style: "color:red"]{Hello World}
 ```
 
 Prints:
 
-```
+```html
 <p style="color:red">Hello World</p>
 ```
 
@@ -124,7 +124,7 @@ There is no extra support for HTML.
 
 To compare, here's the start of the old homepage:
 
-```
+```racket
 #lang scribble/text
 @(require "templates.rkt")
 
@@ -138,7 +138,7 @@ To compare, here's the start of the old homepage:
 
 And here is the start of the `scribble/html`'d homepage:
 
-```
+```racket
 #lang scribble/html
 @require["templates.rkt"]
 
@@ -175,19 +175,19 @@ This is very very helpful.
 Before, the [Teaching page](http://prl.ccs.neu.edu/teaching.html) contained
  some interesting HTML for rendering vertical text (look for the word "Semantics" to see how this was used):
 
-```
+```html
 <span class="how-to-design-programs">S<br />e<br />m<br />a<br />n<br />t<br />i<br />c<br />s<br /><br /></span>
 ```
 
 After, the same text is generated from a function call:
 
-```
+```racket
 @span[class: "how-to-design-programs"]{@vertical-text{Semantics}}
 ```
 
 The `vertical-text` function is simple:
 
-```
+```racket
 @require[(only-in racket/list add-between)]
 
 @(define (vertical-text . str*)
@@ -199,7 +199,7 @@ The `vertical-text` function is simple:
 
 Here's part of the old definition of "Ben Greenman" on the [People page](http://prl.ccs.neu.edu/people.html):
 
-```
+```html
 <div class="row pn-person">
   <div class="col-md-12 pn-row-eq-height">
     <div class="col-md-3 pn-photo">
@@ -228,7 +228,7 @@ Here's part of the old definition of "Ben Greenman" on the [People page](http://
 The new definition uses a helper function with keyword arguments for each
  "field" of the person:
 
-```
+```racket
 @person[#:name "Ben Greenman"
         #:title "Advisor: Matthias Felleisen"
         #:e-mail "types@ccs.neu.edu"
@@ -244,14 +244,14 @@ The new definition uses a helper function with keyword arguments for each
 
 Before, the code did a lot of string formatting ([link](https://github.com/nuprl/website/commit/a0600d#diff-1921e33ce89be28dd277cf1c7880d1beL9)):
 
-```
+```racket
 (define (link url body)
   (string-append "<a href=\"" url "\">" body "</a>"))
 ```
 
 The new code has no need for such helper functions.
 
-```
+```racket
 @a[href: url body]
 ```
 
