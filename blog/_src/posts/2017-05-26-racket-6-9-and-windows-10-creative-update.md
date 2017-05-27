@@ -15,6 +15,8 @@ install a VM for Racket in Windows.
 [A VirtualBox image with Racket preinstalled can be downloaded here.][vm] The
 rest of this blog post is a tutorial on how to install this image.
 
+**Update** The username and password for this machine are both `racket`.
+
 <!-- more -->
 
 1. The first thing you need to install is virtualization software. In principle
