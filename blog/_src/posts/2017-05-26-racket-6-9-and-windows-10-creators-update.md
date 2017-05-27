@@ -1,4 +1,4 @@
-    Title: Racket 6.9 and Windows 10 Creative Update
+    Title: Racket 6.9 and Windows 10 Creators Update
     Date: 2017-05-26T17:00:28
     Tags: racket, windows, bugs, by Leif Andersen
 
