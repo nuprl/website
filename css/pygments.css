@@ -39,10 +39,11 @@
 .nv { color: #008080 } /* Name.Variable */
 .ow { color: #000000; font-weight: bold } /* Operator.Word */
 .w { color: #bbbbbb } /* Text.Whitespace */
-.mf { color: #009999 } /* Literal.Number.Float */
-.mh { color: #009999 } /* Literal.Number.Hex */
-.mi { color: #009999 } /* Literal.Number.Integer */
-.mo { color: #009999 } /* Literal.Number.Oct */
+.mf { color: #ffffff } /* Literal.Number.Float */
+.mh { color: #ffffff } /* Literal.Number.Hex */
+.mi { color: #ffffff } /* Literal.Number.Integer */
+.mo { color: #ffffff } /* Literal.Number.Oct */
+.mn { color: #ffffff } /* Literal.Number */
 .sb { color: #d01040 } /* Literal.String.Backtick */
 .sc { color: #d01040 } /* Literal.String.Char */
 .sd { color: #d01040 } /* Literal.String.Doc */
