@@ -1,9 +1,0 @@
-## BEGIN htpasswd
-#
-AuthName "My Protected Area"
-AuthType Basic
-AuthUserFile /var/www/clients/client2/web19/web/.htpasswd
-AuthGroupFile /dev/null
-require valid-user
-#
-## END htpasswd
