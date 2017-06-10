@@ -398,8 +398,10 @@ way. (In particular, \\(A×B → C\\) is *not* isomorphic to
 
 ### You might also like
 
-- [Categorical Semantics for Dynamically Typed Programming Languages](blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/)
+- [Categorical Semantics for Dynamically Typed Programming
+  Languages](http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/)
 
 - [Toward Type-Preserving Compilation of Coq, at POPL17 SRC](https://williamjbowman.com/blog/2017/01/03/toward-type-preserving-compilation-of-coq-at-popl17-src/)
 
-- [Understanding Constructive Galois Connections](blog/2016/11/16/understanding-constructive-galois-connections/).
+- [Understanding Constructive Galois
+  Connections](http://prl.ccs.neu.edu/blog/2016/11/16/understanding-constructive-galois-connections/).
