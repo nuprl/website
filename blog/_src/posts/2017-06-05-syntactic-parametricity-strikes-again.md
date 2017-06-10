@@ -2,15 +2,6 @@
     Date: 2017-06-05T14:27:44
     Tags: by Gabriel Scherer, by Li-Yao Xia
 
-\\[
-\newcommand{\List}[1]{\mathsf{List}~#1}
-\newcommand{\Fin}[1]{\mathsf{Fin}~#1}
-\newcommand{\Nat}[1]{\mathbb{N}}
-\newcommand{\rule}[2]{\frac{\displaystyle \array{#1}}{\displaystyle #2}}
-\newcommand{\judge}[2]{{#1} \vdash {#2}}
-\newcommand{\emptyrule}[1]{\begin{array}{c}\\[-1em] #1 \end{array}}
-\\]
-
 In this blog post, reporting on a collaboration with [Li-Yao
 Xia](https://poisson.chat/), I will show an example of
 how some results that we traditionally think of as arising from free
@@ -18,6 +9,12 @@ theorems / parametricity can be established in a purely "syntactic" way,
 by looking at the structure of canonical derivations. More precisely,
 I prove that
 \\(
+\newcommand{\List}[1]{\mathsf{List}~#1}
+\newcommand{\Fin}[1]{\mathsf{Fin}~#1}
+\newcommand{\Nat}[1]{\mathbb{N}}
+\newcommand{\rule}[2]{\frac{\displaystyle \array{#1}}{\displaystyle #2}}
+\newcommand{\judge}[2]{{#1} \vdash {#2}}
+\newcommand{\emptyrule}[1]{\begin{array}{c}\\[-1em] #1 \end{array}}
   ∀α. \List α → \List \alpha
 \\)
 is isomorphic to
