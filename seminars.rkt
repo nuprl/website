@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "jamner-gradual"
+     "Relational Parametricity for Polymorphic Blame Calculus"
+     "Dustin Jamner"
+     "https://github.com/DIJamner"
+     "Northeastern University"
+     (datetime 2017 6 23 12 00)
+     "WVH 366"
+     @list{@p{The polymorphic blame calculus integrates static typing, including universal types, with dynamic typing. The primary challenge with this integration is preserving parametricity: even dynamically-typed code should satisfy it once it has been cast to a universal type. Ahmed et al. (2011) employ runtime type generation in the polymorphic blame calculus to preserve parametricity, but a proof that it does so has been elusive. Matthews and Ahmed (2008) gave a proof of parametricity for a closely related system that combines ML and Scheme, but later found a flaw in their proof. In this work we prove that the polymorphic blame calculus satisfies relational parametricity. The proof relies on a step-indexed Kripke logical relation. The step-indexing is required to make the logical relation well-defined in the case for the dynamic type. The possible worlds include the mapping of generated type names to their concrete types and the mapping of type names to relations. We prove the Fundamental Property of this logical relation and that it is sound with respect to contextual equivalence.}}
+     @list{@p{Dustin Jamner is an undergraduate at Northeastern University in Computer Science, working with Amal Ahmed.}})
+
+    (seminar
      "tinelli-cocospec"
      "CoCoSpec: A Mode-aware Contract Language for Reactive Systems"
      "Cesare Tinelli"
