@@ -2,16 +2,13 @@
     Date: 2017-06-06T11:38:25
     Tags: DRAFT, PL Junior, by Ben Chung, by Milo Davis, by Ming-Ho Yee, by Matt Kolosick, by Dustin Jamner, by Artem Pelenitsyn, by Julia Belyakova, by Sam Caldwell
 
-The [PL Junior Seminar][pljunior] is for beginning PhD as well interested
+The [PL Junior Seminar][pljunior] is for beginning PhD and interested
 undergrad and masters students to understand the foundations of
-programming languages research as well as investigate the different
-areas that modern research focuses on. The seminar provides an
-opportunity to fill in background knowledge one is often assumed to
-already have when starting a PhD or to acquire during the course of a
-PhD.
+programming languages research. It serves to fill in background
+knowledge and get up to speed with different areas of PL research.
 
 For the spring 2017 instance of PL Junior we chose program synthesis,
-the sequence calculus, and logic programming as topics we wanted to
+the sequent calculus, and logic programming as topics we wanted to
 learn more about. We also did two group paper readings for Luca
 Cardelli's [Typeful Programming][typeful] and Alan Kay's
 [Early History of Smalltalk][smalltalk]. At the same time, we changed
