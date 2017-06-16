@@ -1,6 +1,6 @@
     Title: Spring 2017 PL Junior Retrospective
-    Date: 2017-06-06T11:38:25
-    Tags: DRAFT, PL Junior, by Ben Chung, by Milo Davis, by Ming-Ho Yee, by Matt Kolosick, by Dustin Jamner, by Artem Pelenitsyn, by Julia Belyakova, by Sam Caldwell
+    Date: 2017-16-06T11:38:25
+    Tags: PL Junior, by Ben Chung, by Milo Davis, by Ming-Ho Yee, by Matt Kolosick, by Dustin Jamner, by Artem Pelenitsyn, by Julia Belyakova, by Sam Caldwell
 
 The [PL Junior Seminar][pljunior] is for beginning PhD and interested
 undergrad and masters students to understand the foundations of
