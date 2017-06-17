@@ -1,5 +1,5 @@
     Title: Spring 2017 PL Junior Retrospective
-    Date: 2017-06-06T11:38:25
+    Date: 2017-06-16T11:38:25
     Tags: PL Junior, by Ben Chung, by Milo Davis, by Ming-Ho Yee, by Matt Kolosick, by Dustin Jamner, by Artem Pelenitsyn, by Julia Belyakova, by Sam Caldwell
 
 The [PL Junior Seminar][pljunior] is for beginning PhD and interested
@@ -44,15 +44,15 @@ synthesis!
 ## Synthesis
 
 The first paper on program synthesis that we looked at was
-[A Deductive Approach to Program Synthesis][deductive] by Zohar and
-Manna. We chose this paper because it's old and has a lot of citations
+[A Deductive Approach to Program Synthesis][deductive] by Manna and
+Waldinger. We chose this paper because it's old and has a lot of citations
 so it's probably Important. It was interesting and provided an OK
 introduction to proof search but the method presented seems far
 removed from modern synthesis techniques.
 
 The next paper was
-[Programmatic and Direct Manipulation, Together][progdirect] by Chugh
-et al which presents the [Sketch-n-Sketch][sketchnsketch] system.
+[Programmatic and Direct Manipulation, Together][progdirect] by Chugh, Hempel,
+ Spradlin, and Alders, which presents the [Sketch-n-Sketch][sketchnsketch] system.
 Sketch-n-Sketch is a cool system. It demonstrates that a narrow
 application of synthesis - trying to fill in the constant values in a
 program (sketching) - can be used for great effect. We were left
