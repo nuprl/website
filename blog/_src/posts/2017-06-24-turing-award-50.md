@@ -27,7 +27,7 @@ and Judea Pearl's theory of homo sapiens.
 
 #### _Alan Turing is with us today_
 
-At the start of the event, the [emcee](http://users.ecs.soton.ac.uk/wh/) unvelied a bronze bust of Alan Turing.
+At the start of the event, the [emcee](http://users.ecs.soton.ac.uk/wh/) unveiled a bronze bust of Alan Turing.
 This statue was on display at center stage during the whole event.
 
 It's a good sculpture and it's good we remember Alan Turing, but I'm sad
