@@ -44,6 +44,11 @@
 
 @(define publications
    (list
+    (publication "Contextual Equivalence for Probabilistic Programs with Continuous Random Variables and Scoring"
+                 "Ryan Culpepper and Andrew Cobb"
+                 ESOP
+                 2017
+                 "http://www.ccs.neu.edu/home/ryanc/papers/esop2017.pdf")
     (publication "FunTAL: Reasonably Mixing a Functional Language with Assembly"
                  "Daniel Patterson, Jamie Perconti, Christos Dimoulas, and Amal Ahmed"
                  PLDI
