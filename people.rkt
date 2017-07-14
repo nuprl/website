@@ -284,7 +284,7 @@
 
           @person[#:name "William J. Bowman"
                   #:title "Advisor: Amal Ahmed"
-                  #:e-mail "wilbowma@ccs.neu.edu"
+                  #:e-mail "wjb@williamjbowman.com"
                   #:website "https://www.williamjbowman.com"
                   #:history @list["Joined 2012"]
                   #:img "william_bowman.jpg"]{
