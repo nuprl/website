@@ -12,5 +12,8 @@ From the PRL archives:
 - - -
 
 I first encountered this essay on continuations in a green folder in the PRL.
-When I know more about its history, I'll write that down here.
-Until then, Enjoy.
+It turns out, the author spent a semester at Indiana University working on the
+ [same fringe problem](http://wiki.c2.com/?SameFringeProblem) for a graduate-level programming languages course.
+According to [the instructor](https://www.cs.indiana.edu/~dfried/):
+ "What he said was true.  He could not stop thinking about the problem the entire semester."
+This essay was a kind of final exam.
