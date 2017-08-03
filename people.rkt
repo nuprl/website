@@ -115,7 +115,7 @@
           }
 
           @person[#:name "Amal Ahmed"
-                  #:title "Assistant Professor"
+                  #:title "Associate Professor"
                   #:e-mail "amal@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/amal"
                   #:history @list[
