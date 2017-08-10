@@ -387,6 +387,15 @@
                   #:img "aaron_weiss.jpg"]{
             I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
           }
+
+          @person[#:name "Celeste Hollenbeck"
+                  #:title "Advisor: Jan Vitek"
+                  #:e-mail "hollenbeck.c@husky.neu.edu"
+                  #:history @list["Joined 2017"]
+                  #:img "celeste_hollenbeck.jpg"]{
+            I'm into program analysis, machine learning, computational topology @|mdash| nasty things that bloody my nose.
+      I like to put tiaras on them and make them have tea with each other. At knifepoint.
+          }
         }
 
         @div[class: "pn-separator-img"]{
