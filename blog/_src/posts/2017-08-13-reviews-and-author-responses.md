@@ -57,7 +57,7 @@ them. This is the point of this blog post:
   please remove this silly recommendation to keep responses to 500
   words. (See an alternative proposal at the end of this post.)
 
-### My personal response format
+## My personal response format
 
 My author responses start with general comments that elaborate on the
 main point I want to tell all reviewers. Then, a second part
@@ -71,19 +71,19 @@ response I wrote:
 > provide detailed responses to the questions/remarks of each
 > reviewer.
 >
-> ## General discussion
+> ### General discussion
 >
 > [..]
 >
-> ## Specific questions/comments: review #A
+> ### Specific questions/comments: review #A
 >
 > [..]
 >
-> ## Specific questions/comments: review #B
+> ### Specific questions/comments: review #B
 >
 > [..]
 >
-> ## Specific questions/comments: review #C
+> ### Specific questions/comments: review #C
 >
 > [...]
 
@@ -93,7 +93,7 @@ following sections, I quote the reviews to answer specific points,
 email-style (following the Markdown syntax that HotCRP
 renders properly).
 
-### Suggested wording for PC chairs
+## Suggested wording for PC chairs
 
 If you are a PC chair, you should remove the suggestion of respecting
 a 500 words limit for your conference. Here would be a suggested
