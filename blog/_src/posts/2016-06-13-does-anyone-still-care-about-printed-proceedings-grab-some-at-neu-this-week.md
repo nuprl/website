@@ -25,8 +25,14 @@ But don't get me wrong, the future of printed proceedings is not an
 important question. We should rather be asking ourselves: why are the
 products of the work of our communities not easily accessible in an
 Open Access long-term archive? Are you submitting your articles to
-Arxiv, or another archive? Why not?
+arXiv, or another archive? Why not?
 
 Not caring about printed proceedings is perfectly fine; but please
 care about people outside institutions that want to access your
-work -- for example, master student myself.
+work --- for example, master student myself.
+
+- - -
+
+_Update (August 2017):_ Gabriel returned to France and left the POPL proceedings
+ at his desk. The proceedings are sitting in the hallway at NEU, in case anyone
+ cares.
