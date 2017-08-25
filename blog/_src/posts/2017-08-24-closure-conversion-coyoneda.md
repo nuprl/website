@@ -1,12 +1,12 @@
     Title: Closure Conversion as CoYoneda
     Date: 2017-08-24T00:00:00
-    Tags: yoneda, coyoneda, category theory, compilers, closure conversion, math, by Max New
+    Tags: Yoneda, coYoneda, category theory, compilers, closure conversion, math, by Max New
 
-The continuation-passing style transform and closure conversion are
-two techniques widely employed by compilers for functional languages,
-and have been studied extensively in compiler correctness literature.
-Interestingly, *typed* versions of each can be proven to be
-equivalence preserving using polymorphic types and parametric
+The continuation-passing style transform (cps) and closure conversion
+(cc) are two techniques widely employed by compilers for functional
+languages, and have been studied extensively in compiler correctness
+literature.  Interestingly, *typed* versions of each can be proven to
+be equivalence preserving using polymorphic types and parametric
 reasoning, as shown by my advisor Amal Ahmed and Matthias Blume
 ([cps][polycps],[cc][polycc]).
 
@@ -16,15 +16,15 @@ the isomorphism proofs use analogous reasoning.
 It turns out that both are instances of general theorems in category
 theory: the polymorphic cps isomorphism can be proven using the Yoneda
 lemma, and the polymorphic closure-conversion isomorphism can be
-proven using a less well known theorem often called the [*co*Yoneda lemma][coyoneda].
+proven using a less well known theorem often called the [*co*Yoneda lemma][coYoneda].
 
 The connection between cps and the Yoneda embedding/lemma is detailed
 elsewhere in the [literature][isomorphically] and blogosphere
 ([ncafe][ncafe], [Bartosz][bartosz]), so I'll focus on closure
 conversion here.
-Also, I'll try to go into a little more detail than there in showing
-how to get from the "usual" version of Yoneda/Coyoneda (using the
-category of sets) to the appropriate version for compilers.
+Also, I'll try to go into some detail in showing how the "usual"
+version of Yoneda/coYoneda (using the category of sets) relates to the
+appropriate version for compilers.
 
 I'll assume some background knowledge on closure conversion and
 parametricity below.
@@ -60,10 +60,8 @@ would be converted to something like
 let x = 3 in ([x: 3], \lambda env, y. let x = env.x in x + y) 
 ```
 
-(here we could obviously substitute `x` in but closures are
-needed when `x` is a dynamic input).
-Can we give a type to the resulting code?  The source program had type
-`Number -> Number`, but the target had a type more like
+Can we give a type to the resulting code?  The source program has type
+`Number -> Number`, but the target has a type more like
 
 ```
 { x: Number} \times ({x : Number} \times Number -> Number).
@@ -75,17 +73,17 @@ its type, so two terms with the same function type but different free
 variables would be translated to different types.
 Also high-level program equivalences like \\(\beta\\)-reducing the term
 to just `λ y. 3 + y` would not even preserve typing.
-Not only that, but some bad code could now supply a *different* value
-for `x` than allowed which could break invariants the programmer
-had about the function.
+Not only that, but some bad code could now supply a *different*,
+well-typed value for `x` than allowed which could break invariants the
+programmer had about the function.
 
 We could fix the type preservation issue by just using a dynamic type
 for our environment, but this would still leak details in the values.
-Fortunately, there is a nice solution to the other problems using more
-advanced types: existential types.
+Fortunately, there is a nice solution to the other problems using
+existential types.
 The idea is that the type of the environment of free variables is
 *irrelevant* to anyone that calls the function, only the function
-itself should know what the environment looks like: the type of the
+itself should know what the environment looks like; the type of the
 environment should be *abstract* to the caller and *concrete* to the
 callee.
 Existential types capture this.
@@ -124,68 +122,105 @@ above.
 I'll start with the ordinary version which uses *coends* and
 *presheaves*.
 
-The coYoneda lemma says that for any category \\( C \\), *presheaf*,
-i.e. a functor \\( Q : C^{op} \to \Set \\), and object \\(A \in C \\),
-\\(Q(A) \\) is isomorphic to:
+The coYoneda lemma says that for any category \\( C \\), presheaf
+\\( Q : C^{op} \to \Set \\), and object \\(A \in C \\),
+\\(Q(A) \\) is isomorphic to the coend:
 \\[ \exists B. (A \to B) \times Q(B) \\]
-usually coends use an integral sign but I think \\(\exists \\) is a
-much more evocative notation that is used sometimes in logicy circles.
+Let's break that down.
+
+### Coends
 
 A coend is a construction that is very similar to the parametric
 existential quantifier.
-I don't think I've ever seen this written down explicitly, but it's
-basically what you get when you take the parametricity condition for
-the existential type but restrict your reasoning to only use
-functional relations.
+If you're familiar with parametricity, a good intuition is that coends
+have the same definition as existential types but where the only
+relations are functional relations.
 
-A presheaf is just a functor \\( Q : C^{op} \to \Set \\).  One nice
-way to think about it is that \\( Q \\) is a sort of "generalized
-object" of \\( C \\), in that it has a notion of map from object \\( B
-\in C\\) to \\( Q \\): we think of \\(Q(B) \\) as "\\( B \to Q
-\\)". The fact that \\( Q \\) is a functor means we can compose a
-"map" "\\( q : B \to Q \\)" (really an element \\(q \in Q(B)\\)) with
-real maps \\( f : A \to B \\) in \\( C\\) to get a map \\( q \circ f :
-A \to Q \\) and this behaves as expected with respect to identity and
-composition.  Then the Yoneda lemma says that any object is a
-"generalized object" by taking the real maps into it and that this
-interpretation doesn't add any new maps between the original objects.
+You can take the coend of a functor of type \\(M : C^{op} \times C \to
+\Set \\).
+We can get such an \\(M \\) from a type with a free type variable like
+\\( X \times A \to X \\) by splitting the \\(X \\) into positive and
+negative occurrences: \\(X^- \times A \to X^+ \\).
+Then the coend \\(\exists X. M(X,X) \in \Set \\) is like the union of
+all \\(M(X,X) \\), but where the \\(X \\) is ensured to be
+"irrelevant".
 
-So the informal explanation of the coyoneda lemma is that if we have a
-\\( \exists B. (A \to B) \times Q(B) \\) then we can get a \\( f : A
-\to B \\) and a "\\(q : B \to Q\\)" and we can't inspect \\(B \\) in
-any way, then all we can really do is to compose the two maps.
+So for any object \\(A \in C \\) there is a map \\(pack_A : M(A,A) \to
+\exists X. M(X,X) \\), we can "hide the A".
+To make sure the \\(X \\) is treated opaquely, we add an invariance
+condition that says if you have an \\(mA : M(A,A) \\) and an \\(mB :
+M(B,B) \\) such that the \\(A, B\\) positions are related by some
+function \\(f : A \to B \\), then \\(pack_A(mA) = pack_B(mB)\\).
+More formally, this means that if you have a \\(m' : M(B,A) \\), then
 
+\\[ pack_B(M(B,f)(m')) = pack_A(M(f,A)(m'))\\]
+or in a point-free style:
+\\[ pack_B \circ M(B,f) = pack_A \circ M(f,A) : M(B,A) \to \exists X. M(X,X) \\]
+
+A function parameterized by types like \\(pack \\) that has this
+property is called a "co-wedge" from \\(M \\).
+
+A coend is a type \\(\exists M(X,X) \\) and a co-wedge \\(\forall
+A. pack_A : M(A,A) \to \exists X. M(X,X) \\) that are *universal*,
+i.e. any other family of maps \\(f_A : M(A,A) \to C\\) factors through
+\\(pack \\). This gives us the sytnax for existential elimination.
+
+If you are familiar with parametricity, it is a good exercise to see
+why the usual condition for invariance wrt all *relations* implies
+that a parametric \\(pack, \exists X. M(X,X) \\) will form a cowedge.
+It seems that in general it would not be a universal co-wedge because
+a parametric exists is invariant under all relations and there are
+many relations that don't act like functions.
+
+### Presheaves
+
+Next, a presheaf is just another word for functor \\( Q : C^{op} \to
+\Set \\).
+Think of this as a set that is parameterised by a type of "inputs", so
+if you have a map in \\(C, f : A \to B\\) you get a function \\(Q(f) :
+Q(B) \to Q(A) \\) that "preprocesses" the inputs using \\(f
+\\). Functoriality ensures that preprocessing with the identity is
+just the identity and that composition or preprocessers is the
+preprocessor from the composite function.
+
+So the informal explanation of the coYoneda lemma is that for any
+presheaf \\(Q \\), if we have an \\( \exists X. (A \to X) \times Q(X)
+\\), then since we can't inspect the \\(X \\) in any way, all we can
+really do is compose the \\(Q(X) \\) with the preprocesser from the
+function \\(A \to X \\), giving us a \\(Q(A) \\).
+
+### Enriched Categories and Enriched CoYoneda
 But there's a gap from here to applying this to a programming
-language, \\(Q(A) \\) and \\(\exists B. (A \to B) \times Q(B) \\) as
-described so far are *sets*, but we wanted an isomorphism of *types*
-in our programming language.
+language, the coYoneda lemma as presented says that \\(Q(A) \\) and
+\\(\exists B. (A \to B) \times Q(B) \\) isomorphic as *sets*, but we
+wanted an isomorphism of *types* in our programming language.  We can
+reconcile this by considering *enriched* category theory and the
+*enriched* coYoneda lemma.  Let \\(V \\) be a category, then if \\( V
+\\) is sufficiently like the category of sets, then we can do a lot of
+category theory by replacing the word "set" with "object of \\(V \\)".
 
-We can reconcile this by considering *enriched* category theory.
-Let \\(V \\) be a category, then if \\( V \\) is sufficiently like the
-category of sets, then we can do a lot of category theory by replacing
-the word "set" with "object of \\(V \\)".
-Specifically, we say a \\(V \\)-enriched category still has a set of
-objects \\(Ob \\), but for each pair of objects \\(A,B \in Ob \\) we
-get a \\( V\\)-object \\(\Hom(A,B) \\) of morphisms from \\(A \\) to
-\\( B \\).
-If \\(V \\) is a closed category, we can see \\(V \\) *itself* as a
-\\(V\\)-enriched category with the same objects and just making
-\\(\Hom(A,B) = A \to B \\).
+Specifically, a \\(V \\)-enriched category (or just \\(V\\)-category)
+has a set of objects \\(Ob \\), but for each pair of objects \\(A,B
+\in Ob \\) we get a \\( V\\)-object \\(\Hom(A,B) \\) of morphisms from
+\\(A \\) to \\( B \\).  If \\(V \\) is a closed category, we can see
+\\(V \\) *itself* as a \\(V\\)-enriched category with the same objects
+and just making \\(\Hom(A,B) = A \to B \\).
 
-Then we can reinterpret the coyoneda lemma above by saying \\(V\\)
-category instead of category and \\(V\\)-valued presheaf instead of
-presheaf. If we fix the \\(V\\)-category to be \\(V \\) itself, then a
-\\(V\\)-presheaf is just a contravariant functor from \\(V \\) to
-itself: \\(Q : V^{op} \to V\\).
+Then we can reinterpret the coYoneda lemma above by saying \\(C \\) is
+a \\(V\\)-category and \\(Q \\) is a \\(V\\)-presheaf i.e., just a
+contravariant functor from \\(V \\) to itself: \\(Q : V^{op} \to V\\)
+where the preprocessing function is now a morphism in \\(C \\).
 Haskelletons just call this
 a
 [contravariant functor](https://hackage.haskell.org/package/contravariant-1.4/docs/Data-Functor-Contravariant.html).
 Furthermore, since existential types provide at least as strong of a
-reasoning principle as coends, the proof of the coyoneda lemma goes
+reasoning principle as coends, the proof of the coYoneda lemma goes
 through with existential types instead.
+Finally, the point-free description above for coend can be interpreted
+in any category.
 
-Finally, to be explicit let's look at what the isomorphism looks like
-in Haskellish/Agdaish syntax.
+Now that we're working all inside our language, let's look at what the
+isomorphism looks like in Haskellish/Agdaish syntax.
 We want mutually inverse functions
 
 ```
@@ -203,7 +238,7 @@ g qΔ = (id, qΔ)
 where we just instantiate \\(\Gamma = \Delta \\) in the second case.
 You can prove \\( f \circ g = id \\) using just \\(\beta \\) and the
 Contravariant laws, but to prove \\(g \circ f = id \\) you need to use
-coend/parametric reasoning.
+the coend reasoning.
 For those of you that know about the Yoneda lemma, note the similarity
 to that proof in using the identity function and instantiating a type
 variable in a trivial way.
@@ -251,9 +286,9 @@ a pure language) then we get the desired result by composition:
 
 [polycps]: http://www.ccs.neu.edu/home/amal/papers/epc.pdf
 [polycc]:  http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf
-[coyoneda]: https://ncatlab.org/nlab/show/co-Yoneda+lemma
+[coYoneda]: https://ncatlab.org/nlab/show/co-Yoneda+lemma
 
 [ncafe]: https://golem.ph.utexas.edu/category/2008/01/the_continuation_passing_trans.html
-[bartosz]: https://bartoszmilewski.com/2015/09/01/the-yoneda-lemma/
+[bartosz]: https://bartoszmilewski.com/2015/09/01/the-Yoneda-lemma/
 [isomorphically]: http://www.cs.ox.ac.uk/people/daniel.james/iso/iso.pdf
 [mmcc]: http://matt.might.net/articles/closure-conversion/
