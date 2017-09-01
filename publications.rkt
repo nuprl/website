@@ -41,9 +41,36 @@
 @(define HOSC "Higher-Order and Symbolic Computation")
 @(define LFP "LISP and Functional Programming (LFP)")
 @(define SOCP "Science of Computer Programming")
+@(define ITP "Interactive Theorem Proving (ITP)")
+@(define RTAS "Real-time and Embedded Technology and Application Symposium (RTAS)")
 
 @(define publications
    (list
+    (publication "Orca: GC and Type System Co-Design for Actor Languages"
+                 "Sylvain Clebsch, Juliana Franco, Sophia Drossopoulou, Albert Mingkun Yang, Tobias Wrigstad, and Jan Vitek"
+                 OOPSLA
+                 2017
+                 "http://janvitek.org/pubs/oopsla17a.pdf")
+    (publication "Déj́à Vu: A Map of Code Duplicates on GitHub"
+                 "Crista Lopes, Petr Maj, Pedro Martins, Di Yang, Jakub Zitny, Hitesh Sajnani, and Jan Vitek"
+                 OOPSLA
+                 2017
+                 "http://janvitek.org/pubs/oopsla17b.pdf")
+    (publication "Parallelizing Julia with a Non-invasive DSL"
+                 "Todd Anderson, Hai Liu, Lindsey Kuper, Ehsan Totoni, Jan Vitek, and Tatiana Shpeisman"
+                 ECOOP
+                 2017
+                 "http://janvitek.org/pubs/ecoop17.pdf")
+    (publication "Verifying a Concurrent Garbage Collector using a Rely-Guarantee Methodology"
+                 "Yannick Zakowski, David Cachera, Delphine Demange, Gustavo Petri, David Pichardie, Suresh Jagannathan, and Jan Vitek"
+                 ITP
+                 2017
+                 "http://janvitek.org/pubs/ITP17.pdf")
+    (publication "Making Android Run on Time"
+                 "Yin Yan, Karthik Dantu, Steven Y. Ko, Jan Vitek, and Lukasz Ziarek"
+                 RTAS
+                 2017
+                 "http://janvitek.org/pubs/rtas17.pdf")
     (publication "Contextual Equivalence for Probabilistic Programs with Continuous Random Variables and Scoring"
                  "Ryan Culpepper and Andrew Cobb"
                  ESOP
