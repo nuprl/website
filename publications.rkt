@@ -46,6 +46,26 @@
 
 @(define publications
    (list
+    (publication "Inferring Scope through Syntactic Sugar"
+                 "Justin Pombrio, Shriram Krishnamurthi, and Mitchell Wand"
+                 ICFP
+                 2017
+                 "http://doi.org/10.1145/3110288")
+    (publication "No-Brainer CPS Conversion"
+                 "Milo Davis, William Meehan, and Olin Shivers"
+                 ICFP
+                 2017
+                 "http://doi.org/10.1145/3110267")
+    (publication "Super 8 Languages for Making Movies (Functional Pearl)"
+                 "Leif Andersen, Stephen Chang, and Matthias Felleisen"
+                 ICFP
+                 2017
+                 "http://doi.org/10.1145/3110274")
+    (publication "Theorems for Free for Free: Parametricity, With and Without Types"
+                 "Amal Ahmed, Dustin Jamner, Jeremy G. Siek, and Philip Wadler"
+                 ICFP
+                 2017
+                 "http://doi.org/10.1145/3110283")
     (publication "Orca: GC and Type System Co-Design for Actor Languages"
                  "Sylvain Clebsch, Juliana Franco, Sophia Drossopoulou, Albert Mingkun Yang, Tobias Wrigstad, and Jan Vitek"
                  OOPSLA
