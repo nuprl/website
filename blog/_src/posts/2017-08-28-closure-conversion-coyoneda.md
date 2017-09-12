@@ -57,14 +57,14 @@ let x = 3 in λ y. x + y
 would be converted to something like
 
 ``` 
-let x = 3 in ([x: 3], \lambda env, y. let x = env.x in x + y) 
+let x = 3 in ([x: 3], λ env, y. let x = env.x in x + y)
 ```
 
 Can we give a type to the resulting code?  The source program has type
 `Number -> Number`, but the target has a type more like
 
 ```
-{ x: Number} \times ({x : Number} \times Number -> Number).
+{ x: Number} × ({x : Number} × Number -> Number).
 ```
 
 In addition to being ugly, this type is leaking irrelevant details of
