@@ -14,10 +14,10 @@
   (redex-match? nat N (term (Plus1 Zero))))
 
 (check-true
-  (redex-match? nat N_0 (term Zero)))
+  (redex-match? nat N_some-name (term Zero)))
 
 (check-false
-  (redex-match? nat (Plus1 N_0) (term Zero)))
+  (redex-match? nat (Plus1 N_a) (term Zero)))
 
 (check-true
   (redex-match? nat (Plus1 N_0) (term (Plus1 (Plus1 Zero)))))
@@ -103,8 +103,8 @@
   [(N=? N_0 N_1)
    #false])
 
-(check-true (term (N=? Zero Zero)))
 (check-true (term (N=? (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero)))))
+(check-equal? (term ((N=? Zero Zero) Zero)) (term (#true Zero)))
 (check-false (term (N=? (Plus1 Zero) (Plus1 (Plus1 Zero)))))
 
 (define-language Arith
