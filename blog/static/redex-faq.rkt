@@ -4,6 +4,26 @@
   redex/reduction-semantics
   (only-in syntax/macro-testing convert-compile-time-error))
 
+(check-equal?
+  (term 42)
+  42)
+
+(check-equal?
+  (term (+ 2 2))
+  '(+ 2 2))
+(check-equal?
+  (term ("hello" world (#false)))
+  '("hello" world (#f)))
+
+(let ()
+  (define x (term 42))
+  (check-equal?
+    (term (+ 2 x))
+    '(+ 2 x))
+  (check-equal?
+    (term (+ ,x (unquote x)))
+    '(+ 42 42)))
+
 (define-language nat
   [N ::= Zero (Plus1 N)])
 
