@@ -191,15 +191,6 @@
             My research interests is in programming languages, specifically type theory, ownership types, and local reasoning for memory management. Most recently, I have been working on formalising object cloning for ownership types.
           }
 
-          @person[#:name "Gabriel Scherer"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail "gabriel.scherer@gmail.com"
-                  #:website "http://www.ccs.neu.edu/home/gasche/index.html"
-                  #:history @list["Joined Northeastern, 2016"]
-                  #:img "gabriel_scherer.jpg"]{
-            I'm interested in theoretical aspects of type systems, programming language implementation, general programming language concepts, and even some syntactic aspects. I have a preference for the formalizable aspects, or formalizable approaches to programming language aspects, rather than the often subjective appeal to taste or intuition.
-          }
-
           @person[#:name "Fillip Křikava"
                   #:title "Post-doctoral researcher"
                   #:e-mail "f.krikava@neu.edu"
@@ -567,7 +558,7 @@
                           #:personal-site "http://www.barzilay.org/")
                 @(alumnus "Kathi Fisler" #:year 1996
                           #:personal-site "http://www.cs.wpi.edu/~kfisler/"
-                          #:extra "(Worcester Polytechnic Institute, Worcester, MA)")
+                          #:extra "(Worcester Polytechnic Institute)")
                 @(alumnus "Mark Krentel" #:year 1989
                           #:personal-site "http://dblp.uni-trier.de/pers/hd/k/Krentel:Mark_W="
                           #:extra "(Rice University)")
@@ -592,6 +583,9 @@
                 @(alumnus "Amr Sabry" #:year 1994
                           #:personal-site "http://www.cs.indiana.edu/~sabry/"
                           #:extra "(Indiana University)")
+                @(alumnus "Gabriel Scherer" #:year 2017
+                          #:personal-site "http://gallium.inria.fr/~scherer/"
+                          #:extra "(INRIA Saclay)")
                 @(alumnus "Dorai Sitaram" #:year 1994
                           #:personal-site "https://ds26gte.github.io/"
                           #:extra "(Verizon Labs, Waltham, MA)")
