@@ -112,6 +112,20 @@
 (check-true (judgment-holds (N= (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero)))))
 (check-false (judgment-holds (N= (Plus1 Zero) (Plus1 (Plus1 Zero)))))
 
+(define-language Arith
+  (e ::= integer (e + e))
+  (τ ::= Int))
+
+(define-judgment-form Arith
+  #:mode (infer-type I O)
+  #:contract (infer-type e τ)
+  [
+   --- T-Int
+   (infer-type e_0 Int)])
+
+(define-language SomeTypes
+  (τ ::= (→ τ τ) Integer))
+
 (define-metafunction nat
   N=? : N N -> boolean
   [(N=? Zero Zero)
@@ -127,19 +141,33 @@
 (check-equal? (term ((N=? Zero Zero) Zero)) (term (#true Zero)))
 (check-false (term (N=? (Plus1 Zero) (Plus1 (Plus1 Zero)))))
 
-(define-language Arith
-  (e ::= integer (e + e))
-  (τ ::= Int))
+(define-language Bool
+  (bexp ::= #true #false (bexp ∧ bexp) (bexp ∨ bexp))
+  (val ::= #true #false)
+  (E ::= hole (E ∧ bexp) (val ∧ E) (E ∨ bexp) (val ∨ E)))
 
-(define-judgment-form Arith
-  #:mode (infer-type I O)
-  #:contract (infer-type e τ)
-  [
-   --- T-Int
-   (infer-type e_0 Int)])
+(define step
+  (reduction-relation Bool
+    #:domain bexp
+    [--> (in-hole E (val_lhs ∧ val_rhs))
+         (in-hole E val_new)
+         (where val_new ,(and (term val_lhs) (term val_rhs)))]
+    [--> (in-hole E (val_lhs ∨ val_rhs))
+         (in-hole E val_new)
+         (where val_new ,(or (term val_lhs) (term val_rhs)))]))
 
-(define-language SomeTypes
-  (τ ::= (→ τ τ) Integer))
+(check-equal?
+  (apply-reduction-relation step (term #true))
+  '())
+(check-equal?
+  (apply-reduction-relation step (term (#true ∧ #true)))
+  '(#true))
+(check-equal?
+  (apply-reduction-relation step (term (#true ∧ #false)))
+  '(#false))
+(check-equal?
+  (apply-reduction-relation step (term ((#true ∨ #false) ∧ #true)))
+  '((#true ∧ #true)))
 
 (check-exn exn:fail:syntax?
   (λ () (convert-compile-time-error
