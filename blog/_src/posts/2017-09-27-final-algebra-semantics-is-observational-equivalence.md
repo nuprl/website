@@ -1,6 +1,6 @@
     Title: Final Algebra Semantics is Observational Equivalence
     Date: 2017-09-27T15:44:57
-    Tags: DRAFT
+    Tags: category theory, math, final encoding, observational equivalence, by Max New
 
 Recently, "final encodings" and "finally tagless style" have become
 popular techniques for defining embedded languages in functional
@@ -8,7 +8,7 @@ languages.
 In a recent discussion in the Northeastern PRL lab, [Michael
 Ballantyne][michaelb], [Ryan Culpepper][ryanc] and I asked "in what
 category are these actually final objects"?
-As it turns out our very own [Mitch Wand](mitchw) wrote one of the
+As it turns out our very own [Mitch Wand][mitchw] wrote one of the
 first papers to make exactly this idea precise, so I read it
 [available here][mitch-final-algebra] and was pleasantly surprised to
 see that the definition of a final algebra there is essentially
@@ -104,20 +104,20 @@ count' :: Integer -> MultiSet' -> Integer
 count' n m = _count m n
 
 empty :: MultiSet'
-empty = MultiSet' $ \n -> 0
+empty = MultiSet' (\n -> 0)
 
 singleton :: Integer -> MultiSet'
-singleton n = MultiSet' $ \m -> if n == m
+singleton n = MultiSet' (\m -> if n == m
                                then 1
-                               else 0
+                               else 0)
 
 union :: MultiSet' -> MultiSet' -> MultiSet'
-union s t = MultiSet' $ \n -> (count' n s) + (count' n t)
+union s t = MultiSet' (\n -> (count' n s) + (count' n t))
 
 remove :: Integer -> MultiSet' -> MultiSet'
-remove n s = MultiSet' $ \m -> if n == m
-                               then 0
-                               else count' n s
+remove n s = MultiSet' (\m -> if n == m
+                              then 0
+                              else count' n s)
 ```
 
 And while we don't have decidable equality to help us this time, it's
@@ -160,44 +160,44 @@ is a *multi-sorted Lawvere theory*, or just *Lawvere theory* for
 short.
 
 A *Lawvere theory* is a category with finite products all of whose
-objects are finite products of a collection of *sorts* $S$. We can
+objects are finite products of a collection of *sorts* \\(S\\). We can
 construct this category from our little language above by making the
-objects be *contexts* $x:num,y:multiset,...$ and morphisms $\Gamma ->
-x_1:s_1,...,x_n:s_n$ to be $n$-tuples of terms $\Gamma -> s_1,...,
-\Gamma -> s_n$ *modulo* the equations we've specified. We'll use the
-letter $T$ to mean a Lawvere theory.
+objects be *contexts* \\(x:num,y:multiset,...\\) and morphisms \\(\Gamma ->
+x_1:s_1,...,x_n:s_n\\) to be \\(n\\)-tuples of terms \\(\Gamma -> s_1,...,
+\Gamma -> s_n\\) *modulo* the equations we've specified. We'll use the
+letter \\(T\\) to mean a Lawvere theory.
 
-Then a *$T$-algebra* is a denotational semantics of our theory $T$,
-i.e., a product preserving functor $A : T \to Set$. This means for
-every sort we get a set $A(s)$ and for every term $x_1:s_1,...,x_n:s_n
-\vdash t : s$ a function $A(t) : A(s_1)\times\cdots \times A(s_n) \to
-A(s)$.
+Then a *\\(T\\)-algebra* is a denotational semantics of our theory \\(T\\),
+i.e., a product preserving functor \\(A : T \to Set\\). This means for
+every sort we get a set \\(A(s)\\) and for every term \\(x_1:s_1,...,x_n:s_n
+\vdash t : s\\) a function \\(A(t) : A(s_1)\times\cdots \times A(s_n) \to
+A(s)\\).
 
-Finally a *morphism of $T$-algebras* from $A$ to $B$ is a way to
+Finally a *morphism of \\(T\\)-algebras* from \\(A\\) to \\(B\\) is a way to
 translate one algebra into another. Briefly, it is a natural
-transformation from $A$ to $B$, but concretely this means for every
-sort $s$ we get a function $\alpha_s : A \to B$ that translates $A$s
-interpretation into $B$s. The key property that we want is that the
-operations according to $A$ and $B$ do the same thing as determined by
-$\alpha$. Specifically, for any term $x_1:s_1,...,x_n:s_n \vdash t :
-s$, and inputs $x_1 \in A(s_1),...,x_n \in A(s_n)$ we should get the
-same result if we evaluate $A(t)(x_1,\ldots,x_n)$ and then apply
-$\alpha_s$ as if we first translate $x_1,\ldots,x_n$ to
-$B(s_1),\ldots,B(s_n)$ and then apply $B(t)$. If you unwind the
+transformation from \\(A\\) to \\(B\\), but concretely this means for every
+sort \\(s\\) we get a function \\(\alpha_s : A \to B\\) that translates \\(A\\)s
+interpretation into \\(B\\)s. The key property that we want is that the
+operations according to \\(A\\) and \\(B\\) do the same thing as determined by
+\\(\alpha\\). Specifically, for any term \\(x_1:s_1,...,x_n:s_n \vdash t :
+s\\), and inputs \\(x_1 \in A(s_1),...,x_n \in A(s_n)\\) we should get the
+same result if we evaluate \\(A(t)(x_1,\ldots,x_n)\\) and then apply
+\\(\alpha_s\\) as if we first translate \\(x_1,\ldots,x_n\\) to
+\\(B(s_1),\ldots,B(s_n)\\) and then apply \\(B(t)\\). If you unwind the
 definitions, this is exactly what naturality says.
 
-Then we have a category of $T$-algebras and we can ask if there are
+Then we have a category of \\(T\\)-algebras and we can ask if there are
 initial or final algebra.
 It turns out that both of them *always* exist.
 
 The initial algebra is most famous here, we define for each sort
-$In(T)(s) = \cdot \vdash s$, the closed terms of that sort modulo the
-equivalence of the theory, and $In(T)(s_1,\ldots,s_n) =
-In(T)(s_1)\times\ldots,In(T)(s_n)$. Then the terms are just
+\\(In(T)(s) = \cdot \vdash s\\), the closed terms of that sort modulo the
+equivalence of the theory, and \\(In(T)(s_1,\ldots,s_n) =
+In(T)(s_1)\times\ldots,In(T)(s_n)\\). Then the terms are just
 interpreted as the functions you get by plugging closed inputs into
-them. Then if we look at what what a morphism of $T$-algebras from
-$In(T) \to A$ is, we see that we don't have any choice, the only one
-is the one that maps $\cdot \vdash t : s$ to $A(t)$ and this makes all
+them. Then if we look at what what a morphism of \\(T\\)-algebras from
+\\(In(T) \to A\\) is, we see that we don't have any choice, the only one
+is the one that maps \\(\cdot \vdash t : s\\) to \\(A(t)\\) and this makes all
 the right diagrams to commute.
 This is pretty similar to our definition of "initial algebra" before,
 except that `count` was defined as a function, not an ADT, but that
@@ -205,9 +205,9 @@ was just an easy way to satisfy the computational equations for
 `count`.
 
 However, an egregious flaw presents itself when we look at what the
-*final* algebra is. It's completely trivial! We can define $Fin(T)$ to
-take every sort to a one element set $Fin(T)(s) = \{*\}$ and every
-term to the trivial function $\{*\}^n \to \{*\}$.
+*final* algebra is. It's completely trivial! We can define \\(Fin(T)\\) to
+take every sort to a one element set \\(Fin(T)(s) = \{*\}\\) and every
+term to the trivial function \\(\{*\}^n \to \{*\}\\).
 What the hell?
 This interprets numbers and multisets as trivial one-element sets.
 To rule this one out, we need to add some conditions to our algebras.
@@ -220,8 +220,8 @@ are not really on equal footing.
 While we are not sure how multisets should be defined, we know
 *exactly* what numbers are!
 
-To formalize this we'll call the full theory $T_1$ and the theory with
-just numbers $T_0$. Then there should be a map from $T_0$ to $T_1$
+To formalize this we'll call the full theory \\(T_1\\) and the theory with
+just numbers \\(T_0\\). Then there should be a map from \\(T_0\\) to \\(T_1\\)
 that is the inclusion of theories.  We'll formalize this as a
 *morphism of theories*. A morphism of theories is a *strict*
 product-preserving functor from one theory to another.
@@ -237,62 +237,62 @@ that are "conservative extensions", i.e., there are no new closed
 terms at old types and closed terms that were different before remain
 different.
 In our example this ensures that we don't add any new numbers, but
-also that we keep $0$ different from $1$.
+also that we keep \\(0\\) different from \\(1\\).
 
 We can formalize this in the following way. Note that any morphism of
-Lawvere theories $m : T \to S$ induces a *functor* on the category of
-algebras $m^* : S-Alg \to T-Alg$ by just composing functors. An
-$S$-algebra is a functor from $S$ to sets, and $m$ is a functor from
-$T$ to $S$ so we can compose to get $m^*(A)(t) = A(m(t))$.
+Lawvere theories \\(m : T \to S\\) induces a *functor* on the category of
+algebras \\(m^* : S-Alg \to T-Alg\\) by just composing functors. An
+\\(S\\)-algebra is a functor from \\(S\\) to sets, and \\(m\\) is a functor from
+\\(T\\) to \\(S\\) so we can compose to get \\(m^*(A)(t) = A(m(t))\\).
 
 Now, we can formalize our intuition above by saying that the canonical
-arrow from $In(T)$ to $m^*(In(S))$ is an isomorphism. Recalling the
+arrow from \\(In(T)\\) to \\(m^*(In(S))\\) is an isomorphism. Recalling the
 definition of initial algebras, this says exactly that the closed
-terms in $T$ up to $T$-equivalence are isomorphic to the closed terms
-of the type provided by $m$ in $S$ up to $S$-equivalence.
+terms in \\(T\\) up to \\(T\\)-equivalence are isomorphic to the closed terms
+of the type provided by \\(m\\) in \\(S\\) up to \\(S\\)-equivalence.
 This is an equivalent formulation to the definition in Mitch's paper,
 but there it is separated into two properties fullness and
-faithfulness, and doesn't use the initial algebras and $m^*$
+faithfulness, and doesn't use the initial algebras and \\(m^*\\)
 explicitly.
 
-Now we can verify that the inclusion $i : T_0 \to T_1$ of the number
+Now we can verify that the inclusion \\(i : T_0 \to T_1\\) of the number
 theory into the number-multiset theory is an extension in this sense.
 
-Finally we can define our notion of $i$-algebra, which will be our
+Finally we can define our notion of \\(i\\)-algebra, which will be our
 correct notion of algebra.
-An $i$-algebra is a $T_1$ algebra $A$ such that 
+An \\(i\\)-algebra is a \\(T_1\\) algebra \\(A\\) such that 
 
-1. The canonical algebra map $! : In(T_0) \to m^*A$ is an isomorphism.
-2. The canonical algebra map $! : In(T_1) \to A$ is surjective i.e.,
-   for each sort $s, !_s$ is surjective.
+1. The canonical algebra map \\(! : In(T_0) \to m^*A\\) is an isomorphism.
+2. The canonical algebra map \\(! : In(T_1) \to A\\) is surjective i.e.,
+   for each sort \\(s, !_s\\) is surjective.
 
 The first condition says again that we have a conservative extension
-of $T_0$, but the second is more interesting. It says that every
-denotation given by $A$ is represented by some term in $T_1$.  In fact
-what it really ensures is that $A$ determines a *congruence relation*
-on $T_1$ given by $t1 ~_A t2$ if $A(t1) = A(t2)$.
+of \\(T_0\\), but the second is more interesting. It says that every
+denotation given by \\(A\\) is represented by some term in \\(T_1\\).  In fact
+what it really ensures is that \\(A\\) determines a *congruence relation*
+on \\(T_1\\) given by \\(t1 \equiv_A t2\\) if \\(A(t1) = A(t2)\\).
 In light of this, the first condition could be called *adequacy*.
 
 Furthermore, the surjectivity condition ensures that any morphism of
-$i$ algebras, i.e., a map as $T_1$-algebras is also surjective, so a
-morphism $A \to B$ is a witness to the fact that $B$ determines a
-*stronger* congruence relation on $T_1$ than $A$ does: $t1 ~_B t2
-\implies t1 ~_A t2$.
+\\(i\\) algebras, i.e., a map as \\(T_1\\)-algebras is also surjective, so a
+morphism \\(A \to B\\) is a witness to the fact that \\(B\\) determines a
+*stronger* congruence relation on \\(T_1\\) than \\(A\\) does: \\(t1 \equiv_B t2
+\implies t1 \equiv_A t2\\).
 Then asking for a final algebra is asking for exactly the
 
-    Strongest adequate congruence relation
+> Strongest adequate congruence relation
 	
 which is exactly the definition of observational equivalence that I
 was taught.
 This formulation is very nice though since it makes obvious that
-*adequacy* is not a predetermined concept, we have to pick $T_0$ and
-$i$ in order to know what adequacy means.
+*adequacy* is not a predetermined concept, we have to pick \\(T_0\\) and
+\\(i\\) in order to know what adequacy means.
 
 # Conclusion: Tying it back to Final Encodings
 
 So now we've seen that
 
-    Final algebras are equivalent to initial algebras modulo observational equivalence
+> Final algebras are equivalent to initial algebras modulo observational equivalence
 
 Of course we haven't precisely gotten back to where we started: we
 were talking about denotational semantics in terms of sets and
@@ -312,6 +312,6 @@ contravariance. Perhaps logical relations are the solution?
 
 [ryanc]: http://ccs.neu.edu/home/ryanc
 [michaelb]: ???
-[mitchw]: ???
+[mitchw]: http://www.ccs.neu.edu/home/wand/
 [mitch-final-algebra]: https://www.cs.indiana.edu/ftp/techreports/TR65.pdf
-[proving-final-encoding]: ???
+[proving-final-encoding]: https://hal.inria.fr/inria-00076514/document
