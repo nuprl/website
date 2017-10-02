@@ -25,7 +25,7 @@ more modern in presentation, cleaning some things up in the process.
 # Intuition: Implementing a Signature
 
 As a running example, say we wanted to implement a datatype of finite
-maps whose keys and values are both integer, i.e., finite multisets
+maps whose keys and values are both integers, i.e., finite multisets
 of integers.
 
 We could specify such a datatype by specifying a little language of
@@ -37,7 +37,7 @@ add : (num, num) -> num
 ```
 subject to the silly-looking equation:
 ```
-add('n,'m) = n + m
+add('n,'m) = '(n + m)
 ```
 
 and some operations on multisets
@@ -51,11 +51,11 @@ count : (num, multiset) -> num
 subject to the computational equations:
 
 ```
-count('n, empty) = 0
-count('n, singleton('n)) = 1
-count('n, singleton('m)) = 0
+count('n, empty) = '0
+count('n, singleton('n)) = '1
+count('n, singleton('m)) = '0
 count('n, union(s,t)) = add(count('n,s), count('n, t))
-count('n, remove('n,s)) = 0
+count('n, remove('n,s)) = '0
 count('n, remove('m,s)) = count('n,s)
 ```
 
@@ -94,8 +94,8 @@ False
 However, there is another encoding that will give us that `union` is
 commutative and `remove n` is idempotent and actually every equation
 we could possibly want!
-It's called the "final encoding" or "final algebra" and it looks like
-this in Haskell:
+It's called the "final encoding" or "final algebra".
+In Haskell, this looks like:
 
 ```Haskell
 data MultiSet' = MultiSet' { _count :: Integer -> Integer }
@@ -104,25 +104,39 @@ count' :: Integer -> MultiSet' -> Integer
 count' n m = _count m n
 
 empty :: MultiSet'
-empty = MultiSet' (\n -> 0)
+empty = MultiSet' { _count = \n -> 0 }
 
 singleton :: Integer -> MultiSet'
-singleton n = MultiSet' (\m -> if n == m
-                               then 1
-                               else 0)
+singleton n = MultiSet' { _count = \m -> if n == m
+                                         then 1
+                                         else 0 }
 
 union :: MultiSet' -> MultiSet' -> MultiSet'
-union s t = MultiSet' (\n -> (count' n s) + (count' n t))
+union s t = MultiSet' { _count = \n -> (count' n s) + (count' n t) }
 
 remove :: Integer -> MultiSet' -> MultiSet'
-remove n s = MultiSet' (\m -> if n == m
-                              then 0
-                              else count' n s)
+remove n s = MultiSet' { _count = \m -> if n == m
+                                        then 0
+                                        else count' n s }
+
+test' = and [ count' n s == count' n t | n <- [0..1000]]
+s = singleton 1 `union` singleton 2
+t = singleton 2 `union` singleton 1
 ```
 
-And while we don't have decidable equality to help us this time, it's
-pretty obvious that `union` is commutative because `+` is commutative.
-Testing our example before works, no surprise:
+Now we can verify that `union` is commutative because 
+
+```Haskell
+
+union s t = MultiSet' { _count = \n -> (count' n s) + (count' n t) }
+          = MultiSet' { _count = \n -> (count' n t) + (count' n s) }
+		  = union t s
+```
+
+since `+` is commutative
+Equality isn't decidable anymore so I can't give you a simple piece of
+code to witness this, but we can test our example before and we won't
+be able to distinguish them, no surprise:
 
 ```Haskell
 > let s = singleton 1 `union` singleton 2
@@ -136,8 +150,10 @@ implementation of our datatype?
 The intuition is that we really don't care at all *how* our multisets
 are implemented as long as they behave the right way with respect to
 `count` since `count` returns an `Integer`, a type we do understand.
-This allows us to define "observational equivalence" of two multisets.
+Our encoding accomplishes this by representing a multiset `s` by the
+partially applied function `\n -> count n s`.
 
+The formal name for this idea is *observational equivalence*.
 We say that two closed terms `s,t` of sort `multiset` are
 *observationally equivalent* if for any term `C` of type `num` that
 has `s` as a subterm, we can swap `t` in for `s` and prove that the
@@ -163,8 +179,8 @@ A *Lawvere theory* is a category with finite products all of whose
 objects are finite products of a collection of *sorts* \\(S\\). We can
 construct this category from our little language above by making the
 objects be *contexts* \\(x:num,y:multiset,...\\) and morphisms \\(\Gamma ->
-x_1:s_1,...,x_n:s_n\\) to be \\(n\\)-tuples of terms \\(\Gamma -> s_1,...,
-\Gamma -> s_n\\) *modulo* the equations we've specified. We'll use the
+x_1:s_1,...,x_n:s_n\\) to be \\(n\\)-tuples of terms \\(\Gamma \vdash t_1 : s_1,...,
+\Gamma \vdash t_n :  s_n\\) *modulo* the equations we've specified. We'll use the
 letter \\(T\\) to mean a Lawvere theory.
 
 Then a *\\(T\\)-algebra* is a denotational semantics of our theory \\(T\\),
@@ -176,8 +192,8 @@ A(s)\\).
 Finally a *morphism of \\(T\\)-algebras* from \\(A\\) to \\(B\\) is a way to
 translate one algebra into another. Briefly, it is a natural
 transformation from \\(A\\) to \\(B\\), but concretely this means for every
-sort \\(s\\) we get a function \\(\alpha_s : A \to B\\) that translates \\(A\\)s
-interpretation into \\(B\\)s. The key property that we want is that the
+sort \\(s\\) we get a function \\(\alpha_s : A(s) \to B(s)\\) that translates \\(A\\)s
+interpretation of $s$ as a set into \\(B\\)s. The key property that we want is that the
 operations according to \\(A\\) and \\(B\\) do the same thing as determined by
 \\(\alpha\\). Specifically, for any term \\(x_1:s_1,...,x_n:s_n \vdash t :
 s\\), and inputs \\(x_1 \in A(s_1),...,x_n \in A(s_n)\\) we should get the
@@ -186,8 +202,8 @@ same result if we evaluate \\(A(t)(x_1,\ldots,x_n)\\) and then apply
 \\(B(s_1),\ldots,B(s_n)\\) and then apply \\(B(t)\\). If you unwind the
 definitions, this is exactly what naturality says.
 
-Then we have a category of \\(T\\)-algebras and we can ask if there are
-initial or final algebra.
+Then we have a category we'll call \\(T-Alg\\) of \\(T\\)-algebras and
+we can ask if there are initial or final algebra.
 It turns out that both of them *always* exist.
 
 The initial algebra is most famous here, we define for each sort
@@ -200,9 +216,9 @@ them. Then if we look at what what a morphism of \\(T\\)-algebras from
 is the one that maps \\(\cdot \vdash t : s\\) to \\(A(t)\\) and this makes all
 the right diagrams to commute.
 This is pretty similar to our definition of "initial algebra" before,
-except that `count` was defined as a function, not an ADT, but that
-was just an easy way to satisfy the computational equations for
-`count`.
+except that this time we defined `count` as a function, not just a
+case of an ADT, but that was just an easy way to satisfy the
+computational equations for `count`.
 
 However, an egregious flaw presents itself when we look at what the
 *final* algebra is. It's completely trivial! We can define \\(Fin(T)\\) to
@@ -233,11 +249,15 @@ What this really amounts to is a translation of one theory into
 another. It maps sorts to sorts and terms to terms of the appropriate
 sorts in a compositional way.
 However, we don't want to consider *all* such morphisms, only the ones
-that are "conservative extensions", i.e., there are no new closed
-terms at old types and closed terms that were different before remain
-different.
-In our example this ensures that we don't add any new numbers, but
-also that we keep \\(0\\) different from \\(1\\).
+that are "conservative extensions", which means
+
+1. there are no new closed terms at old types
+2. closed terms that were different before remain different.
+
+In our example (1) ensures that we don't add any new exotic numbers
+like `undefined` or `∞`, and (2) ensures that we keep \\(0\\)
+different from \\(1\\), like the final algebra did before by having
+all numbers have the same interpreation \\(*\\).
 
 We can formalize this in the following way. Note that any morphism of
 Lawvere theories \\(m : T \to S\\) induces a *functor* on the category of
@@ -245,7 +265,7 @@ algebras \\(m^* : S-Alg \to T-Alg\\) by just composing functors. An
 \\(S\\)-algebra is a functor from \\(S\\) to sets, and \\(m\\) is a functor from
 \\(T\\) to \\(S\\) so we can compose to get \\(m^*(A)(t) = A(m(t))\\).
 
-Now, we can formalize our intuition above by saying that the canonical
+Now, we can express the idea of a conservative extension by saying that the canonical
 arrow from \\(In(T)\\) to \\(m^*(In(S))\\) is an isomorphism. Recalling the
 definition of initial algebras, this says exactly that the closed
 terms in \\(T\\) up to \\(T\\)-equivalence are isomorphic to the closed terms
@@ -278,7 +298,7 @@ Furthermore, the surjectivity condition ensures that any morphism of
 morphism \\(A \to B\\) is a witness to the fact that \\(B\\) determines a
 *stronger* congruence relation on \\(T_1\\) than \\(A\\) does: \\(t1 \equiv_B t2
 \implies t1 \equiv_A t2\\).
-Then asking for a final algebra is asking for exactly the
+Then asking for a final algebra is asking for exactly the:
 
 > Strongest adequate congruence relation
 	
@@ -311,7 +331,7 @@ in our term model to functions in our denotations due to
 contravariance. Perhaps logical relations are the solution?
 
 [ryanc]: http://ccs.neu.edu/home/ryanc
-[michaelb]: ???
+[michaelb]: https://github.com/michaelballantyne
 [mitchw]: http://www.ccs.neu.edu/home/wand/
 [mitch-final-algebra]: https://www.cs.indiana.edu/ftp/techreports/TR65.pdf
 [proving-final-encoding]: https://hal.inria.fr/inria-00076514/document
