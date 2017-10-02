@@ -1,4 +1,19 @@
 #lang scribble/html
+
+@; Page for lab members, past and present.
+@;
+@; NOTE: make sure all images for people are
+@;   - size    : 180x180
+@;   - quality : as low as possible
+@;
+@;  To change size with imagemagick:
+@;   `convert -size 180x180 ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
+@;
+@;  To change quality with imagemagick:
+@;   `convert -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
+@;  (Try replacing '85' with a smaller number. Go lower until it looks bad!)
+
+;; -----------------------------------------------------------------------------
 @require[
   "templates.rkt"
 ]
@@ -386,6 +401,22 @@
                   #:img "celeste_hollenbeck.jpg"]{
             I'm into program analysis, machine learning, computational topology @|mdash| nasty things that bloody my nose.
       I like to put tiaras on them and make them have tea with each other. At knifepoint.
+          }
+
+          @person[#:name "Di Zhong"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "dizhong@ccs.neu.edu"
+                  #:history @list["Joined 2017"]
+                  #:img "di_zhong.jpg"]{
+            At the moment I'm working on program analysis. I like type systems and compilers.
+          }
+
+          @person[#:name "Hyeyoung Shin"
+                  #:title "Advisor: Amal Ahmed and Matthias Felleisen"
+                  #:e-mail "shin.hy@husky.neu.edu"
+                  #:history @list["Joined 2017"]
+                  #:img "hyeyoung_shin.jpg"]{
+            I am working on safe interaction between strict and lazy languages, using linking types.
           }
         }
 
