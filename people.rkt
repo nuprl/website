@@ -13,7 +13,7 @@
 @;   `convert -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
 @;  (Try replacing '85' with a smaller number. Go lower until it looks bad!)
 
-;; -----------------------------------------------------------------------------
+@; -----------------------------------------------------------------------------
 @require[
   "templates.rkt"
 ]
