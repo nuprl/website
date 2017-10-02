@@ -302,11 +302,16 @@ Then asking for a final algebra is asking for exactly the:
 
 > Strongest adequate congruence relation
 	
-which is exactly the definition of observational equivalence that I
-was taught.
-This formulation is very nice though since it makes obvious that
-*adequacy* is not a predetermined concept, we have to pick \\(T_0\\) and
-\\(i\\) in order to know what adequacy means.
+which is exactly the definition of observational equivalence you will
+find in, say Pitt's chapter of [Advanced TAPL][atapl].
+There is a difference in the meaning of *adequacy*, though. Usually
+adequacy is defined in terms of an operational semantics, but here
+everything is based on an axiomatic notion of equality, but I think
+they play the same role in the two settings, so I think it's
+reasonable to use the same word.
+On thing I like about this formulation is very nice though since it
+makes obvious that *adequacy* is not a predetermined concept, we have
+to pick \\(T_0\\) and \\(i\\) in order to know what adequacy means.
 
 # Conclusion: Tying it back to Final Encodings
 
@@ -335,3 +340,4 @@ contravariance. Perhaps logical relations are the solution?
 [mitchw]: http://www.ccs.neu.edu/home/wand/
 [mitch-final-algebra]: https://www.cs.indiana.edu/ftp/techreports/TR65.pdf
 [proving-final-encoding]: https://hal.inria.fr/inria-00076514/document
+[atapl]: https://www.cis.upenn.edu/~bcpierce/attapl/
