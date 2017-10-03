@@ -32,7 +32,7 @@ We could specify such a datatype by specifying a little language of
 numbers and finite multisets.
 We'll have two "sorts" `num` and `multiset`, a constant for every integer, and an addition function
 ```
-'n : () -> num
+'n : () -> num;
 add : (num, num) -> num
 ```
 subject to the silly-looking equation:
@@ -133,7 +133,7 @@ union s t = MultiSet' { _count = \n -> (count' n s) + (count' n t) }
 		  = union t s
 ```
 
-since `+` is commutative
+since `+` is commutative.
 Equality isn't decidable anymore so I can't give you a simple piece of
 code to witness this, but we can test our example before and we won't
 be able to distinguish them, no surprise:
@@ -178,7 +178,7 @@ short.
 A *Lawvere theory* is a category with finite products all of whose
 objects are finite products of a collection of *sorts* \\(S\\). We can
 construct this category from our little language above by making the
-objects be *contexts* \\(x:num,y:multiset,...\\) and morphisms \\(\Gamma ->
+objects be *contexts* \\(x:num,y:multiset,...\\) and morphisms \\(\Gamma \to
 x_1:s_1,...,x_n:s_n\\) to be \\(n\\)-tuples of terms \\(\Gamma \vdash t_1 : s_1,...,
 \Gamma \vdash t_n :  s_n\\) *modulo* the equations we've specified. We'll use the
 letter \\(T\\) to mean a Lawvere theory.
@@ -193,7 +193,7 @@ Finally a *morphism of \\(T\\)-algebras* from \\(A\\) to \\(B\\) is a way to
 translate one algebra into another. Briefly, it is a natural
 transformation from \\(A\\) to \\(B\\), but concretely this means for every
 sort \\(s\\) we get a function \\(\alpha_s : A(s) \to B(s)\\) that translates \\(A\\)s
-interpretation of $s$ as a set into \\(B\\)s. The key property that we want is that the
+interpretation of \\(s\\) as a set into \\(B\\)s. The key property that we want is that the
 operations according to \\(A\\) and \\(B\\) do the same thing as determined by
 \\(\alpha\\). Specifically, for any term \\(x_1:s_1,...,x_n:s_n \vdash t :
 s\\), and inputs \\(x_1 \in A(s_1),...,x_n \in A(s_n)\\) we should get the
