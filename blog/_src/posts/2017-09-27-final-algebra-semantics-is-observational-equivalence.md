@@ -41,6 +41,7 @@ add('n,'m) = '(n + m)
 ```
 
 and some operations on multisets
+
 ```
 empty : () -> multiset;
 singleton : (num) -> multiset;
@@ -48,6 +49,7 @@ union : (multiset, multiset) -> multiset;
 remove : (num, multiset) -> multiset;
 count : (num, multiset) -> num
 ```
+
 subject to the computational equations:
 
 ```
