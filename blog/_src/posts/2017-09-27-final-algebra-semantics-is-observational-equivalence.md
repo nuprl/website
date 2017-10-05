@@ -31,11 +31,14 @@ of integers.
 We could specify such a datatype by specifying a little language of
 numbers and finite multisets.
 We'll have two "sorts" `num` and `multiset`, a constant for every integer, and an addition function
+
 ```
 'n : () -> num;
 add : (num, num) -> num
 ```
+
 subject to the silly-looking equation:
+
 ```
 add('n,'m) = '(n + m)
 ```
