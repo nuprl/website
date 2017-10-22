@@ -242,7 +242,7 @@
                   "PhD, EPFL, 2015"
                   ]
                   #:img "heather_miller.jpg"]{
-            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center. 
+            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center.
           }
 
           @person[#:name "Konrad Siek"
@@ -375,6 +375,14 @@
                   #:history @list["Joined 2016"]
                   #:img "yee-crop.jpg"]{
             I'm interested in programming language design and implementation, as well as static program analysis.
+          }
+
+          @person[#:name "Kevin Clancy"
+                  #:title "Advisor: Heather Miller"
+                  #:e-mail "kclancy@ccs.neu.edu"
+                  #:history @list["Joined 2016"]
+                  #:img "kevin-crop.jpg"]{
+            I'm interested in type systems, particularly refinement type systems these days. I’m currently in the process of designing a refinement type system which can prove functions monotone. It would have applications in concurrency and numerical computing.
           }
 
           @person[#:name "Aviral Goel"
@@ -577,7 +585,7 @@
                         #:personal-site "http://www.ccs.neu.edu/home/asumu/"
                         #:extra "(Igalia)")
              ]}}
-  
+
         @div[class: "container"]{
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Associates (Research Scientists, Post-Docs)}
