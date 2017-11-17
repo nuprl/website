@@ -2,7 +2,10 @@
     Date: 2017-10-22T11:59:06
     Tags: types, monotonicity, CRDTs, eventual consistency, by Kevin Clancy
 
+
 A few weeks back, we published a draft of an article entitled [_Monotonicity Types_](https://infoscience.epfl.ch/record/231867). In it, we describe a type system which we hope can aid the design of distributed systems by tracking monotonicity with types.
+
+<!-- more -->
 
 But first, what, precisely, do we mean by _monotonicity_? Here's a short definition:
 
@@ -35,11 +38,11 @@ We believe that a type system could be used to ensure that a given program fragm
 
 Towards this aim, we have been designing a type system for tracking monotonicity, as an extension of the simply typed lambda calculus which adds a new function abstraction construct called the *sfun*.
 
-Our approach alllows the programmer to write a special kind of function definition, the body of which is type checked using a richer type system, one which reasons about function composition rather than application. Such a function can then be proven monotone by utilizing the fact that the composition of two monotone functions is itself monotone, and other related principles.
+Our approach allows the programmer to write a special kind of function definition, the body of which is type checked using a richer type system, one which reasons about function composition rather than application. Such a function can then be proven monotone by utilizing the fact that the composition of two monotone functions is itself monotone, and other related principles.
 
 Monotonicity is a relational property; that is, its a property involving multiple applications of the same function. Such properties are blind spot for traditional type systems, so our design requires some unusual and interesting features.
 
-To give an intuition of what our type system looks like; as mentioned earlier, we introduce a special abstraction for monotone functions called an _sfun_. Since the programmer only cares about the monotonicity of a select group of functions, a special syntax construct, the sfun, serves as a signal to the type checker. Unlike the simply typed world outside of the sfun abstraction, the body of an sfun is type checked using a refinement type system, which I call the lifted type system in which monotonicity is tracked. So in our system we have a lifted (local) type system within sfuns, and a terminal (global) type system for the typed world outside of the sfun.
+Now, we will give some intuition for the type system. As mentioned earlier, we introduce a special abstraction for monotone functions called an _sfun_. Since the programmer only cares about the monotonicity of a select group of functions, a special syntax construct, the sfun, serves as a signal to the type checker. Unlike the simply typed world outside of the sfun abstraction, the body of an sfun is type checked using a refinement type system, called the lifted type system, in which monotonicity is tracked. So in our system, we have a lifted (local) type system within sfuns, and a terminal (global) type system for the typed world outside of the sfun.
 
 This terminal (global) type system is a traditional type system which is embedded as a specific kind of refinement inside of the lifted (local) type system. Applying functions is a way of projecting from the lifted (local) world into the terminal (global) world.
 
