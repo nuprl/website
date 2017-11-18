@@ -1,6 +1,6 @@
     Title: Monotonicity Types: Towards A Type System for Eventual Consistency
     Date: 2017-10-22T11:59:06
-    Tags: types, monotonicity, CRDTs, eventual consistency, by Kevin Clancy
+    Tags: types, monotonicity, CRDTs, eventual consistency, by Kevin Clancy and Heather Miller
 
 
 A few weeks back, we published a draft of an article entitled [_Monotonicity Types_](https://infoscience.epfl.ch/record/231867). In it, we describe a type system which we hope can aid the design of distributed systems by tracking monotonicity with types.
@@ -25,22 +25,23 @@ monotonicity has arisen time and time again as an important property. Designers 
 
 Thus if a user would like to make use of such a language for concurrent and distributed programming, they're required to write monotonic program functions, which can actually be quite tricky, in order to get the consistency or determinism guarantees that the given language/abstraction was designed to provide.
 
-To get a better idea of how monotonicity might be important in the context of data replicated over a distributed system, let's look at an example. Let's start with the assumption that we need a simple function that can determine whether a (potentially replicated) counter's current value is odd or even. We might write the following function to accomplish this:
+To get a better idea of how monotonicity might be important in the context of data replicated over a distributed system, let's look at an example. Suppose we need a function to determine whether a replicated counter's current value is odd or even, and further suppose that this counter can only be incremented. To accomplish this, we might apply the following function to the counter's value:
 
 ```
 fun IsOdd(x : Nat) = x % 2 == 1
 ```
 
-However, if the counter is shared among multiple hosts in a network,
-this observation could be invalid due to increments at other hosts which have not synchronized with the local one. The problem is that the value observed is not monotone with respect to the value of the counter, and so by incrementing the counter, a host can cause the value returned by IsOdd to change from true to false, without that change being visible locally. If we observe that a monotone boolean condition inferred from a replicated variable is true, we know that all hosts will eventually agree that the condition is true and, furthermore, will lack the ability to change it. It therefore can be acted upon as a global property of the system rather than a local artifact of data replication. A type system for differentiating between monotone and non-monotone conditions would therefore aid the programmer in deciding which observations they can and cannot perform on replicated data.
+However, the counter replica from which the argument x is obtained may not currently have an up-to-date count of the total number of increments performed in the entire system. We can't rule out the possibility that exactly one remote increment has been performed, in which case IsOdd produces the wrong answer. With this in mind, the value returned by IsOdd does not seem to tell us anything useful. In contrast, consider an application of the following function to the same replicated counter.
 
-We believe that a type system could be used to ensure that a given program fragment is monotone. A type system for monotonicity could push the development of coordination-free distributed and concurrent applications outside of the realm of experts in distributed systems, by enabling customization and extension of such systems by non-experts.
+```
+fun MoreThanTen(x : Nat) = x > 10
+```
 
-Towards this aim, we have been designing a type system for tracking monotonicity, as an extension of the simply typed lambda calculus which adds a new function abstraction construct called the *sfun*.
+The boolean values \\(true\\) and \\(false\\) form one of the simplest partially ordered sets of all. We consider \\(false \leq false\\), \\(false \leq true \\), and \\( true \leq true \\). Under this ordering, the MoreThanTen function is monotone: an increase in x can cause the value of \\(x > 10\\) to flip from false to true, but not vice versa. When we observe that the local counter replica P's value is greater than 10, we don't know that the same observation would be drawn from remote replicas. Nonetheless, we assume that all replicas in the system will eventually become aware of all increments that P is currently aware of, at which point their values will be greater than P's current value. This is where MoreThanTen's monotonicity becomes useful. At the point when all replicas have received P's current information, every replica in the system will agree that MoreThanTen applied to the counter's value returns true.
 
-Our approach allows the programmer to write a special kind of function definition, the body of which is type checked using a richer type system, one which reasons about function composition rather than application. Such a function can then be proven monotone by utilizing the fact that the composition of two monotone functions is itself monotone, and other related principles.
+We believe that a type system for proving functions monotone could push the development of coordination-free distributed and concurrent applications outside of the realm of distributed systems experts, by enabling customization and extension of such systems by non-experts.
 
-Monotonicity is a relational property; that is, its a property involving multiple applications of the same function. Such properties are blind spot for traditional type systems, so our design requires some unusual and interesting features.
+Towards this aim, we have been designing a type system for tracking monotonicity, as an extension of the simply typed lambda calculus. Our approach allows the programmer to write a special kind of function definition, called an *sfun*, the body of which is type checked using a richer type system, one which reasons about function composition rather than application. Such a function can then be proven monotone by utilizing, among other princpiples, the fact that the composition of two monotone functions is itself monotone. Monotonicity is a relational property; that is, its a property involving multiple applications of the same function. Such properties are blind spot for traditional type systems, so our design requires some unusual and interesting features.
 
 Now, we will give some intuition for the type system. As mentioned earlier, we introduce a special abstraction for monotone functions called an _sfun_. Since the programmer only cares about the monotonicity of a select group of functions, a special syntax construct, the sfun, serves as a signal to the type checker. Unlike the simply typed world outside of the sfun abstraction, the body of an sfun is type checked using a refinement type system, called the lifted type system, in which monotonicity is tracked. So in our system, we have a lifted (local) type system within sfuns, and a terminal (global) type system for the typed world outside of the sfun.
 
