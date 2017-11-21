@@ -154,9 +154,9 @@ It isn't sufficient to store this counter as an integer. The problem is that rep
 knowing which how many increments were performed at each replica. Suppose that replicas X and Y each start with a count of zero.
 The following actions are then performed:
 
-1.) X increments, resulting in a count of 1
-2.) X sends a synchronization message to Y, containing X's count 1
-3.) X receives a synchronization message from Y containing a count of 1
+1. X increments, resulting in a count of 1
+2. X sends a synchronization message to Y, containing X's count 1
+3. X receives a synchronization message from Y containing a count of 1
 
 At stage 3, X does not know if the received message was sent from Y before or after Y received the synchronization message
 from stage 2. Replica X therefore does not know whether to set its count to 1 or 2. To avoid this problem, a replicated
