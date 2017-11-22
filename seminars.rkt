@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "muehlboeck-nom"
+     "Efficient Nominal Gradual Typing"
+     "Fabian Muehlboeck"
+     "http://www.cs.cornell.edu/~fabianm/"
+     "Cornell University"
+     (datetime 2017 11 11 13 30)
+     "WVH 366"
+     @list{@p{TBA}}
+     @list{@p{Fabian Muehlboeck is a Ph.D. student working with Ross Tate on gradual typing for object-oriented languages.}})
+
+    (seminar
      "siskand-cps"
      "What does CPS have to do with deep learning?"
      "Jeffrey M. Siskind"
