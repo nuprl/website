@@ -78,6 +78,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "muehlboeck-nom"
+     "Efficient Nominal Gradual Typing"
+     "Fabian Muehlboeck"
+     "http://www.cs.cornell.edu/~fabianm/"
+     "Cornell University"
+     (datetime 2017 11 11 14 00)
+     "WVH 366"
+     @list{@p{Gradual Typing is the idea that we can support both static and dynamic type checking in different parts of the same program in the same language. Most existing work on gradual typing aims to add gradual typing to an existing language. However, this severely constrains some key decisions in creating gradually typed languages, often leading designers to trade off either soundness or efficiency.}
+           @p{I will talk about designing a nominal object-oriented language with gradual typing as a core component from the start. This affects key design decisions for the other type system features, as well as the design of the runtime. Experiments with a prototype language I implemented suggest that this is a viable approach to achieve sound, yet efficient gradual typing. I will present those results and talk about some key design challenges that have yet to be solved.}}
+     @list{@p{Fabian Muehlboeck is a Ph.D. student working with Ross Tate at Cornell University.}})
+
+    (seminar
      "siskand-cps"
      "What does CPS have to do with deep learning?"
      "Jeffrey M. Siskind"
