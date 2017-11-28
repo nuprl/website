@@ -465,7 +465,7 @@
                         #:extra "(John Carrol University)")
               @(alumnus "David Gladstein" #:year 1996
                         #:dissertation "ftp://www.ccs.neu.edu/pub/people/wand/papers/gladstein-thesis-94.ps.Z")
-              @(alumnus "Chista Lopes" #:year 1997
+              @(alumnus "Crista Lopes" #:year 1997
                         #:personal-site "http://www.ics.uci.edu/~lopes/"
                         #:dissertation "ftp://ftp.ccs.neu.edu/pub/people/lieber/theses/lopes"
                         #:extra "(UC Irvine)")
