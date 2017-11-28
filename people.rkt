@@ -386,7 +386,7 @@
           }
 
           @person[#:name "Aviral Goel"
-                  #:title "Advisor: Jan Vitek & Frank Tip"
+                  #:title "Advisor: Jan Vitek"
                   #:e-mail "goel.av@husky.neu.edu"
                   #:history @list["Joined 2017"]
                   #:img "aviral-goel.jpeg"]{
