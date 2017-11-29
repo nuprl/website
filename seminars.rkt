@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "martens-compositional"
+     "Compositional Creativity"
+     "Chris Martens"
+     "https://sites.google.com/ncsu.edu/cmartens"
+     "North Carolina State University"
+     (datetime 2017 12 11 11 00)
+     "WVH 366"
+     @list{@p{Creativity is seen as a core cognitive ability for tasks like storytelling, conversation, and aesthetic design. Simulating creative processes with computers enables them to amplify humans' natural creativity and to support applications like interactive narrative, chatbots, and procedural level generators for games. By now, a large number of techniques exist for simulating creativity, such as search, planning, production grammars, logic programming, stochastic modeling from data, and hybrid approaches. However, even the simplest methods are commonly considered programming tasks for "AI experts." High-level programming languages have the potential to broaden participation in authorship of these systems, but only if they are designed with compositionality -- the mathematical principle that's also functional programming's secret weapon -- in mind. This talk will discuss what compositionality has achieved so far for creative computing and what we can do with it next.}}
+     @list{@p{Chris Martens is an assistant professor in the Computer Science (CSC) Department at NC State, where she is affiliated with the Digital Games research group. Her interests span artificial intelligence, programming languages, and formal methods.}})
+
+    (seminar
      "muehlboeck-nom"
      "Efficient Nominal Gradual Typing"
      "Fabian Muehlboeck"
