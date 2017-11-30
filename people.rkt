@@ -247,7 +247,8 @@
 
           @person[#:name "Konrad Siek"
                   #:title "Post-doctoral researcher"
-                  #:e-mail "siekkonr@fit.cvut.cz"
+                  #:e-mail "siekkonr@fit.cvut.cz" 
+                  #:website "https://kondziu.github.io"
                   #:history @list[
                     "Joined Northeastern, 2017"
                     "PhD, Poznań University of Technology, 2017"]
