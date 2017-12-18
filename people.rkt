@@ -406,6 +406,7 @@
           @person[#:name "Celeste Hollenbeck"
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "hollenbeck.c@husky.neu.edu"
+                  #:website "http://celestehollenbeck.com"
                   #:history @list["Joined 2017"]
                   #:img "celeste_hollenbeck.jpg"]{
             I'm into program analysis, machine learning, computational topology @|mdash| nasty things that bloody my nose.
