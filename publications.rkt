@@ -43,6 +43,7 @@
 @(define SOCP "Science of Computer Programming")
 @(define ITP "Interactive Theorem Proving (ITP)")
 @(define RTAS "Real-time and Embedded Technology and Application Symposium (RTAS)")
+@(define NUTechReport "Northeastern University College of Computer and Information Science Technical Reports")
 
 @(define publications
    (list
@@ -453,7 +454,7 @@
                  "http://www.ccs.neu.edu/racket/pubs/dls10-sf.pdf")
     (publication "CFA2: a Context-Free Approach to Control-Flow Analysis"
                  "Dimitrios Vardoulakis and Olin Shivers"
-                 ESOP
+                 NUTechReport
                  2010
                  "http://www.ccs.neu.edu/home/dimvar/papers/cfa2-NU-CCIS-10-01.pdf")
     (publication "Fortifying Macros"
