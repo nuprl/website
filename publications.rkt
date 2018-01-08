@@ -46,6 +46,26 @@
 
 @(define publications
    (list
+    (publication "Correctness of Speculative Optimizations with Dynamic Deoptimization"
+                 "Olivier Fluckiger, Gabriel Scherer, Ming-Ho Yee, Aviral Goel, Amal Ahmed, and Jan Vitek"
+                 POPL
+                 2018
+                 "http://doi.org/10.1145/3158137")
+    (publication "Symbolic Types for Lenient Symbolic Execution"
+                 "Stephen Chang, Alex Knauth, and Emina Torlak"
+                 POPL
+                 2018
+                 "https://doi.org/10.1145/3158128")
+    (publication "Type-Preserving CPS Translation of Σ and Π Types is Not Not Possible"
+                 "William J. Bowman, Youyou Cong, Nick Rioux, and Amal Ahmed"
+                 POPL
+                 2018
+                 "http://doi.org/10.1145/3158110")
+    (publication "Simplicitly: Foundations and Applications of Implicit Function Types"
+                 "Martin Odersky, Olivier Blanvillain, Fengyun Liu, Aggelos Biboudis, Heather Miller, and Sandro Stucki"
+                 POPL
+                 2018
+                 "https://doi.org/10.1145/3158130")
     (publication "Inferring Scope through Syntactic Sugar"
                  "Justin Pombrio, Shriram Krishnamurthi, and Mitchell Wand"
                  ICFP
