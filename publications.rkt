@@ -44,9 +44,15 @@
 @(define ITP "Interactive Theorem Proving (ITP)")
 @(define RTAS "Real-time and Embedded Technology and Application Symposium (RTAS)")
 @(define NUTechReport "Northeastern University College of Computer and Information Science Technical Reports")
+@(define PPS "Workshop on Probabilistic Programming Semantics (PPS)")
 
 @(define publications
    (list
+    (publication "Contextual Equivalence for a Probabilistic Language with Continuous Random Variables and Recursion"
+                 "Mitchell Wand, Theophilos Giannakopoulos, Andrew Cobb, and Ryan Culpepper"
+                 PPS
+                 2018
+                 "https://pps2018.soic.indiana.edu/2018/01/07/contextual-equivalence-for-a-probabilistic-language-with-continuous-random-variables-and-recursion/")
     (publication "Correctness of Speculative Optimizations with Dynamic Deoptimization"
                  "Olivier Fluckiger, Gabriel Scherer, Ming-Ho Yee, Aviral Goel, Amal Ahmed, and Jan Vitek"
                  POPL
