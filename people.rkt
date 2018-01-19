@@ -255,6 +255,17 @@
                   #:img "konrad.jpg"]{
             Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
           }
+
+          @person[#:name "Saba Alimadadi"
+                  #:title "Post-doctoral researcher"
+                  #:e-mail ""
+                  #:website "http://www.ece.ubc.ca/~saba/"
+                  #:history @list[
+                    "Joined Northeastern, 2017"
+                    "PhD, University of British Columbia, 2017"]
+                  #:img "saba.jpg"]{
+            "Whether you think you can or think you can't - you are right." ~Henry Ford
+          }
         }
 
         @div[class: "pn-separator-img"]{
