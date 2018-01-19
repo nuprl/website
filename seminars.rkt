@@ -72,11 +72,21 @@
     ;;  "AUTHOR"
     ;;  "WEBSITE"
     ;;  "INSTITUTION"
-    ;;  (datetime 2017 1 1 12 00)
+    ;;  (datetime 2018 1 1 11 45)
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
 
+    (seminar
+     "alexandrescu-introspection"
+     "Design by Introspection using the D Language"
+     "Andrei Alexandrescu"
+     "http://erdani.com"
+     "D Language Foundation"
+     (datetime 2018 2 6 11 45)
+     "WVH 366"
+     @list{@p{Years ago, D started modestly as an improved offering in the realm of systems programming languages, sharing a good deal of philosophy with C and C++. With time, however, D became a very distinct language with unique features (and, of course, its own mistakes).}@p{One angle of particular interest has been D's ability to perform compile-time introspection. Artifacts in a D program can be "looked at" during compilation. Coupled with a full-featured compile-time evaluation engine and with an ability to generate arbitrary code during compilation, this has led to a number of interesting applications.}@p{This talk shares early experience with using these features of the D language. Design by Introspection is a proposed programming paradigm that assembles designs by performing introspection on components during compilation.}}
+     @list{@p{Andrei Alexandrescu is a researcher, software engineer, and author. He wrote three best-selling books on programming (Modern C++ Design, C++ Coding Standards, and The D Programming Language) and numerous articles and papers on wide-ranging topics from programming to language design to Machine Learning to Natural Language Processing. Andrei holds a PhD in Computer Science from the University of Washington and a BSc in Electrical Engineering from University "Politehnica" Bucharest. He currently works on the D Language Foundation. http://erdani.com}})
     (seminar
      "aref-declarative"
      "Solver-Aided Declarative Programming"
