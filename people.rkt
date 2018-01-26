@@ -264,7 +264,7 @@
                     "Joined Northeastern, 2017"
                     "PhD, University of British Columbia, 2017"]
                   #:img "saba.jpg"]{
-            "Whether you think you can or think you can't - you are right." ~Henry Ford
+            I received my PhD in software engineering from University of British Columbia, Canada. My research has been focused on facilitating program comprehension through semi-automated techniques that improve developers’ performance in understanding program behaviour. Currently I am working on analysis of asynchrony in modern web applications.
           }
         }
 
