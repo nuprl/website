@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "tristan-probabilistic"
+     "Compilation of Simple Probabilistic Programs to Gibbs Sampling."
+     "John Tristan"
+     "https://jtristan.github.io/"
+     "Oracle Labs"
+     (datetime 2018 4 10 11 45)
+     "WVH 366"
+     @list{@p{One of the several interesting challenges of probabilistic programming is that of compiling probabilistic programs to inference algorithms. One of these inference algorithms, Gibbs sampling, is particularly relevant because it is often statistically efficient, but unfortunately, it is difficult to derive and therefore compile to.} @p{In this talk, after a brief explanation of probabilistic programming and why its relevance to data science, I will explain some of the ideas behind the design of a compiler from (very) simple probabilistic programs to Gibbs sampling. I will also attempt to explain what it would mean for such a compiler to be correct.}}
+     @list{@p{Jean-Baptiste Tristan is a researcher in the machine learning group at Oracle Labs. He holds a Ph.D. in Computer Science from the French Institute for Research in Computer Science and Automation (INRIA) and a M.Sc. in Computer Science from the Ecole Normale Superieure of Paris.}})
+
+    (seminar
      "alexandrescu-introspection"
      "Design by Introspection using the D Language"
      "Andrei Alexandrescu"
