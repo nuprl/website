@@ -83,7 +83,7 @@
      "Max New"
      "http://maxsnew.github.io/"
      "Northeastern University"
-     (datetime 2018 4 24 11 45)
+     (datetime 2018 4 27 11 30)
      "WVH 366"
      @list{@p{I will present Call-by-name (CBN) Gradual Type Theory [1], an axiomatic semantics of CBN gradual typing that directly axiomatizes the extensionality (eta) principles of types and the "gradual guarantee" of [2]. By axiomatizing the "term precision" relation of [2] we can provide a specification for casts as meets and joins with respect to precision. Using our type theory, we then show that the classic function contract ([3]) is in fact the unique implementation of function casts that satisfies extensionality and the gradual guarantee. This shows that the combination of these properties is a very strong constraint on the design of a gradually typed language and any implementation that departs must sacrifice one of these properties (typically extensionality).}@p{[1] Call-by-Name Gradual Type Theory, New and Licata, to appear FSCD '18,https://arxiv.org/abs/1802.00061}@p{[2] Refined Criteria for Gradual Typing, Siek, Vitousek, Cimini and Boyland, SNAPL '15, http://drops.dagstuhl.de/opus/volltexte/2015/5031/}@p{[3] Contracts for Higher-Order Functions, Findler and Felleisen, ICFP '02,https://dl.acm.org/citation.cfm?id=581484}}
     @list{@p{Max New is a PhD student at Northeastern University working on the semantic foundations of programming languages. He hates proving the same theorem twice and you should too.}})
