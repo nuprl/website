@@ -425,6 +425,16 @@
       I like to put tiaras on them and make them have tea with each other. At knifepoint.
           }
 
+
+          @person[#:name "Michael Ballantyne"
+                  #:title "Advisor: Matthias Felleisen"
+                  #:e-mail "michael.ballantyne@gmail.com"
+                  #:website "http://mballantyne.net"
+                  #:history @list["Joined 2017"]
+                  #:img "ballantyne.jpg"]{
+            I find delight in programming languages that allow extension of their notation, syntactic forms, type systems, runtime behaviors, and development environments. My research aims to build the foundations needed to bring these extensibility features into widespread use.
+          }
+
           @person[#:name "Di Zhong"
                   #:title "Advisor: Frank Tip"
                   #:e-mail "dizhong@ccs.neu.edu"
