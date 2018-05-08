@@ -122,6 +122,7 @@ Please let us know if you have more questions.
 - Finding the slowest configuration.
 - Finding the average running time of all configurations.
 - Evaluations where "removing types" might involve changing **List[Int]** to **List[Dyn]**, etc.
+- Situations where its wrong to assume that a programmer will start from untyed and pick a configuration uniformly at random
 - .... many more ....
 
 
