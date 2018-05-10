@@ -1,6 +1,6 @@
     Title: Sampling Gradual Typing Performance
     Date: 2018-05-08T15:37:37
-    Tags: gradual typing, migratory typing, performance, statistics, by Ben Greenman, by Zeina Migeed
+    Tags: gradual typing, migratory typing, performance, statistics, Takikawa constant, by Ben Greenman, by Zeina Migeed
 
 This post explains the sampling method introduced in the paper [_On the Cost of Type-Tag Soundness_](http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018)
 
