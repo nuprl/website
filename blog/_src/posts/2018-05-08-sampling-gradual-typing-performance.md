@@ -122,8 +122,25 @@ Please let us know if you have more questions.
 - Finding the slowest configuration.
 - Finding the average running time of all configurations.
 - Evaluations where "removing types" might involve changing **List[Int]** to **List[Dyn]**, etc.
-- Situations where its wrong to assume that a programmer will start from untyed and pick a configuration uniformly at random
+- Situations where its wrong to assume that a programmer will start from untyped and pick a configuration uniformly at random
 - .... many more ....
+
+
+### Q. Why is it okay to choose **D** after collecting the samples?
+
+The "quick reference" at the top of this post suggests choosing a value for **D**
+ (the cutoff between good and bad performance) after sampling configurations
+ and measuring their running time.
+This may sound strange, because (1) the value of **D** affects our bottom-line
+ judgment about the proportion of configurations with good performance, and (2)
+ shouldn't and value that affects the bottom line be fixed before taking samples?
+(To avoid accidental [data dredging](https://en.wikipedia.org/wiki/Data_dredging).)
+
+The reason it is ok to pick **D** after taking the sample is that the
+ running times in the sample are independent of the choice of **D**.
+
+For example, if one person chose **D=3** and a second person chose **D=9**,
+ both would follow the same protocol independent of **D** to take samples.
 
 
 ### Q. How does migratory typing relate to gradual typing?
