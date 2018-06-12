@@ -521,6 +521,9 @@
                         #:personal-site "http://bryanchadwick.com/"
                         #:dissertation "http://www.ccs.neu.edu/home/chadwick/files/thesis-single.pdf"
                         #:extra "(Broadway Technology)")
+              @(alumnus "David Fisher" #:year 2010
+                        #:personal-site "http://www.ccs.neu.edu/home/dfisher/"
+                        #:dissertation "http://www.ccs.neu.edu/home/dfisher/diss.pdf")
               @(alumnus "Dave Herman" #:year 2010
                         #:personal-site "http://calculist.org/"
                         #:dissertation "http://www.ccs.neu.edu/home/dherman/research/papers/dissertation.pdf"
