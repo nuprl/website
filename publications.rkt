@@ -45,9 +45,63 @@
 @(define RTAS "Real-time and Embedded Technology and Application Symposium (RTAS)")
 @(define NUTechReport "Northeastern University College of Computer and Information Science Technical Reports")
 @(define PPS "Workshop on Probabilistic Programming Semantics (PPS)")
+@(define PEPM "Workshop on Partial Evaluation and Program Manipulation (PEPM)")
+@(define ISSTA "International Symposium on Software Testing and Analysis (ISSTA)")
+@(define FCSD "Formal Structures for Computation and Deduction (FCSD)")
+@(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
 
 @(define publications
    (list
+    (publication "Rank Polymorphism Viewed as a Constraint Problem"
+                 "Justin Slepak, Panagiotis Manolios, and Olin Shivers"
+                 ARRAY
+                 2018
+                 "https://doi.org/10.1145/3219753.3219758")
+    (publication "Graduality from Embedding-Projection Pairs"
+                 "Max S. New and Amal Ahmed"
+                 ICFP
+                 2018
+                 #f)
+    (publication "Contextual Equivalence for a Probabilistic Language with Continuous Random Variables and Recursion"
+                 "Mitchell Wand, Ryan Culpepper, Theophilos Giannakopoulos, and Andrew Cobb"
+                 ICFP
+                 2018
+                 #f)
+    (publication "A Spectrum of Soundness and Performance"
+                 "Ben Greenman and Matthias Felleisen"
+                 ICFP
+                 2018
+                 #f)
+    (publication "Typed Closure Conversion of the Calculus of Constructions"
+                 "William J. Bowman and Amal Ahmed"
+                 PLDI
+                 2018
+                 "https://williamjbowman.com/resources/wjb-paper-cccc.pdf")
+    (publication "Call-by-name Gradual Type Theory"
+                 "Max New and Daniel Licata"
+                 FCSD
+                 2018
+                 #f)
+    (publication "Tests from Traces: Automated Unit Test Generation for R"
+                 "Filip Krikava, Jan Vitek"
+                 ISSTA
+                 2018
+                 #f)
+    (publication "KafKa: Gradual Typing for Objects"
+                 "Benjamin Chung, Paley Li, Francesco Zappa Nardelli, and Jan Vitek"
+                 ECOOP
+                 2018
+                 #f)
+    (publication "Soundness of a Concurrent Collector for Actors"
+                 "Juliana Franco, Sylvain Clebsch, Sophia Drossopoulou, Jan Vitek, and Tobias Wrigstad"
+                 ESOP
+                 2018
+                 "janvitek.org/pubs/esop18.pdf")
+    (publication "On the Cost of Type-Tag Soundness"
+                 "Ben Greenman and Zeina Migeed"
+                 PEPM
+                 2018
+                 "https://dl.acm.org/citation.cfm?id=3162066")
     (publication "Contextual Equivalence for a Probabilistic Language with Continuous Random Variables and Recursion"
                  "Mitchell Wand, Theophilos Giannakopoulos, Andrew Cobb, and Ryan Culpepper"
                  PPS
