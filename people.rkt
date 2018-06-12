@@ -273,15 +273,6 @@
 
         @div[class: "container"]{
 
-          @person[#:name "Tony Garnock-Jones"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "tonyg@ccs.neu.edu"
-                  #:website "http://www.ccs.neu.edu/home/tonyg"
-                  #:history @list["Joined 2010"]
-                  #:img "tony_jones.jpg"]{
-            I’m working on constructing programming languages that incorporate ideas from networking and from messaging middleware.
-          }
-
           @person[#:name "Jonathan Schuster"
                   #:title "Advisor: Olin Shivers"
                   #:e-mail "schuster@ccs.neu.edu"
@@ -608,6 +599,9 @@
                         #:dissertation "https://repository.library.northeastern.edu/files/neu:cj82n981x"
                         #:personal-site "http://www.ccs.neu.edu/home/asumu/"
                         #:extra "(Igalia)")
+              @(alumnus "Tony Garnock-Jones" #:year 2017
+                        #:dissertation "http://syndicate-lang.org/tonyg-dissertation/"
+                        #:personal-site "https://leastfixedpoint.com/")
              ]}}
 
         @div[class: "container"]{
