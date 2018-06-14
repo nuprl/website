@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "nardelli-debug-debug"
+     "Debugging Debug Information and Beyond"
+     "Francesco Zappa Nardelli"
+     "http://www.di.ens.fr/~zappa/"
+     "Inria Paris – Rocquencourt"
+     (datetime 2018 6 15 10 00)
+     "WVH 366"
+     @list{@p{The spectacular results achieved by computer science in the recent years rely on hidden, obscure, and badly specified components that lurk at the very heart of our computing infrastructure. Consider DWARF debug information. Debug information is relied upon by debuggers and plays a key role in the in the implementation of program analysis tools. More surprisingly, debug information can be relied upon by the runtime of high-level programming languages, for instance by C++ to unwind the stack and implement exceptions. The debug information itself can be pervaded by subtle bugs, making the whole infrastructure unreliable. In this talk I will describe techniques and tools to perform validation and synthesis of the DWARF stack unwinding tables. I will also report on adventurous projects that we might build on top of reliable DWARF information.}}
+     @list{@p{Francesco Zappa Nardelli is a Researcher at Inria Paris – Rocquencourt. His research interests focus on concurrent computation on top of relaxed memory models, ranging from hardware models of modern architectures to high-level programming language specification and compilation. He received his Ph.D. from Université Paris 7 in 2003. Since then, he has worked on language design for distributed computation, type systems for integrating typed and untyped code in scripting languages, and tool support for semantics (including the Ott tool).}})
+
+    (seminar
      "new-cbn-gtt"
      "Call-By-Name Gradual Type Theory"
      "Max New"
