@@ -78,6 +78,18 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "pombrio-infer-type-sugar"
+     "Inferring Type Rules for Syntactic Sugar"
+     "Justin Pombrio"
+     "http://justinpombrio.net"
+     "Brown University"
+     (datetime 2018 8 7 11 30)
+     "WVH 366"
+     @list{@p{Type systems and syntactic sugar are both valuable to programmers, but sometimes at odds. While sugar is a valuable mechanism for implementing realistic languages, the expansion process obscures program source structure. As a result, type errors can reference terms the programmers did not write (and even constructs they do not know), baffling them. The language developer must also manually construct type rules for the sugars, to give a typed account of the surface language. We address these problems by presenting a process for automatically reconstructing type rules for the surface language using rules for the core. We have implemented this theory, and show several interesting case studies.}}
+     @list{@p{Justin Pombrio is a recent PhD graduate from Brown University. His research is mainly in programming languages, with a focus on syntactic sugar, but also includes CS education.}})
+
+
+    (seminar
      "nardelli-debug-debug"
      "Debugging Debug Information and Beyond"
      "Francesco Zappa Nardelli"
