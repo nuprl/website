@@ -1,6 +1,9 @@
 #lang scribble/html
 @require["templates.rkt"]
 
+@(define (location-link url [font-size "64%"])
+   @a[href: url target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: (format "font-size: ~a;" font-size) aria-hidden: "true"]})
+
 @doctype{html}
 @html[lang: "en"]{
   @header{Home}
@@ -11,10 +14,10 @@
         @div[class: "row"]{
           @div[class: "col-md-12"]{
             @img[src: "img/prl.png" alt: "Programming Research Laboratory"]{
-            @h1{Programming Research Laboratory}
-            @h2{College of Computer and Information Science, WVH 308 @a[href: "http://www.ccs.neu.edu/" target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: "font-size: 64%;" aria-hidden: "true"]}}
-            @h3{Northeastern University @a[href: "http://www.neu.edu/" target: "_blank"]{@span[class: "glyphicon glyphicon-link" style: "font-size: 62%;" aria-hidden: "true"]}}
-            @h4{Boston}}}}}}
+              @h1{Programming Research Laboratory}
+              @h2{College of Computer and Information Science, WVH 308 @location-link["http://www.ccs.neu.edu/" "64%"]}
+              @h3{Northeastern University @location-link["http://www.neu.edu/" "62%"]}
+              @h4{Boston @location-link["https://prl.ccs.neu.edu/contact.html#directions" "60%"]}}}}}}
 
     @div[class: "pn-main-wrapper"]{
       @div[class: "container "]{
