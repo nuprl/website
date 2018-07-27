@@ -44,7 +44,7 @@
           @br{}
           @br{}
 
-          @h2{How to find us}
+          @h2[id: "directions"]{How to find us}
           @p{
             @pre{
               440 Huntington Ave,
