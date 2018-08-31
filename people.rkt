@@ -7,7 +7,7 @@
 @;   - quality : as low as possible
 @;
 @;  To change size with imagemagick:
-@;   `convert -size 180x180 ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
+@;   `convert -resize 180x180 ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
 @;
 @;  To change quality with imagemagick:
 @;   `convert -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
@@ -194,30 +194,6 @@
             I work on the design and implementation of programming languages. I led the implementation of the first real-time Java virtual machine to be flight-tested. With Noble and Potter, I proposed what became known as Ownership Types.  I tried to understand JavaScript by dynamic analysis and am now looking at supporting scalable data analysis in R.
           }
 
-          @person[#:name "Paley Li"
-                 #:title "Post-doctoral researcher"
-                 #:e-mail "pa.li@neu.edu"
-                 #:website "https://palez.github.io"
-                 #:history @list[
-                   "Joined Northeastern, 2015"
-                   "PhD, Victoria University of Wellington, 2015"
-                 ]
-                 #:img "paleyli.jpg"]{
-            My research interests is in programming languages, specifically type theory, ownership types, and local reasoning for memory management. Most recently, I have been working on formalising object cloning for ownership types.
-          }
-
-          @person[#:name "Fillip Křikava"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail "f.krikava@neu.edu"
-                  #:website "http://fikovnik.net"
-                  #:history @list[
-                    "Joined Northeastern, 2016"
-                    "Joined INRIA Lille, 2013"
-                    "PhD, University of Nice Sophia-Antipolis, 2013"]
-                  #:img "fillip_krikava.jpg"]{
-            Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
-          }
-
           @person[#:name "Frank Tip"
                   #:title "Professor"
                   #:e-mail "tip@acm.org"
@@ -233,29 +209,6 @@
             My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
           }
 
-          @person[#:name "Heather Miller"
-                  #:title "Assistant Clinical Professor"
-                  #:e-mail "heather@ccs.neu.edu"
-                  #:website "http://heather.miller.am"
-                  #:history @list[
-                  "Joined Northeastern, 2016"
-                  "PhD, EPFL, 2015"
-                  ]
-                  #:img "heather_miller.jpg"]{
-            I work on the intersection of programming languages and distributed systems. I am a member of the Scala team, and have worked on Scala's concurrency libraries including Scala's futures and promises library, and compile-time support for distributed programs. Much of my work is focused on transferring research results into practical use. Before joining Northeastern, I co-founded and served as the executive director of a new center at EPFL for research, education, and open source development surrounding the Scala programming language, called the Scala Center.
-          }
-
-          @person[#:name "Konrad Siek"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail "siekkonr@fit.cvut.cz" 
-                  #:website "https://kondziu.github.io"
-                  #:history @list[
-                    "Joined Northeastern, 2017"
-                    "PhD, Poznań University of Technology, 2017"]
-                  #:img "konrad.jpg"]{
-            Coming from software engineering and domain-specific modeling. I’m interested in various aspects of programming languages in particular in static and dynamic program analysis. Most recently I have been working on dynamic tracing in R.
-          }
-
           @person[#:name "Saba Alimadadi"
                   #:title "Post-doctoral researcher"
                   #:e-mail ""
@@ -265,6 +218,24 @@
                     "PhD, University of British Columbia, 2017"]
                   #:img "saba.jpg"]{
             I received my PhD in software engineering from University of British Columbia, Canada. My research has been focused on facilitating program comprehension through semi-automated techniques that improve developers’ performance in understanding program behaviour. Currently I am working on analysis of asynchrony in modern web applications.
+          }
+
+          @person[#:name "Jason Hemann"
+                  #:title "Clinical Lecturer"
+                  #:e-mail "jhemann@ccis.neu.edu"
+                  #:website "http://hemann.pl"
+                  #:history @list[
+                    "Joined Northeastern, 2018"
+                    "PhD, Indiana University, 2018"]
+                  #:img "jhemann.jpg"]{
+            My research interests include functional and logic programming. I
+            focus on embeddings and extensions to support logic programming in
+            numerous host languages and transforming functional programs to
+            relational ones. The microKanren model has inspired scores of
+            implementations (more than 120), in over 40 host languages, in just five
+            years. My other interests concern novel uses of logic programming and
+            symbolic constraint systems and typesafe embeddings of logic
+            languages.
           }
         }
 
