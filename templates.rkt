@@ -8,6 +8,7 @@
   comment
   footer
   url
+  mailto
   NuPRL-TWITTER
   NuPRL-GITHUB
 ]
@@ -159,3 +160,6 @@
 
 @(define (url www)
    @a[href: www www])
+
+@(define (mailto email)
+   @a[href: (string-append "mailto:" email) (tt email)])
