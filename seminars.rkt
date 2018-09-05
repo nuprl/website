@@ -72,10 +72,21 @@
     ;;  "AUTHOR"
     ;;  "WEBSITE"
     ;;  "INSTITUTION"
-    ;;  (datetime 2018 1 1 11 45)
+    ;;  (datetime 2018 9 19 10 00)
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+
+    (seminar
+     "pedersen-trashtreasure"
+     "From trash to treasure: Timing-sensitive garbage collection"
+     "Mathias Pedersen"
+     "http://cs.au.dk/~mvp/"
+     "Aarhus University"
+     (datetime 2018 9 19 10 00)
+     "WVH 366"
+     @list{@p{We study information flows arising from timing channels in the presence of automatic memory management. We construct a series of example attacks that illustrate how garbage collectors form a shared resource that can be used to reliably leak sensitive information at a rate of up to 1 byte/sec on a contemporary general-purpose computer. The created channel is also observable across a network connection in a datacenter-like setting. We subsequently present a design of an automatic memory management system and prove that the presented attacks are impossible on garbage collectors satisfying this design. The guarantees provided by the language has been mechanized in the Coq proof assistant.}}
+     @list{@p{Mathias is a third year PhD student in the Logic and Semantics group at Aarhus University in Denmark, advised by Aslan Askarov. His work is in the area of language-based security, with a focus on provable mitigation of side channels. In general, anything related to compilers and the semantics of programming languages will be on his list of interests.}})
 
     (seminar
      "pombrio-infer-type-sugar"
