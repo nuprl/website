@@ -14,29 +14,29 @@
           @div[class: "row"]{
             @h2{Who's in charge?}
             @center{
-              @h4{Webmaster} @a[href: "mailto:types@ccs.neu.edu"]{Ben Greenman}
+              @h4{Webmaster} @a[href: "mailto:leif@leifandersen.net"]{Leif Andersen}
 
-              @h4{PL Seminar} @a[href: "mailto:dbp@ccs.neu.edu"]{Daniel Patterson}
+              @h4{PL Seminar} @a[href: "mailto:goel.aviral@gmail.com"]{Aviral Goel}
 
-              @h4{PL Seminar, Junior} @a[href: "mailto:samc@ccs.neu.edu"]{Sam Caldwell}
+              @h4{PL Seminar, Junior} ???
 
-              @h4{Happy Hour} @a[href: "mailto:maxnew@ccs.neu.edu"]{Max New}
+              @h4{Happy Hour} ???
 
-              @h4{Coffee Czar} @a[href: "mailto:tonyg@ccs.neu.edu"]{Tony Garnock-Jones}
+              @h4{Coffee Czar} @a[href: "mailto:aturcotte@uwaterloo.ca"]{Alexi Turcotte}
 
               @h4{Twitter Tsar} @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
 
-              @h4{Student Rep on Hiring} @a[href: "mailto:wilbowma@ccs.neu.edu"]{William Bowman}
+              @h4{Blog Maintainer} @a[href: "mailto:samc@ccs.neu.edu"]{Sam Caldwell}
 
-              @h4{Blog Maintainer} @a[href: "mailto:types@ccs.neu.edu"]{Ben Greenman}
+              @h4{People Page Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
 
-              @h4{People Page Maintainer} @a[href: "mailto:bchung@ccs.neu.edu"]{Ben Chung}
-
-              @h4{Publication Page Maintainer} @a[href: "mailto:schuster@ccs.neu.edu"]{Jonathan Schuster}
+              @h4{Publication Page Maintainer} @a[href: "mailto:artem.pelenitsyn@gmail.com"]{Artem Pelenitsyn}
 
               @h4{Software Page Maintainer} @a[href: "mailto:leif@ccs.neu.edu"]{Leif Andersen}
 
-              @h4{Teaching Page Maintainer} @a[href: "mailto:davis.mil@husky.neu.edu"]{Milo Davis}
+              @h4{Teaching Page Maintainer} @a[href: "mailto:andrew.cobb@gmail.com"]{Andrew Cobb}
+
+              @h4{Mailing List Maintainer (@tt{prl-students}, @tt{prl-staff})} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung}
 
               @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
             }
