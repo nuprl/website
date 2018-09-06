@@ -412,7 +412,6 @@
                   #:img "hyeyoung_shin.jpg"]{
             I am working on safe interaction between strict and lazy languages, using linking types.
           }
-        }
 
           @person[#:name "Artem Pelenitsyn"
                   #:title "Advisor: Jan Vitek"
