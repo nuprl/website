@@ -36,7 +36,7 @@
 
               @h4{Teaching Page Maintainer} @a[href: "mailto:andrew.cobb@gmail.com"]{Andrew Cobb}
 
-              @h4{Mailing List Maintainer (@tt{prl-students}, @tt{prl-staff})} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung}
+              @h4{Mailing List Maintainers} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} (@tt{prl-students}) @br{} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung} (@tt{prl-staff})
 
               @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
             }
