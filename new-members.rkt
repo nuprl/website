@@ -16,7 +16,7 @@
               @ol[
                 @li{
                   Get your student ID (a.k.a. Husky Card) from
-                  @a[href: "http://www.northeastern.edu/huskycard/about/locations.html"]{a pick-up location}.
+                  @a[href: "http://www.northeastern.edu/huskycard/about/pick-up-locations/"]{a pick-up location}.
                   Visit WVH 202 and/or send mail to @mailto|{operations@ccs.neu.edu}| to register your card to unlock WVH 308, WVH 330, WVH 366, and your private office (if you have one).
                 }
                 @li{
