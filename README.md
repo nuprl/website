@@ -15,8 +15,23 @@ Building
 
 Build Prerequisites: [Racket](http://racket-lang.org/)
 
-To preview your changes locally, you can build and start a local
-server with the generated site using `make preview`
+To build the site + blog and open a new window:
+
+```
+  make preview
+```
+
+To build the site, but not the blog:
+
+```
+make prl
+```
+
+To build one page, for example `index.html`:
+
+```
+  make index.html
+```
 
 
 Blog
