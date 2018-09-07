@@ -421,6 +421,20 @@
                   #:img "artem_pelenitsyn.jpg"]{
             I am interested in typed functional programming and corresponding languages, mostly Haskell, type and effect systems, mathematics of program construction. Lately, I was working on a principled approach to the Julia programming language.
           }
+
+          @person[#:name "Julia Belyakova"
+                  #:title "Advisor: Jan Vitek"
+                  #:e-mail "julbinb@gmail.com"
+                  #:history @list[
+                    "Joined Northeastern, 2018"
+                    "Joined Czech Technical University in Prague, 2017"
+                    "Joined Southern Federal University, 2014"
+                    "MS, Southern Federal University, 2014"
+                    "BS, Southern Federal University, 2012"]
+                  #:website "http://julbinb.github.io/"
+                  #:img "julia_belyakova.jpg"]{
+            My primary research interests are programming languages and type theory. I am also fond of theorem proving, generic programming, object-oriented and functional programming, software engineering, programming by contracts, software testing. Currently I work on formalizing subtyping for the Julia programming language.
+          }
         }
 
         @div[class: "pn-separator-img"]{
