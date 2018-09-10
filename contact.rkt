@@ -18,7 +18,7 @@
 
               @h4{PL Seminar} @a[href: "mailto:goel.aviral@gmail.com"]{Aviral Goel}
 
-              @h4{PL Seminar, Junior} ???
+              @h4{PL Seminar, Junior} @a[href: "mailto:shin.hy@husky.neu.edu"]{Hyeyoung Shin}
 
               @h4{Happy Hour} ???
 
