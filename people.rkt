@@ -434,6 +434,24 @@
                   #:img "julia_belyakova.jpg"]{
             My primary research interests are programming languages and type theory. I am also fond of theorem proving, generic programming, object-oriented and functional programming, software engineering, programming by contracts, software testing. Currently I work on formalizing subtyping for the Julia programming language.
           }
+
+          @person[#:name "Alexi Turcotte"
+                  #:title "Advisor: Jan Vitek"
+                  #:e-mail "alexi@ccs.neu.edu"
+                  #:history @list[
+                    "Joined 2018"]
+                  #:img "alexi_turcotte_small.jpg"]{
+            I like reasoning about programs and implementing languages. Programming makes me happy. Programming about programming makes me happier.
+          }
+
+          @person[#:name "Ellen Arteca"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "ellen@ccs.neu.edu"
+                  #:history @list[
+                    "Joined 2018"]
+                  #:img "ellen_arteca_small.jpg"]{
+            My previous work was in gradual typing; now I'm starting a project looking at program analysis for asynchronous JavaScript.
+          }
         }
 
         @div[class: "pn-separator-img"]{
