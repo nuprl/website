@@ -383,8 +383,7 @@
                   #:website "http://celestehollenbeck.com"
                   #:history @list["Joined 2017"]
                   #:img "celeste_hollenbeck.jpg"]{
-            I'm into program analysis, machine learning, computational topology @|mdash| nasty things that bloody my nose.
-      I like to put tiaras on them and make them have tea with each other. At knifepoint.
+            I am combining machine learning and programming languages to improve inlining decisions in compilers. My other interests in computer science include technical communication and reproducibility of research.
           }
 
 
