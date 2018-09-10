@@ -22,7 +22,7 @@
 
               @h4{Happy Hour} ???
 
-              @h4{Coffee Czar} @a[href: "mailto:aturcotte@uwaterloo.ca"]{Alexi Turcotte}
+              @h4{Coffee Czar} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}
 
               @h4{Twitter Tsar} @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
 
