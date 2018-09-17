@@ -657,9 +657,21 @@
                 @(alumnus "Riccardo Pucella" #:year 2004
                           #:personal-site "http://www.ccs.neu.edu/home/riccardo/"
                           #:extra "(Olin College)")
+                @(alumnus "Paley Li" #:year 2017
+                          #:personal-site "https://palez.github.io"
+                          #:extra "(Oracle)")
+                @(alumnus "Fillip Křikava" #:year 2017
+                          #:personal-site "http://fikovnik.net/"
+                          #:extra "(Czech Technical University in Prague)")
+                @(alumnus "Konrad Siek" #:year 2017
+                          #:personal-site "https://kondziu.github.io"
+                          #:extra "(Czech Technical University in Prague)")
                 @(alumnus "Ryan Culpepper" #:year 2017
                           #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
                           #:extra "(Czech Technical University in Prague)")
+                @(alumnus "Heather Miller" #:year 2018
+                          #:personal-site "http://heather.miller.am/"
+                          #:extra "(Carnegie Mellon University)")
               ]}}
         @footer{}
 }}}}
