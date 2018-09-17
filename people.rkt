@@ -144,19 +144,6 @@
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
           }
 
-          @person[#:name "Ryan Culpepper"
-                  #:title "Research Scientist"
-                  #:e-mail "ryanc@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/ryanc"
-                  #:history @list[
-                    "Joined Northeastern, 2013"
-                    "Post-doc University of Utah, 2011"
-                    "PhD, Northeastern University, 2010"
-                  ]
-                  #:img "ryan_culpepper.jpg"]{
-            Born in Houston, TX, left, went back to go to Rice University. Interested in PL and compilers. I read during the summer and play table tennis during the winter. I'm still looking for someone up here who has heard of disc golf.
-          }
-
           @person[#:name "Stephen Chang"
                   #:title "Post-doctoral researcher"
                   #:e-mail "stchang@ccs.neu.edu"
@@ -670,6 +657,9 @@
                 @(alumnus "Riccardo Pucella" #:year 2004
                           #:personal-site "http://www.ccs.neu.edu/home/riccardo/"
                           #:extra "(Olin College)")
+                @(alumnus "Ryan Culpepper" #:year 2017
+                          #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
+                          #:extra "(Czech Technical University in Prague)")
               ]}}
         @footer{}
 }}}}
