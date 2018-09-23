@@ -78,6 +78,35 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "cifuentes-parfait-vulnerability-detection"
+     "Oracle Parfait: The Flavour of Real-World Vulnerability Detection"
+     "Cristina Cifuentes"
+     "https://labs.oracle.com/pls/apex/f?p=labs:bio:0:21"
+     "Oracle Labs"
+     (datetime 2018 10 3 13 15)
+     "WVF 010"
+     @list{@p{The Parfait static code analysis tool focuses on detecting vulnerabilities that matter in C, C++, Java and PL/SQL languages.  Its focus has been on key items expected out of a commercial tool that lives in a commercial organization, namely, precision of results (i.e., high true positive rate), scalability (i.e., being able to run quickly over millions of lines of code), incremental analysis (i.e., being able to run over deltas of the code quickly), and usability (i.e., ease of integration into standard build processes, reporting of traces to the vulnerable location, etc).  Today, Parfait is used by thousands of developers at Oracle worldwide on a day-to-day basis.}
+           @p{In this presentation we’ll sample a flavour of Parfait — we explore some real world challenges faced in the creation of a robust vulnerability detection tool, look into two examples of vulnerabilities that severely affected the Java platform in 2012/2013 and most machines in 2017/2018, and conclude by recounting what matters to developers for integration into today’s continuous integration and continuous delivery (CI/CD) pipelines.}}
+     @list{@p{Cristina is the Director of Oracle Labs Australia and an Architect at Oracle. Headquartered in Brisbane, the Lab focuses on Program Analysis as it applies to finding vulnerabilities in software and enhancing the productivity of developers worldwide. Prior to founding Oracle Labs Australia, Cristina was the Principal Investigator of the Parfait bug tracking project at Sun Microsystems, then Oracle.}})
+
+    (seminar
+     "kammar-user-defined-effects"
+     "On the expressive power of user-defined effects"
+     "Ohad Kammar"
+     "https://www.cs.ox.ac.uk/people/ohad.kammar/main.html"
+     "University of Oxford"
+     (datetime 2018 10 3 10 00)
+     "WVH 366"
+     @list{@p{Computational effects, such as mutable state, memory allocation, non-determinism, and I/O interaction, allow programs to implicitly exhibit complex behaviour. I will discuss three abstractions that allow programmers to extend a language with user-defined effects:}
+           @p{• Control operators (call-cc, shift/reset, etc.)  are a well-established abstraction for user-defined effects, and I will consider the specific shift/dollar without answer-type-modification.}
+           @p{• Since the 90s, functional languages have used monads for user-defined effects, and I will consider Filinski's monadic reflection.}
+           @p{• In the last decade, the community started looking into Plotkin and Pretnar's handlers for algebraic effects (extensible effects in Haskell, OCaml multicore, the Eff, Frank, Koka, and Links programming languages) as a programming abstraction, and I will consider deep handlers without forwarding.}
+           @p{I will compare the relative expressive power of these three abstractions using Felleisen's notion of macro-translations.  This comparison demonstrates the sensitivity of relative expressiveness of user-defined effects to seemingly orthogonal language features.}
+           @p{This talk is based on the paper:}
+           @p{On the expressive power of user-defined effects: effect handlers,monadic reflection, delimited control. Yannick Forster, Ohad Kammar, Sam Lindley, and Matija Pretnar. Proceedings of the 22nd ACM SIGPLAN International Conference on Functional Programming, PACMPL 1(ICFP): 13:1-13:29 (2017),arXiv:1610.09161, DOI: 10.1145/3110257.}}
+     @list{@p{Ohad Kammar is a postdoctoral research associate at the University of Oxford Department of Computer Science, a Career Development Fellow at Balliol College Oxford, and an incoming Royal Society University Research Fellow at the University of Edinburgh School of Informatics. His fields of interests include programming language modelling and design, logic, and the foundations of computer science.}})
+
+    (seminar
      "pedersen-trashtreasure"
      "From trash to treasure: Timing-sensitive garbage collection"
      "Mathias Pedersen"
