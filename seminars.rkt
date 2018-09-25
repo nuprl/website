@@ -78,6 +78,28 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "waye-whip-contract-service"
+     "Whip: Higher-order Contracts for Modern Services"
+     "Lucas Waye"
+     "http://lucaswaye.com/"
+     "Facebook"
+     (datetime 2018 11 7 10 0)
+     "WVH 366"
+     @list{@p{Modern service-oriented applications forgo semantically rich protocols and middleware when composing services. Instead, they embrace the loosely-coupled development and deployment of services that communicate via simple network protocols. Even though these applications do expose interfaces that are higher-order in spirit, the simplicity of the network protocols forces them to rely on brittle low-level encodings. To bridge the apparent semantic gap, programmers introduce ad-hoc and error-prone defensive code. Inspired by Design by Contract, we choose a different route to bridge this gap. We introduce Whip, a contract system for modern services. Whip (i) provides programmers with a higher-order contract language tailored to the needs of modern services; and (ii) monitors services at run time to detect services that do not live up to their advertised interfaces. Contract monitoring is local to a service. Services are treated as black boxes, allowing heterogeneous implementation languages without modification to services' code. Thus, Whip does not disturb the loosely coupled nature of modern services.}}
+     @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
+
+    (seminar
+     "greenberg-posix-shell"
+     "Rehabilitating the POSIX shell"
+     "Michael Greenberg"
+     "http://www.cs.pomona.edu/~michael/"
+     "Pomona College"
+     (datetime 2018 10 10 10 0)
+     "WVH 366"
+     @list{@p{We build intricate systems with complex algorithms and invariants, aiming for guarantees of correctness and performance... and then we maintain and deploy these systems with shell scripts! What *are* shell scripts? If the POSIX shell is a programming language, what are its syntax and semantics? Can we apply PL tools to reason about the shell? Why haven't prior PL attempts at understanding the shell redeemed it?}}
+     @list{@p{Michael Greenberg is an assistant professor at Pomona College. He received his BA in Computer Science and Egyptology from Brown University (2007) and his PhD in Computer Science from the University of Pennsylvania (2013). His work has ranged from functional-reactive JavaScript (with Shriram Krishnamurthi at Brown) to runtime verification of higher-order programs using contracts (with Benjamin Pierce at Penn) to software-defined networking (with Dave Walker at Princeton) to present activities focused on Kleene algebra with tests and the POSIX shell. He is always looking for new climbing partners.}})
+
+    (seminar
      "cifuentes-parfait-vulnerability-detection"
      "Oracle Parfait: The Flavour of Real-World Vulnerability Detection"
      "Cristina Cifuentes"
