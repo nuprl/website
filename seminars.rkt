@@ -89,6 +89,18 @@
      @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
+     "heineman-synthesize-expression-problem"
+     "Synthesizing Solutions to the Expression Problem"
+     "George T. Heineman"
+     "https://www.wpi.edu/people/faculty/heineman"
+     "Worcester Polytechnic Institute"
+     (datetime 2018 10 17 10 0)
+     "WVH 366"
+     @list{@p{The Expression Problem (EP) describes a common software issue that appears regardless of programming language or programming paradigm. As coined by Philip Wadler in 1998, EP is a new name for an old problem. Given a data type defined by cases, consider two independent extensions, namely, adding new cases to the data type and new functions over the datatype. Dozens of papers in the research literature present their solutions to the EP, using a variety of programming languages and approaches. In this talk I present a Scala-based framework that can synthesize full solutions to the EP problem. The first step is to model the domain of interest (such as mathematical expressions or geometric shapes) to ensure that our synthesized code can work with any desired application domain. Second, we demonstrate how to synthesize code that reproduces a dozen EP solutions from the literature, in C++, Java and Haskell. We designed a common API for all approaches, independent of programming language. While we do not introduce any new approach for EP, we explore the challenges that EP solutions face with binary methods and producer methods. An important contribution of this work is the scientific reproduction of known solutions from the literature.
+This work is based on an ongoing collaboration with with Jan Bessai (TU Dortmund) and Boris Düdder (Univ. Copenhagen).}}
+     @list{@p{George T. Heineman is an Associate Professor of Computer Science at WPI. His research interests are in Software Engineering, specifically synthesizing software systems from composable units. He is co-author of "Algorithms in a Nutshell (2ed)," published by O'Reilly Media in 2016. Aside from his professional pursuits, George is an avid puzzler. He invented Sujiken(R), a Sudoku variation played on a right-triangle arrangement of cells in which numbers cannot repeat in a horizontal row, vertical column or diagonal in any direction.}})
+
+    (seminar
      "greenberg-posix-shell"
      "Rehabilitating the POSIX shell"
      "Michael Greenberg"
