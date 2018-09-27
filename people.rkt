@@ -338,14 +338,6 @@
             I'm interested in programming language design and implementation, as well as static program analysis.
           }
 
-          @person[#:name "Kevin Clancy"
-                  #:title "Advisor: Heather Miller"
-                  #:e-mail "kclancy@ccs.neu.edu"
-                  #:history @list["Joined 2016"]
-                  #:img "kevin-crop.jpg"]{
-            I'm interested in type systems, particularly refinement type systems these days. I’m currently in the process of designing a refinement type system which can prove functions monotone. It would have applications in concurrency and numerical computing.
-          }
-
           @person[#:name "Aviral Goel"
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "goel.av@husky.neu.edu"
@@ -602,6 +594,9 @@
                         #:extra "(Igalia)")
               @(alumnus "Tony Garnock-Jones" #:year 2017
                         #:dissertation "http://syndicate-lang.org/tonyg-dissertation/"
+                        #:personal-site "https://leastfixedpoint.com/")
+              @(alumnus "Kevin Clancy" #:year 2018
+                        #:extra "(Carnegie Mellon University)"
                         #:personal-site "https://leastfixedpoint.com/")
              ]}}
 
