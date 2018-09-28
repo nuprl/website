@@ -596,7 +596,8 @@
                         #:dissertation "http://syndicate-lang.org/tonyg-dissertation/"
                         #:personal-site "https://leastfixedpoint.com/")
               @(alumnus "Kevin Clancy" #:year 2018
-                        #:extra "(Carnegie Mellon University)")
+                        #:extra "(Carnegie Mellon University)"
+                        #:personal-site "https://kevinclancy.github.io/")
              ]}}
 
         @div[class: "container"]{
