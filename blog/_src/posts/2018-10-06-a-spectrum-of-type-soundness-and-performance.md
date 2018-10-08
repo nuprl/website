@@ -51,9 +51,10 @@ For example:
 
 That makes five different systems.
 There are 15 other systems in the figure, and many more in the world.
-One thing we could do is _classify_ them all, but it is doubtful (to me) that a
- classification would help us understand new systems that appear in the future.
-Instead ...
+How can we make sense of this space?
+By understanding each system's protocol for validating dynamically-typed values
+ at a _type boundary_ (between static and dynamic code).
+
 
 ### Main Contribution
 
