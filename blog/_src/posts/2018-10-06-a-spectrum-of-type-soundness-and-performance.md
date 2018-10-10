@@ -2,7 +2,7 @@
     Date: 2018-10-06T11:23:35
     Tags: migratory typing, gradual typing, by Ben Greenman
 
-The literature on gradual typing presents (at least) three fundamentally
+The literature on mixed-typed languages presents (at least) three fundamentally
 different ways of thinking about the integrity of programs that combine 
 statically typed and dynamically typed code.
 Recently, we have been sorting them out.
@@ -15,10 +15,10 @@ Recently, we have been sorting them out.
   <http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018>
 
 A dynamically-typed language runs any program that "looks good" (i.e.,
- passes some basic syntactic criteria ... in Python a program cannot mix
- indentation levels, in Racket a program cannot refer to unbound variables).
+ passes some basic syntactic criteria. In Python a program cannot mix
+ indentation levels. In Racket a program cannot refer to unbound variables).
 A statically-typed language runs any program that both "looks good" and
- passes an extra set of type checks.
+ is well-typed according to a type checker.
 
 A _mixed-typed_ language allows some combination of static and dynamic typing.
 There are many languages that fall in the mixed-typed category; figure 1 lists
@@ -34,7 +34,7 @@ For example:
 - **MACLISP** defines a syntax for type annotations but does not say how a compiler
   should interpret the types; see section 14.2 of the [Moonual](http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf).
   For example, a compiler may use types to generate specialized code that assumes
-  the type annotations are correct.
+  the type annotations are correct (and has undefined behavior otherwise).
 - **Strongtalk** includes a static type checker and DOES NOT use types to change the
   behavior of a program.
   For rationale, see the [Pluggable Type Systems](http://bracha.org/pluggableTypesPosition.pdf) position paper.
@@ -52,28 +52,29 @@ For example:
 That makes five different systems.
 There are 15 other systems in the figure, and many more in the world.
 How can we make sense of this space?
-By understanding each system's protocol for validating dynamically-typed values
- at a _type boundary_ (between static and dynamic code).
+We claim: by understanding each system's protocol for checking
+ dynamically-typed values at a _type boundary_ (between static and dynamic code).
 
 
 ### Main Contribution
 
-In the paper _A Spectrum of Type Soundness and Performance_, we define a tiny
- mixed-typed language and show three ways to define the behavior of programs.
-The three behaviors are based on methods that existing languages use to
- check dynamically-typed values that flow (at run-time) into statically-typed code.
+In the paper [_A Spectrum of Type Soundness and Performance_](http://drops.dagstuhl.de/opus/volltexte/2015/5031/),
+ we define a tiny mixed-typed language and show three ways to define the
+ behavior of programs --- based on three protocols for checking
+ dynamically-typed values that cross a boundary into statically-typed code.
 
-At a high level, a **higher order** behavior ensures that dynamically-typed
- values match their assigned static types --- by checking the value when possible,
+The three behaviors are inspired by existing languages.
+A **higher order** behavior ensures that dynamically-typed
+ values match the static type at a boundary --- by checking the value when possible,
  and by monitoring the value's future interactions when necessary.
 A **first order** behavior performs a yes-or-no check on dynamically-typed values
  and never monitors their future behavior.
-An **erasure** behavior does not check dynamically-typed values.
+An **erasure** behavior does no checking whatsoever.
 
 > Example (monitors): if typed code expects a function from numbers to numbers
-> and receives an untyped function `f`, then one way to enforce the type is to
-> wrap `f` in a proxy to assert that every future call to `f` returns a number.
-> In this case, we say the proxy monitors the behavior of `f`.
+> and receives an untyped function `f`, then one way to enforce the type
+> boundary is to wrap `f` in a proxy to assert that every future call to `f`
+> returns a number.  In this case, the proxy monitors the behavior of `f`.
 
 Concretely, the paper defines three formal semantics with the same names.
 The **higher-order** semantics enforces full types at the boundaries (Section 2.3).
@@ -89,12 +90,14 @@ The paper states these theorems (Section 2) and the
  [online supplement](https://repository.library.northeastern.edu/files/neu:cj82rk279)
  gives full proofs.
 
+The paper has more to say about the meta-theory. See section 2 and section 4.
+
 > To the best of our knowledge, this paper is the first to explicitly acknowledge
 > that different approaches to a mixed-typed language lead to different notions
 > of soundness. Other papers state type soundness theorems for
 > [subset of the language](https://dl.acm.org/citation.cfm?id=2676971)
-> (aka, [soundiness](http://soundiness.org/) theorems)
-> or use the name "type soundness" [to describe a different property](https://dl.acm.org/citation.cfm?id=2676971).
+> (in the spirit of [soundiness](http://soundiness.org/))
+> or use the name "type soundness" to describe [a different property](https://dl.acm.org/citation.cfm?id=2676971).
 
 Next, we used the three semantics as a guide to arrive at three compilers for
  Typed Racket.
@@ -130,3 +133,8 @@ The full results, however, include many surprises --- see section 3 of the paper
    can we find improvements that lead to asymptotic differences, or is it a
    battle for constant factors?
 
+
+> Note: in this post, a _mixed-typed language_ is one that allows any combination
+> of static and dynamic typing. A _gradually-typed language_ is one that
+> allows a certain kind of mixing that satisfies properties defined by Siek,
+> Vitousek, Cimini, and Boyland ([SNAPL 2015](http://drops.dagstuhl.de/opus/volltexte/2015/5031/)).
