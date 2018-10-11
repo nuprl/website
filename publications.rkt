@@ -53,6 +53,11 @@
 
 @(define publications
    (list
+    (publication "The Behavior of Gradual Types: A User Study"
+                 "Preston Tunnell Wilson, Ben Greenman, Justin Pombrio, and Shriram Krishnamurthi"
+                 DLS
+                 2018
+                 "http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study/")
     (publication "Practical AJAX Race Detection for JavaScript Web Applications"
                  "Christoffer Quist Adamsen, Anders Møller, Saba Alimadadi, and Frank Tip"
                  ESECFSE
