@@ -49,9 +49,15 @@
 @(define ISSTA "International Symposium on Software Testing and Analysis (ISSTA)")
 @(define FCSD "Formal Structures for Computation and Deduction (FCSD)")
 @(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
+@(define ESECFSE "European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)")
 
 @(define publications
    (list
+    (publication "Practical AJAX Race Detection for JavaScript Web Applications"
+                 "Christoffer Quist Adamsen, Anders Møller, Saba Alimadadi, and Frank Tip"
+                 ESECFSE
+                 2018
+                 "http://users-cs.au.dk/amoeller/papers/ajaxracer/paper.pdf")
     (publication "Collapsible Contracts: Fixing a Pathology of Gradual Typing"
                  "Daniel Feltey, Ben Greenman, Christophe Scholliers, Robby Findler, and Vincent St-Amour"
                  OOPSLA
