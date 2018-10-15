@@ -78,6 +78,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "vitaly-language-development-standardization-haskell"
+     "Programming language development and standardization: How they (don’t) do in Haskell"
+     "Vitaly Bragilevsky"
+     "http://sfedu.ru/www/stat_pages22.show?p=RR/per_eng/D&params=(p_per_id=%3E2733)"
+     "Southern Federal University "
+     (datetime 2018 11 28 10 0)
+     "WVH 366"
+     @list{@p{Programming languages differ a lot in the ways of their development. Who is responsible for including new features and removing obsolete ones? What is a process of doing that? Is there any more or less formal language definition? How respected is that definition by the compilers? How is this changed if there is only one compiler? These questions are answered quite differently for various programming languages. Haskell takes its own way which was crystallized relatively recently. We have GHC Proposals in the form of the GitHub pull requests to suggest new language features. We also have the GHC Steering Committee with its own process to either accept or reject proposals. Finally, there is the Haskell 2020 Language (Haskell Prime) Committee with its own problem of being effectively dead. In this talk, I’d like to describe how this system works for Haskell and why it doesn’t work sometimes. I will discuss the most recent examples of transforming Haskell kinds system towards dependent types (started before the GHC Steering Committee was formed) and introducing linear types in Haskell (subject to the full-blown Committee discussion) among others. I will also characterize the current state and perspectives of the Haskell standardization process.}}
+     @list{@p{Vitaly Bragilevsky serves as both the Haskell 2020 Language Committee and the GHC Steering Committee member. He works as a Senior Lecturer at the Southern Federal University in Rostov-on-Don, Russia where he teaches undergraduate students functional programming and theory of computations. He is currently a grantee of the Fulbright Faculty Development Program holding temporary Courtesy Research Assistant position at the University of Oregon under the supervision of Prof. Zena Ariola. Vitaly Bragilevsky translated into Russian and edited translations of the several books on Haskell and the theory of programming languages. He is the author of ‘Haskell in Depth’ (Manning Publications, available via Manning’s early access program).}})
+
+    (seminar
      "waye-whip-contract-service"
      "Whip: Higher-order Contracts for Modern Services"
      "Lucas Waye"
