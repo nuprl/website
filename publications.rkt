@@ -49,9 +49,45 @@
 @(define ISSTA "International Symposium on Software Testing and Analysis (ISSTA)")
 @(define FCSD "Formal Structures for Computation and Deduction (FCSD)")
 @(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
+@(define ESECFSE "European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)")
 
 @(define publications
    (list
+    (publication "The Behavior of Gradual Types: A User Study"
+                 "Preston Tunnell Wilson, Ben Greenman, Justin Pombrio, and Shriram Krishnamurthi"
+                 DLS
+                 2018
+                 "http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study/")
+    (publication "Practical AJAX Race Detection for JavaScript Web Applications"
+                 "Christoffer Quist Adamsen, Anders Møller, Saba Alimadadi, and Frank Tip"
+                 ESECFSE
+                 2018
+                 "http://users-cs.au.dk/amoeller/papers/ajaxracer/paper.pdf")
+    (publication "Collapsible Contracts: Fixing a Pathology of Gradual Typing"
+                 "Daniel Feltey, Ben Greenman, Christophe Scholliers, Robby Findler, and Vincent St-Amour"
+                 OOPSLA
+                 2018
+                 "http://www.ccis.northeastern.edu/~types/publications/collapsible/fgsfs-oopsla-2018.pdf")
+    (publication "Finding Broken Promises in Asynchronous JavaScript Programs"
+                 "Saba Alimadadi, Di Zhong, Magnus Madsen, and Frank Tip"
+                 OOPSLA
+                 2018
+                 "http://ece.ubc.ca/~saba/dl/promisekeeper.pdf")
+    (publication "Julia Subtyping: a Rational Reconstruction"
+                 "Francesco Zappa Nardelli, Julia Belyakova, Artem Pelenitsyn, Benjamin Chung, Jeff Bezanson, and Jan Vitek"
+                 OOPSLA
+                 2018
+                 "http://janvitek.org/pubs/oopsla18a.pdf")
+    (publication "Julia: Dynamism and Performance Reconciled by Design"
+                 "Jeff Bezanson, Benjamin Chung, Jiahao Chen, Stefan Karpinski, Viral B Shah, Jan Vitek, and Lionel Zoubritzky"
+                 OOPSLA
+                 2018
+                 "http://janvitek.org/pubs/oopsla18b.pdf")
+    (publication "Test Generation for Higher-Order Functions in Dynamic Languages"
+                 "Marija Selakovic, Michael Pradel, Rezwana Karim Nawrin, and Frank Tip"
+                 OOPSLA
+                 2018
+                 "http://software-lab.org/publications/oopsla2018_LambdaTester.pdf")
     (publication "Rank Polymorphism Viewed as a Constraint Problem"
                  "Justin Slepak, Panagiotis Manolios, and Olin Shivers"
                  ARRAY
