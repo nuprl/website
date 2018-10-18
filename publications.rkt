@@ -102,7 +102,7 @@
                  "Mitchell Wand, Ryan Culpepper, Theophilos Giannakopoulos, and Andrew Cobb"
                  ICFP
                  2018
-                 #f)
+                 "https://doi.org/10.1145/3236782")
     (publication "A Spectrum of Soundness and Performance"
                  "Ben Greenman and Matthias Felleisen"
                  ICFP
