@@ -4,7 +4,7 @@
 
 In [Racket][2], programmers can create powerful abstractions by bundling
 together a family of values, functions, and syntax extensions in the form of a
-new language. These languages are typically untyped. [Turnstile][1] is a new
+new language. These languages, however, are typically untyped. [Turnstile][1] is a new
 Racket {library,language} for creating typed languages by
 integrating type checking with Racket's existing tools for
 describing languages. The technique is described by fellow PRL'ers
@@ -43,10 +43,10 @@ program determines both a type and an elaborated term in the target language.
 While macro expansion proceeds outside-in, type information typically flows up
 from the leaves during checking. To reconcile the two directions, Turnstile
 language forms invoke the macro expander on subexpressions when their types are
-needed for the current rule. The expansion yields both the elaboration of the
+needed for the current rule. This expansion yields both the elaboration of the
 term and its type, or fails with an error. Turnstile abstracts over the process
 of invoking the expander on subterms, allowing implementors to describe the
-language in terms of type checking and elaboration.
+language in terms of high-level type checking and elaboration specifications.
 
 ## Type & Elaboration Rules
 
@@ -70,10 +70,10 @@ Looking at this item by item, we see:
 2. `define-typed-syntax` is the primary way to define a language form in terms
    of its syntactic shape, how it is type checked, the target language term it
    expands to, and its type.
-3. The next part is a [`syntax-pattern`][18] describing the the shape of
+3. The next part is a [syntax-pattern][18] describing the the shape of
    the syntax this rule applies to. In this case, we're defining `λ` as a macro
    that expects a parenthesized sequence of identifier-colon-type triples,
-   describing the formal arguments to the procedure, followed by the body. The
+   describing the formal arguments to the procedure, followed by the body `e`. The
    `type` [syntax class][19] is provided by Turnstile, and describes the surface
    syntax of types (such as those created with `define-type-constructor`);
    internal operations over types use the expanded version of the type, which is
@@ -90,7 +90,7 @@ Looking at this item by item, we see:
    when we find a reference to it in `e`. In this rule, we are saying "while
    checking the right-hand-side, assume `x`---which elaborates to
    `x-`---has type `τ_in`, for each triple in the input syntax (signified by the
-   ellipses `...`)". More on the "renaming to `x-`" below.
+   ellipses `...`)". More on the "elaborates to `x-`" below.
 7. To the right of the turnstile, we write the expression we are checking, `e`,
    and patterns `e-` and `τ_out` matching the elaboration of `e` and its type,
    respectively.
@@ -102,7 +102,7 @@ Looking at this item by item, we see:
    `postfix-in`, such as in `(require (postfix-in - racket/base))` to bind
    `#%plain-lambda-`.
 9. Finally, we give the type of the term to the right of the `⇒`, referring to
-   variables bound in the premises.
+   pattern variables bound in the premises.
    
 #### Renaming Typed Variables
    
@@ -110,7 +110,7 @@ Turnstile lets the Racket expander take care of the details of variable scope,
 shadowing, etc. To associate identifier `x` with type `τ`, Turnstile binds `x`
 to a macro that knows `τ` when it expands. References to `x` now become
 references to that macro, and expanding them provides access to `τ`. Concretely,
-the code to implement this method looks something like this:
+the underlying Racket code implementing this behavior looks roughly like this:
 
 ```racket
 (let ([x- (assign-type (generate-temporary #'x) #'τ)])
@@ -120,14 +120,13 @@ the code to implement this method looks something like this:
 
 The type `τ` is attached as [metadata][6] for a new identifier `x-`, which is
 what `x` will transform to at any reference site. In order for this to work,
-`x-` must be distinct from `x`. While it is possible to define `x` as a macro
-that expands to `x` plus type information, it's a bit tricky to retrieve type
-information from an infinite loop.
+`x-` must be distinct from `x`---hence the `generate-temporary`---to avoid an
+infinite expansion loop.
 
 ### Application
 
-We can define a version of `#%app` that checks function applications to go along
-with our typed `λ`:
+We can define a version of `#%app` that type checks function applications to 
+accompany our typed `λ`:
 
 ```racket
 (define-typed-syntax (#%app e_fn e_arg ...) ≫
@@ -141,18 +140,18 @@ with our typed `λ`:
 
 1. The syntax pattern on the first line describes the shape of applications.
 2. On the second line, we pattern match the result of expanding and checking
-   `e_fn`, checking that it produces an arrow type. When we created the arrow
-   type `→` above, ``define-type-constructor` also created a [pattern
-   expander][15] that matches instances. Following the Racket convention, the
-   pattern expander is prefixed with `~`, yielding `~→`
+   `e_fn`, checking that it produces an arrow type. More specifically, when we defined the arrow
+   type `→` above, `define-type-constructor` also implicitly defined a [pattern
+   expander][15] `~→` (which uses the Racket `~` prefix convention for syntax patterns)
+   that matches instances of the type.
 3. The next clause checks that the number of provided arguments matches the
-   number required by the type.
+   arity of the function as specified by its type.
 4. Line 5 checks that each argument expression has the required type. Turnstile
-   supports [bidirectional typechecking][17], either inferring the type of a
-   term or checking a term satisfies a given type. We write `⇐ τ_in` in the
+   uses [bidirectional typechecking rules][17], which either infer the type of a
+   term or checks that a term satisfies a given type. We write `⇐ τ_in` in the
    premise to switch to checking mode.
-5. Elaborate to Racket function application, `#%plain-app`, with the usual
-   suffix, and produce type `τ_out` for the application
+5. Finally, typed function application elaborates to Racket's function application,
+  `#%plain-app`, with the usual suffix, and produces type `τ_out` for the application
    
 We can try out these new typed forms on a few examples:
 
@@ -223,7 +222,7 @@ This directs type checking to:
 1. Check each `e` in the sequence individually, obtaining an expanded `e-` and
    inferred type `τ` for each.
 2. Take the last type in the sequence and call it `τ-final`; Turnstile allows
-   using `syntax-parse` directives such as `#:with` as premises.
+   using `syntax-parse` [directives][23] such as `#:with` as premises.
 3. Expand to Racket's `begin` (with the usual `-` suffix) and give the whole
    expression the type of the last term in the body.
    
@@ -246,9 +245,9 @@ If we think about how type information is communicated between a binder and its
 reference we can see why `define` is a different beast than `let`
 
 ```
-(let ([x 5] (+ x 1)))
-       ^       ^
-       |       |- TO HERE
+(let ([x 5]) (+ x 1))
+       ^        ^
+       |        |- TO HERE
 FROM HERE
 ```
 
@@ -272,7 +271,7 @@ FROM HERE
 The problem is apparent: we can't see where the reference to `x` occurs! The
 information about the binding needs to escape from the `define` to the
 surrounding context. In other words, when we implement `define`, we don't have a
-handy body term available that contains all the possible references. Instead, we
+body term available that contains all the possible references. Instead, we
 will have to find a way of communicating the existence of the `x` binding and
 its type to the surrounding context.
 
@@ -386,7 +385,7 @@ expansion. So, the output of our `define` form actually looks like
 
 And since Turnstile includes `erased` in the stop list for `local-expand`,
 expansion stops before analyzing the rest of the output. The point of all this
-`erased` business, if you are wondering, is to dramatically improve the
+`erased` business, if you are wondering, is to improve the
 performance of Turnstile languages by avoiding unnecessary re-expansions.
 
 Control returns to the `begin` transformer, which turns to checking/expanding
@@ -621,3 +620,4 @@ this front, feel free to reach out.
 [20]: http://docs.racket-lang.org/reference/syntax-model.html?#%28tech._internal._definition._context%29
 [21]: https://scholarship.rice.edu/handle/1911/17993
 [22]: http://docs.racket-lang.org/turnstile/The_Turnstile_Reference.html?q=typeof#%28def._%28%28lib._turnstile%2Fmain..rkt%29._typeof%29%29
+[23]: http://docs.racket-lang.org/syntax/stxparse-specifying.html?#%28tech._pattern._directive%29
