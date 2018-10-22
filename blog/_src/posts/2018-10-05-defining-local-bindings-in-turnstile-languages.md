@@ -1,6 +1,6 @@
     Title: Defining Local Bindings in Turnstile Languages
     Date: 2018-10-05T15:05:17
-    Tags: by Sam Caldwell
+    Tags: turnstile, tutorial, language, dsl, by Sam Caldwell
 
 In [Racket][2], programmers can create powerful abstractions by bundling
 together a family of values, functions, and syntax extensions in the form of a
@@ -41,12 +41,13 @@ put the logic for typechecking. With forms defined as such, macro expanding a
 program determines both a type and an elaborated term in the target language.
 
 While macro expansion proceeds outside-in, type information typically flows up
-from the leaves during checking. To reconcile the two directions, Turnstile
-language forms invoke the macro expander on subexpressions when their types are
-needed for the current rule. This expansion yields both the elaboration of the
-term and its type, or fails with an error. Turnstile abstracts over the process
-of invoking the expander on subterms, allowing implementors to describe the
-language in terms of high-level type checking and elaboration specifications.
+from the leaves of the AST during checking. To reconcile the two directions,
+Turnstile language forms invoke the macro expander on subexpressions when their
+types are needed for the current rule. This expansion yields both the
+elaboration of the term and its type, or fails with an error. Turnstile
+abstracts over the process of invoking the expander on subterms, allowing
+implementors to describe the language in terms of high-level type checking and
+elaboration specifications.
 
 ## Type & Elaboration Rules
 
