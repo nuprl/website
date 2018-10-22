@@ -78,11 +78,22 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "fare-better-stories-reframing-from-programs-to-programming"
+     "Better Stories, Better Languages — Reframing from Programs to Programming"
+     "François-René Rideau"
+     "http://fare.tunes.org"
+     "Alacris"
+     (datetime 2019 1 30 10 0)
+     "WVH 366"
+     @list{@p{Software tools imply a story. New stories can help invent new tools. Explicit stories are a great meta-tool... and provide a systematic way to improve the design of programming language design. To illustrate my point, I will present a series of pairs of stories, each time approaching a same topic with very different consequences. Many of my stories will be familiar to most of you, some other stories less so. Hopefully they will be enlightening as well as entertaining... and so will the meta-story be. (Earlier versions of this talk were given at International Lisp Conference 2009, Lisp NYC 2014-10, and more recently LambdaConf 2017.)}}
+     @list{@p{François-René Rideau is Co-Founder and Chief Architect at Alacris.io,a company developing a "Blockchain Layer 2 Operating System" using formal methods. Once founder of the TUNES Project, he left academic research on Programming Languages and Distributed Systems to build industrial software at ITA Software, then Google and Bridgewater Associates, before he finally became his own Entrepreneur. Long-standing member of the Lisp community, he runs the Boston Lisp Meeting and still co-maintains ASDF (the Common Lisp build system),though he recently jumped ship to Gerbil Scheme, and now uses OCaml at work.}})
+
+    (seminar
      "vitaly-language-development-standardization-haskell"
      "Programming language development and standardization: How they (don’t) do in Haskell"
      "Vitaly Bragilevsky"
      "http://sfedu.ru/www/stat_pages22.show?p=RR/per_eng/D&params=(p_per_id=%3E2733)"
-     "Southern Federal University "
+     "Southern Federal University"
      (datetime 2018 11 28 10 0)
      "WVH 366"
      @list{@p{Programming languages differ a lot in the ways of their development. Who is responsible for including new features and removing obsolete ones? What is a process of doing that? Is there any more or less formal language definition? How respected is that definition by the compilers? How is this changed if there is only one compiler? These questions are answered quite differently for various programming languages. Haskell takes its own way which was crystallized relatively recently. We have GHC Proposals in the form of the GitHub pull requests to suggest new language features. We also have the GHC Steering Committee with its own process to either accept or reject proposals. Finally, there is the Haskell 2020 Language (Haskell Prime) Committee with its own problem of being effectively dead. In this talk, I’d like to describe how this system works for Haskell and why it doesn’t work sometimes. I will discuss the most recent examples of transforming Haskell kinds system towards dependent types (started before the GHC Steering Committee was formed) and introducing linear types in Haskell (subject to the full-blown Committee discussion) among others. I will also characterize the current state and perspectives of the Haskell standardization process.}}
