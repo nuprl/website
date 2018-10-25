@@ -1142,7 +1142,7 @@
        @(when link
           @list{
             @span[class: "pn-pub-link"]{
-              [@a[class: "pn-url" href: link link]]}})
+              [@a[class: "pn-url" href: link]{link @span[class: "glyphicon glyphicon-link"]}]}})
        @br{}
        @span[class: "pn-authors" authors]
        @br{}
