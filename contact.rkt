@@ -14,88 +14,62 @@
           @center{
             @div[class: "row"]{
               @h2{Who's in charge?}
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{Webmaster} @a[href: "mailto:leif@leifandersen.net"]{Leif Andersen}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{PL Seminar} @a[href: "mailto:goel.aviral@gmail.com"]{Aviral Goel}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{PL Seminar, Junior} @a[href: "mailto:shin.hy@husky.neu.edu"]{Hyeyoung Shin}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{Happy Hour} ???
-                @br{}
-                @br{}
               }
             }
 
             @div[class: "row"]{
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{Coffee Czar} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{Twitter Tsar} @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{Blog Maintainer} @a[href: "mailto:samc@ccs.neu.edu"]{Sam Caldwell}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-3"]{
+              @div[class: "col-xs-3 pad-contact"]{
                 @h4{People Page Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
-                @br{}
-                @br{}
               }
             }
 
             @div[class: "row"]{
-              @div[class: "col-xs-4"]{
+              @div[class: "col-xs-4 pad-contact"]{
                 @h4{Publication Page Maintainer} @a[href: "mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-4"]{
+              @div[class: "col-xs-4 pad-contact"]{
                 @h4{Software Page Maintainer} @a[href: "mailto:leif@ccs.neu.edu"]{Leif Andersen}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-4"]{
+              @div[class: "col-xs-4 pad-contact"]{
                 @h4{Teaching Page Maintainer} @a[href: "mailto:andrew.cobb@gmail.com"]{Andrew Cobb}
-                @br{}
-                @br{}
               }
             }
 
             @div[class: "row"]{
-              @div[class: "col-xs-6"]{
+              @div[class: "col-xs-6 pad-contact"]{
                 @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
-                @br{}
-                @br{}
               }
 
-              @div[class: "col-xs-6"]{
+              @div[class: "col-xs-6 pad-contact"]{
                 @h4{Mailing List Maintainers} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} (@tt{prl-students}) @br{} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung} (@tt{prl-staff})
-                @br{}
-                @br{}
               }
             }
           }
