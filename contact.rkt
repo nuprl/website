@@ -29,9 +29,7 @@
               @div[class: "col-xs-3 pad-contact"]{
                 @h4{Happy Hour} ???
               }
-            }
 
-            @div[class: "row"]{
               @div[class: "col-xs-3 pad-contact"]{
                 @h4{Coffee Czar} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}
               }
@@ -47,9 +45,7 @@
               @div[class: "col-xs-3 pad-contact"]{
                 @h4{People Page Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
               }
-            }
 
-            @div[class: "row"]{
               @div[class: "col-xs-4 pad-contact"]{
                 @h4{Publication Page Maintainer} @a[href: "mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
               }
@@ -61,9 +57,7 @@
               @div[class: "col-xs-4 pad-contact"]{
                 @h4{Teaching Page Maintainer} @a[href: "mailto:andrew.cobb@gmail.com"]{Andrew Cobb}
               }
-            }
 
-            @div[class: "row"]{
               @div[class: "col-xs-6 pad-contact"]{
                 @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
               }
@@ -71,7 +65,7 @@
               @div[class: "col-xs-6 pad-contact"]{
                 @h4{Mailing List Maintainers} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} (@tt{prl-students}) @br{} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung} (@tt{prl-staff})
               }
-            }
+           }
           }
           
 
