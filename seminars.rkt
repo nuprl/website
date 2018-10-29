@@ -89,6 +89,17 @@
      @list{@p{François-René Rideau is Co-Founder and Chief Architect at Alacris.io,a company developing a "Blockchain Layer 2 Operating System" using formal methods. Once founder of the TUNES Project, he left academic research on Programming Languages and Distributed Systems to build industrial software at ITA Software, then Google and Bridgewater Associates, before he finally became his own Entrepreneur. Long-standing member of the Lisp community, he runs the Boston Lisp Meeting and still co-maintains ASDF (the Common Lisp build system),though he recently jumped ship to Gerbil Scheme, and now uses OCaml at work.}})
 
     (seminar
+     "waye-whip-contract-service"
+     "Whip: Higher-order Contracts for Modern Services"
+     "Lucas Waye"
+     "http://lucaswaye.com/"
+     "Facebook"
+     (datetime 2018 12 12 10 0)
+     "WVH 366"
+     @list{@p{Modern service-oriented applications forgo semantically rich protocols and middleware when composing services. Instead, they embrace the loosely-coupled development and deployment of services that communicate via simple network protocols. Even though these applications do expose interfaces that are higher-order in spirit, the simplicity of the network protocols forces them to rely on brittle low-level encodings. To bridge the apparent semantic gap, programmers introduce ad-hoc and error-prone defensive code. Inspired by Design by Contract, we choose a different route to bridge this gap. We introduce Whip, a contract system for modern services. Whip (i) provides programmers with a higher-order contract language tailored to the needs of modern services; and (ii) monitors services at run time to detect services that do not live up to their advertised interfaces. Contract monitoring is local to a service. Services are treated as black boxes, allowing heterogeneous implementation languages without modification to services' code. Thus, Whip does not disturb the loosely coupled nature of modern services.}}
+     @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
+
+    (seminar
      "vitaly-language-development-standardization-haskell"
      "Programming language development and standardization: How they (don’t) do in Haskell"
      "Vitaly Bragilevsky"
@@ -98,17 +109,6 @@
      "WVH 366"
      @list{@p{Programming languages differ a lot in the ways of their development. Who is responsible for including new features and removing obsolete ones? What is a process of doing that? Is there any more or less formal language definition? How respected is that definition by the compilers? How is this changed if there is only one compiler? These questions are answered quite differently for various programming languages. Haskell takes its own way which was crystallized relatively recently. We have GHC Proposals in the form of the GitHub pull requests to suggest new language features. We also have the GHC Steering Committee with its own process to either accept or reject proposals. Finally, there is the Haskell 2020 Language (Haskell Prime) Committee with its own problem of being effectively dead. In this talk, I’d like to describe how this system works for Haskell and why it doesn’t work sometimes. I will discuss the most recent examples of transforming Haskell kinds system towards dependent types (started before the GHC Steering Committee was formed) and introducing linear types in Haskell (subject to the full-blown Committee discussion) among others. I will also characterize the current state and perspectives of the Haskell standardization process.}}
      @list{@p{Vitaly Bragilevsky serves as both the Haskell 2020 Language Committee and the GHC Steering Committee member. He works as a Senior Lecturer at the Southern Federal University in Rostov-on-Don, Russia where he teaches undergraduate students functional programming and theory of computations. He is currently a grantee of the Fulbright Faculty Development Program holding temporary Courtesy Research Assistant position at the University of Oregon under the supervision of Prof. Zena Ariola. Vitaly Bragilevsky translated into Russian and edited translations of the several books on Haskell and the theory of programming languages. He is the author of ‘Haskell in Depth’ (Manning Publications, available via Manning’s early access program).}})
-
-    (seminar
-     "waye-whip-contract-service"
-     "Whip: Higher-order Contracts for Modern Services"
-     "Lucas Waye"
-     "http://lucaswaye.com/"
-     "Facebook"
-     (datetime 2018 11 7 10 0)
-     "WVH 366"
-     @list{@p{Modern service-oriented applications forgo semantically rich protocols and middleware when composing services. Instead, they embrace the loosely-coupled development and deployment of services that communicate via simple network protocols. Even though these applications do expose interfaces that are higher-order in spirit, the simplicity of the network protocols forces them to rely on brittle low-level encodings. To bridge the apparent semantic gap, programmers introduce ad-hoc and error-prone defensive code. Inspired by Design by Contract, we choose a different route to bridge this gap. We introduce Whip, a contract system for modern services. Whip (i) provides programmers with a higher-order contract language tailored to the needs of modern services; and (ii) monitors services at run time to detect services that do not live up to their advertised interfaces. Contract monitoring is local to a service. Services are treated as black boxes, allowing heterogeneous implementation languages without modification to services' code. Thus, Whip does not disturb the loosely coupled nature of modern services.}}
-     @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
      "heineman-synthesize-expression-problem"
