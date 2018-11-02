@@ -100,6 +100,17 @@
      @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
+     "webber-goblins-and-spritely"
+     "Goblins and Spritely: from the actor model to distributed virtual worlds"
+     "Christoper Lemmer Webber"
+     "https://dustycloud.org/"
+     "ActivityPub"
+     (datetime 2018 12 5 10 0)
+     "WVH 366"
+     @list{@p{Goblins is an actor model implementation for Racket, inspired by object-capability secure distributed progamming languages such as E with a few new twists of its own thrown in. Goblins is the foundation for a project to build secure, player/user-programmable virtual worlds named Spritely. Spritely builds on the success of the ideas from the ActivityPub protocol, which has succeeded at connecting together various distributed social network projects, extending them to pull in rich interactive and game aspects. See what is built so far, what's coming next, and how the actor model and object capabilities tie together all these ideas to enable a robust and secure distributed system.}}
+     @list{@p{Christopher Lemmer Webber is a user freedom advocate who works on distributed social network technology. They are most well known for their work on the W3C ActivityPub federated protocol, which connects over 1.5 million users across the distributed social web. Chris enjoys programming in lisp/scheme flavored languages, especially Racket.}})
+
+    (seminar
      "vitaly-language-development-standardization-haskell"
      "Programming language development and standardization: How they (don’t) do in Haskell"
      "Vitaly Bragilevsky"
