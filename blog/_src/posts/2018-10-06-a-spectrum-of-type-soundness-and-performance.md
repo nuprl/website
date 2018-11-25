@@ -1,6 +1,6 @@
     Title: A Spectrum of Type Soundness and Performance
     Date: 2018-10-06T11:23:35
-    Tags: migratory typing, gradual typing, by Ben Greenman
+    Tags: migratory typing, gradual typing, extended abstract, by Ben Greenman
 
 The literature on mixed-typed languages presents (at least) three fundamentally
 different ways of thinking about the integrity of programs that combine 
