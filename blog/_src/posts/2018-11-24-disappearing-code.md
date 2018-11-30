@@ -56,16 +56,17 @@ In each story, the maintainers of a software system threw away some old
  code to make their job easier in the short term.
 How can we stop this "re-inventing the wheel" from happening?
 
-Martin Rinard's solution is to let it happen, but provide tools to make the
- short-term, pragmatic solution into a more robust system.
+Martin Rinard's solution is to let maintenance programmers keep their current
+ habits, but provide tools to make the short-term, pragmatic solutions into a
+ more robust systems.
 Search for "[failure-oblivious computing](https://people.csail.mit.edu/rinard/paper/osdi04.pdf)"
- to learn more.
+ to learn more (this was the topic of his [talk][rinard]).
 
 In Story 1, the maintainers were able to avoid the DSL by modifying an
  inherited blob of DSL-generated code.
 If the DSL did not generate code, history might have taken a different course;
  it might be best to start with a language that offers tools for linguistic
- re-use, and to build a DSL from these tools.
+ re-use, and to build a DSL from these tools --- so there is no generated code.
 The Racket programming language is exploring this path.
 For a recent example, see the [video-lang paper](https://www2.ccs.neu.edu/racket/pubs/icfp17-acf.pdf).
 
