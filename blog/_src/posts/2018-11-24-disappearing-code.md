@@ -22,7 +22,7 @@ The firm sent a zipfile; Martin found six versions of the code inside; the
 - **Version 2** : the DSL source was the same as version 1, but the generated
   code was slightly modified
 - ...
-- **Version 6** : the generated code is the source code and the DSL is gone
+- **Version 6** : the generated code was the source code and the DSL was gone
 
 The moral of Martin's story was: 
  (1) the creators of a software system are often different from the maintainers,
