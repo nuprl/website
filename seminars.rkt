@@ -604,7 +604,7 @@ de Louvain in Belgium.}})
             model type refinement systems built over pure lambda calculus}
        @p{I will not assume any prior background in category theory, although as background reading audience
           members may be interested in the lecture notes for my recent course at OPLSS
-          (@url{http://noamz.org/oplss16/refinements-notes.pdf"}, especially Ch.3).}}
+          (@url{http://noamz.org/oplss16/refinements-notes.pdf}, especially Ch.3).}}
      @list{Since receiving his PhD from Carnegie Mellon in 2009, Noam Zeilberger has been actively pursuing a career as an itinerant postdoc, with gigs in Paris (Laboratoire PPS), Madrid (IMDEA Software), Princeton (IAS), and back in Paris (MSR-Inria).  He is currently a member of Inria Team Parsifal at Ecole Polytechnique.  In his free time, he enjoys enumerating lambda terms, and his favorite combinators are B, C and I.})
 
     (seminar
