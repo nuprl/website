@@ -82,11 +82,7 @@ Always pair program!
 
 - - -
 
-### Comments
-
-#### 2018-12-03T15:37:00
-
-You wrote:
+#### Addendum: comment from Mitch Wand
 
 > The best solution is probably to start with a team and keep the culture alive. Always pair program!  
 
