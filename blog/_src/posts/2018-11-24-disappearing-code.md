@@ -80,5 +80,20 @@ Perhaps we need a language that allows mixing statically-typed and
 The best solution is probably to start with a team and keep the culture alive.
 Always pair program!
 
+- - -
+
+#### Addendum: comment from Mitch Wand
+
+> The best solution is probably to start with a team and keep the culture alive. Always pair program!  
+
+Ermm, this works better for sourdough bread than for people.
+
+Even in the not-so-real world of checking student solutions, there's often no way of guaranteeing that one half of a pair will be around for the second round.   They may be on co-op.  Or the course will not be offered the next semster/year/etc.  Or the course will change at the next offering (from OCaml to Python or from Racket to Java) so that large chunks of the infrastructure will have to be discarded or rewritten.
+
+The "real" solution is to write literate code (as we preached incessantly in PDP), so that the next reader will have at least some clue as about what you wrote.   This just may be sufficient incentive to modify rather than rebuild from scratch.
+
+Ever the optimist,
+--Mitch
+
 [rinard]: https://conf.researchr.org/event/sle-2018/papers-a-new-approach-for-software-correctness-and-reliability
 [cs3110-cli]: https://gitlab.com/bengreenman/ocaml_tools/
