@@ -77,6 +77,17 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
 
+    ;; (seminar
+    ;;  "waye-whip-contract-service"
+    ;;  "Whip: Higher-order Contracts for Modern Services"
+    ;;  "Lucas Waye"
+    ;;  "http://lucaswaye.com/"
+    ;;  "Facebook"
+    ;;  (datetime 2018 12 12 10 0)
+    ;;  "WVH 366"
+    ;;  @list{@p{Modern service-oriented applications forgo semantically rich protocols and middleware when composing services. Instead, they embrace the loosely-coupled development and deployment of services that communicate via simple network protocols. Even though these applications do expose interfaces that are higher-order in spirit, the simplicity of the network protocols forces them to rely on brittle low-level encodings. To bridge the apparent semantic gap, programmers introduce ad-hoc and error-prone defensive code. Inspired by Design by Contract, we choose a different route to bridge this gap. We introduce Whip, a contract system for modern services. Whip (i) provides programmers with a higher-order contract language tailored to the needs of modern services; and (ii) monitors services at run time to detect services that do not live up to their advertised interfaces. Contract monitoring is local to a service. Services are treated as black boxes, allowing heterogeneous implementation languages without modification to services' code. Thus, Whip does not disturb the loosely coupled nature of modern services.}}
+    ;;  @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
+
     (seminar
      "fare-better-stories-reframing-from-programs-to-programming"
      "Better Stories, Better Languages — Reframing from Programs to Programming"
@@ -87,17 +98,6 @@
      "WVH 366"
      @list{@p{Software tools imply a story. New stories can help invent new tools. Explicit stories are a great meta-tool... and provide a systematic way to improve the design of programming language design. To illustrate my point, I will present a series of pairs of stories, each time approaching a same topic with very different consequences. Many of my stories will be familiar to most of you, some other stories less so. Hopefully they will be enlightening as well as entertaining... and so will the meta-story be. (Earlier versions of this talk were given at International Lisp Conference 2009, Lisp NYC 2014-10, and more recently LambdaConf 2017.)}}
      @list{@p{François-René Rideau is Co-Founder and Chief Architect at Alacris.io,a company developing a "Blockchain Layer 2 Operating System" using formal methods. Once founder of the TUNES Project, he left academic research on Programming Languages and Distributed Systems to build industrial software at ITA Software, then Google and Bridgewater Associates, before he finally became his own Entrepreneur. Long-standing member of the Lisp community, he runs the Boston Lisp Meeting and still co-maintains ASDF (the Common Lisp build system),though he recently jumped ship to Gerbil Scheme, and now uses OCaml at work.}})
-
-    (seminar
-     "waye-whip-contract-service"
-     "Whip: Higher-order Contracts for Modern Services"
-     "Lucas Waye"
-     "http://lucaswaye.com/"
-     "Facebook"
-     (datetime 2018 12 12 10 0)
-     "WVH 366"
-     @list{@p{Modern service-oriented applications forgo semantically rich protocols and middleware when composing services. Instead, they embrace the loosely-coupled development and deployment of services that communicate via simple network protocols. Even though these applications do expose interfaces that are higher-order in spirit, the simplicity of the network protocols forces them to rely on brittle low-level encodings. To bridge the apparent semantic gap, programmers introduce ad-hoc and error-prone defensive code. Inspired by Design by Contract, we choose a different route to bridge this gap. We introduce Whip, a contract system for modern services. Whip (i) provides programmers with a higher-order contract language tailored to the needs of modern services; and (ii) monitors services at run time to detect services that do not live up to their advertised interfaces. Contract monitoring is local to a service. Services are treated as black boxes, allowing heterogeneous implementation languages without modification to services' code. Thus, Whip does not disturb the loosely coupled nature of modern services.}}
-     @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
      "webber-goblins-and-spritely"
