@@ -29,8 +29,13 @@ Researchers disagree, however, on what the semantics of a mixed-typed language
  should be; there are [at least three competing proposals](/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/)
  for combining a dynamically-typed language with a similar statically-typed language.
 
-To help inform the discussion, we recently designed a survey to see what
- programmers think of three mixed-typed semantics.
+> It's an interesting situation.
+> There are dozens of papers on the semantics of gradual types---and
+> [many claim](http://www.ccs.neu.edu/home/types/resources/talks/tgpk-dls-2018.pdf)
+> to have developers in mind---but zero papers that ask developers what they think.
+
+To help inform the discussion, we recently designed a [survey][data]
+ to see what programmers think of three mixed-typed semantics.
 The survey is based on 8 example programs; we selected these 8 programs because the set as a whole tells the three mixed-typed semantics apart.
 For each program, the survey presents a few possible outcomes of running the
  program and asks participants for their opinion on each outcome.
@@ -48,7 +53,7 @@ A second option is to reject the write operation (on line 4) because it attempts
  to write a number to a variable of type `Array(String)`.
 A third option is to reject the assignment after the read operation (on line 5)
  because it attempts to assign a string to a variable of type `Number`.
-These are the three behaviors in the survey.
+These are the three behaviors in the survey:
 
   ![Figure 2: behaviors for the example question](/img/gtsurvey-example-behaviors.png)
 
@@ -83,7 +88,7 @@ Each cell of the matrix contains a bar chart showing the attitudes
  that we collected.
 
 > Unlike the survey question, the behaviors in the results are labeled as
-> **Deep**, **Erasure**, and **Shallow**. These are the names we chose for the three
+> **Deep**, **Erasure**, and **Shallow**. These names describe the three
 > mixed-typed semantics.
 
 For this question, the software engineers (left column, green bars)
@@ -93,13 +98,16 @@ The students (mid column, blue bars) also show consensus on "Dislike and
  for the **Shallow** behavior.
 The Mechanical Turk workers are divided on every behavior.
 
-See [the paper][paper] for the responses to other questions.
+See [the paper][paper] for the other questions and responses.
 
 Overall, our main finding is that respondents preferred behaviors that enforced
  full types and reported runtime mismatches as early as possible.
-The takeaway is thus: 
- if you are designing a mixed-typed language and choose **not** to enforce
- full types, then make sure to explain this behavior to users!
+The takeaway is thus:
+
+<p style="margin-left: 40px; margin-right: 40px">if you are designing a
+mixed-typed language and choose <strong>not</strong> to enforce full types, then make sure
+to explain this behavior to users!</p>
+
 Put lots of example programs in the language's documentation.
 The programs in the survey can be adapted to explain how your chosen
  behavior differs from alternatives.
@@ -108,9 +116,9 @@ The programs in the survey can be adapted to explain how your chosen
 
 ## Questions
 
-This space is reserved for questions that are not clearly answered in the paper.
+Here are some good questions we've gotten that are not clearly answered in the paper.
 
-#### Q. did any respondents "expect" more than one behavior?
+#### Q. Did any respondents "expect" more than one behavior?
 
 Yes, 59% <!-- 20/34 --> of the software engineers
 and 82% <!-- 14/17 --> of the students selected "Liked and Expected" and/or
@@ -124,7 +132,7 @@ and 82% <!-- 14/17 --> of the students selected "Liked and Expected" and/or
 <!-- ids for "double-expect" students : R_9B6WHWEX5l0DskN R_22VAu37cGWQPQx1 R_3hgYSaGy2tbyY3G R_3rTbAqgn1rhQK4d R_r3HqAP1yGRXHaZX R_1l05qvQ1sYOCcCF R_3qaMT9xR7CRYg2Y R_1Li0sGHkxk1VfcA R_24ITtgvBzg9RpE3 R_3HzshHbDWkayp4t R_5mtEFLtSX0iPVOp R_1IR6vdpmVw4OCqV R_2XpWlkKjH9LQqln R_DoQrROe0dcb1YJz -->
 
 
-#### Q. did the respondents have a prior preference for static or dynamic typing?
+#### Q. Did the respondents have a prior preference for static or dynamic typing?
 
 Near the end of the survey we asked: "Which do you prefer, typed or untyped programming?".
 See table 2 of [the paper][paper] for coded responses to this question,
