@@ -83,14 +83,72 @@ If a TypeScript expression `e` has the static type `T` and evaluates to
 
 [Reticulated]() is a migratory typing system for Python that follows a
  so-called _transient_ implementation strategy.
-Reticulated/transient first appeared in the academic literature in 2014,
- and was introduced as an approach that provides run-time guarantees (goal **G2**)
- without using proxy values.
-<!-- link to proxies -->
+A Reticulated module gets type-checked and compiles to a Python module that
+ defends itself from **certain** type-invalid inputs through the use of
+ **simple** assertions.
+For example, here is a Reticulated function
+ that computes the average of a list of numbers:
 
-> 
+```
+# Reticulated (commit e478343)
+def average(nums : List(Float)) -> Float:
+  if ns:
+    return sum(ns) / len(ns)
+  else:
+    raise ValueError("average: expected non-empty list")
+```
+
+and here is the Python code it compiles to:
+
+```
+from retic.runtime import *
+from retic.transient import *
+from retic.typing import *
+
+def average(nums):
+    check_type_list(nums)
+    if ns:
+        return check_type_float((check_type_function(sum)(ns) / check_type_function(len)(ns)))
+    else:
+        raise check_type_function(ValueError)('average: expected non-empty list')
+```
+
+The Reticulated compiler removes all type annotations and inserts `check_type`
+ assertions throughout the code.
+In `average`, these assertions check that: (1) the input is a list,
+ (2) the output is a `float`, (3) and the names `sum` `len` and
+ `ValueError` point to callable values.
+That's all; the assertions **do not check** that `nums` contains only floating-point
+ numbers, and they do not check that the function bound to `sum` is defined
+ for a single argument.
+
+If `nums` contains something other than floating point numbers, then the
+ call to `average` may cause `sum` to raise an exception or it may silently
+ compute a nonsensical result.
+The behavior depends on the implementation of `sum` in the same way that
+ the behavior of a TypeScript function depends on the JavaScript functions
+ that it depends on.
+
+By contrast to erasure, every type in a Reticulated module translates to its
+ top-level type constructor `C(T)`, e.g.:
+
+- `C(Float)                = Float`
+- `C(List(Float))          = List`
+- `C(List(Float) -> Float) = ->`
+
+And if `e` is an expression with static type `T` that evaluates to a value `v`,
+ then `v` is guaranteed to have a top-level shape that matches the `C(T)`
+ constructor.
 
 
+<!-- TODO back this up -->
+> Note: the Reticulated syntax for type annotations is similar to the one
+> proposed in PEP 484, but not identical. For example, Reticulated does not
+> require forward references to be embedded in strings.
+
+
+
+## Java migratory typing
 
 
 
@@ -110,4 +168,4 @@ dependent interoperability
 ## Acknowledgments
 
 Thank you to Ryan Culpepper and Jesse Tov for noticing the similarity between
- Java type erasure and _transient_ migratory typing.
+ Java type erasure and transient migratory typing.
