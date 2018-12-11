@@ -1,20 +1,6 @@
     Title: The Behavior of Gradual Types: A User Study
-    Date: 2018-11-24T19:50:33
+    Date: 2018-12-11T19:50:33
     Tags: migratory typing, gradual typing, extended abstract, by Ben Greenman
-
-<!-- To help inform the discussion, we recently designed a survey to see what -->
-<!--  programmers think of three mixed-typed semantics. -->
-<!-- There are several different gradual typing semantics, reflecting different -->
-<!-- trade-offs between performance and type soundness guarantees. Notably absent, -->
-<!-- however, are any data on which of these semantics developers actually prefer.  -->
-<!--  -->
-<!-- We begin to rectify this shortcoming by surveying professional developers, -->
-<!-- computer science students, and Mechanical Turk workers on their preferences -->
-<!-- between three gradual typing semantics. These semantics reflect important -->
-<!-- points in the design space, corresponding to the behaviors of Typed Racket, -->
-<!-- TypeScript, and Reticulated Python. Our most important finding is that our -->
-<!-- respondents prefer a runtime semantics that fully enforces statically declared -->
-<!-- types. -->
 
 <!-- more -->
 
