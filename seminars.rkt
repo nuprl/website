@@ -100,7 +100,7 @@
      @list{@p{François-René Rideau is Co-Founder and Chief Architect at Alacris.io,a company developing a "Blockchain Layer 2 Operating System" using formal methods. Once founder of the TUNES Project, he left academic research on Programming Languages and Distributed Systems to build industrial software at ITA Software, then Google and Bridgewater Associates, before he finally became his own Entrepreneur. Long-standing member of the Lisp community, he runs the Boston Lisp Meeting and still co-maintains ASDF (the Common Lisp build system),though he recently jumped ship to Gerbil Scheme, and now uses OCaml at work.}})
 
     (seminar
-     "webber-goblins-and-spritely"
+     "chris-goblins-and-spritely"
      "Goblins and Spritely: from the actor model to distributed virtual worlds"
      "Christoper Lemmer Webber"
      "https://dustycloud.org/"

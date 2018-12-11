@@ -1,0 +1,265 @@
+# Goblins and Spritely: from the actor model to distributed virtual worlds
+2018-12-05
+Christopher Lemmer Webber
+
+Slides
+https://dustycloud.org/misc/spritely-northeastern-2018.pdf
+
+Slides source
+https://gitlab.com/dustyweb/talks/blob/master/spritely/northeastern-2018/spritely-northeastern-2018.rkt
+
+Notes by Ben Greenman
+https://prl.ccs.neu.edu/seminar-notes/README.md
+
+## Talk
+
+Web we want vs. web we got
+
+> W: I'm going to object --- this "web we want" reminds me of Saul Kripke's
+> model of the universe as a homogenous network of ping-pong balls. In that
+> world, it'd be very hard to find where you are (if that's defined), what you
+> need, ...  so I don't think that's the web we want. We need some kind of
+> structure!  I'm not advocating for the web we got, but lets keep this in mind
+> before talking about hyper-distributed super-homogenous structures
+
+> Chris: Sure. The advantage of these "equal" nodes connected is that none are
+> overpowering and none can bring down the network if they fail.
+
+Centralized model has many downsides, instead lets federate.
+
+> S: can you explain federate?
+> 
+> Chris: federation is the process of being able to send messages between nodes
+> Think about email, can host your own servers or use an organizations server,
+> and the different servers can cnmmunicate directly. Federation is what lets
+> them communicate.
+
+ActivityPub, example
+
+> J: how many attributes are core parts, how many are app-specific?
+>
+> Chris: we have vocabulary called ActivityStreams, and you can define extensions
+>
+> B: what was the `@context`?
+>
+> Chris: the context field points to the URI of a resource that that gives meaning
+> to the other fields in the message. I usually don't talk about it because
+> implementors normally want to think of these as JSON messages with a simple
+> format, but the format is open to extension if you don't specify a context,
+> we assume ActivityStream
+
+Further example, POST, Create, subject-predicate-object structure
+
+> B: the content has HTML tags, how does the recipient know to interpret those?
+>
+> Chris: HTML-embedded-in-strings is the default, but its possible to override the
+> content type
+>
+> M: why did you choose strings?
+>
+> Chris: if it was me alone I would send nested S-expressions. But anyway, most of
+> the message is structured its just the 'content' is an embedded structure
+>
+> M: no, you're using strings with HTML inside
+>
+> Chris: oh, it has to be escaped because the communities on the modern web expect JSON
+>
+> H: M, are you suggesting represing HTML as JSON arrays?
+>
+> M: yes
+>
+> Chris: believe it or not, most of the rest of the world is bothered by the
+> amount of 'typing' going on with the context already
+
+> L: you said 'check nothing nasty' and 'hope' at different times;
+> whats the enforcement boundary?
+>
+> Chris: at the protocol level, all we can do is ask implemntors to check. So I hope,
+> as a protocol designer, that people enforce the rules. But people leave tags
+> unmatched etc. The specification runs away from you at that point. Its off in
+> the wild.
+>
+> L: does hope apply only to content, or other fields?
+>
+> Chris: the other fields are specified pretty well
+
+> M: the protocol seems higher-order, or on the periphery. If something
+> goes wrong do you have any idea who to blame?
+>
+> Chris: its a very data-y protocol, we added as much structure as we could. But
+> there are no guarantees about what we receive ... happens in implementation-land.
+>
+> M: here's an example interaction "server B please contact server C on
+> my behalf and forward arguments X,Y,Z" ... with a chain of interactions where
+> something breaks, how can you tell where it broke?
+> 
+> Chris: I like this question, but we're getting ahead of the game. Most of the
+> implementations now are only sharing social network posts. It may be that
+> ActivityPub is useful for richer conversations but we'll see.
+
+ActivityStreams is the language underneath. ActivityPub describes behavior
+
+Last March, W3C approved ActivityPub / Stream.
+
+> H: was it a tower of babel issue, or did ActivityPub bring something new to help?
+>
+> Chris: certain amount of tower of babel, need shared vocabulary and shared networking
+> layer, and shared behavior for those messages. The W3C working group defined all three.
+> Other ptotocols did things differently ... we unified all three. Kind of similar to
+> language standardization ... and our inter-compatibiiity is probably about as
+> good as RnRS scheme ... (laughter) ... wow, this is probably the only room
+> that would laugh at that joke
+
+Peertube / Mastodon demo, mastodon user subscribes to peertube user and they
+can have an interaction
+
+So, what's left to do?
+- survive failure ... witches.town went down and (1) direct users lost messages
+  and (2) linked interactions have messed up conversations
+- highly secure, rich interactions
+- virtual worlds / games ... I claim that if we use ActivityPub with an actor
+  model implementation, then we can get there
+
+Actor model is everywhere ....
+
+> J: what is not an actor model? you defined it so broadly as message passing
+>
+> Chris: one distinction is, how much was this implementation built to support
+> independent objects sending messages to one another. For example many REST
+> services do message passing, but have a central planner server and database
+> ... it's not really about individual entities or object encapsulation.
+> This is why I said: being self-aware helps.
+>
+> H: actor-model followup, when I hear actor models its usually concurrent
+> applications and trying to avoid shared memory. Why are you focusing on the
+> actor model?
+>
+> Chris: I think its the most interesting part of the ActivityPub specification.
+> Implementors don't even need to know / build really actors. Mastodon e.g.
+> does not.  I'm arguing, if we build implementations as actors then we can
+> scale ActivityPub to something much larger than otherwise
+>
+> W: lets see I understand: being an actor model is either
+> (1) an implementation notion or
+> (2) having to do with the meta-language you use to describe the protocol
+>
+> Chris: right, and ActvitityPub is an actor-model protocol, but NOT an
+> actor-model language. There are other actor model languages under the hood
+> that are self-aware ... and I'm going to talk more about plans and then
+> describe an actor model for Racket
+
+I've announced Spritely, "a federation skunkworks in the public interest",
+intentionally vague, trying to take actor model seriously, use object
+capabilities, build artifacts to see what's possible
+
+> S: what is a skunkworks?
+>
+> Chris: name for a research lab. Which company was that?
+>
+> K: Lockheed was the first
+>
+> Chris: yeah, they had a research lab that they called a skunkworks. "Go try
+> some shit, maybe it'll be profitable" Spritely is a place where I can
+> experiment with stuff. But its all in the interest of advancing the social web.
+>
+> M: so, in some sense, S's interjection is quite right. Because
+> skunkworks are usually not in the public interest. Normally you take the
+> labels off the doors & close the blinds and nobody knows what's in there.
+
+Ok, virtual worlds. How many people played these text-based internet worlds
+games in the 90s'?
+
+> W: how many people here were alive in the 90s?
+>
+> M: does the 80's count?
+
+You might find these games now via telnet, of all things
+
+Back then, you this feeling of logging in to a virtual world and mess with
+things. Like connecting to the matrix.  Now, you just log in to facebook and
+"like" some stuff. That's it, little interaction.
+
+Habitat, first MMO
+
+Before the web took off, some people thought Habitat-like things would be the
+future of social media.
+
+- <http://saraswat.org/desiderata.html>
+
+- <https://crockford.com/ec/>
+
+no distinction between client & server in this (Habitat-esque) system, anyone
+could run their own world, and it was secure!
+
+the only thing that survived from that Electric Communities Habitat seems to be
+the E programming language. E is a very cool language! Read the website! It looks
+geocities but you will learn a lot
+
+- <http://www.erights.org/>>
+
+lets contrast object capabilities with access control lists (ACL), did you know
+solitaire can run any program read all your data, post secrets ...
+a pin-prick size vulnerability leads to a HUGE opportunity for exploits
+
+very bad to assume authority comes from the identity of the user
+
+Guile, we discovered we had a vulnerability, you can start a live hacking server
+on localhost + some port ... don't worry only you can access localhost ... go
+to your brower and the brower has authority to access websites as you ... some
+site asks to make post to your port ... you wanted to do live hacking and you
+get live hacked ... if you use an ACL then you're almost certain to have
+vulnerabilities ... both programs in an interaction are probably behaving well,
+but you still need to code around it
+
+favorite paper of all time, "A Security Kernel Based on the Lambda Calculus",
+lexical scope is your security model
+
+> W: okay, just want to point out Jim Morris said the same thing in 1968
+
+normal argument passing can be sufficient security, no access to anything that
+wasn't explicitly passed
+
+> M: as jim morris said, I am an apostate of programming language theory
+> and nothing works
+
+Some works in progress:
+- goblins, an actor model library for Racket
+- magenc, implements magnet uri's, which compose other uri's, e.g. compose
+  key with content-addressed-store name, private content
+
+
+## Q/A
+
+> A: back to protocol, if you have different constraints who is responsible?
+>
+> Chris: open-world system, either reject the message or send it. Its possible to
+> extend the environment like mad, we can define as much structure as we like
+
+
+> J: actor language you made looked like request/response patterns, can actors
+> send multiple messages to different actors?
+>
+> Chris: yes ... the <<-- "pauses" the program and turns it into kind of a
+> nonblocking request-response coroutine ... if I want to invite 50 people to
+> to my pizza party, I should be able to send messages all at once and wait
+> as the RSVPs come in
+
+
+> M: did you look at Shill?
+>
+> Chris: yes, not as much as I like, unfortunately I'm not running openBSD ... I
+> think its doing a nice job doing the tricky work of bringing ocaps to the unix
+> environment, using Unix file descriptors as the capability (unforgeable
+> reference). Unix does have a protected internal data structure.
+>
+> M: you may want to re-use what they did for modules
+
+
+## P.S.
+
+Hey so, people start working with Activity Pub in haskell and find they can't
+make a nice datatype for this. V frustrating for them. I think contracts are
+the best things you can do at a boundary. Mark Miller felt the same way about
+E. If you want to do type-y optimizations, you need to wait until the data
+comes in. Can't statically check a network! Any open world system will have
+this problem.
