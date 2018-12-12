@@ -4,6 +4,7 @@
 
 The _transient_ approach to migratory typing (circa 2014)
  is similar to type erasure in Java (circa 2004).
+<!-- TODO weaken 'is similar' -->
 
 <!-- more -->
 
@@ -32,6 +33,7 @@ Java's implementation of migratory typing has some interesting things in common
  with the _transient_ implementation strategy recently proposed by
  Michael Vitousek and collaborators.
 The goal of this post is to spell out the connections.
+<!-- TODO awkward ^ -->
 
 
 ## Erasure migratory typing
@@ -48,16 +50,18 @@ After compilation, any JavaScript program may import bindings
 Conversely, a TypeScript module may import bindings from a JavaScript module
  by declaring a static type for each binding [link](CITE).
 
-The compiler works by erasing types.
-Every type `T` in the source code translates to the universal "JavaScript type".
+The TypeScript compiler erases types; in other words,
+ every type `T` in the source code translates to the universal "JavaScript type".
 For instance, a TypeScript function declaration compiles to an untyped
  JavaScript function:
 
 <!-- TODO use real TypeScript -->
 ```
-(function(number n0, number n1) { return n0 + n1; })
+(function (number n0, number n1) { return n0 + n1; })
+
 // ==(compiles to)==>
-(function(n0, n1) { return n0 + n1; })
+
+(function (n0, n1) { return n0 + n1; })
 ```
 
 TypeScript satisfies goals **G1** and **G3** for a migratory typing system
@@ -73,10 +77,12 @@ On the other hand, it means that an experienced JavaScript programmer can
  re-use their knowledge to predict the behavior of a TypeScript program.
 
 More generally, the run-time guarantees of TypeScript are the same
- as the run-time guarantees of JavaScript (in an ordinary program).
-If a TypeScript expression `e` has the static type `T` and evaluates to
- a value `v`, the only guarantee is that `v` is a valid JavaScript value
- --- `T` could be `number` and `v` could be an object.
+ as the run-time guarantees of JavaScript (in an ordinary program):
+
+- if a TypeScript expression `e` has the static type `T` and evaluates to
+ a value `v`,
+- then the only guarantee is that `v` is a valid JavaScript value
+  (e.g., `T` could be `number` and `v` could be an object).
 
 
 ## Transient migratory typing
@@ -84,8 +90,15 @@ If a TypeScript expression `e` has the static type `T` and evaluates to
 [Reticulated]() is a migratory typing system for Python that follows a
  so-called _transient_ implementation strategy.
 A Reticulated module gets type-checked and compiles to a Python module that
- defends itself from **certain** type-invalid inputs through the use of
- **simple** assertions.
+ defends itself from _certain_ type-invalid inputs through the use of
+ assertions that run in near-constant time.
+
+> These _certain_ inputs are the ones that would cause a standard typed
+> operational semantics to "get stuck" [TODO](CITE).
+> For a discussion of _near-constant_, see
+> [On the Cost of Type-Tag Soundness](http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018)
+> section 2.
+
 For example, here is a Reticulated function
  that computes the average of a list of numbers:
 
@@ -113,44 +126,116 @@ def average(nums):
         raise check_type_function(ValueError)('average: expected non-empty list')
 ```
 
+> Note: the Reticulated syntax for type annotations is similar to the one
+> proposed in [PEP 484](TODO), but not identical. For example, Reticulated does not
+> require forward references to be embedded in strings.
+
 The Reticulated compiler removes all type annotations and inserts `check_type`
  assertions throughout the code.
 In `average`, these assertions check that: (1) the input is a list,
  (2) the output is a `float`, (3) and the names `sum` `len` and
  `ValueError` point to callable values.
 That's all; the assertions **do not check** that `nums` contains only floating-point
- numbers, and they do not check that the function bound to `sum` is defined
- for a single argument.
+ numbers.
+
+> They also do not check that the function bound to `sum` is defined
+> for a single argument, which is arguably a bug.
+> Scaling a model to an implementation is always challenging.
+<!-- TODO java null link? -->
 
 If `nums` contains something other than floating point numbers, then the
  call to `average` may cause `sum` to raise an exception or it may silently
- compute a nonsensical result.
+ compute a nonsense result.
 The behavior depends on the implementation of `sum` in the same way that
  the behavior of a TypeScript function depends on the JavaScript functions
  that it depends on.
 
-By contrast to erasure, every type in a Reticulated module translates to its
+Reticulated does not erase types, nor does it fully enforce types.
+Every type in a Reticulated module translates to its
  top-level type constructor `C(T)`, e.g.:
 
-- `C(Float)                = Float`
-- `C(List(Float))          = List`
-- `C(List(Float) -> Float) = ->`
+```
+  C(Float)                = Float
+  C(List(Float))          = List
+  C(List(Float) -> Float) = ->
+```
 
-And if `e` is an expression with static type `T` that evaluates to a value `v`,
- then `v` is guaranteed to have a top-level shape that matches the `C(T)`
- constructor.
+Consequently, Reticulated has a slightly stronger run-time guarantee than Python:
 
-
-<!-- TODO back this up -->
-> Note: the Reticulated syntax for type annotations is similar to the one
-> proposed in PEP 484, but not identical. For example, Reticulated does not
-> require forward references to be embedded in strings.
-
+- if `e` is an expression with static type `T` that evaluates to a value `v`,
+- then `v` is guaranteed to have a top-level shape that matches the `C(T)`
+  constructor.
 
 
 ## Java migratory typing
 
+Java 1.5.0 added [generic types](https://www.jcp.org/en/jsr/detail?id=14)
+ to the Java 1.4.0 type system, without breaking backwards compatibility.
 
+From the [Java Language Specification, SE 11 Edition, Section 4.7](https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7):
+
+> The decision not to make all generic types reifiable is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.
+>
+> Ultimately, the most important motivation for this decision is compatibility with existing code.
+
+
+<!-- OUTLINE
+  added generics,
+  motivation = better type checks more reusable,
+  did it without breaking backwards compatibility --- pre-generics code can run alongside
+   which means they compile to the same language,
+  strategy = use existing casts to enforce generic types,
+  compiler inserts casts (example),
+  generics not around at runtime (reified) so the compiler has an erasure,
+X details of erasure
+  guarantee
+
+  NOTE: downwards binary-compat is a non-goal
+-->
+
+
+Erasure where:
+ `G<T_1 ... T_n>` is a parameterized type,
+ `T.C` is a nested type,
+ `T[]` is an array type, and
+ `A<T_lo T_hi>` is a type variable `A` with left bound `T_lo` and right bound `T_hi`.
+
+```
+  |G<T_1 ... T_n>| = |G|
+  |T.C|            = |T|.C
+  |T[]|            = |T|[]
+  |A<T_lo T_hi>|   = |T_lo|
+  |T|              = T       otherwise
+```
+
+The Java 1.5.0 run-time guarantee is thus:
+
+- if `e` is an Java 1.5.0 expression with static type `T` that evaluates to a
+  bytecode value `v`,
+- then `v` is guaranteed to match the bytecode type `|T|`
+
+The guarantee is weak because legacy code can interact with a generic value
+ in a type-incorrect way.
+
+Gilad gives an example and says its dangerous.
+
+From [Generics in the Java Programming Language, Section 6.1](https://www.oracle.com/technetwork/java/javase/generics-tutorial-159168.pdf):
+
+> Calling legacy code from generic code is inherently dangerous; once you mix
+> generic code with non-generic legacy code, all the safety guarantees that the
+> generic type system usually provides are void.
+
+
+## Discussion
+
+<!--
+  summarize Java ~ Transient ~ Erasure,
+  each has static checks, but each loses something at runtime,
+  still, compatible,
+  also, performance,
+
+  surely there is more to say
+-->
 
 ## Links
 
