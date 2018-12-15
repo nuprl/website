@@ -15,8 +15,8 @@
           @div[class: "col-md-12"]{
             @img[src: "img/prl.png" alt: "Programming Research Laboratory"]{
               @h1{Programming Research Laboratory @location-link["https://prl.ccs.neu.edu/contact.html#directions" "66%"]}
-              @h2{College of Computer and Information Science, WVH 308 @location-link["http://www.ccs.neu.edu/" "64%"]}
-              @h3{Northeastern University @location-link["http://www.neu.edu/" "62%"]}
+              @h2{College of Computer and Information Science, WVH 308 @location-link["https://www.ccis.northeastern.edu" "64%"]}
+              @h3{Northeastern University @location-link["https://www.northeastern.edu" "62%"]}
               @h4{Boston @location-link["https://www.boston.gov/" "60%"]}}}}}}
 
     @div[class: "pn-main-wrapper"]{

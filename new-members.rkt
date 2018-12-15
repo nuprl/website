@@ -16,12 +16,12 @@
               @ol[
                 @li{
                   Get your student ID (a.k.a. Husky Card) from
-                  @a[href: "http://www.northeastern.edu/huskycard/about/pick-up-locations/"]{a pick-up location}.
+                  @a[href: "https://www.northeastern.edu/huskycard/about/pick-up-locations/"]{a pick-up location}.
                   Visit WVH 202 and/or send mail to @mailto|{operations@ccs.neu.edu}| to register your card to unlock WVH 308, WVH 330, WVH 366, and your private office (if you have one).
                 }
                 @li{
                   Apply for a CCIS account using
-                  @a[href: "http://howto.ccs.neu.edu/howto/accounts-homedirs/how-to-sign-up-for-a-ccis-account/"]{these instructions}.
+                  @a[href: "https://www.ccis.northeastern.edu/systems/getting-started/"]{these instructions}.
                   This account comes with a @tt{ccs.neu.edu} email address and
                   allows you to access various computers around the college.
                   Make sure you are able to print using the @tt{gaugin} (in WVH 308)
