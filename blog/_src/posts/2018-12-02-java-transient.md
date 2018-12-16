@@ -19,7 +19,7 @@ Ideally, code that uses the enriched types:
 
 There are tradeoffs involved in the implementation of a migratory typing
  system, however, and (as we will see) different implementations may focus on
- different goals that the three above.
+ different goals than the three above.
 
 A typical migratory typing system adds a static type checker to a dynamically
  typed language ([examples](/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/index.html)),
@@ -40,14 +40,17 @@ The goal of this post is to demonstrate the connections.
 Before we compare Java 1.5.0 to transient, let's review a strategy that
  pre-dates and informs them both: the _erasure_ approach to migratory typing.
 
-[TypeScript](https://www.typescriptlang.org/) is a great example of the erasure approach.
+[TypeScript](https://www.typescriptlang.org/) is a great (modern) example of the erasure approach.
 TypeScript is a migratory typing system for JavaScript.
 A TypeScript module gets validated by an ahead-of-time type checker and
  compiles to JavaScript.
 After compilation, any JavaScript program may import bindings
  from the generated code.
 Conversely, a TypeScript module may import bindings from a JavaScript module
- by declaring a static type for each binding ([click for lots of examples](http://definitelytyped.org/)).
+ by declaring a static type for each binding.
+
+> The [DefinitelyTyped](http://definitelytyped.org/) repository provides
+> TypeScript type definitions for many JavaScript libraries.
 
 The TypeScript compiler erases types;
  every type `T` in the source code translates to the universal "JavaScript type".
@@ -90,6 +93,9 @@ More generally, the run-time guarantees of TypeScript are the same
 A Reticulated module gets type-checked and compiles to a Python module that
  defends itself from _certain_ type-invalid inputs through the use of
  assertions that run in near-constant time.
+The type-checking addresses goal **G1**,
+ the compilation to Python provides interoperability (goal **G3**),
+ and the assertions partially meet goal **G2**.
 
 > These _certain_ inputs are the ones that would cause a standard typed
 > operational semantics to reach an undefined state.
@@ -228,8 +234,7 @@ class GBox<ValType> {
 }
 ```
 
-and now we can tell the type checker to check different boxes differently
- (to opt-out, declare the type as `GBox<Object>`):
+and now we can tell the type checker to check different boxes differently (satisfying goal **G1**):
 
 ```
 GBox<Integer> iBox = new GBox<Integer>(new Integer(0));
@@ -243,7 +248,7 @@ sBox.get().charAt(0); // no cast, good!
 
 ### Backwards compatibility & danger
 
-Java generics are backwards-compatible with older code.
+Java generics are backwards-compatible with older code (goal **G3**).
 This means that pre-generics code can interact with instances of a generic
  class (and vice-versa, generic code can interact with pre-generics classes).
 Since pre-generics code is not aware of type parameters, these interactions
@@ -270,8 +275,7 @@ The actual result, however, is a cast error immediately after the call
 
 Based on the cast error, we can tell that
  the compiler does not trust the type `GBox<String>` and
- inserts a run-time check that the result of a `.get()` matches the type
- checker's expectation.
+ inserts a run-time check that the result of the `.get()` is a string object.
 
 > "Calling legacy code from generic code is inherently dangerous; once you mix
 > generic code with non-generic legacy code, all the safety guarantees that the
@@ -284,9 +288,9 @@ Based on the cast error, we can tell that
 In order to support pre-generics and post-generics code on the same
  [virtual machine](https://docs.oracle.com/javase/specs/jvms/se11/html/index.html),
  the Java compiler [erases](https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.6)
- generic type parameters.
+ generic type parameters after type-checking.
 
-> "The decision not to make all generic types reifiable is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.
+> "The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.
 >
 > "Ultimately, the most important motivation for this decision is compatibility with existing code."
 > [Java Language Specification, section 4.7](https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7)
@@ -350,9 +354,12 @@ The casts around type-erased generics provide a minimal level of safety
 Nevertheless, the implementation of generic-type erasure + cast insertion
  is very similar to Reticulated's implementation of stronger guarantees for Python.
 
-Alternatively the Java team could have enforced generic types at run-time.
+Alternatively, Java could enforce generic types at run-time.
 Over the years there have been a few proposals to do so ([example 1](http://gafter.blogspot.com/2006/11/reified-generics-for-java.html),
  [example 2](https://wiki.openjdk.java.net/display/valhalla/Main)).
+NB: the C# language has a similar type system and does enforce
+ generics at run-time; for the implementation details, see
+ [ECMA TR/89](http://www.ecma-international.org/publications/techreports/E-TR-089.htm).
 
 
 ## Acknowledgments
