@@ -358,8 +358,10 @@ Alternatively, Java could enforce generic types at run-time.
 Over the years there have been a few proposals to do so ([example 1](http://gafter.blogspot.com/2006/11/reified-generics-for-java.html),
  [example 2](https://wiki.openjdk.java.net/display/valhalla/Main)).
 NB: the C# language has a similar type system and does enforce
- generics at run-time; for the implementation details, see
- [ECMA TR/89](http://www.ecma-international.org/publications/techreports/E-TR-089.htm).
+ generics at run-time (sources:
+ [blog post](https://mattwarren.org/2018/03/02/How-generics-were-added-to-.NET/),
+ [PLDI 2001 paper](https://www.microsoft.com/en-us/research/publication/design-and-implementation-of-generics-for-the-net-common-language-runtime/),
+ [backup link to paper](https://dl.acm.org/citation.cfm?doid=378795.378797))
 
 
 ## Acknowledgments
