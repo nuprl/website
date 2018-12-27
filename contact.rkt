@@ -27,7 +27,7 @@
               }
 
               @div[class: "col-xs-3 pad-contact"]{
-                @h4{Happy Hour} ???
+                @h4{Happy Hour} @a[href: "mailto:weiss.a@husky.neu.edu"]{Aaron Weiss}
               }
 
               @div[class: "col-xs-3 pad-contact"]{
