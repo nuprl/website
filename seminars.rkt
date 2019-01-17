@@ -1,19 +1,25 @@
 #lang scribble/html
 @(require
+   racket/match
    racket/date
    gregor
    "templates.rkt")
 
+@;; The seminars are sorted every time this page is built, to separate
+@;; future seminars from past seminars and order them differently.
+
+@(define-struct seminar (anchor title speaker link aff date room abstract bio))
+
+@(define (in-future? sem)
+   (datetime<? (now #:tz "America/New_York") (seminar-date sem)))
+
 @(define id 0)
-@(define (seminar anchor title speaker link aff date room abstract bio)
+@(define (render-seminar sem)
    (set! id (add1 id))
+   (define finished (if (in-future? sem) "" "finished"))
+   (match-define (seminar anchor title speaker link aff date room abstract bio) sem)
    @list[
-     @div[id: @format["seminar-~a" id] class: "col-md-12 pn-seminar"]{
-       @script/inline[type: "text/javascript"]{
-         if (new Date() >= new Date("@(datetime->iso8601 date)")) {
-            document.getElementById("seminar-@|id|").classList.add("finished");
-         }
-       }
+     @div[id: @format["seminar-~a" id] class: @format["col-md-12 pn-seminar ~a" finished]]{
        @div[id: anchor class: "pn-main-informations"]{
          @a[onclick: "return false;" class: "pn-title" title]
          @br[]
@@ -27,13 +33,12 @@
          @span[class: "pn-room" room]
          @seminar-notes[anchor]}
        @div[class: "pn-abstract-bio"]{
-         @p{
-           @span[class: "pn-title-2"]{Abstract}
-           @span[abstract]}
-         @p{
-           @span[class: "pn-title-2"]{Bio}
-           @span[@|bio|]}}}
-     @br{}])
+         @p[class: "pn-title-2"]{Abstract}
+         @|abstract|
+         @p[class: "pn-title-2"]{Bio}
+         @|bio|}}
+     @br[]
+     "\n\n"])
 
 @;; Valid file extensions for seminar notes
 @(define seminar-notes-extensions '(".md" ".txt" ".org"))
@@ -62,10 +67,9 @@
 @(define (path->github-url p)
    (string-append "https://github.com/nuprl/website/blob/master/" (path->string p)))
 
-@; TODO Have seminar return a struct; sort it by date, then create output.
 @; TODO: Have seminars contain a datetime range, rather than just a start time.
 @(define seminars
-   (splice
+   (list
     ;; (seminar
     ;;  "IDENTIFIER"
     ;;  "TITLE"
@@ -1287,8 +1291,18 @@ a Dr. sc. ETH in 2012.
        }}
        @list{@span{
        }})
-
 ))
+
+@(define-values (future-sems past-sems)
+   (let ()
+     (define-values (f-unsorted p-unsorted) (partition in-future? seminars))
+     (values
+         ;; future seminars in chronological order, so next seminar is first
+         (map render-seminar
+              (sort f-unsorted datetime<? #:key seminar-date))
+         ;; past seminars in reverse chronological order, so most recent seminar is first
+         (map render-seminar
+              (sort p-unsorted datetime>? #:key seminar-date)))))
 
 @doctype{html}
 @html[lang: "en"]{
@@ -1313,7 +1327,8 @@ a Dr. sc. ETH in 2012.
          @br{}
 
         @div[class: "row"]{
-          @|seminars|
+          @|future-sems|
+          @|past-sems|
         }
 
         @div[class: "pn-separator-img"]
