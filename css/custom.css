@@ -324,7 +324,10 @@ ul
     cursor: pointer;
 }
 
-.pn-seminar.compact.finished .pn-name, .pn-seminar.finished .pn-title-separator, .pn-seminar.finished .pn-title
+.pn-seminar.compact.finished .pn-name,
+.pn-seminar.finished .pn-title-separator,
+.pn-seminar.finished .pn-title,
+.pn-seminar.compact.finished a
 {
   color: #B5B4B4;
 }
@@ -347,7 +350,6 @@ ul
 
 .pn-seminar.compact a
 {
-  color: #B5B4B4;
   text-decoration: none;
 }
 

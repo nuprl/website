@@ -10,6 +10,11 @@ hosted at prl.ccs.neu.edu.
 Any changes made to the `master` branch here will get deployed
 automatically to `prl.ccs.neu.edu`.
 
+Note that we configure a [cron job](https://docs.travis-ci.com/user/cron-jobs/)
+to rebuild so that the list of seminars shows up in the right order (as it
+needs to change after every seminar).
+
+
 Building
 ========
 
