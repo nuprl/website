@@ -249,15 +249,6 @@
             I came to Northeastern after spending several years studying in Upper Michigan. My current work focuses on array-oriented languages as an expressive way to write data-parallel numeric processing code.
           }
 
-          @person[#:name "William J. Bowman"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "wjb@williamjbowman.com"
-                  #:website "https://www.williamjbowman.com"
-                  #:history @list["Joined 2012"]
-                  #:img "william_bowman.jpg"]{
-            I want to make programs easier to design, read, and write. I currently work on verifying compilers for advanced languages, and sometimes dabble in meta-programming.
-          }
-
           @person[#:name "Leif Andersen"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "leif@ccs.neu.edu"
@@ -598,6 +589,9 @@
               @(alumnus "Kevin Clancy" #:year 2018
                         #:extra "(Carnegie Mellon University)"
                         #:personal-site "https://kevinclancy.github.io/")
+              @(alumnus "William J. Bowman" #:year 2018
+                        #:extra "(University of British Columbia)"
+                        #:personal-site "https://www.williamjbowman.com")
              ]}}
 
         @div[class: "container"]{
