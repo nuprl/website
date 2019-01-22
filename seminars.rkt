@@ -93,6 +93,17 @@
     ;;  @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
+     "gonzalez"
+     "TBA"
+     "Cindy Rubio González"
+     "http://web.cs.ucdavis.edu/~rubio/"
+     "University of California, Davis"
+     (datetime 2019 2 14 10 0)
+     "WVH 366"
+     @list{@p{}}
+     @list{@p{}})
+
+    (seminar
      "fare-better-stories-reframing-from-programs-to-programming"
      "Better Stories, Better Languages — Reframing from Programs to Programming"
      "François-René Rideau"
