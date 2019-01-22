@@ -93,6 +93,17 @@
     ;;  @list{@p{I'm currently a Software Engineer at Facebook thinking about privacy in the data warehouse. Previously I helped build TiVo's Targeted Audience Delivery platform. And before that I worked on the backend for Timeful (acquired by Google) and on Hulu's analytics platform. In graduate school I worked on Whip, a contract monitor for microservices. I received a Ph.D. and Master's degree from Harvard under the guidance of Stephen Chong and a Bachelor's degree from Cornell.}})
 
     (seminar
+     "hur"
+     "TBA"
+     "Chung-Kil Hur"
+     "https://sf.snu.ac.kr/gil.hur/"
+     "Software Foundations Lab, Seoul National University"
+     (datetime 2019 2 15 10 0)
+     "???"
+     @list{@p{}}
+     @list{@p{}})
+
+    (seminar
      "gonzalez"
      "TBA"
      "Cindy Rubio González"
