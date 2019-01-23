@@ -3,7 +3,8 @@
     Tags: migratory typing, java, by Ben Greenman
 
 The _transient_ approach to migratory typing (circa [2014](http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf))
- is similar to type erasure in Java (circa [2004](https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html)).
+  is similar to type erasure in Java (circa [2004](https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html))
+  in a few interesting ways.
 
 <!-- more -->
 
@@ -23,22 +24,22 @@ There are tradeoffs involved in the implementation of a migratory typing
 
 A typical migratory typing system adds a static type checker to a dynamically
  typed language ([examples](/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/index.html)),
- but one could also extend the type system of a statically-typed language
- (e.g., by [adding dependent types](https://hal.inria.fr/hal-01629909v2)).
+ but one could also extend the type system of a statically-typed language;
+ for example, by [adding dependent types](https://hal.inria.fr/hal-01629909v2).
 In this sense, Java 1.5.0 is a migratory typing system for pre-generics Java.
 The addition of generic types enabled new ahead-of-time checks and maintained backwards
  compatibility with existing Java code.
 
 Java's implementation of migratory typing has some interesting things in common
  with the _transient_ implementation strategy recently proposed by
- Michael Vitousek and collaborators.
+ Michael Vitousek and collaborators ([DLS'14](http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf), [POPL'17](https://mail.google.com/mail/u/0/h/1atrn21qlyrrh/?&)).
 The goal of this post is to demonstrate the connections.
 
 
 ## Erasure migratory typing
 
-Before we compare Java 1.5.0 to transient, let's review a strategy that
- pre-dates and informs them both: the _erasure_ approach to migratory typing.
+Before we compare Java 1.5.0 to transient, let's review a simpler strategy:
+ the _erasure_ approach to migratory typing.
 
 [TypeScript](https://www.typescriptlang.org/) is a great (modern) example of the erasure approach.
 TypeScript is a migratory typing system for JavaScript.
@@ -77,8 +78,8 @@ On one hand, this means the type annotations have no effect on the behavior
 On the other hand, it means that an experienced JavaScript programmer can
  re-use their knowledge to predict the behavior of a TypeScript program.
 
-More generally, the run-time guarantees of TypeScript are the same
- as the run-time guarantees of JavaScript (in an ordinary program):
+In an ordinary program, the run-time guarantees of TypeScript are simply
+ the run-time guarantees of JavaScript:
 
 - if a TypeScript expression `e` has the static type `T` and evaluates to
  a value `v`,
@@ -89,9 +90,9 @@ More generally, the run-time guarantees of TypeScript are the same
 ## Transient migratory typing
 
 [Reticulated](https://github.com/mvitousek/reticulated) is a migratory typing
- system for Python that follows a so-called _transient_ implementation strategy.
+ system for Python that follows a _transient_ implementation strategy.
 A Reticulated module gets type-checked and compiles to a Python module that
- defends itself from _certain_ type-invalid inputs through the use of
+ defends itself from certain type-invalid inputs through the use of
  assertions that run in near-constant time.
 The type-checking addresses goal **G1**,
  the compilation to Python provides interoperability (goal **G3**),
@@ -100,7 +101,7 @@ The type-checking addresses goal **G1**,
 > These _certain_ inputs are the ones that would cause a standard typed
 > operational semantics to reach an undefined state.
 > For a discussion of _near-constant_, see
-> [On the Cost of Type-Tag Soundness, section 2](http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018).
+> [_On the Cost of Type-Tag Soundness_, section 2](http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018).
 
 For example, here is a Reticulated function
  that computes the average of a list of numbers:
@@ -139,7 +140,8 @@ The Reticulated compiler removes all type annotations and inserts `check_type`
 In `average`, these assertions check that: (1) the input is a list,
  (2) the output is a `float`, (3) and the names `sum` `len` and
  `ValueError` point to callable values.
-That's all; the assertions **do not check** that `nums` contains only floating-point
+That's all.
+The assertions **do not check** that `nums` contains only floating-point
  numbers.
 
 > The assertions also do not check that the function bound to `sum` is defined
@@ -220,7 +222,9 @@ and some calls to `get` must be followed by a type cast:
 ((String) sBox.get()).charAt(0);
 ```
 
-**With generics**, we can give a name (e.g. `ValType`) to "the type of the value inside a box":
+- - -
+
+With generics, we can give a name (e.g. `ValType`) to "the type of the value inside a box":
 
 ```
 class GBox<ValType> {
@@ -250,7 +254,8 @@ sBox.get().charAt(0); // no cast, good!
 
 Java generics are backwards-compatible with older code (goal **G3**).
 This means that pre-generics code can interact with instances of a generic
- class (and vice-versa, generic code can interact with pre-generics classes).
+ class.
+Vice-versa, generic code can interact with pre-generics classes.
 Since pre-generics code is not aware of type parameters, these interactions
  are potentially unsafe.
 For example, a pre-generics method can change the type of a `GBox`:
@@ -357,7 +362,7 @@ Nevertheless, the implementation of generic-type erasure + cast insertion
 Alternatively, Java could enforce generic types at run-time.
 Over the years there have been a few proposals to do so ([example 1](http://gafter.blogspot.com/2006/11/reified-generics-for-java.html),
  [example 2](https://wiki.openjdk.java.net/display/valhalla/Main)).
-NB: the C# language has a similar type system and does enforce
+The C# language has a similar type system and does enforce
  generics at run-time (sources:
  [blog post](https://mattwarren.org/2018/03/02/How-generics-were-added-to-.NET/),
  [PLDI 2001 paper](https://www.microsoft.com/en-us/research/publication/design-and-implementation-of-generics-for-the-net-common-language-runtime/),
@@ -366,5 +371,5 @@ NB: the C# language has a similar type system and does enforce
 
 ## Acknowledgments
 
-Thank you to Ryan Culpepper and Jesse Tov for noticing the similarity between
+Thank you to [Ryan Culpepper](https://github.com/rmculpepper) and [Jesse Tov](http://users.eecs.northwestern.edu/~jesse/) for noticing the similarity between
  Java's generic-type erasure and transient migratory typing.
