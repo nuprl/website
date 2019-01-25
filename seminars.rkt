@@ -82,6 +82,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "thakur"
+     "TBA"
+     "Manas Thakur"
+     "http://www.cse.iitm.ac.in/~manas/"
+     "PACE Laboratory, IIT Madras"
+     (datetime 2019 2 21 10 0)
+     "Ryder 431"
+     @list{@p{}}
+     @list{@p{}})
+
+    (seminar
      "hur"
      "TBA"
      "Chung-Kil Hur"
