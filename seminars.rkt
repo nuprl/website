@@ -82,15 +82,15 @@
     ;;  @list{@p{BIO}})
 
     (seminar
-     "thakur"
-     "TBA"
+     "thakur-compare-less-defer-more"
+     "Compare Less, Defer More: Scaling Value-Contexts Based Whole-Program Heap Analyses"
      "Manas Thakur"
      "http://www.cse.iitm.ac.in/~manas/"
-     "PACE Laboratory, IIT Madras"
+     "PACE Lab, Indian Institute of Technology Madras"
      (datetime 2019 2 21 10 0)
      "Ryder 431"
-     @list{@p{}}
-     @list{@p{}})
+     @list{@p{The precision of heap analyses determines the precision of several associated optimizations, and has been a prominent area in compiler research. It has been shown that context-sensitive heap analyses are more precise than the insensitive ones, but their scalability continues to be a cause of concern. Though the value-contexts approach improves the scalability of classical call-string based context-sensitive analyses, it still does not scale well for several popular whole-program heap analyses. In this talk, I will discuss our three-staged approach that lets us scale complex whole-program value-contexts based heap analyses for large programs. The ideas involved are based on an important observation that we do not need to compare the complete value-contexts at each call-site. Apart from this, I will also give an overview of another work, named PYE (for "precise-yet-efficient”). PYE helps obtain precise results during just-in-time compilation efficiently, by splitting the work between the static Java compiler and the C2 compiler of the HotSpot JVM.}}
+     @list{@p{Manas is a PhD student under V. Krishna Nandivada at PACE Lab, IIT Madras. His current research focuses on balancing the precision-scalability tradeoffs while analyzing programs written in object-oriented languages. He has worked with the Soot optimization framework for static analyses, and the HotSpot JVM for just-in-time analyses. Apart from work, he writes articles on GitHub and Medium (technical and otherwise!), and experiments with Vim plugins when feeling geeky.}})
 
     (seminar
      "hur"
