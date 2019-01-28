@@ -30,4 +30,4 @@ All materials can be found in the [course repository](https://github.com/nuprl/h
 ---
 
 _If you liked this post, you may also be interested in
-[on-stack replacement](http://prl.ccs.neu.edu/blog/2019/01/23/on-stack-replacement/)._
+[on-stack replacement](http://prl.ccs.neu.edu/blog/2019/01/28/on-stack-replacement/)._
