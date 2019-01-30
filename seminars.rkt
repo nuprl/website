@@ -1371,8 +1371,13 @@ a Dr. sc. ETH in 2012.
          @br{}
 
         @div[class: "row"]{
-          @|future-sems|
-          @|past-sems|
+          @div[class: "col-md-12"]{
+            @h3{Upcoming Seminars}
+            @|future-sems|
+            @hr[]
+            @h3{Past Seminars}
+            @|past-sems|
+          }
         }
 
         @div[class: "pn-separator-img"]

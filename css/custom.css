@@ -577,3 +577,21 @@ ul
     margin-bottom: 18px;
   }
 
+
+/* ensure <hr> renders a horizontal line in HTML5 <https://stackoverflow.com/questions/27215472/html5-tag-for-horizontal-line-break> */
+hr
+{
+  display: block;
+  position: relative;
+  padding: 0;
+  margin: 8px auto;
+  height: 0;
+  width: 100%;
+  max-height: 0;
+  font-size: 1px;
+  line-height: 0;
+  clear: both;
+  border: none;
+  border-top: 1px solid #aaaaaa;
+  border-bottom: 1px solid #ffffff;
+}
