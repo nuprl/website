@@ -93,15 +93,15 @@
      @list{@p{Manas is a PhD student under V. Krishna Nandivada at PACE Lab, IIT Madras. His current research focuses on balancing the precision-scalability tradeoffs while analyzing programs written in object-oriented languages. He has worked with the Soot optimization framework for static analyses, and the HotSpot JVM for just-in-time analyses. Apart from work, he writes articles on GitHub and Medium (technical and otherwise!), and experiments with Vim plugins when feeling geeky.}})
 
     (seminar
-     "hur"
-     "TBA"
+     "hur-promising-arm-risc-v-a-simpler-and-faster-operational-concurrency-model"
+     "Promising-ARM/RISC-V: a simpler and faster operational concurrency model"
      "Chung-Kil Hur"
      "https://sf.snu.ac.kr/gil.hur/"
      "Software Foundations Lab, Seoul National University"
      (datetime 2019 2 15 10 0)
      "Ryder 431"
-     @list{@p{}}
-     @list{@p{}})
+     @list{@p{For ARMv8 and RISC-V, there are concurrency models in two styles, extensionally equivalent: axiomatic models, expressing the concurrency semantics in terms of global properties of complete executions; and operational models, that compute incrementally. The latter are in an abstract micro-architectural style: they execute each instruction in multiple steps, out-of-order and with explicit branch speculation. This similarity to hardware implementations has been important in developing the models and in establishing confidence, but involves complexity that, for programming and model-checking, one would prefer to avoid. In this talk, I will present new more abstract operational models for ARMv8 and RISC-V, and an exploration tool based on them. The models compute the allowed concurrency behaviours incrementally based on thread-local conditions and are significantly simpler than the existing operational models: executing instructions in a single step and (with the exception of early writes) in program order, and without branch speculation. We prove the models equivalent to the existing ARMv8 and RISC-V axiomatic models in Coq. The exploration tool is the first such tool for ARMv8 and RISC-V fast enough for exhaustively checking the concurrency behaviour of a number of interesting examples. We demonstrate using the tool for checking several standard concurrent datastructure and lock implementations such as Michael-Scott queue and Chase-Lev deque, compiled from C++ and Rust with GCC or Clang -O3, and for interactively stepping through model-allowed executions for debugging.}}
+     @list{@p{Chung-Kil Hur is an associate professor in Department of Computer Science and Engineering at Seoul National University. Previously he worked as a postdoctoral researcher at Microsoft Research Cambridge,Max Planck Institute for Software Systems (MPI-SWS) and Laboratoire PPS. He obtained a Ph.D. from University of Cambridge and a B.Sc. in both Computer Science and Mathematics from Korea Advanced Institute of Science and Technology (KAIST). His current research interests are in semantics of low-level languages such as C,Rust,LLVM IR, relaxed memory concurrency, formal verification of software such as compiler and OS, and interactive theorem provers such as Coq.}})
 
     (seminar
      "gonzalez"
