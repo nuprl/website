@@ -590,6 +590,7 @@
                         #:extra "(Carnegie Mellon University)"
                         #:personal-site "https://kevinclancy.github.io/")
               @(alumnus "William J. Bowman" #:year 2018
+                        #:dissertation "https://www.williamjbowman.com/#dissertation"
                         #:extra "(University of British Columbia)"
                         #:personal-site "https://www.williamjbowman.com")
              ]}}
