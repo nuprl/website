@@ -82,6 +82,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "bornholt-optimizing-the-automated-programming-stack"
+     "Optimizing the Automated Programming Stack"
+     "James Bornholt"
+     "https://homes.cs.washington.edu/~bornholt/"
+     "University of Washington"
+     (datetime 2019 3 26 10 00)
+     "WVH 366"
+     @list{@p{The scale and pervasiveness of modern software poses a challenge for programmers: software reliability is more important than ever, but the complexity of computer systems continues to grow. Automated programming tools are powerful weapons for programmers to tackle this challenge: verifiers that check software correctness, and synthesizers that generate new correct-by-construction programs. These tools are most effective when they apply domain-specific optimizations, but doing so today requires considerable formal methods expertise. In this talk, I present a new application-driven approach to optimizing the automated programming stack underpinning modern domain-specific tools. I will demonstrate the importance of programming tools in the context of memory consistency models, which define the behavior of multiprocessor CPUs and whose subtleties often elude even experts. Our new tool, MemSynth, automatically synthesizes formal descriptions of memory consistency models from examples of CPU behavior. We have used MemSynth to synthesize descriptions of the x86 and PowerPC memory models, each of which previously required person-years of effort to describe by hand, and found several ambiguities and underspecifications in both architectures. I will then present symbolic profiling, a new technique we designed and implemented to help people identify the scalability bottlenecks in automated programming tools. These tools use symbolic evaluation, which evaluates all paths through a program, and is an execution model that defies both human intuition and standard profiling techniques. Symbolic profiling diagnoses scalability bottlenecks using a novel performance model for symbolic evaluation that accounts for all-paths execution. We have used symbolic profiling to find and fix performance issues in 8 state-of-the-art automated tools, improving their scalability by orders of magnitude, and our techniques have been adopted in industry. Finally, I will give a sense of the importance of future application-driven optimizations to the automated programming stack, with applications that inspire improvements to the stack and in turn beget even more powerful automated tools.}}
+     @list{@p{James Bornholt is a Ph.D. candidate in the Paul G. Allen School of Computer Science & Engineering at the University of Washington, advised by Emina Torlak, Dan Grossman, and Luis Ceze. His research interests are in programming languages and formal methods, with a focus on automated program verification and synthesis. His work has received an ACM SIGPLAN Research Highlight, two IEEE Micro Top Picks selections, an OSDI best paper award, and a Facebook Ph.D. fellowship.}})
+
+    (seminar
      "thakur-compare-less-defer-more"
      "Compare Less, Defer More: Scaling Value-Contexts Based Whole-Program Heap Analyses"
      "Manas Thakur"
