@@ -4,15 +4,11 @@
 
 This post explains how to get started using Scribble to write a research paper.
 
-<!-- This post explains why you should consider using a compile-to-LaTeX tool to -->
-<!-- write about a research project, and explains how to get started using -->
-<!-- Scribble. -->
-
 <!-- more -->
 
 - - -
 
-> Note: this post was written using [Racket 7.1](http://download.racket-lang.org/all-versions.html)
+> This post was written using [Racket 7.1](http://download.racket-lang.org/all-versions.html)
 > and [Scribble 1.29](https://github.com/racket/scribble/releases/tag/v7.1)
 
 Writing about research is always difficult,
@@ -23,12 +19,12 @@ If your research code is written in the same language as the paper, then:
   keeping a single point of control;
 - the language's functional abstractions can help manage the writing;
 - the language's drawing and/or plotting libraries can replace [TikZ](https://ctan.org/pkg/pgf?lang=en);
-- and you can write unit tests to [validate the claims made in the paper](https://project.inria.fr/coqexchange/checking-machine-checked-proofs/)
+- and you can write unit tests to validate the claims made in the paper.
 
 Scribble, [the Racket documentation tool](http://docs.racket-lang.org/scribble/index.html),
  comes with a to-LaTeX compiler and a [scribble/acmart][scribble/acmart]
  library tailored to the new [ACM paper format](https://ctan.org/pkg/acmart?lang=en).
-I've been a pretty happy user of these tools.
+I have been a pretty happy user of these tools.
 In the interest of attracting more happy users, this post
  presents a short "getting started" guide
  and links to some larger examples.
@@ -72,17 +68,16 @@ The third main ingredient is the title and author information:
 The paper is now ready to be written.
 You can forge ahead with a new [section](http://docs.racket-lang.org/scribble/base.html#%28def._%28%28lib._scribble%2Fbase..rkt%29._section%29%29)
  and start adding content to the same file;
- however, it may be helpful to organize the writing across different modules.
-In this post, we will use the main document as an outline and import content from other modules:
-
-<!-- include-section :: http://docs.racket-lang.org/scribble/base.html#%28form._%28%28lib._scribble%2Fbase..rkt%29._include-section%29%29 -->
+ alternatively, you can organize the writing across different modules.
+In this post, we will use the main document as an outline and [import](http://docs.racket-lang.org/scribble/base.html#%28form._%28%28lib._scribble%2Fbase..rkt%29._include-section%29%29)
+ content from other modules:
 
 ```
 @include-abstract{abstract.scrbl}
 @include-section{introduction.scrbl}
 ```
 
-Finally, the main page is a good place to generate the bibliography.
+Finally, the main page is a good place to [generate the bibliography](https://docs.racket-lang.org/scriblib/autobib.html).
 Assuming this document imports a file like the `references.rkt` below,
  this expression inserts a bibliography titled "References":
 
@@ -107,7 +102,8 @@ If you save the code above to a file `example.scrbl` and save the files below
  in the same directory, then you should be able to build an `example.pdf`.
 
 These files are available in a slightly different format at this link:
- <https://gitlab.com/bennn/scribble-acmart-example>
+ 
+- <https://gitlab.com/bennn/scribble-acmart-example>
 
 
 #### `references.rkt`
@@ -175,10 +171,10 @@ not valid in document body (need a pre-part for decode) in: 4
 
 One fix is to convert `4` to a string, as in `@~a[(+ 2 2)]`.
 
-But if something goes wrong rendering a Scribble PDF document, the error
-message is UNLIKELY to be helpful.
+But if something goes wrong when Scribble renders a generated document to
+ PDF, the default error output is **not** likely to help.
 For example, adding `@elem[#:style "oops"]` to a document produces a giant
- unhelpful message:
+ message:
 
 ```
 $ raco scribble --pdf FILE.scrbl
@@ -196,10 +192,10 @@ run-pdflatex: got error exit code
 ```
  
  
-The best way to debug these messages is to **ignore them** and use the LaTeX
+The best way to debug these messages is to **ignore them** and use a LaTeX
  compiler directly.
 For the "oops" mistake, LaTeX stops at the undefined control sequence --- giving
- at least a tiny hint about how to find the problem:
+ a hint about how to find the problem:
 
 ```
 $ raco scribble --latex FILE.scrbl
@@ -216,10 +212,15 @@ l.549 \oops
 
 To add extra LaTeX code to the final document, create a new file and include
  it with the `++style` command-line flag.
+This copies the contents of the style file into the generated document
+ (the copy appears near the top of the generated code).
 
 ```
 $ raco scribble ++style style.tex --pdf FILE.scrbl
 ```
+
+Here is an example style file.
+
 
 #### `style.tex`
 
@@ -231,7 +232,25 @@ $ raco scribble ++style style.tex --pdf FILE.scrbl
 % draw a black rectangle near lines that overflow the margin
 ```
 
-NB: contents of `style.tex` are inlined into the generated LaTeX document.
+Another way to add extra LaTeX code is to add a [`tex-addition`](https://docs.racket-lang.org/scribble/core.html#%28def._%28%28lib._scribble%2Flatex-properties..rkt%29._tex-addition%29%29)
+ style property to the main title.
+This second approach makes it easy to include more than one file:
+
+```
+#lang scribble/acmart
+
+@require[
+  (only-in scribble/core make-style)
+  (only-in scribble/latex-properties make-tex-addition)]
+
+@(define extra-style-files
+   (list (make-tex-addition "style.tex")))
+
+@title[#:style (make-style #f extra-style-files)]{Writing a paper with Scribble}
+
+@; ....
+```
+
 
 
 ### Q. How to make a figure?
@@ -281,7 +300,7 @@ $\lambda x.\, x$
 
 For a Scribble document that is split across multiple files, it can be helpful
  to make a `#lang` that [provides a common environment](http://blog.racket-lang.org/2017/03/languages-as-dotfiles.html).
-Instead of starting each file with a `require` incantation, e.g.:
+Instead of starting each file with a `require`, e.g.:
 
 #### `paper.scrbl`
 
@@ -327,12 +346,15 @@ To create a package and language:
 
 Details below.
 For a full example, visit:
- <https://gitlab.com/bennn/scribble-acmart-example>
+
+- <https://gitlab.com/bennn/scribble-acmart-example>
+
+- - -
 
 #### `conference-2018-submission/info.rkt`
 
 This file defines the basic metadata for a package.
-For more about `info.rkt`, see: [Tutorial: Creating a Package](http://blog.racket-lang.org/2017/10/tutorial-creating-a-package.html)
+For more about `info.rkt`, see: [Tutorial: Creating a Package](http://blog.racket-lang.org/2017/10/tutorial-creating-a-package.html).
 
 ```
 #lang info
@@ -389,7 +411,7 @@ conference-2018-submission
 ```
 
 
-## Links Example Documents
+## Links to Example Documents
 
 These documents use the `#lang` approach to writing a paper with Scribble.
 Check their `main.rkt` for example formatting functions and unit tests,
@@ -401,6 +423,10 @@ Check their `main.rkt` for example formatting functions and unit tests,
 Finally, this repository provides a tool to start a new Scribble document:
 
 - <https://pkgd.racket-lang.org/pkgn/package/gtp-paper>
+
+## Further Reading
+
+- [Checking Machine-Checked Proofs](https://project.inria.fr/coqexchange/checking-machine-checked-proofs/)
 
 
 [scribble/acmart]: <http://docs.racket-lang.org/scribble/ACM_Paper_Format.html>
