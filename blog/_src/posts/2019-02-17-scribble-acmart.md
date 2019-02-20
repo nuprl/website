@@ -103,7 +103,7 @@ If you save the code above to a file `example.scrbl` and save the files below
 
 These files are available in a slightly different format at this link:
  
-- <https://gitlab.com/bennn/scribble-acmart-example>
+- <https://gitlab.com/bengreenman/scribble-acmart-example>
 
 
 #### `references.rkt`
