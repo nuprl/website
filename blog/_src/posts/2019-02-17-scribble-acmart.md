@@ -296,6 +296,29 @@ $\lambda x.\, x$
 ```
 
 
+### Q. What about in-line LaTeX?
+
+An [element](https://docs.racket-lang.org/scribble/core.html#%28def._%28%28lib._scribble%2Fcore..rkt%29._element%29%29)
+ with the [`'exact-chars`](https://docs.racket-lang.org/scribble/core.html#%28idx._%28gentag._60._%28lib._scribblings%2Fscribble%2Fscribble..scrbl%29%29%29)
+ [style property](https://docs.racket-lang.org/scribble/core.html#%28tech._style._property%29)
+ renders directly to LaTeX.
+
+```
+@(define (exact . stuff)
+   @; the style name "relax" puts a `\relax` no-op in front of the stuff
+   (make-element (make-style "relax" '(exact-chars)) stuff))
+
+@exact|{$\lambda x.\, x$}|
+@; ==> \relax{$\lambda x.\, x$}
+
+@(define ($ . math-stuff)
+   (apply exact (list "$" math-stuff "$")))
+
+@${\lambda x.\, x}
+@; ==> \relax{$\lambda x.\, x$}
+```
+
+
 ## Creating a [#lang](http://docs.racket-lang.org/guide/Module_Syntax.html#%28part._hash-lang%29) for a paper
 
 For a Scribble document that is split across multiple files, it can be helpful
