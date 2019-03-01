@@ -99,7 +99,7 @@
      "https://labs.oracle.com/pls/apex/f?p=labs:bio:0:2080"
      "Oracle Labs Australia"
      (datetime 2019 3 19 10 00)
-     "TBD"
+     "Behrakis 204"
      @list{@p{I will divide my presentation in two short talks. In the first part of my presentation, I will describe how static analysis of C/C++, our lab's initial expertise, widely differs from static analysis of Java EE, and describe some of the challenges we encountered in the Wafer project. In the second part of my talk, I will describe how we scale dynamic security analysis for Node.js with taint inference, and how the Affogato project compares to state-of-the-art.}}
      @list{@p{François Gauthier graduated in 2014 from Polytechnique Montreal with a PhD in Software Engineering. The same year, he joined the program analysis team at Oracle Labs Australia, under the direction of Dr. Cristina Cifuentes, to start and lead the Wafer project for static vulnerability detection in Java EE. In June 2017, he transitioned to, and is now leading the Affogato project for dynamic security analysis of Node.js. Apart from application security, François is also exploring program analysis and machine learning approaches to detect document-based malware as well as fuzzing techniques to automatically generate test inputs.}})
 
