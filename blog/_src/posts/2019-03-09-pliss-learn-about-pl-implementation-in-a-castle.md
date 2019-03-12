@@ -8,6 +8,11 @@ If you're interested in learning the tricks of the trade of PL design and implem
 what better opportunity than the second Programming Languages Implementation Summer
 School ([PLISS](https://pliss2019.github.io/) for short).
 
+PLISS will be held from May 19th to 24th 2019, and the deadline to express your interest is
+_March 29th, 2019_ at _17:00 GMT_.
+More details can be found [here](https://pliss2019.github.io/registration.html).
+
+
 <!-- more -->
 
 <img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" />
@@ -22,7 +27,7 @@ design and implementation, including:
 - Semantics-First Language Design with Sylvan Clebsch;
 - Compiler Design Patterns for Machine Learning by Albert Cohen;
 - A Survey of V8 and WebAssembly by Ben L. Titzer;
-- Crafting User-Friendly Compilers by Nicholas Batsakis;
+- Crafting User-Friendly Compilers by Nicholas Matsakis;
 - Static Program Analysis by Anders Møller;
 - How Industry Approaches Language and Compiler Design by Joe Pamer;
 - What an End to Non-Volatile RAM Means for Researchers by Mario Wolczko.
