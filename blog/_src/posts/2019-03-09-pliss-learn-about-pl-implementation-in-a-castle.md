@@ -12,7 +12,6 @@ PLISS will be held from May 19th to 24th 2019, and the deadline to express your 
 _March 29th, 2019_ at _17:00 GMT_.
 More details can be found [here](https://pliss2019.github.io/registration.html).
 
-
 <!-- more -->
 
 <img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" />
@@ -26,6 +25,7 @@ design and implementation, including:
 - Developing Security-Aware Languages with Cristina Cifuentes;
 - Semantics-First Language Design with Sylvan Clebsch;
 - Compiler Design Patterns for Machine Learning by Albert Cohen;
+- Design and Analysis of Configuration Languages by Arjun Guha;
 - A Survey of V8 and WebAssembly by Ben L. Titzer;
 - Crafting User-Friendly Compilers by Nicholas Matsakis;
 - Static Program Analysis by Anders Møller;
