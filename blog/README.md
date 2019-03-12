@@ -1,8 +1,6 @@
 PRL Blog
 ===
 
-Maintainer: Ben Greenman [types@ccs.neu.edu](mailto:types@ccs.neu.edu)
-
 Powered by [frog](https://github.com/greghendershott/frog/)
 
 
