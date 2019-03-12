@@ -38,9 +38,7 @@ that have stood the test of time.
 For what it's worth to any prospective graduate students, PLISS is also where I met my PhD advisor.
 Students will be surprised at how many faces they recognize at future conferences,
 and in a sense summer schools are nice introduction to the research community.
-TODO: Link Ming-Ho's blog post about PLISS.
-
-Thanks to funding from X, Y, and Z.
+You can read another attendee's testimonial [here](http://prl.ccs.neu.edu/blog/2017/06/05/report-pliss-2017/).
 
 More information can be found at:
 
