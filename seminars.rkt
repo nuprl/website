@@ -93,13 +93,24 @@
      @list{@p{James Bornholt is a Ph.D. candidate in the Paul G. Allen School of Computer Science & Engineering at the University of Washington, advised by Emina Torlak, Dan Grossman, and Luis Ceze. His research interests are in programming languages and formal methods, with a focus on automated program verification and synthesis. His work has received an ACM SIGPLAN Research Highlight, two IEEE Micro Top Picks selections, an OSDI best paper award, and a Facebook Ph.D. fellowship.}})
 
     (seminar
+     "hobor-mechanized-verification-of-graph-manipulating-programs"
+     "Mechanized Verification of Graph-manipulating Programs"
+     "Aquinas Hobor"
+     "https://www.comp.nus.edu.sg/~hobor/"
+     "Yale-NUS College and the School of Computing, National University of Singapore"
+     (datetime 2019 3 22 10 00)
+     "WVH 366"
+     @list{@p{Graph-manipulating programs such as garbage collectors are notoriously unpleasant to reason about, which is unfortunate since such programs are also used in critical algorithms and systems.  We show how to verify such programs written in real C in a fully machine-checked context.}}
+     @list{@p{Aquinas Hobor is an Assistant Professor with a joint appointment at Yale-NUS College and the School of Computing, National University of Singapore.  From 2008-2011 he was a Lee Kuan Yew Postdoctoral Fellow after getting his PhD from Princeton University.  He grew up near Chicago and his Go ranking is approximately 1-dan.}})
+
+    (seminar
      "francois-from-c-to-java-ee-to-node-js"
      "From C to Java EE to Node.js: A Journey in Industrial Program Analysis"
      "François Gauthier"
      "https://labs.oracle.com/pls/apex/f?p=labs:bio:0:2080"
      "Oracle Labs Australia"
      (datetime 2019 3 19 10 00)
-     "Behrakis 204"
+     "WVH 462"
      @list{@p{I will divide my presentation in two short talks. In the first part of my presentation, I will describe how static analysis of C/C++, our lab's initial expertise, widely differs from static analysis of Java EE, and describe some of the challenges we encountered in the Wafer project. In the second part of my talk, I will describe how we scale dynamic security analysis for Node.js with taint inference, and how the Affogato project compares to state-of-the-art.}}
      @list{@p{François Gauthier graduated in 2014 from Polytechnique Montreal with a PhD in Software Engineering. The same year, he joined the program analysis team at Oracle Labs Australia, under the direction of Dr. Cristina Cifuentes, to start and lead the Wafer project for static vulnerability detection in Java EE. In June 2017, he transitioned to, and is now leading the Affogato project for dynamic security analysis of Node.js. Apart from application security, François is also exploring program analysis and machine learning approaches to detect document-based malware as well as fuzzing techniques to automatically generate test inputs.}})
 
