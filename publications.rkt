@@ -57,7 +57,7 @@
                  "Max New, Dan Licata, and Amal Ahmed"
                  POPL
                  2019
-                 "www.ccs.neu.edu/home/amal/papers/gtt.pdf")
+                 "http://www.ccs.neu.edu/home/amal/papers/gtt.pdf")
     (publication "The Behavior of Gradual Types: A User Study"
                  "Preston Tunnell Wilson, Ben Greenman, Justin Pombrio, and Shriram Krishnamurthi"
                  DLS
