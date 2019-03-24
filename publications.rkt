@@ -50,9 +50,15 @@
 @(define FCSD "Formal Structures for Computation and Deduction (FCSD)")
 @(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
 @(define ESECFSE "European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)")
+@(define CSUR "ACM Computing Surveys (CSUR)")
 
 @(define publications
    (list
+    (publication "Formal Approaches to Secure Compilation: A Survey of Fully Abstract Compilation and Related Work"
+                 "Marco Patrignani, Amal Ahmed, and Dave Clarke"
+                 CSUR
+                 2019
+                 "https://dl.acm.org/citation.cfm?id=3280984")
     (publication "Gradual Type Theory"
                  "Max S. New, Daniel R. Licata, and Amal Ahmed"
                  POPL
