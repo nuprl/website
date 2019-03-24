@@ -54,7 +54,7 @@
 @(define publications
    (list
     (publication "Gradual Type Theory"
-                 "Max New, Dan Licata, and Amal Ahmed"
+                 "Max S. New, Daniel R. Licata, and Amal Ahmed"
                  POPL
                  2019
                  "http://www.ccs.neu.edu/home/amal/papers/gtt.pdf")
@@ -120,7 +120,7 @@
                  "https://williamjbowman.com/resources/wjb-paper-cccc.pdf")
     (publication "Call-by-name Gradual Type Theory"
                  "Max New and Daniel Licata"
-                 FCSD
+                 FSCD
                  2018
                  #f)
     (publication "Tests from Traces: Automated Unit Test Generation for R"
