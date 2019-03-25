@@ -125,7 +125,7 @@
                  2018
                  "https://williamjbowman.com/resources/wjb-paper-cccc.pdf")
     (publication "Call-by-name Gradual Type Theory"
-                 "Max New and Daniel Licata"
+                 "Max S. New and Daniel R. Licata"
                  FSCD
                  2018
                  #f)
