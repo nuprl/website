@@ -47,7 +47,7 @@
 @(define PPS "Workshop on Probabilistic Programming Semantics (PPS)")
 @(define PEPM "Workshop on Partial Evaluation and Program Manipulation (PEPM)")
 @(define ISSTA "International Symposium on Software Testing and Analysis (ISSTA)")
-@(define FSCD "Formal Structures for Computation and Deduction (FCSD)")
+@(define FSCD "Formal Structures for Computation and Deduction (FSCD)")
 @(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
 @(define ESECFSE "European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)")
 @(define CSUR "ACM Computing Surveys (CSUR)")
