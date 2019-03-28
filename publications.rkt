@@ -51,9 +51,21 @@
 @(define ARRAY "Workshop on Libraries, Languages, and Compilers for Array Programming (ARRAY)")
 @(define ESECFSE "European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE)")
 @(define CSUR "ACM Computing Surveys (CSUR)")
+@(define JAR "Journal of Automated Reasoning (JAR)")
+@(define TECS "ACM Transactions on Embedded Computing Systems (TECS)")
 
 @(define publications
    (list
+    (publication "Verifying a Concurrent Garbage Collector with a Rely-Guarantee Methodology"
+                 "Yannick Zakowski, David Cachera, Delphine Demange, Gustavo Petri, David Pichardie, Suresh Jagannathan, and Jan Vitek"
+                 TECS
+                 2019
+                 "http://janvitek.org/pubs/tecs18.pdf")
+    (publication "How to Evaluate the Performance of Gradual Type Systems"
+                 "Ben Greenman, Asumu Takikawa, Max S. New, Daniel Felty, Robert Bruce Findler, Jan Vitek, and Matthias Felleisen"
+                 JFP
+                 2018
+                 "http://janvitek.org/pubs/jfp18.pdf")
     (publication "Formal Approaches to Secure Compilation: A Survey of Fully Abstract Compilation and Related Work"
                  "Marco Patrignani, Amal Ahmed, and Dave Clarke"
                  CSUR
