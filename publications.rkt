@@ -62,7 +62,7 @@
                  2019
                  "http://janvitek.org/pubs/tecs18.pdf")
     (publication "How to Evaluate the Performance of Gradual Type Systems"
-                 "Ben Greenman, Asumu Takikawa, Max S. New, Daniel Felty, Robert Bruce Findler, Jan Vitek, and Matthias Felleisen"
+                 "Ben Greenman, Asumu Takikawa, Max S. New, Daniel Feltey, Robert Bruce Findler, Jan Vitek, and Matthias Felleisen"
                  JFP
                  2018
                  "http://janvitek.org/pubs/jfp18.pdf")
