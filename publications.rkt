@@ -56,11 +56,16 @@
 
 @(define publications
    (list
-    (publication "Verifying a Concurrent Garbage Collector with a Rely-Guarantee Methodology"
-                 "Yannick Zakowski, David Cachera, Delphine Demange, Gustavo Petri, David Pichardie, Suresh Jagannathan, and Jan Vitek"
+    (publication "Can Android Run on Time? Extending and Measuring the Android Platform's Timeliness"
+                 "Yin Yan, Girish Gokul, Karthik Dantu, Steven Y. Ko, Lukasz Ziarek, and Jan Vitek"
                  TECS
                  2019
                  "http://janvitek.org/pubs/tecs18.pdf")
+    (publication "Verifying a Concurrent Garbage Collector with a Rely-Guarantee Methodology"
+                 "Yannick Zakowski, David Cachera, Delphine Demange, Gustavo Petri, David Pichardie, Suresh Jagannathan, and Jan Vitek"
+                 JAR
+                 2018
+                 "http://janvitek.org/pubs/jar18.pdf")
     (publication "How to Evaluate the Performance of Gradual Type Systems"
                  "Ben Greenman, Asumu Takikawa, Max S. New, Daniel Feltey, Robert Bruce Findler, Jan Vitek, and Matthias Felleisen"
                  JFP
