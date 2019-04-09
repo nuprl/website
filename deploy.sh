@@ -19,7 +19,7 @@ git checkout HEAD -- .gitignore
 git checkout HEAD -- blog/.gitignore
 git add .
 git status
-git commit -m "$REV"
+git commit --allow-empty -m "$REV"
 
 git fetch origin
 CURRENT_HEAD=`git rev-parse origin/master`
