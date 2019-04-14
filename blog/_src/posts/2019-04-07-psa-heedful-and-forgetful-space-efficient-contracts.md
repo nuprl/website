@@ -1,11 +1,74 @@
-    Title: PSA: Heedful and Forgetful space-efficient contracts
+    Title: Forgetful and Heedful contracts
     Date: 2019-04-07T23:15:11
-    Tags: migratory typing, by Ben Greenman
+    Tags: migratory typing, higher-order contracts, by Ben Greenman
 
-Quick reminder about two lesser-known methods for space-efficient contracts.
-They have been re-invented at least once.
+_Forgetful_ and _heedful_ are two methods for space-efficient contracts
+ developed by Michael Greenberg circa 2014.
+These methods were born in the shadow of a third method with stronger
+ theoretic properties.
+Since then, however, the forgetful method has been re-invented at least twice.
+Both deserve a second look.
+<!-- TODO cite? -->
 
 <!-- more -->
+- - -
+
+Contracts are a tool for specifying and dynamically-enforcing the behavior
+ of a program.
+In a language with contracts, a programmer can annotate an API with
+ code that documents the intended use for other readers.
+When client code interacts with the API, the annotations ensure that the
+ actual behavior matches the expected.
+If there is a mismatch, the contract annotations can report an issue
+ in terms of: the API code, the client code, and the contract between them.
+
+For example, a Racket module that exports a sorting function can use a contract
+ to describe the kind of input it expects.
+If a client module sends invalid input, the contract **blames** the client
+ module for the error **assuming** that the contract is bug-free:
+
+```
+  #lang racket/base
+
+  (module sort racket
+    (provide
+      (contract-out
+        [quicksort
+          (-> (vectorof point/c) void?)]))
+
+    (define point/c (vectorof integer?))
+
+    (define (quicksort points)
+      ....))
+
+  (module client racket
+    (require (submod ".." sort))
+    (quicksort '()))
+
+  (require 'client)
+```
+
+```
+quicksort: contract violation;
+ expected a vector
+  given: '()
+  in: the 1st argument of
+      (-> (vectorof (vectorof integer?)) void?)
+  contract from: 
+      (file.rkt sort)
+  blaming: (file.rkt client)
+   (assuming the contract is correct)
+```
+
+That covers the basics.
+For an extended introduction to contracts, visit the Racket guide.
+<!-- TODO cite -->
+
+
+### Contracts and "Space Efficiency"
+
+The `vectorof` contract from above
+
 
 Perhaps you've heard about space-efficient contracts.
 The problem is this, the goal for a solution is that.
