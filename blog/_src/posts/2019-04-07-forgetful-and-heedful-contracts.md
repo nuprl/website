@@ -94,23 +94,40 @@ The following picture illustrates the wrapper with a **solid** blue bar
  for the **write** checks against the sort module and a _striped_ blue bar
  for the _read_ checks against the client.
 
-![Figure 1: True running time vs. predicted running time for 16 configurations](img/posts/2019-04-07-forgetful-and-heedful-contracts/vector-chaperone-0.png)
+<img src="/img/vector-chaperone-0.png" alt="A wrapped vector"/>
+
+In a straightforward implementation, these wrappers can stack up if multiple
+ contracts are applied to the same value.
+For our quicksort in particular, the elements of the vector are mutable
+ vectors and may accumulate wrappers as the vector is sorted ---
+ because every **write** and _read_ applies a contract to the element.
+
+<img src="/img/vector-chaperone-1.png" alt="Layers of element wrappers"/>
+
+On the bright side, these wrappers enforce the contracts and help the
+ programmer understand the source of the error if any contract is violated.
+
+Unfortunately, the wrappers also affect the performance of the program.
+There is a price to pay for:
+ (1) checking values against the contracts,
+ (2) allocating a new wrapper,
+ (3) and "indirecting" future writes/reads through a wrapper.
+This can be a problem.
+
+> "on a randomly ordered vector of 1,000 points, a call to quicksort can
+> wrap the inner vectors an average of 21 times"
+
+To fix the problem, researchers have been exploring _space-efficient_
+ implementations of contracts that attach a bounded number of wrappers to any
+ value.
+Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
+ and _heedful_ are his names for three new implementations.
 
 
+### Eidetic space-efficiency
 
+The eidetic design is explained in two papers
 
-
-Perhaps you've heard about space-efficient contracts.
-The problem is this, the goal for a solution is that.
-
-In a POPL 2015 paper, Michael Greenberg presented one strategy.
-The _eidetic_ contracts in the paper work like this, and preserve behavior and
-blame.
-
-Michael invented two other space-efficient calculi: forgetful and heedful.
-You can read more in the extended version of his POPL 2015 paper.
-
-### A Problem with Normal (Space-Inefficient) Contracts
 
 ### Forgetful Space-Efficiency
 
