@@ -4,8 +4,8 @@
 
 _Forgetful_ and _heedful_ are two methods for space-efficient contracts
  developed by Michael Greenberg circa 2014.
-These methods were born in the shadow of a third method with stronger
- theoretic properties.
+These methods were born in the shadow of a third method, _eidetic_,
+ with stronger theoretic properties.
 Since then, however, the forgetful method has been re-invented at least twice.
 Both deserve a second look.
 <!-- TODO cite? -->
@@ -126,7 +126,42 @@ Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
 
 ### Eidetic space-efficiency
 
-The eidetic design is explained in two papers
+The eidetic method introduces a new data structure to represent higher-order
+ contracts.
+The structure supports a _merge_ operation;
+ when two contracts meet, they are merged in a way that avoids duplication.
+Eidetic contracts have the same behavior as normal "wrapping" contracts
+ and their size is bounded by the number (and height) of source-code
+ contracts in the program.
+
+An eidetic contract is a binary tree:
+
+- each node represents a higher-order contract combinator, such as `vectorof`
+- the two children of a node represent the obligations of the two parties
+  involved in the contract
+- each leaf is a list of non-higher-order, or _flat_, contracts
+
+<!-- For example, the `(vectorof point/c)` source-code contract turns into an -->
+<!--  eidetic tree with 3 nodes and 4 singleton-list leaves (Sec. 3.1 of _Collapsible Contracts_). -->
+<!-- One tree is always "bigger" than the original wrapping contract. -->
+<!-- Section 3.1 of the Collapsible Contracts paper has an illustration. -->
+
+A successful merge combines two trees of the same shape
+ by re-using half the nodes
+ and appending the leaf lists.
+Re-using nodes saves some space, and helps reduce the overhead of trees
+ relative to simple wrapping contracts.
+The main savings comes from filtering the leaf lists --- if an
+ implementation comes with a `contract-stronger?` predicate that tests
+ whether one flat contract accepts fewer values than a second, then it
+ can remove leaf-list contracts that are preceded by stronger ones.
+Trees make this filtering possible.
+
+Suffice to say, eidetic comes with practical challenges.
+Are trees more expensive than wrappers in the common case?
+Where does the `contract-stronger?` predicate come from?
+
+Thankfully, there are at least two "compromise" alternatives.
 
 
 ### Forgetful Space-Efficiency
@@ -192,3 +227,10 @@ or acknowledge that their current work is built on a foundation of straw.
 
 So maybe next time, acknowledge the limitations of your design without
 a cute allusion?
+
+Michael Greenberg invented two other space-efficient calculi.
+These calculi were purged from the final [POPL 2015](TODO) paper
+ (except for a stray reference in Appendix B)
+ but appear in the [extended version](TODO).
+Compared to normal contracts, the
+
