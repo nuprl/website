@@ -227,6 +227,8 @@ When applying a new contract to a value, check whether the new contract
  is in the set (or, is implied by a contract in the set).
 If so, ignore the new contract.
 If not, add the new contract to the set --- or raise an error.
+Every gets at most one multi-wrapper, and each member of a multi-wrapper adds
+ a unique constraint.
 
 To check a value against a set, for example when reading from a vector, check
  each of the elements in any order.
@@ -234,7 +236,7 @@ If an element raises an error, report it.
 Alternatively, an implementation can check all the elements and report
  all that disagree with the value.
 
-The heedful method is a first compromise between forgetful and eidetic
+The heedful method is a compromise between forgetful and eidetic
  space efficiency.
 
 - Unlike forgetful, heedful uses a new data structure to represent contacts
@@ -255,65 +257,60 @@ Don't bother searching the conference version --- aside from one remark
  in Appendix B, heedful and forgetful are nowhere to be found.
 
 
-### Imitation and Flattery
+### Perspectives
 
-Since 2015, traces of _forgetful_ and _heedful_ have reappeared in the output
- of at least two research groups.
-Both groups are incidentally working on type-sound gradual typing systems
- and are concerned with the performance implications of enforcing soundness.
+The extended version of _Space-Efficient Manifest Contracts_ introduces
+ the forgetful and heedful methods with extreme modesty.
+It's tempting to skip past them, and focus on the eidetic method.
 
-One rediscovery of the forgetful method appears in [_Gradual Typing with
- Union and Intersection Types_](TODO).
-The paper describes a new way of adding new types to a gradual language.
-Forgetful appears "by the way" in their semantics:
-
-> "if a lambda abstraction is preceded by multiple casts, then the rule
-> erases all of them, except for the last one
-> ...
-> removing these casts preserves the soundness of the evaluation while
-> reducing the number of them"
-<!-- page 21 -->
-
-<!-- "While this choice makes the calculus simpler without hindering soundness, -->
-<!-- it yields a formalism unfit to finger culprits" p.27 -->
-
-A second occurrence is in [_Big Types in Little Runtime_](TODO).
-
-Vitousek, transient, forgetful space efficiency ... something like heedful blame
-but undefined behavior for relatively simple example.
-Link to my webpage?
-
-Shadows of heedful in Vitousek, but not exactly.
-
-I don't know any heedful imitators besides myself --- thats somewhat a stretch.
-
-
-### Strawmen
-
-> Since _eidetic_ and [classic contracts] behave the same, why bother with
+> Since _eidetic_ and classic contracts behave the same, why bother with
 > _forgetful_ and _heedful_? First and foremost, the calculi offer insights
 > into the semantics of contracts: the soundness of _forgetful_ depends on a
 > certain philosophy of contracts; _heedful_ relates to threesomes without blame
-> [Siek and Wadler 2010]. Second, we offer them as alternative points in the
+> [Siek and Wadler 2010](TODO). Second, we offer them as alternative points in the
 > design space. Finally and perhaps cynically, they are strawmen---warp up
 > exercises for _eidetic_.
 <!-- Section 1, bottom of page 2 -->
 
-Why didn't forgetful and heedful appear in the POPL paper?
-In hindsight they shed light on their successors.
+And yet, at least two other research papers rely on these "strawmen" --- or
+ rather, the ideas behind the names.
 
-The quote above about strawmen might have encouraged the review committee to
-ask for their removal.
-Who knows.
-But surely nobody wants to waste their time with a ``strawman'' design
-or acknowledge that their current work is built on a foundation of straw.
+[_Gradual Typing with Union and Intersection Types_](TODO), at ICFP 2017,
+ demonstrates one technique for adding two new kinds of types to a gradual
+ language.
+The semantics in the paper is forgetful;
+ if a higher-order value crosses multiple type boundaries,
+ the intermediate types disappear.
 
-So maybe next time, acknowledge the limitations of your design without
-a cute allusion?
+> "if a lambda abstraction is preceded by multiple casts, then the rule
+> erases all of them, except for the last one"
+<!-- page 21 -->
 
-Michael Greenberg invented two other space-efficient calculi.
-These calculi were purged from the final [POPL 2015](TODO) paper
- (except for a stray reference in Appendix B)
- but appear in the [extended version](TODO).
-Compared to normal contracts, the
+This forgetfulness was a deliberate choice.
+A classic semantics would satisfy the same type soundness theorem,
+ but the authors picked forgetful for its simplicity and performance
+ implications.
+
+> "removing these casts preserves the soundness of the evaluation while
+> reducing the number of them"
+>
+> "while this choice makes the calculus simpler without hindering soundness,
+> it yields a formalism unfit to finger culprits"
+<!-- p.27 -->
+<!-- page 21 -->
+
+[_Big Types in Little Runtime_](TODO), at POPL 2017,
+ presents a gradual typing system that avoids the use of wrappers.
+Instead, their _transient_ semantics rewrites typed code ahead of time
+ to mimic the checks that forgetful contracts would perform.
+These checks suffice for a (shallow) type soundness theorem.
+
+The paper also introduces a heedful-like strategy for improving the error
+ messages produced by a forgetful check.
+The strategy adds a global map to the semantics;
+ keys in the map are unique identifiers for values (e.g., heap addresses),
+ and values are sets of types.
+When a value meets a compatible type, the type is added to the value's set.
+When a mismatch occurs, the semantics [tries to report](TODO)
+ every type in the set that relates to the mismatch.
 
