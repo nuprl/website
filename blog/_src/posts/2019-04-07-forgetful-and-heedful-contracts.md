@@ -64,10 +64,40 @@ That covers the basics.
 For an extended introduction to contracts, visit the Racket guide.
 <!-- TODO cite -->
 
+> The quicksort example and the related figures are from the paper
+> [_Collapsible Contracts: Fixing a Pathology of Gradual Typing_](TODO)
+
 
 ### Contracts and "Space Efficiency"
 
-The `vectorof` contract from above
+The `(vectorof point/c)` contract used above describes a possibly-mutable
+ array that contains elements that match the `point/c` contract.
+Since the array can be mutated, this contract has implications for two parties:
+
+1. the client module must supply a good array, and
+2. the sorting module must not insert a bad element.
+
+To enforce the second condition, the `vectorof` contract wraps incoming
+ vectors in a proxy that checks future writes.
+Suppose the client sends a vector with four points:
+
+```
+(vector (vector 4 4)
+        (vector 2 2)
+        (vector 1 1)
+        (vector 3 3))
+```
+
+After applying the contract, the vector is wrapped in a proxy that checks
+ incoming writes and outgoing reads.
+The following picture illustrates the wrapper with a **solid** blue bar
+ for the **write** checks against the sort module and a _striped_ blue bar
+ for the _read_ checks against the client.
+
+![Figure 1: True running time vs. predicted running time for 16 configurations](img/posts/2019-04-07-forgetful-and-heedful-contracts/vector-chaperone-0.png)
+
+
+
 
 
 Perhaps you've heard about space-efficient contracts.
