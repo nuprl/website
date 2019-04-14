@@ -68,7 +68,7 @@ For an extended introduction to contracts, visit the Racket guide.
 > [_Collapsible Contracts: Fixing a Pathology of Gradual Typing_](TODO)
 
 
-### Contracts and "Space Efficiency"
+### Classic contracts and "Space Efficiency"
 
 The `(vectorof point/c)` contract used above describes a possibly-mutable
  array that contains elements that match the `point/c` contract.
@@ -123,6 +123,8 @@ To fix the problem, researchers have been exploring _space-efficient_
 Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
  and _heedful_ are his names for three new implementations.
 
+(The goal of this post is to promote _forgetful_ and _heedful_, but we might
+ as well review all three.)
 
 ### Eidetic space-efficiency
 
@@ -157,52 +159,133 @@ The main savings comes from filtering the leaf lists --- if an
  can remove leaf-list contracts that are preceded by stronger ones.
 Trees make this filtering possible.
 
-Suffice to say, eidetic comes with practical challenges.
+Suffice to say, eidetic is an ideal solution in theory but comes with
+ practical challenges.
 Are trees more expensive than wrappers in the common case?
 Where does the `contract-stronger?` predicate come from?
+Should `contract-stronger?` try to solve problems that lack polynomial-time
+ solutions?
 
 Thankfully, there are at least two "compromise" alternatives.
 
 
-### Forgetful Space-Efficiency
+### Forgetful space-efficiency
 
-Mission accomplished, space is constant.
-But forgetting the contracts also forgets the blame.
+<!-- "no operation relies on e being a T2, skipping the check doesn't risk soundness" p.12 -->
+<!-- "In forgetful \lambda_H, we offer a simple solution to space inefficient casts: just forget about them" p.11 -->
+<!-- "Just the same, when accumulating casts on the stack, we throw away all but the last cast" p.11 -->
+<!-- "forgetful ... skip[s] checks and change[s] blame labels" p.3 -->
 
-### Heedful Space-Efficiency
+> "Forgetful is an interesting middle ground: if contracts exist to make
+> partial operations safe (and not abstraction or information hiding),
+> forgetfulness may be a good strategy."
+<!-- Section 10, bottom of page 23 -->
 
-Okay we have a weaker bound but a better story for blame.
+The forgetful method is simple.
+When applying a new contract to a value, first check whether it is
+ wrapped in a similar contract.
+If so, then replace the existing wrapper with one that combines:
 
-The eidetic design goes further --- with a weaker bound and a more complicated
- data structure --- and gets blame exactly right.
+1. the client obligations from the old contract, and
+2. the server obligations from the new contract
 
-Read more in Michael's paper, or follow Dan's example.
+If not, proceed as usual --- by wrapping (an unwrapped value)
+ or signalling an error. <!-- TODO spelling -->
+Every value receives at most **one** wrapper;
+ this wrapper changes as the value flows to different clients.
+
+Forgetful is _safe_ in the sense that every piece of code can trust the
+ top-level shape of the values it receives.
+Suppose module `A` exports a function `f` with contract `(-> T1 T2)` to
+ module `B`, and suppose module `B` shares this function with a few other
+ client modules using different contracts.
+As `f` flows to a new client, it keeps the `T1` domain check and gets a
+ replacement for the `T2` codomain check.
+
+- Keeping `T1` ensures that the code inside the function
+  (defined by module `A`) receives input that matches its expectation.
+- Replacing `T2` ensures that each new client receives output that it expects.
+
+Unfortunately, replacing `T2` also means that clients of module `B` cannot
+ trust the `T2` contract.
+This contract is not checked, and so forgetful contracts **miss** some
+ errors that would be caught by standard contracts.
+For the same reason, a bug in module `B` may go undetected by its clients
+ --- even if a later contract reports an issue, the contract system has
+ no memory that `B` was partly-responsible.
+
+Despite these changes in behavior, forgetful is an straightforward
+<!-- TODO adjectives -->
+ method for saving a tremendous amount of space and time relative to
+ classic contracts.
+
+
+### Heedful space-efficiency
+
+A heedful contract is a set of classic higher-order contracts.
+When applying a new contract to a value, check whether the new contract
+ is in the set (or, is implied by a contract in the set).
+If so, ignore the new contract.
+If not, add the new contract to the set --- or raise an error.
+
+To check a value against a set, for example when reading from a vector, check
+ each of the elements in any order.
+If an element raises an error, report it.
+Alternatively, an implementation can check all the elements and report
+ all that disagree with the value.
+
+The heedful method is a first compromise between forgetful and eidetic
+ space efficiency.
+
+- Unlike forgetful, heedful uses a new data structure to represent contacts
+   and requires a `contract-stronger?` predicate.
+  Heedful also remembers (some of) the history of a value and catches the
+   same errors as classic and eidetic contracts.
+
+- Unlike eidetic, heedful uses a simpler data structure with no
+   duplication-via-branching and no need to keep duplicate contracts
+   depending on the order they are encountered.
+  Heedful cannot, however, uniquely identify the two parties involved in a
+   contract error.
+  In general, there are multiple contracts that a programmer
+   must inspect to find the source of a mismatch.
+
+For details, see [the extended version](TODO) of Michael's POPL 2015 paper.
+Don't bother searching the conference version --- aside from one remark
+ in Appendix B, heedful and forgetful are nowhere to be found.
 
 
 ### Imitation and Flattery
+
+Since 2015, traces of _forgetful_ and _heedful_ have reappeared in the output
+ of at least two research groups.
+Both groups are incidentally working on type-sound gradual typing systems
+ and are concerned with the performance implications of enforcing soundness.
+
+One rediscovery of the forgetful method appears in [_Gradual Typing with
+ Union and Intersection Types_](TODO).
+The paper describes a new way of adding new types to a gradual language.
+Forgetful appears "by the way" in their semantics:
+
+> "if a lambda abstraction is preceded by multiple casts, then the rule
+> erases all of them, except for the last one
+> ...
+> removing these casts preserves the soundness of the evaluation while
+> reducing the number of them"
+<!-- page 21 -->
+
+<!-- "While this choice makes the calculus simpler without hindering soundness, -->
+<!-- it yields a formalism unfit to finger culprits" p.27 -->
+
+A second occurrence is in [_Big Types in Little Runtime_](TODO).
 
 Vitousek, transient, forgetful space efficiency ... something like heedful blame
 but undefined behavior for relatively simple example.
 Link to my webpage?
 
-Castagna and Lanvin, forgetful contracts, only cared about soundness anyway.
+Shadows of heedful in Vitousek, but not exactly.
 
-> _Forgetful_ is an interesting middle ground: if contracts exist to make
-> partial operations safe (and not abstraction or information hiding),
-> forgetfulness may be a good strategy.
-<!-- Section 10, bottom of page 23 -->
-
-I don't know any heedful imitators besides myself.
-
-
-### Well why not eidetic?
-
-Simpler
-easier to implement
-faster
-
-talk about oopsla contracts, overhead ... huge amount of work, but huge payoff merged in Racket xxx
-but many contracts remain
+I don't know any heedful imitators besides myself --- thats somewhat a stretch.
 
 
 ### Strawmen
