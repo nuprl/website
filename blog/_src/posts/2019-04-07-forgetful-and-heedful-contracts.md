@@ -8,7 +8,6 @@ These methods were born in the shadow of a third method, _eidetic_,
  with stronger theoretic properties.
 Since then, however, the forgetful method has been re-invented at least twice.
 Both deserve a second look.
-<!-- TODO cite? -->
 
 <!-- more -->
 - - -
@@ -191,7 +190,7 @@ If so, then replace the existing wrapper with one that combines:
 2. the server obligations from the new contract
 
 If not, proceed as usual --- by wrapping (an unwrapped value)
- or signalling an error. <!-- TODO spelling -->
+ or raising an error.
 Every value receives at most **one** wrapper;
  this wrapper changes as the value flows to different clients.
 
