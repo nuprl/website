@@ -3,7 +3,7 @@
     Tags: migratory typing, higher-order contracts, by Ben Greenman
 
 _Forgetful_ and _heedful_ are two methods for space-efficient contracts
- developed by Michael Greenberg circa 2014.
+ developed by Michael Greenberg [circa 2014][g].
 These methods were born in the shadow of a third method, _eidetic_,
  with stronger theoretic properties.
 Since then, however, the forgetful method has been re-invented at least twice.
@@ -17,15 +17,15 @@ Contracts are a tool for specifying and dynamically-enforcing the behavior
  of a program.
 In a language with contracts, a programmer can annotate an API with
  code that documents the intended use for other readers.
-When client code interacts with the API, the annotations ensure that the
+When client code interacts with such an API, the annotations ensure that the
  actual behavior matches the expected.
 If there is a mismatch, the contract annotations can report an issue
  in terms of: the API code, the client code, and the contract between them.
 
 For example, a Racket module that exports a sorting function can use a contract
  to describe the kind of input it expects.
-If a client module sends invalid input, the contract **blames** the client
- module for the error **assuming** that the contract is bug-free:
+If a client module sends invalid input, the contract blames the client
+ module for the error, assuming that the contract is bug-free:
 
 ```
   #lang racket/base
@@ -61,17 +61,17 @@ quicksort: contract violation;
 ```
 
 That covers the basics.
-For an extended introduction to contracts, visit the Racket guide.
-<!-- TODO cite -->
+For an extended introduction to contracts, visit
+ [The Racket Guide](https://docs.racket-lang.org/guide/contracts.html).
 
-> The quicksort example and the related figures are from the paper
-> [_Collapsible Contracts: Fixing a Pathology of Gradual Typing_](TODO)
+P.S. the quicksort example and the related figures are from the paper
+ [_Collapsible Contracts: Fixing a Pathology of Gradual Typing_][fgsfs]
 
 
 ### Classic contracts and "Space Efficiency"
 
 The `(vectorof point/c)` contract used above describes a possibly-mutable
- array that contains elements that match the `point/c` contract.
+ array whose elements match the `point/c` contract.
 Since the array can be mutated, this contract has implications for two parties:
 
 1. the client module must supply a good array, and
@@ -82,10 +82,10 @@ To enforce the second condition, the `vectorof` contract wraps incoming
 Suppose the client sends a vector with four points:
 
 ```
-(vector (vector 4 4)
-        (vector 2 2)
-        (vector 1 1)
-        (vector 3 3))
+(quicksort (vector (vector 4 4)
+                   (vector 2 2)
+                   (vector 1 1)
+                   (vector 3 3)))
 ```
 
 After applying the contract, the vector is wrapped in a proxy that checks
@@ -108,14 +108,14 @@ On the bright side, these wrappers enforce the contracts and help the
  programmer understand the source of the error if any contract is violated.
 
 Unfortunately, the wrappers also affect the performance of the program.
-There is a price to pay for:
+There are prices to pay for:
  (1) checking values against the contracts,
- (2) allocating a new wrapper,
- (3) and "indirecting" future writes/reads through a wrapper.
-This can be a problem.
+ (2) allocating new wrappers,
+ (3) and "indirecting" future writes/reads through wrappers.
+These costs can add up.
 
 > "on a randomly ordered vector of 1,000 points, a call to quicksort can
-> wrap the inner vectors an average of 21 times"
+> wrap the inner vectors an average of 21 times" -- [_Collapsible Contracts_][fgsfs]
 
 To fix the problem, researchers have been exploring _space-efficient_
  implementations of contracts that attach a bounded number of wrappers to any
@@ -123,8 +123,8 @@ To fix the problem, researchers have been exploring _space-efficient_
 Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
  and _heedful_ are his names for three new implementations.
 
-(The goal of this post is to promote _forgetful_ and _heedful_, but we might
- as well review all three.)
+The goal of this post is to promote _forgetful_ and _heedful_, but we'll
+ review all three.
 
 ### Eidetic space-efficiency
 
@@ -162,7 +162,8 @@ Trees make this filtering possible.
 Suffice to say, eidetic is an ideal solution in theory but comes with
  practical challenges.
 Are trees more expensive than wrappers in the common case?
-Where does the `contract-stronger?` predicate come from?
+Can the leaf-lists in a tree share elements?
+<!-- Where does the `contract-stronger?` predicate come from? -->
 Should `contract-stronger?` try to solve problems that lack polynomial-time
  solutions?
 
@@ -178,7 +179,7 @@ Thankfully, there are at least two "compromise" alternatives.
 
 > "Forgetful is an interesting middle ground: if contracts exist to make
 > partial operations safe (and not abstraction or information hiding),
-> forgetfulness may be a good strategy."
+> forgetfulness may be a good strategy." -- [_Space-Efficient Manifest Contracts_][g]
 <!-- Section 10, bottom of page 23 -->
 
 The forgetful method is simple.
@@ -194,7 +195,7 @@ If not, proceed as usual --- by wrapping (an unwrapped value)
 Every value receives at most **one** wrapper;
  this wrapper changes as the value flows to different clients.
 
-Forgetful is _safe_ in the sense that every piece of code can trust the
+Forgetful is safe in the sense that every piece of code can trust the
  top-level shape of the values it receives.
 Suppose module `A` exports a function `f` with contract `(-> T1 T2)` to
  module `B`, and suppose module `B` shares this function with a few other
@@ -215,7 +216,6 @@ For the same reason, a bug in module `B` may go undetected by its clients
  no memory that `B` was partly-responsible.
 
 Despite these changes in behavior, forgetful is an straightforward
-<!-- TODO adjectives -->
  method for saving a tremendous amount of space and time relative to
  classic contracts.
 
@@ -227,8 +227,8 @@ When applying a new contract to a value, check whether the new contract
  is in the set (or, is implied by a contract in the set).
 If so, ignore the new contract.
 If not, add the new contract to the set --- or raise an error.
-Every gets at most one multi-wrapper, and each member of a multi-wrapper adds
- a unique constraint.
+Every value gets at most one multi-wrapper, and each member of a multi-wrapper
+ represents a new constraint.
 
 To check a value against a set, for example when reading from a vector, check
  each of the elements in any order.
@@ -236,8 +236,7 @@ If an element raises an error, report it.
 Alternatively, an implementation can check all the elements and report
  all that disagree with the value.
 
-The heedful method is a compromise between forgetful and eidetic
- space efficiency.
+The heedful method is a compromise between forgetful and eidetic.
 
 - Unlike forgetful, heedful uses a new data structure to represent contacts
    and requires a `contract-stronger?` predicate.
@@ -245,45 +244,49 @@ The heedful method is a compromise between forgetful and eidetic
    same errors as classic and eidetic contracts.
 
 - Unlike eidetic, heedful uses a simpler data structure with no
-   duplication-via-branching and no need to keep duplicate contracts
+   duplication-via-tree-branching and no need to keep duplicate flat contracts
    depending on the order they are encountered.
   Heedful cannot, however, uniquely identify the two parties involved in a
    contract error.
   In general, there are multiple contracts that a programmer
    must inspect to find the source of a mismatch.
 
-For details, see [the extended version](TODO) of Michael's POPL 2015 paper.
-Don't bother searching the conference version --- aside from one remark
+For details, see [the extended version][g]
+ of Michael's POPL 2015 paper.
+Don't bother searching [the conference version](http://www.cs.pomona.edu/~michael/papers/popl2015_space.pdf)
+ --- aside from one remark
  in Appendix B, heedful and forgetful are nowhere to be found.
 
 
-### Perspectives
+### Priorities and Appearances
 
 The extended version of _Space-Efficient Manifest Contracts_ introduces
  the forgetful and heedful methods with extreme modesty.
-It's tempting to skip past them, and focus on the eidetic method.
+It's tempting to skip past them and focus on the eidetic method.
 
-> Since _eidetic_ and classic contracts behave the same, why bother with
-> _forgetful_ and _heedful_? First and foremost, the calculi offer insights
-> into the semantics of contracts: the soundness of _forgetful_ depends on a
-> certain philosophy of contracts; _heedful_ relates to threesomes without blame
-> [Siek and Wadler 2010](TODO). Second, we offer them as alternative points in the
-> design space. Finally and perhaps cynically, they are strawmen---warp up
-> exercises for _eidetic_.
+> "Since eidetic and classic contracts behave the same, why bother with
+> forgetful and heedful? First and foremost, the calculi offer insights
+> into the semantics of contracts: the soundness of forgetful depends on a
+> certain philosophy of contracts; heedful relates to threesomes without blame
+> [[Siek and Wadler 2010](https://dl.acm.org/citation.cfm?doid=1706299.1706342)].
+> Second, we offer them as alternative points in the design space.
+> Finally and perhaps cynically, they are strawmen---warp up
+> exercises for eidetic." -- [_Space-Efficient Manifest Contracts_][g]
 <!-- Section 1, bottom of page 2 -->
 
 And yet, at least two other research papers rely on these "strawmen" --- or
  rather, the ideas behind the names.
 
-[_Gradual Typing with Union and Intersection Types_](TODO), at ICFP 2017,
- demonstrates one technique for adding two new kinds of types to a gradual
+[_Gradual Typing with Union and Intersection Types_][cl],
+ at ICFP 2017,
+ demonstrates one technique for adding two new varieties of types to a gradual
  language.
 The semantics in the paper is forgetful;
  if a higher-order value crosses multiple type boundaries,
  the intermediate types disappear.
 
 > "if a lambda abstraction is preceded by multiple casts, then the rule
-> erases all of them, except for the last one"
+> erases all of them, except for the last one" -- [_Gradual Typing with Union and Intersection Types_][cl]
 <!-- page 21 -->
 
 This forgetfulness was a deliberate choice.
@@ -295,22 +298,32 @@ A classic semantics would satisfy the same type soundness theorem,
 > reducing the number of them"
 >
 > "while this choice makes the calculus simpler without hindering soundness,
-> it yields a formalism unfit to finger culprits"
+> it yields a formalism unfit to finger culprits" -- [_Gradual Typing with Union and Intersection Types_][cl]
 <!-- p.27 -->
 <!-- page 21 -->
 
-[_Big Types in Little Runtime_](TODO), at POPL 2017,
+[_Big Types in Little Runtime_][vss], at POPL 2017,
  presents a gradual typing system that avoids the use of wrappers.
 Instead, their _transient_ semantics rewrites typed code ahead of time
  to mimic the checks that forgetful contracts would perform.
 These checks suffice for a (shallow) type soundness theorem.
 
-The paper also introduces a heedful-like strategy for improving the error
+That paper also introduces a heedful-like strategy for improving the error
  messages produced by a forgetful check.
 The strategy adds a global map to the semantics;
  keys in the map are unique identifiers for values (e.g., heap addresses),
  and values are sets of types.
 When a value meets a compatible type, the type is added to the value's set.
-When a mismatch occurs, the semantics [tries to report](TODO)
+When a mismatch occurs, the semantics [tries to report](https://www.ccs.neu.edu/home/types/resources/notes/transient-undefined-blame-extract.pdf)
  every type in the set that relates to the mismatch.
 
+And so, forgetful and heedful were jilted at POPL 2015 but managed to sneak in
+ to POPL 2017.
+Since then, forgetful appeared in ICFP 2017 and, briefly, in
+ [ICFP 2018](https://www2.ccs.neu.edu/racket/pubs/icfp18-gf.pdf).
+Where will we see them next?
+
+[cl]: https://dl.acm.org/citation.cfm?id=3110285
+[vss]: https://dl.acm.org/citation.cfm?id=3009849
+[g]: https://arxiv.org/abs/1410.2813
+[fgsfs]: http://users.cs.northwestern.edu/~robby/pubs/papers/oopsla2018-fgsfs.pdf
