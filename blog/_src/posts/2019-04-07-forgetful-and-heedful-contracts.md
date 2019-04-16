@@ -3,7 +3,7 @@
     Tags: migratory typing, higher-order contracts, by Ben Greenman
 
 _Forgetful_ and _heedful_ are two methods for space-efficient contracts
- developed by Michael Greenberg [circa 2014][g].
+ developed by [Michael Greenberg](http://www.cs.pomona.edu/~michael/) circa [2014][g].
 These methods were born in the shadow of a third method, _eidetic_,
  with stronger theoretic properties.
 Since then, however, the forgetful method has been re-invented at least twice.
@@ -223,7 +223,7 @@ Despite these changes in behavior, forgetful is an straightforward
 
 A heedful contract is a set of classic higher-order contracts.
 When applying a new contract to a value, check whether the new contract
- is in the set (or, is implied by a contract in the set).
+ is in the set.
 If so, ignore the new contract.
 If not, add the new contract to the set --- or raise an error.
 Every value gets at most one multi-wrapper, and each member of a multi-wrapper
@@ -231,14 +231,14 @@ Every value gets at most one multi-wrapper, and each member of a multi-wrapper
 
 To check a value against a set, for example when reading from a vector, check
  each of the elements in any order.
-If an element raises an error, report it.
+If an element raises an error, report it.*
 Alternatively, an implementation can check all the elements and report
  all that disagree with the value.
 
 The heedful method is a compromise between forgetful and eidetic.
 
 - Unlike forgetful, heedful uses a new data structure to represent contacts
-   and requires a `contract-stronger?` predicate.
+   and requires some kind of `contract-stronger?` predicate.
   Heedful also remembers (some of) the history of a value and catches the
    same errors as classic and eidetic contracts.
 
@@ -256,6 +256,10 @@ Don't bother searching [the conference version](http://www.cs.pomona.edu/~michae
  --- aside from one remark
  in Appendix B, heedful and forgetful are nowhere to be found.
 
+> `*` If an implementation promises to report one mismatch, instead of all
+> mismatches, then it does not need to keep the full set of contracts.
+> Thanks to [Michael Ballantyne](http://mballantyne.net/) for explaining
+> this to me.
 
 ### Priorities and Appearances
 
