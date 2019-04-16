@@ -323,7 +323,7 @@ When a value meets a compatible type, the type is added to the value's set.
 When a mismatch occurs, the semantics [tries to report](https://www.ccs.neu.edu/home/types/resources/notes/transient-undefined-blame-extract.pdf)
  every type in the set that relates to the mismatch.
 
-And so, forgetful and heedful were jilted at POPL 2015 but managed to sneak in
+And so, forgetful and heedful were edged out of POPL 2015 but managed to sneak in
  to POPL 2017.
 Since then, forgetful appeared in ICFP 2017 and, briefly, in
  [ICFP 2018](https://www2.ccs.neu.edu/racket/pubs/icfp18-gf.pdf).
