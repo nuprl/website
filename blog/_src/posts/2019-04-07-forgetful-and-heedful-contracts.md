@@ -283,6 +283,11 @@ And yet, at least two other research papers rely on these "strawmen" --- or
 The semantics in the paper is forgetful;
  if a higher-order value crosses multiple type boundaries,
  the intermediate types disappear.
+<!-- The followup at POPL 2019 is not forgetful. -->
+<!-- It's similar to eager coercions ... keep all types around and error -->
+<!--  if there's a new type that doesn't match the old ones. -->
+<!-- Also, that paper chooses not to let functions have intersection types, -->
+<!--  which kind-of-avoids the questions ... but really the eagerness is key. -->
 
 > "if a lambda abstraction is preceded by multiple casts, then the rule
 > erases all of them, except for the last one" -- [_Gradual Typing with Union and Intersection Types_][cl]
@@ -300,6 +305,8 @@ A classic semantics would satisfy the same type soundness theorem,
 > it yields a formalism unfit to finger culprits" -- [_Gradual Typing with Union and Intersection Types_][cl]
 <!-- p.27 -->
 <!-- page 21 -->
+
+<!-- followup at POPL 2019 is not forgetful, more like coercion calculus or Herman eager ... keeps all types and combines them before the application happens -->
 
 [_Big Types in Little Runtime_][vss], at POPL 2017,
  presents a gradual typing system that avoids the use of wrappers.
