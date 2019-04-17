@@ -273,7 +273,7 @@ It's tempting to skip past them and focus on the eidetic method.
 > certain philosophy of contracts; heedful relates to threesomes without blame
 > [[Siek and Wadler 2010](https://dl.acm.org/citation.cfm?doid=1706299.1706342)].
 > Second, we offer them as alternative points in the design space.
-> Finally and perhaps cynically, they are strawmen---warp up
+> Finally and perhaps cynically, they are strawmen---warm up
 > exercises for eidetic." -- [_Space-Efficient Manifest Contracts_][g]
 <!-- Section 1, bottom of page 2 -->
 
