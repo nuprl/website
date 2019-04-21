@@ -3,7 +3,7 @@
     Tags: migratory typing, higher-order contracts, by Ben Greenman
 
 _Forgetful_ and _heedful_ are two methods for space-efficient contracts
- developed by [Michael Greenberg](http://www.cs.pomona.edu/~michael/) circa [2014][g].
+ developed by [Michael Greenberg](http://www.cs.pomona.edu/~michael/) in [2014][g].
 These methods were born in the shadow of a third method, _eidetic_,
  with stronger theoretic properties.
 Since then, however, the forgetful method has been re-invented at least twice.
