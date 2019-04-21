@@ -19,7 +19,8 @@ In a language with contracts, a programmer can annotate an API with
 When client code interacts with such an API, the annotations ensure that the
  actual behavior matches the expected.
 If there is a mismatch, the contract annotations can report an issue
- in terms of: the API code, the client code, and the contract between them.
+ in terms of [three parties](https://www2.ccs.neu.edu/racket/pubs/popl11-dfff.pdf):
+ the API code, the client code, and the contract between them.
 
 For example, a Racket module that exports a sorting function can use a contract
  to describe the kind of input it expects.
@@ -63,7 +64,7 @@ That covers the basics.
 For an extended introduction to contracts, visit
  [The Racket Guide](https://docs.racket-lang.org/guide/contracts.html).
 
-P.S. the quicksort example and the related figures are from the paper
+The quicksort example and the related figures are from the paper
  [_Collapsible Contracts: Fixing a Pathology of Gradual Typing_][fgsfs]
 
 
@@ -111,7 +112,7 @@ There are prices to pay for:
  (1) checking values against the contracts,
  (2) allocating new wrappers,
  (3) and "indirecting" future writes/reads through wrappers.
-These costs can add up.
+These space and time costs can add up.
 
 > "on a randomly ordered vector of 1,000 points, a call to quicksort can
 > wrap the inner vectors an average of 21 times" -- [_Collapsible Contracts_][fgsfs]
@@ -122,8 +123,9 @@ To fix the problem, researchers have been exploring _space-efficient_
 Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
  and _heedful_ are his names for three new implementations.
 
-The goal of this post is to promote _forgetful_ and _heedful_, but we'll
- review all three.
+(Although the goal of this post is to promote _forgetful_ and _heedful_,
+ we will review all three.)
+
 
 ### Eidetic space-efficiency
 
@@ -181,7 +183,7 @@ Thankfully, there are at least two "compromise" alternatives.
 > forgetfulness may be a good strategy." -- [_Space-Efficient Manifest Contracts_][g]
 <!-- Section 10, bottom of page 23 -->
 
-The forgetful method is simple.
+The forgetful method is exceptionally simple.
 When applying a new contract to a value, first check whether it is
  wrapped in a similar contract.
 If so, then replace the existing wrapper with one that combines:
@@ -287,11 +289,6 @@ And yet, at least two other research papers rely on these "strawmen" --- or
 The semantics in the paper is forgetful;
  if a higher-order value crosses multiple type boundaries,
  the intermediate types disappear.
-<!-- The followup at POPL 2019 is not forgetful. -->
-<!-- It's similar to eager coercions ... keep all types around and error -->
-<!--  if there's a new type that doesn't match the old ones. -->
-<!-- Also, that paper chooses not to let functions have intersection types, -->
-<!--  which kind-of-avoids the questions ... but really the eagerness is key. -->
 
 > "if a lambda abstraction is preceded by multiple casts, then the rule
 > erases all of them, except for the last one" -- [_Gradual Typing with Union and Intersection Types_][cl]
@@ -310,7 +307,11 @@ A classic semantics would satisfy the same type soundness theorem,
 <!-- p.27 -->
 <!-- page 21 -->
 
-<!-- followup at POPL 2019 is not forgetful, more like coercion calculus or Herman eager ... keeps all types and combines them before the application happens -->
+<!-- The followup at POPL 2019 is not forgetful. -->
+<!-- It's similar to eager coercions ... keep all types around and error -->
+<!--  if there's a new type that doesn't match the old ones. -->
+<!-- Also, that paper chooses not to let functions have intersection types, -->
+<!--  which kind-of-avoids the questions ... but really the eagerness is key. -->
 
 [_Big Types in Little Runtime_][vss], at POPL 2017,
  presents a gradual typing system that avoids the use of wrappers.
