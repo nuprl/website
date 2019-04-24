@@ -82,6 +82,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "pfenning-message-passing-concurrency"
+     "A rehabilitation of message-passing concurrency"
+     "Frank Pfenning"
+     "http://www.cs.cmu.edu/~fp/index.html"
+     "Carnegie Mellon University"
+     (datetime 2019 5 2 10 00)
+     "WVH 366"
+     @list{@p{Recently, there has been a lot of research on shared-memory concurrency. Nevertheless, programmers are discouraged from using it because of the difficulty of writing clear, correct programs. This is embodied for example in the Go Language slogan “Do not communicate by sharing memory; instead, share memory by communicating.” But do we have the right abstractions for message-passing concurrent programming? I argue that we do not (yet!) because concurrency constructs are usually bolted on to an existing language with an entirely different semantic foundation. I will review some recent progress on designing better abstractions based on strong logical and type-theoretic principles. Multiple themes from functional and object-oriented programming will re-emerge from these foundations in a new form, including (ha!) shared memory.}}
+     @list{@p{Frank Pfenning studied Mathematics and Computer Science at the Technical University Darmstadt and then left for Carnegie Mellon University on a Fulbright scholarship where he obtained his Ph.D. in Mathematics in 1987 under the supervision of Professor Peter Andrews. He subsequently joined the Department of Computer Science at Carnegie Mellon University as research faculty where he became Professor in 2002 and served as Director of Graduate Programs from 2004 to 2008 and Associate Dean for Graduate Education from 2009 to 2010. He was the Joseph F. Traub Professor of Computer Science and Head of the Computer Science Department from 2013 to 2018. He has spent time as visiting scientist at the Max-Planck-Institute for Computer Science in Saarbrücken, as Alexander-von-Humboldt fellow at the Technical University Darmstadt, and as visiting professor at École Polytechnique and INRIA-Futurs. He has advised 24 completed Ph.D. theses and won the Herbert A. Simon Award for Teaching Excellence in the School of Computer Science in 2002. He served as trustee, vice president, and president of CADE, Inc., the governing body of the International Conference on Automated Deduction, and on advisory boards for INRIA, the Max-Planck-Institute for Computer Science, and Seoul National University. He has chaired several conferences and program committees, including CADE and LICS, and has been a member of the editorial boards for Theoretical Computer Science, Journal of Automated Reasoning, and the Journal of Symbolic Computation. He was named Fellow of the ACM in 2015. His research interests include programming languages, logic and type theory, logical frameworks, automated deduction, and computer security. In his spare time he enjoys playing squash, running, hiking, cooking, and reading.}})
+
+    (seminar
      "bornholt-optimizing-the-automated-programming-stack"
      "Optimizing the Automated Programming Stack"
      "James Bornholt"
