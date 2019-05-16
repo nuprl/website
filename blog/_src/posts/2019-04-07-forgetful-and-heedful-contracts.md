@@ -121,7 +121,7 @@ To fix the problem, researchers have been exploring _space-efficient_
  implementations of contracts that attach a bounded number of wrappers to any
  value.
 Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
- and _heedful_ are his names for three new implementations.
+ and _heedful_ are his names for three implementations.
 
 (Although the goal of this post is to promote _forgetful_ and _heedful_,
  we will review all three.)
@@ -129,7 +129,7 @@ Michael Greenberg is one of these researchers, and _eidetic_, _forgetful_,
 
 ### Eidetic space-efficiency
 
-The eidetic method introduces a new data structure to represent higher-order
+The eidetic method introduces a data structure to represent higher-order
  contracts.
 The structure supports a _merge_ operation;
  when two contracts meet, they are merged in a way that avoids duplication.
@@ -137,17 +137,18 @@ Eidetic contracts have the same behavior as normal "wrapping" contracts
  and their size is bounded by the number (and height) of source-code
  contracts in the program.
 
-An eidetic contract is a binary tree:
+An eidetic contract is an `N`-ary tree (for `N > 0`):
 
 - each node represents a higher-order contract combinator, such as `vectorof`
-- the two children of a node represent the obligations of the two parties
-  involved in the contract
+- the `N` children of a node represent the different interactions that the
+  value supports
 - each leaf is a list of non-higher-order, or _flat_, contracts
 
-<!-- For example, the `(vectorof point/c)` source-code contract turns into an -->
-<!--  eidetic tree with 3 nodes and 4 singleton-list leaves (Sec. 3.1 of _Collapsible Contracts_). -->
-<!-- One tree is always "bigger" than the original wrapping contract. -->
-<!-- Section 3.1 of the Collapsible Contracts paper has an illustration. -->
+For example, the `(vectorof point/c)` source-code contract describes an
+ eidetic tree with 3 nodes and 4 singleton-list leaves.
+Section 3.1 of the [Collapsible Contracts][fgsfs] paper has an illustration.
+Each tree node represents a `vectorof` contract;
+ these nodes have `N=2` children because vectors support reads and writes.
 
 A successful merge combines two trees of the same shape
  by re-using half the nodes
@@ -164,7 +165,6 @@ Suffice to say, eidetic is an ideal solution in theory but comes with
  practical challenges.
 Are trees more expensive than wrappers in the common case?
 Can the leaf-lists in a tree share elements?
-<!-- Where does the `contract-stronger?` predicate come from? -->
 Should `contract-stronger?` try to solve problems that lack polynomial-time
  solutions?
 
@@ -216,9 +216,8 @@ For the same reason, a bug in module `B` may go undetected by its clients
  --- even if a later contract reports an issue, the contract system has
  no memory that `B` was partly-responsible.
 
-Despite these changes in behavior, forgetful is an straightforward
- method for saving a tremendous amount of space and time relative to
- classic contracts.
+Despite these changes in behavior, forgetful is a straightforward
+ method for saving space and time relative to classic contracts.
 
 
 ### Heedful space-efficiency
@@ -228,7 +227,7 @@ When applying a new contract to a value, check whether the new contract
  is in the set.
 If so, ignore the new contract.
 If not, add the new contract to the set --- or raise an error.
-Every value gets at most one multi-wrapper, and each member of a multi-wrapper
+Every value gets at most one set-wrapper, and each member of a set-wrapper
  represents a new constraint.
 
 To check a value against a set, for example when reading from a vector, check
@@ -244,8 +243,8 @@ The heedful method is a compromise between forgetful and eidetic.
   Heedful also remembers (some of) the history of a value and catches the
    same errors as classic and eidetic contracts.
 
-- Unlike eidetic, heedful uses a simpler data structure with no
-   duplication-via-tree-branching and no need to keep duplicate flat contracts
+- Unlike eidetic, heedful uses a simpler data structure with
+   no need to keep duplicate flat contracts
    depending on the order they are encountered.
   Heedful cannot, however, uniquely identify the two parties involved in a
    contract error.
@@ -258,10 +257,10 @@ Don't bother searching [the conference version](http://www.cs.pomona.edu/~michae
  --- aside from one remark
  in Appendix B, heedful and forgetful are nowhere to be found.
 
-> `*` If an implementation promises to report one mismatch, instead of all
-> mismatches, then it does not need to keep the full set of contracts.
-> Thanks to [Michael Ballantyne](http://mballantyne.net/) for explaining
-> this to me.
+`*` If an implementation promises to report one mismatch, instead of all
+ mismatches, then it does not need to keep the full set of contracts.
+Thanks to [Michael Ballantyne](http://mballantyne.net/) for explaining
+ this to me.
 
 ### Priorities and Appearances
 
@@ -284,11 +283,11 @@ And yet, at least two other research papers rely on these "strawmen" --- or
 
 [_Gradual Typing with Union and Intersection Types_][cl],
  at ICFP 2017,
- demonstrates one technique for adding two new varieties of types to a gradual
+ demonstrates one technique for adding two varieties of types to a gradual
  language.
 The semantics in the paper is forgetful;
  if a higher-order value crosses multiple type boundaries,
- the intermediate types disappear.
+ the intermediate server obligations disappear.
 
 > "if a lambda abstraction is preceded by multiple casts, then the rule
 > erases all of them, except for the last one" -- [_Gradual Typing with Union and Intersection Types_][cl]
@@ -317,12 +316,12 @@ A classic semantics would satisfy the same type soundness theorem,
  presents a gradual typing system that avoids the use of wrappers.
 Instead, their _transient_ semantics rewrites typed code ahead of time
  to mimic the checks that forgetful contracts would perform.
-These checks suffice for a (shallow) type soundness theorem.
+These checks suffice for a shallow type soundness theorem.
 
 That paper also introduces a heedful-like strategy for improving the error
  messages produced by a forgetful check.
 The strategy adds a global map to the semantics;
- keys in the map are unique identifiers for values (e.g., heap addresses),
+ keys in the map are unique identifiers for values (heap addresses),
  and values are sets of types.
 When a value meets a compatible type, the type is added to the value's set.
 When a mismatch occurs, the semantics [tries to report](https://www.ccs.neu.edu/home/types/resources/notes/transient-undefined-blame-extract.pdf)
