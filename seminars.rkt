@@ -82,6 +82,17 @@
     ;;  @list{@p{BIO}})
 
     (seminar
+     "gibbons-ans"
+     "Asymmetric Numeral Systems"
+     "Jeremy Gibbons"
+     "http://www.cs.ox.ac.uk/jeremy.gibbons/"
+     "University of Oxford"
+     (datetime 2019 6 19 10 00)
+     "WVH 366"
+     @list{@p{Asymmetric Numeral Systems (ANS) are an entropy-based encoding method introduced by Jarek Duda in 2007, combining the Shannon-optimal compression effectiveness of arithmetic coding with the execution efficiency of Huffman coding. Existing presentations of the ANS encoding and decoding algorithms are somewhat obscured by the lack of suitable presentation techniques; I will present an equational derivation, calculational where it can be, and highlighting the creative leaps where it cannot. This is work to appear at Mathematics of Program Construction in October.}}
+     @list{@p{Jeremy Gibbons is Professor of Computing at the University of Oxford, and head of the Algebra of Programming research group there. His research interests are in programming languages, especially functional programming. He is Editor-in-Chief of the Journal of Functional Programming, Past Chair of IFIP WG2.1 on Algorithmic Languages and Calculi, and Past Vice Chair of ACM SIGPLAN.}})
+
+    (seminar
      "maodeferro-pekoe"
      "Safe programming of IoT devices"
      "Carlos Mão de Ferro"
@@ -91,8 +102,8 @@
      "WVH 366"
      @list{@p{The Internet of Things (IoT) has the potential for being the next industrial revolution, envisioning billions of embedded devices. Because of their limited resources, IoT devices present specific challenges to their programming and deployment. For instance, limited battery lifetime imposes extreme energy-savings efforts, and low RAM and CPU processing power not only restrict computation power but can also lead to unexpected runtime errors (e.g, out of memory).}@p{C and C++ languages are often preferred when programming these devices. These languages deliver good performance but are notoriously unsafe and ill-suitable for proving high-level properties specific to HW usage (e.g., sending a message only when Wi-Fi module is connected). Invalid program behaviors can lead to silent errors and energy wasting, resulting in the high-cost of reprogramming thousands of devices.}@p{In this presentation, I will introduce Pekoe, a language for programming IoT devices that can determine, at compile time, the correct usage of hardware components. Pekoe introduces Harel Statecharts as types to model the hardware behavior. The compiler checks every possible execution trace of a program against the hardware model (the type) thus ensuring the correct order of system calls (e.g., sending a message via Wi-Fi, or suspending the CPU).}}
      @list{@p{Carlos Mão de Ferro is a visiting Fulbright scholar at UMass Boston (February to July 2019), and is a PhD candidate in Computer Science, University of Lisbon, Portugal.}@p{His research focuses on new programming languages techniques that deliver a safe and resource-aware programming of embedded devices, thus promoting a reliable and sustainable Internet of Things (IoT) environment.}@p{Carlos has been working on WSNs and embedded software for 10 years. After his master thesis conclusion in 2013, he alternated between the academia and the industry worlds. Carlos developed a smart irrigation system for the Green by Web startup that won the Smart Open Lisboa Startup contest in 2017.}@p{In general, Carlos is curious about Science and driven by the desire to understand how things work and how discoveries and inventions come to see the light of day. He enjoys reading topics about Physics, Astronomy and Biology. He is also passionate about music, having learned to play the flute and the piano as a child.}@p{During his stay at UMB, Carlos will be particularly interested in foster collaborations with researchers from IoT-related areas.}})
-    
-    
+
+
     (seminar
      "pfenning-message-passing-concurrency"
      "A rehabilitation of message-passing concurrency"
