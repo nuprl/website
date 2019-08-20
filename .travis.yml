@@ -17,11 +17,6 @@ addons:
     packages:
     - python-pygments
 
-# NOTE(dbp 2016-09-30): frog seems to need a running X server... :(
-# NOTE(ben g 2019-08-20): <https://docs.travis-ci.com/user/gui-and-headless-browsers/#using-xvfb-to-run-tests-that-require-a-gui>
-services:
-  - xvfb
-
 before_install:
   - ./install-racket.sh
   - export PATH="${RACKET_DIR}/bin:${PATH}"
