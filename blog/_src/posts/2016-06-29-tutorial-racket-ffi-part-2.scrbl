@@ -37,7 +37,6 @@ example that you can copy and paste into your definitions area:
 @examples[#:eval ev #:lang
 racket
 (require racket/draw
-         racket/gui/base
          ffi/unsafe
          ffi/unsafe/define
          pict)
