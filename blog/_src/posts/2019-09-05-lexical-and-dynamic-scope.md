@@ -12,7 +12,8 @@ _lexical scope_ and _dynamic scope_.
 
 In this blog post, I'd like to explain the differences between lexical scope
 and dynamic scope, and also explore some of the history behind those ideas. In
-a subsequent post, I'll discuss scoping in R and why it can be confusing.
+a [subsequent post](/blog/2019/09/10/scoping-in-r/), I'll discuss
+scoping in R and why it can be confusing.
 
 ## What is scope?
 
@@ -241,8 +242,8 @@ Now that we have examined the definitions of lexical and dynamic scope, and
 also explored some history, we are ready to return to the original question.
 _Is R lexically or dynamically scoped?_
 
-In the next blog post, we'll answer that question, and also see how R can be
-very confusing.
+In the [next blog post](/blog/2019/09/10/scoping-in-r/), we'll answer that
+question, and also see how R can be very confusing.
 
 _I would like to thank Sam Caldwell, Ben Greenman, and Artem Pelenitsyn for
 their comments and feedback on this blog post._
