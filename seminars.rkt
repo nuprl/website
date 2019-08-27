@@ -80,6 +80,17 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+    (seminar
+     "brun-fairness"
+     "Software Fairness"
+     "Yuriy Brun"
+     "https://people.cs.umass.edu/~brun/"
+     "University of Massachusetts Amherst"
+     (datetime 2019 10 30 12 00)
+     "WVH 366"
+     @list{@p{Modern software contributes to important societal decisions, and yet we know very little about its fairness properties. Can software discriminate? Evidence of software discrimination has been found in systems that recommend criminal sentences, grant access to loans and other financial products, transcribe YouTube videos, translate text, and perform facial recognition. Systems that select what ads to show users can similarly discriminate. For example, a professional social network site could, hypothetically, learn stereotypes and only advertise stereotypically female jobs to women and stereotypically male ones to men. Despite existing evidence of software bias, and significant potential for negative consequences, little technology exists to test software for such bias, to enforce lack of bias, and to learn fair models from potentially biased data. Even defining what it means for software to discriminate is a complex task. I will present recent research that defines software fairness and discrimination; develops a testing-based, causality-capturing method for measuring if and how much software discriminates; and provides provable formal guarantees on software fairness. I will also describe open problems in software fairness and how recent advances in machine learning and natural language modeling can help address them. Overall, I will argue that enabling and ensuring software fairness requires solving research challenges across computer science, including in machine learning, software and systems engineering, human-computer interaction, and theoretical computer science.}}
+     @list{@p{}})
+     
 
     (seminar
      "gibbons-ans"
