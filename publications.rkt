@@ -53,9 +53,20 @@
 @(define CSUR "ACM Computing Surveys (CSUR)")
 @(define JAR "Journal of Automated Reasoning (JAR)")
 @(define TECS "ACM Transactions on Embedded Computing Systems (TECS)")
+@(define TSE "IEEE Transactions on Software Engineering (TSE)")
 
 @(define publications
    (list
+    (publication "From Macros to DSLs: The Evolution of Racket"
+                 "Ryan Culpepper, Matthias Felleisen, Matthew Flatt, and Shriram Krishnamurthi"
+                 SNAPL
+                 2019
+                 "http://drops.dagstuhl.de/opus/volltexte/2019/10548/pdf/LIPIcs-SNAPL-2019-5.pdf")
+    (publication "The Next 700 Compiler Correctness Theorems (Functional Pearl)"
+                 "Daniel Patterson and Amal Ahmed"
+                 ICFP
+                 2019
+                 "http://www.ccs.neu.edu/home/amal/papers/next700ccc.pdf")
     (publication "Scala Implicits are Everywhere: A Large-Scale Study of the Use of Implicits in the Wild"
                  "Filip Křikava, Heather Miller, and Jan Vitek"
                  OOPSLA
@@ -81,16 +92,21 @@
                  TOPLAS
                  2019
                  "http://janvitek.org/pubs/toplas19.pdf")
-    (publication "Feature-specific Profiling"
-                 "Leif Andersen, Vincent St-Amour, Jan Vitek, and Matthias Felleisen"
-                 TOPLAS
-                 2019
-                 "http://janvitek.org/pubs/toplas18.pdf")
     (publication "Can Android Run on Time? Extending and Measuring the Android Platform's Timeliness"
                  "Yin Yan, Girish Gokul, Karthik Dantu, Steven Y. Ko, Lukasz Ziarek, and Jan Vitek"
                  TECS
                  2019
                  "http://janvitek.org/pubs/tecs18.pdf")
+    (publication "Feature-specific Profiling"
+                 "Leif Andersen, Vincent St-Amour, Jan Vitek, and Matthias Felleisen"
+                 TOPLAS
+                 2018
+                 "http://janvitek.org/pubs/toplas18.pdf")
+    (publication "Platform-Independent Dynamic Taint Analysis for JavaScript"
+                 "Rezwana Karim, Frank Tip, Alena Sochurkova, and Koushik Sen"
+                 TSE
+                 2018
+                 "https://www.franktip.org/pubs/tse2018.pdf")
     (publication "Verifying a Concurrent Garbage Collector with a Rely-Guarantee Methodology"
                  "Yannick Zakowski, David Cachera, Delphine Demange, Gustavo Petri, David Pichardie, Suresh Jagannathan, and Jan Vitek"
                  JAR
