@@ -69,7 +69,7 @@
         @div[class: "container"]{
 
           @person[#:name "Mitch Wand"
-                  #:title "Professor"
+                  #:title "Emeritus Professor"
                   #:website "http://ccs.neu.edu/home/wand"
                   #:e-mail "wand@ccs.neu.edu"
                   #:history @list[
@@ -81,24 +81,6 @@
             Over the years, I have worked on a variety of problems associated with semantics of programming languages.
             Here is a selected list, in roughly reverse chronological order: probabilistic programming languages, binding-safe programming, aspect-oriented programming, analysis-based program transformation, compiler correctness proofs, continuations, macros.
           }
-
-          @person[#:name "Will Clinger"
-                  #:title "Professor"
-                  #:website "http://ccs.neu.edu/home/will"
-                  #:e-mail "will@ccs.neu.edu"
-                  #:history @list[]
-                  #:img "Clinger.jpg"]{
-            I focus on the design, specification, and implementation
-            of functional and higher-order programming languages. My
-            research interests stem from programming languages’
-            ability to connect mathematically sophisticated theories
-            of syntax and semantics to economically important details
-            of computer hardware and software.  In recent years, I
-            have designed algorithms for garbage collection for
-            Larceny -- a vehicle for experimental research on compiler
-            optimization and garbage collection. Larceny has become
-            one of the leading multiplatform implementations of the
-            Scheme programming language.}
 
           @person[#:name "Matthias Felleisen"
                   #:title "Trustee Professor"
@@ -117,7 +99,7 @@
           @person[#:name "Olin Shivers"
                   #:title "Professor"
                   #:e-mail "olin@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/olin"
+                  #:website "http://www.ccs.neu.edu/home/shivers/"
                   #:history @list[
                     "Joined Northeastern, 2006"
                     "Joined Georgia Tech, 1999"
@@ -231,15 +213,6 @@
 
         @div[class: "container"]{
 
-          @person[#:name "Jonathan Schuster"
-                  #:title "Advisor: Olin Shivers"
-                  #:e-mail "schuster@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/schuster"
-                  #:history @list["Joined 2011"]
-                  #:img "jonathan_schuster.jpg"]{
-            Having come from a development background, my research interests lie in making software development easier by improving programming languages and the ecosystems surrounding them. Currently, my research focuses on verifying actor-based programs (such as those written in Erlang or the Akka framework) against behavioral specifications expressed as simple name-passing automata.
-          }
-
           @person[#:name "Justin Slepak"
                   #:title "Advisor: Olin Shivers"
                   #:e-mail "jrslepak@ccs.neu.edu"
@@ -256,14 +229,6 @@
                   #:history @list["Joined 2014"]
                   #:img "leif_andersen.jpg"]{
             I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
-          }
-
-          @person[#:name "Andrew Cobb"
-                  #:title "Advisor: Olin Shivers"
-                  #:e-mail "andrew.cobb@gmail.com"
-                  #:website ""
-                  #:history @list["Joined 2014"]
-                  #:img "Andrew-square.jpg"]{
           }
 
           @person[#:name "Ben Greenman"
@@ -356,7 +321,6 @@
             I am combining machine learning and programming languages to improve inlining decisions in compilers. My other interests in computer science include technical communication and reproducibility of research.
           }
 
-
           @person[#:name "Michael Ballantyne"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "michael.ballantyne@gmail.com"
@@ -364,22 +328,6 @@
                   #:history @list["Joined 2017"]
                   #:img "ballantyne.jpg"]{
             I find delight in programming languages that allow extension of their notation, syntactic forms, type systems, runtime behaviors, and development environments. My research aims to build the foundations needed to bring these extensibility features into widespread use.
-          }
-
-          @person[#:name "Di Zhong"
-                  #:title "Advisor: Frank Tip"
-                  #:e-mail "dizhong@ccs.neu.edu"
-                  #:history @list["Joined 2017"]
-                  #:img "di_zhong.jpg"]{
-            At the moment I'm working on program analysis. I like type systems and compilers.
-          }
-
-          @person[#:name "Hyeyoung Shin"
-                  #:title "Advisor: Amal Ahmed and Matthias Felleisen"
-                  #:e-mail "shin.hy@husky.neu.edu"
-                  #:history @list["Joined 2017"]
-                  #:img "hyeyoung_shin.jpg"]{
-            I am working on safe interaction between strict and lazy languages, using linking types.
           }
 
           @person[#:name "Artem Pelenitsyn"
@@ -398,8 +346,7 @@
                     "Joined Northeastern, 2018"
                     "Joined Czech Technical University in Prague, 2017"
                     "Joined Southern Federal University, 2014"
-                    "MS, Southern Federal University, 2014"
-                    "BS, Southern Federal University, 2012"]
+                    "MS, Southern Federal University, 2014"]
                   #:website "http://julbinb.github.io/"
                   #:img "julia_belyakova.jpg"]{
             My primary research interests are programming languages and type theory. I am also fond of theorem proving, generic programming, object-oriented and functional programming, software engineering, programming by contracts, software testing. Currently I work on formalizing subtyping for the Julia programming language.
@@ -593,6 +540,12 @@
                         #:dissertation "https://www.williamjbowman.com/#dissertation"
                         #:extra "(University of British Columbia)"
                         #:personal-site "https://www.williamjbowman.com")
+              @(alumnus "Andrew Cobb" #:year 2019)
+              @(alumnus "Di Zhong" #:year 2019)
+              @(alumnus "Hyeyoung Shin" #:year 2019)
+              @(alumnus "Jonathan Schuster" #:year 2019
+                        #:extra "(Google)"
+                        #:personal-site "http://jschuster.org/")
              ]}}
 
         @div[class: "container"]{
@@ -659,6 +612,13 @@
                 @(alumnus "Ryan Culpepper" #:year 2017
                           #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
                           #:extra "(Czech Technical University in Prague)")
+              ]}}
+
+        @div[class: "container"]{
+          @div[class: "row"]{
+            @h3[style: "text-align: center;"]{Former Faculty}
+              @alumnus-list[
+                @(alumnus "Will Clinger" #:year 2019)
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
