@@ -32,9 +32,10 @@
                   Coordinate with the lab member in charge of
                   @a[href: "people.html"]{the people page}
                   (see the @a[href: "contact.html"]{Contact} page) to add your
-                  picture and bio, as well as to add yourself to the
-                  @strong{prl-students} and/or @strong{prl-staff} mailing list,
-                  as appropriate.
+                  picture and bio. Contact also the @strong{prl-students} mailing list 
+                  maintainer and add yourself to
+                  that mailing list (and contact the @strong{prl-staff} mailing list
+                  maintainer to add yourself there, if appropriate.)
                 }
                 @li{
                   Join the lab's IRC channel, @tt{#prl}, on Freenode. Current
