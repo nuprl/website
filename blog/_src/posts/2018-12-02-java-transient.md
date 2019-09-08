@@ -83,8 +83,8 @@ In an ordinary program, the run-time guarantees of TypeScript are simply
 
 - if a TypeScript expression `e` has the static type `T` and evaluates to
  a value `v`,
-- then the only guarantee is that `v` is a valid JavaScript value
-  (e.g., `T` could be `number` and `v` could be an incompatible object).
+ then the only guarantee is that `v` is a valid JavaScript value
+ (e.g., `T` could be `number` and `v` could be an incompatible object).
 
 
 ## Transient migratory typing
@@ -168,7 +168,7 @@ Every type in a Reticulated module translates to its
 Consequently, Reticulated has a slightly stronger run-time guarantee than Python:
 
 - if `e` is an expression with static type `T` that evaluates to a value `v`,
-- then `v` is guaranteed to have a top-level shape that matches the `C(T)`
+  then `v` is guaranteed to have a top-level shape that matches the `C(T)`
   constructor.
 
 
@@ -288,7 +288,7 @@ Based on the cast error, we can tell that
 > [Generics in the Java Programming Language, Section 6.1](https://www.oracle.com/technetwork/java/javase/generics-tutorial-159168.pdf)
 
 
-### Run-time guarantees
+### Java Type Erasure
 
 In order to support pre-generics and post-generics code on the same
  [virtual machine](https://docs.oracle.com/javase/specs/jvms/se11/html/index.html),
@@ -300,10 +300,102 @@ Everywhere that the compiled code depends on an erased type, such as the
 (A smarter JVM type system might be able to prove that some casts are
  unnecessary via [occurrence typing](https://www2.ccs.neu.edu/racket/pubs/icfp10-thf.pdf).)
 
+After erasure, the `GBox<ValType>` class declaration loses its parameter:
+
+```
+// Erase `ValType`, replace with `Object`
+class GBox {
+  private Object val;
+
+  public GBox(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}
+```
+
+and the client code gains a cast:
+
+```
+GBox sBox = new GBox(new String("A"));
+
+((String) sBox.get()).charAt(0);
+```
+
+So far, so good.
+But it's worth noting that erasure can cause problems with Java arrays.
+An array needs to know the run-time type of its elements, so the following
+"natural" definition of an `ArrayList` is not permitted:
+
+```
+class ArrayList<T> {
+  private T[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new T[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    // TODO bounds check
+    return data[ix]
+  }
+
+  // ....
+}
+```
+
+The trouble is that `T` does not say anything about the data that a new array
+needs to handle:
+
+```
+ArrayList.java:6: error: generic array creation
+    data = new T[capacity];
+```
+
+The only work-arounds require an array of objects and unchecked casts.
+One solution is to unsafely cast the array to the generic type:
+
+```
+  // possibly dangerous, if `data` is aliased to an `Object[]`
+  public ArrayList(int capacity) {
+    data = (T[]) new Object[capacity];
+    size = 0;
+  }
+```
+
+The other is to unsafely cast array elements in the `get` method, and elsewhere:
+
+```
+class ArrayList<T> {
+  private Object[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new Object[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    boundsCheck(ix);
+    return (T) data[ix];
+  }
+
+  // ....
+}
+```
+
+Both may potentially lead to heap pollution.
+
 > "The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.
 >
 > "Ultimately, the most important motivation for this decision is compatibility with existing code."
 > [Java Language Specification, section 4.7](https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7)
+
+
+### Run-time guarantees
 
 By contrast to Reticulated's `C(T)` transformation, the following `G(T)`
  transformation describes generic-type erasure,
@@ -318,11 +410,11 @@ By contrast to Reticulated's `C(T)` transformation, the following `G(T)`
 
 If generic-type erasure results in a type mismatch (e.g., in `sBox.get().charAt(0)` above),
  the compiler inserts a cast.
-The inserted casts led to the runtime error in the previous example, and
+The inserted casts led to the run-time error in the previous example, and
  provide the following run-time guarantee:
 
 - if `e` is an expression with static type `T` that evaluates to a value `v`,
-- then `v` is guaranteed to match the (bytecode) type `G(T)`
+  then `v` is guaranteed to match the (bytecode) type `G(T)`
 
 
 ## Discussion
@@ -377,4 +469,5 @@ The C# language has a similar type system and enforces
 
 Thank you to [Ryan Culpepper](https://github.com/rmculpepper) and [Jesse Tov](http://users.eecs.northwestern.edu/~jesse/) for noticing the similarity between
  Java's generic-type erasure and transient migratory typing.
-Jesse helped improve an early version of this post.
+Jesse commented on an early version of this post, supplied new Java example code,
+and explained the trouble with generics and arrays.
