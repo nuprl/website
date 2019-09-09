@@ -105,9 +105,9 @@
               }
             }
             @p{
-              The @b{College of Computer and Information Science}
+              The @b{Khoury College of Computer Sciences}
               is located in Building WVH
-              (aka West Village "H" -- don't forget the H,
+              (aka West Village "H" — don't forget the H,
               otherwise you won't be able to distinguish
               it from WV "A" through WV "G").
             }
@@ -117,7 +117,7 @@
             }
 
             @p{
-              To get to all CCIS offices, take the elevators
+              To get to all Khoury offices, take the elevators
                opposite the big glassed-in lab on the first floor.
             }
 
@@ -128,8 +128,8 @@
             }
 
             @p{
-              The PRL lab is in room 308 behind the glass walls
-              with Racket code on them.
+              The PRL lab is spread across rooms 308 and 330. 
+              Room 308 is behind the glass walls with Racket code on them.
             }
 
             @p{
