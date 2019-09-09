@@ -369,6 +369,15 @@
                   #:img "ellen_arteca_small.jpg"]{
             My previous work was in gradual typing; now I'm starting a project looking at program analysis for asynchronous JavaScript.
           }
+
+          @person[#:name "Olek Gierczak"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "gierczak.o@husky.neu.edu"
+                  #:history @list[
+                    "Joined 2019"]
+                  #:img "olek_gierczak.jpg"]{
+            I like reasoning about programming languages and compilers, using pencil and paper or proof assistants.
+          }
         }
 
         @div[class: "pn-separator-img"]{
