@@ -22,7 +22,7 @@
                 @h3{Inside PRL}
 
                 @div[class: "col-xs-3 pad-contact"]{
-                  @h4{PL Seminar} @a[href: "mailto:yazdani.n@husky.neu.edu"]{Nathaniel Yazdani}
+                  @h4{PL Seminar and Internal Talks} @a[href: "mailto:yazdani.n@husky.neu.edu"]{Nathaniel Yazdani}
                 }
 
                 @div[class: "col-xs-3 pad-contact"]{
@@ -48,7 +48,7 @@
                 }
 
                 @div[class: "col-xs-4 pad-contact"]{
-                  @h4{Blog Maintainer} @a[href: "mailto:moy.cam@husky.neu.edu"]{Cameron Moy}
+                  @h4{Blog Editor} @a[href: "mailto:moy.cam@husky.neu.edu"]{Cameron Moy}
                 }
 
                 @div[class: "col-xs-4 pad-contact"]{
@@ -76,11 +76,11 @@
                 }
 
                 @div[class: "col-xs-3 pad-contact"]{
-                  @h4{Tea Czar} @a[href: "mailto:gierczak.o@husky.neu.edu"]{Olek Gierczak}
+                  @h4{Tea Tzar} @a[href: "mailto:gierczak.o@husky.neu.edu"]{Olek Gierczak}
                 }
 
                 @div[class: "col-xs-3 pad-contact"]{
-                  @h4{Twitter Tsar @br{} 
+                  @h4{Twitter @br{} 
                     @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}} 
                     @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
                 }
