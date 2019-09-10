@@ -22,7 +22,7 @@
                 @h3{Inside PRL}
 
                 @div[class: "col-xs-3 pad-contact"]{
-                  @h4{PL Seminar} Nathaniel Yazdani
+                  @h4{PL Seminar} @a[href: "mailto:yazdani.n@husky.neu.edu"]{Nathaniel Yazdani}
                 }
 
                 @div[class: "col-xs-3 pad-contact"]{
@@ -48,7 +48,7 @@
                 }
 
                 @div[class: "col-xs-4 pad-contact"]{
-                  @h4{Blog Maintainer} Cameron Moy
+                  @h4{Blog Maintainer} @a[href: "mailto:moy.cam@husky.neu.edu"]{Cameron Moy}
                 }
 
                 @div[class: "col-xs-4 pad-contact"]{
@@ -60,7 +60,7 @@
                 }
 
                 @div[class: "col-xs-6 pad-contact"]{
-                  @h4{Teaching&Software Pages Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
+                  @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
                 }
               }
 
