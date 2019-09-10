@@ -16,12 +16,12 @@
               @ol[
                 @li{
                   Get your student ID (a.k.a. Husky Card) from
-                  @a[href: "http://www.northeastern.edu/huskycard/about/pick-up-locations/"]{a pick-up location}.
+                  @a[href: "https://www.northeastern.edu/huskycard/about/pick-up-locations/"]{a pick-up location}.
                   Visit WVH 202 and/or send mail to @mailto|{operations@ccs.neu.edu}| to register your card to unlock WVH 308, WVH 330, WVH 366, and your private office (if you have one).
                 }
                 @li{
                   Apply for a CCIS account using
-                  @a[href: "http://howto.ccs.neu.edu/howto/accounts-homedirs/how-to-sign-up-for-a-ccis-account/"]{these instructions}.
+                  @a[href: "https://www.ccis.northeastern.edu/systems/getting-started/"]{these instructions}.
                   This account comes with a @tt{ccs.neu.edu} email address and
                   allows you to access various computers around the college.
                   Make sure you are able to print using the @tt{gaugin} (in WVH 308)
@@ -32,9 +32,10 @@
                   Coordinate with the lab member in charge of
                   @a[href: "people.html"]{the people page}
                   (see the @a[href: "contact.html"]{Contact} page) to add your
-                  picture and bio, as well as to add yourself to the
-                  @strong{prl-students} and/or @strong{prl-staff} mailing list,
-                  as appropriate.
+                  picture and bio. Contact also the @strong{prl-students} mailing list 
+                  maintainer and add yourself to
+                  that mailing list (and contact the @strong{prl-staff} mailing list
+                  maintainer to add yourself there, if appropriate.)
                 }
                 @li{
                   Join the lab's IRC channel, @tt{#prl}, on Freenode. Current
@@ -80,7 +81,7 @@
                   }
                 }
               ]
-              @p{More grad-student-specific information about Northeastern's College of Computer and Information Science can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki}.}
+              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki}.}
   }}}}}
   @footer{}
 }}
