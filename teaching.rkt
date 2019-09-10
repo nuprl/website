@@ -26,7 +26,7 @@
           @div[class: "row"]{
             @p{PRL Faculty & Staff write academic @a[href: "#books1"]{books},  teach @a[href: "#courses"]{courses}, and write @a[href: "#books2"]{more books}.}}}
 
-        @div[class: "pn-separator-img-2-short"]
+        @div[class: "pn-separator-img-short"]
 
         @div[class: "container"]{
           @a[name: "#books1" id: "books1"]
@@ -50,7 +50,7 @@
                     @url{http://www.bootstrapworld.org}}
                   } @br{} }}}
 
-            @div[class: "pn-separator-img-2"]
+            @div[class: "pn-separator-img"]
             @div[class: "container"]{
               @div[class: "row"]{
                 @div[class: "col-md-12"]{
@@ -65,7 +65,7 @@
                         @br{}
                         @span[class: "essentials-of-programming-languages-2"]{of Programming @br{} Languages}}}}}}
 
-        @div[class: "pn-separator-img-2"]
+        @div[class: "pn-separator-img"]
 
         @div[class: "container"]{
           @div[class: "row"]{
@@ -84,7 +84,7 @@
                  @br{} @br{}
                }}}}
 
-         @div[class: "pn-separator-img-2-short"]
+         @div[class: "pn-separator-img-short"]
 
          @div[class: "container"]{
            @div[class: "row"]{
@@ -94,12 +94,26 @@
              @div[class: "col-md-6"]{
                @ul{
                  @li{
+                   @strong{7976} Directed Study
+                   @br{}
+                   @indent{} F 2019 Seminar in Technical Writing @a[href: "https://course.ccs.neu.edu/cs7976f19/" target: "_blank"]{link} @instructor{Mitch Wand}
+                   @br{}
+                   @indent{} F 2018 Seminar in Technical Writing @a[href: "https://course.ccs.neu.edu/cs7976f18/" target: "_blank"]{link} @instructor{Mitch Wand}
+                 }
+                 @li{
                    @strong{7680} Special Topics in Computer Systems
                    @br{}
                    @indent{} F 2016 Programming Models for Distributed Computing @a[href: "http://heather.miller.am/teaching/cs7680/" target: "_blank"]{link} @instructor{Heather Miller}
                  }
                  @li{
+                   @strong{7580} Special Topics in Software Engineering
+                   @br{}
+                   @indent{} F 2019 Intensive Software, Construction and Engineering @a[href: "http://janvitek.org/events/NEU/7580/" target: "_blank"]{link} @instructor{Jan Vitek}
+                 }
+                 @li{
                    @strong{7480} Special Topics in Programming Languages
+                   @br{}
+                   @indent{} S 2019 Gradual Typing and Principled Language Interoperability @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s19/" target: "_blank"]{link} @instructor{Amal Ahmed}
                    @br{}
                    @indent{} S 2017 History of Programming Languages @a[href: "http://www.ccs.neu.edu/home/matthias/7480-s17/index.html" target: "_blank"]{link} @instructor{Matthias Fellsein}
                    @br{}
@@ -126,14 +140,21 @@
                  }
                  @li{
                    @strong{6240} Parallel Data Processing in MapReduce @br{}
+                   @indent{} F 2017 @a[href: "http://janvitek.github.io/pdpmr/f17/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
+                   @indent{} S 2016 @a[href: "https://sites.google.com/site/mapreduce16s/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
                    @indent{} S 2015 @a[href: "https://sites.google.com/site/mapreduce15s/" target: "_blank"]{link} @instructor{Jan Vitek}
                  }
                  @li{
+                   @strong{6050 DS} Seminar in Data Science @br{}
+                   @indent{} S 2019 Expeditions in Data Science @a[href: "http://janvitek.org/events/NEU/6050/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
+                 }
+                 @li{
                    @strong{5500} Managing Software Development @br{}
+                   @indent{} F 2019 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/2019-Fall-Section1/index.html" target: "_blank"]{link} @instructor{Frank Tip} @br{}
                    @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs5500sp17/" target: "_blank"]{link} @instructor{Michael Weintraub, Frank Tip} @br{}
                  }
                  @li{
-                   @strong{5110} Introduction to Data Science @br{}
+                   @strong{5110 DS} Introduction to Data Science @br{}
                    @indent{} S 2017 @a[href: "http://janvitek.org/events/NEU/5110/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
                  }
                  @li{
@@ -152,13 +173,27 @@
                @ul{
                  @li{
                    @strong{4620} Building Extensible Systems @br{}
+                   @indent{} S 2018 Hack Your Own Language @a[href: "https://felleisen.org/matthias/4620-s18/index.html" target: "_blank"]{link} @instructor{Matthias Felleisen, Stephen Chang} @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/matthias/4620-s15/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
+                     @strong{4500} Software Development @br{}
+                     @indent[] F 2019 @a[href: "https://felleisen.org/matthias/4500-f19/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
+                     @indent[] F 2018 @a[href: "https://felleisen.org/matthias/4500-f18/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
+                     @indent[] S 2016 @a[href: "https://felleisen.org/matthias/4500-s16/" target: "_blank"]{link} @instructor{Matthias Felleisen}
+                 }
+                 @li{
                      @strong{4410} Compilers @br{}
-                     @indent[] S 2017 @a[href: "http://www.ccs.neu.edu/course/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs4410sp19/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent[] S 2017 @a[href: "https://course.ccs.neu.edu/cs4410sp17/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2013 @a[href: "http://www.ccs.neu.edu/home/amal/course/4410-s13/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                      @indent[] S 2012 @a[href: "http://www.ccs.neu.edu/course/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers}
+                 }
+                 @li{
+                     @strong{4400} Programming Languages @br{}
+                     @indent[] F 2018 @a[href: "https://pl.barzilay.org/" target: "_blank"]{link} @instructor{Jason Hemann}
                  }
                  @li{
                      @strong{3800} Theory of Computation @br{}
@@ -166,10 +201,17 @@
                  }
                  @li{
                      @strong{3500} Object Oriented Design @br{}
+                     @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/cs3500f19/" target: "_blank"]{link} @instructor{Ben Lerner, Clark Freifeld, Alex Grob} @br{}
+                     @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/cs3500f18/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh, Clark Freifeld} @br{}
+                     @indent[] F 2016 @a[href: "https://course.ccs.neu.edu/cs3500f16/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh}
                      @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3500/" target: "_blank"]{link} @instructor{Ben Lerner}
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
+                     @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs2510sp19/" target: "_blank"]{link} @instructor{Leena Razzaq, Jason Hemann, Matthew Singer} @br{}
+                     @indent[] S 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp19/" target: "_blank"]{link} @instructor{Ben Lerner, Matthew Singer} @br{}                
+                     @indent[] S 2018 @a[href: "https://course.ccs.neu.edu/cs2510sp18/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Clark Freifeld, Jan Vitek, Becca MacKenzie} @br{}
+                     @indent[] S 2018 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp18/" target: "_blank"]{link} @instructor{Ben Lerner, Becca MacKenzie} @br{}
                      @indent[] S 2017 @a[href: "http://www.ccs.neu.edu/course/cs2510sp17/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Leena Razzaq, Clark Freifeld, Becca MacKenzie} @br{}
                      @indent[] S 2016 @a[href: "http://www.ccs.neu.edu/course/cs2510f16/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Leena Razzaq, Magy Seif El-Nasr} @br{}
                      @indent[] S 2015 @a[href: "http://www.ccs.neu.edu/course/cs2510sp15/" target: "_blank"]{link} @instructor{Ben Lerner, Leena Razzaq} @br{}
@@ -178,6 +220,11 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
+                     @indent{} F 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf19/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                     @indent{} S 2019 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2018 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf18/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
+                     @indent{} F 2017 @a[href: "https://course.ccs.neu.edu/cs2500f17/" target: "_blank"]{link} @instructor{Benjamin Lerner, Alan Mislove, Christo Wilson, Nada Naji, Byron Wallace} @br{}
+                     @indent{} F 2017 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf17/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers, Nat Tuck} @br{}
                      @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs2500f16/" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed, Ben Lerner} @br{}
                      @indent{} F 2016 accelerated @a[href: "http://www.ccs.neu.edu/course/cs2500accelf16/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
@@ -189,7 +236,7 @@
                      @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/course/csu211/" target: "_blank"]{link} @instructor{Amal Ahmed}
                  }}}}}
 
-         @div[class: "pn-separator-img-2-short"]
+         @div[class: "pn-separator-img-short"]
 
          @div[class: "container"]{
            @div[class: "row"]{
@@ -206,7 +253,7 @@
                    @br{}
                    @span[class: "essentials-of-programming-languages-2"]{Realm of Racket}}}}}}
 
-         @div[class: "pn-separator-img-2-short"]
+         @div[class: "pn-separator-img-short"]
 
          @div[class: "container"]{
            @div[class: "row"]{
