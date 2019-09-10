@@ -63,7 +63,7 @@
    @list{
      @element/not-empty['footer class: "footer"]{
        @p[@twitter-follow-button["neu_prl" "Follow the PRL"]]
-       @p{© Copyright Programming Research Laboratory 2015-2016 | made by @a[href: "http://www.catchexception.cz/" target: "_blank"]{Catchexception s.r.o.} | source on @a[href: "https://github.com/nuprl/website"]{GitHub}}
+       @p{© Copyright Programming Research Laboratory 2015-2019 | made by @a[href: "http://www.catchexception.cz/" target: "_blank"]{Catchexception s.r.o.} | source on @a[href: "https://github.com/nuprl/website"]{GitHub}}
        @a[class: "pn-top pn-dark" href: "#pn-top"]{
          @img[src: "img/up-arrow.png" alt: "top"]}}
      @<!--{jQuery (necessary for Bootstrap's JavaScript plugins)}
