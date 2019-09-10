@@ -81,7 +81,7 @@
                   }
                 }
               ]
-              @p{More grad-student-specific information about Northeastern's College of Computer and Information Science can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki}.}
+              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki}.}
   }}}}}
   @footer{}
 }}
