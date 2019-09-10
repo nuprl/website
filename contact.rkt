@@ -1,6 +1,9 @@
 #lang scribble/html
 @require["templates.rkt"]
 
+@(define (linksym name link) 
+  @a[href: link]{@name @span[class: "glyphicon glyphicon-link"]})
+
 @doctype{html}
 @html[lang: "en"]{
   @header{Contact}
@@ -14,57 +17,81 @@
           @center{
             @div[class: "row"]{
               @h2{Who's in charge?}
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{Webmaster} @a[href: "mailto:leif@leifandersen.net"]{Leif Andersen}
+
+              @div[class: "row"]{
+                @h3{Inside PRL}
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{PL Seminar} @a[href: "mailto:yazdani.n@husky.neu.edu"]{Nathaniel Yazdani}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{PL Seminar, Junior @br{} 
+                    @small{@linksym["Link" "https://github.com/nuprl/prl-seminar-junior"]}} 
+                  @a[href: "mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}, @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{ZED-talks} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}, @a[href: "mailto:ellen@ccs.neu.edu"]{Ellen Arteca}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
+                }
               }
 
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{PL Seminar} @a[href: "mailto:goel.aviral@gmail.com"]{Aviral Goel}
+              @div[class: "row"]{
+                @h3{Website}
+
+                @div[class: "col-xs-4 pad-contact"]{
+                  @h4{Webmaster} @a[href: "mailto:michael.ballantyne@gmail.com"]{Michael Ballantyne}
+                }
+
+                @div[class: "col-xs-4 pad-contact"]{
+                  @h4{Blog Maintainer} @a[href: "mailto:moy.cam@husky.neu.edu"]{Cameron Moy}
+                }
+
+                @div[class: "col-xs-4 pad-contact"]{
+                  @h4{Publication Page Maintainer} @a[href: "mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
+                }
+
+                @div[class: "col-xs-6 pad-contact"]{
+                  @h4{People Page Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
+                }
+
+                @div[class: "col-xs-6 pad-contact"]{
+                  @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
+                }
               }
 
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{PL Seminar, Junior} @a[href: "mailto:shin.hy@husky.neu.edu"]{Hyeyoung Shin}
+              @div[class: "row"]{
+                @h3{Social}
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{Happy Hour} @a[href: "mailto:weiss.a@husky.neu.edu"]{Aaron Weiss}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{Coffee Czar} @a[href: "mailto:types@ccs.neu.edu"]{Ben Greenman}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{Tea Czar} @a[href: "mailto:gierczak.o@husky.neu.edu"]{Olek Gierczak}
+                }
+
+                @div[class: "col-xs-3 pad-contact"]{
+                  @h4{Twitter Tsar @br{} 
+                    @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}} 
+                    @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
+                }
               }
 
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{Happy Hour} @a[href: "mailto:weiss.a@husky.neu.edu"]{Aaron Weiss}
-              }
-
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{Coffee Czar} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}
-              }
-
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{Twitter Tsar} @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
-              }
-
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{Blog Maintainer} @a[href: "mailto:samc@ccs.neu.edu"]{Sam Caldwell}
-              }
-
-              @div[class: "col-xs-3 pad-contact"]{
-                @h4{People Page Maintainer} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
-              }
-
-              @div[class: "col-xs-4 pad-contact"]{
-                @h4{Publication Page Maintainer} @a[href: "mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
-              }
-
-              @div[class: "col-xs-4 pad-contact"]{
-                @h4{Software Page Maintainer} @a[href: "mailto:leif@ccs.neu.edu"]{Leif Andersen}
-              }
-
-              @div[class: "col-xs-4 pad-contact"]{
-                @h4{Teaching Page Maintainer} @a[href: "mailto:andrew.cobb@gmail.com"]{Andrew Cobb}
-              }
-
-              @div[class: "col-xs-6 pad-contact"]{
-                @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
-              }
-
-              @div[class: "col-xs-6 pad-contact"]{
-                @h4{Mailing List Maintainers} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} (@tt{prl-students}) @br{} @a[href: "mailto:ckfinite@gmail.com"]{Benjamin Chung} (@tt{prl-staff})
-              }
+              @div[class: "row"]{
+                @h3{Contact Manager}
+                @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} @br{}
+                Mailing Lists: @tt{prl-students}, @tt{prl-staff} @br{}
+                GitHub Organization: @a[href: "https://github.com/nuprl"]{@tt{NuPRL}}
+              }               
            }
           }
           
@@ -78,9 +105,9 @@
               }
             }
             @p{
-              The @b{College of Computer and Information Science}
+              The @b{Khoury College of Computer Sciences}
               is located in Building WVH
-              (aka West Village "H" -- don't forget the H,
+              (aka West Village "H" — don't forget the H,
               otherwise you won't be able to distinguish
               it from WV "A" through WV "G").
             }
@@ -90,7 +117,7 @@
             }
 
             @p{
-              To get to all CCIS offices, take the elevators
+              To get to all Khoury offices, take the elevators
                opposite the big glassed-in lab on the first floor.
             }
 
@@ -101,8 +128,8 @@
             }
 
             @p{
-              The PRL lab is in room 308 behind the glass walls
-              with Racket code on them.
+              The PRL lab is spread across rooms 308 and 330. 
+              Room 308 is behind the glass walls with Racket code on them.
             }
 
             @p{
