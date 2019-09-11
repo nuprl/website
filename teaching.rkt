@@ -223,7 +223,7 @@
                      @indent{} F 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf19/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                      @indent{} S 2019 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent{} F 2018 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf18/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
-                     @indent{} F 2017 @a[href: "https://course.ccs.neu.edu/cs2500f17/" target: "_blank"]{link} @instructor{Benjamin Lerner, Alan Mislove, Christo Wilson, Nada Naji, Byron Wallace} @br{}
+                     @indent{} F 2017 @a[href: "https://course.ccs.neu.edu/cs2500f17/" target: "_blank"]{link} @instructor{Ben Lerner, Alan Mislove, Christo Wilson, Nada Naji, Byron Wallace} @br{}
                      @indent{} F 2017 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf17/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers, Nat Tuck} @br{}
                      @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/course/cs2500f16/" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed, Ben Lerner} @br{}
