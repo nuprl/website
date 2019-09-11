@@ -342,12 +342,12 @@
           @person[#:name "Julia Belyakova"
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "julbinb@gmail.com"
+                  #:website "http://julbinb.github.io/"
                   #:history @list[
                     "Joined Northeastern, 2018"
                     "Joined Czech Technical University in Prague, 2017"
                     "Joined Southern Federal University, 2014"
                     "MS, Southern Federal University, 2014"]
-                  #:website "http://julbinb.github.io/"
                   #:img "julia_belyakova.jpg"]{
             My primary research interests are programming languages and type theory. I am also fond of theorem proving, generic programming, object-oriented and functional programming, software engineering, programming by contracts, software testing. Currently I work on formalizing subtyping for the Julia programming language.
           }
@@ -377,6 +377,16 @@
                     "Joined 2019"]
                   #:img "olek_gierczak.jpg"]{
             I like reasoning about programming languages and compilers, using pencil and paper or proof assistants.
+          }
+
+          @person[#:name "Cameron Moy"
+                  #:title "Advisor: Matthias Felleisen"
+                  #:e-mail "camoy@ccs.neu.edu"
+                  #:website "http://camoy.name"
+                  #:history @list[
+                    "Joined 2019"]
+                  #:img "cameron_camoy.jpg"]{
+             I enjoy flexible programming languages and elegant software. I'm interested in designing tools that enable everyday developers to build more robust programs.
           }
         }
 
