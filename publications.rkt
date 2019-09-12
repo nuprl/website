@@ -115,8 +115,8 @@
     (publication "How to Evaluate the Performance of Gradual Type Systems"
                  "Ben Greenman, Asumu Takikawa, Max S. New, Daniel Feltey, Robert Bruce Findler, Jan Vitek, and Matthias Felleisen"
                  JFP
-                 2018
-                 "http://janvitek.org/pubs/jfp18.pdf")
+                 2019
+                 "https://www2.ccs.neu.edu/racket/pubs/gtnffvf-jfp19.pdf")
     (publication "Formal Approaches to Secure Compilation: A Survey of Fully Abstract Compilation and Related Work"
                  "Marco Patrignani, Amal Ahmed, and Dave Clarke"
                  CSUR
