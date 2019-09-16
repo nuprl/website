@@ -388,6 +388,17 @@
                   #:img "cameron_camoy.jpg"]{
              I enjoy flexible programming languages and elegant software. I'm interested in designing tools that enable everyday developers to build more robust programs.
           }
+
+          @person[#:name "Nate Yazdani"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "nyazdani@ccs.neu.edu"
+                  #:website "https://nateyazdani.github.io/"
+                  #:history @list[
+                    "Joined Northeastern, 2019"
+                    "MS, University of Washington, 2019"]
+                  #:img "nate_yazdani.jpg"]{
+             I like types, proofs, and occasionally programs.
+          }
         }
 
         @div[class: "pn-separator-img"]{
