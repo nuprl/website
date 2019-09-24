@@ -1,12 +1,12 @@
 TARGETS=contact.html index.html new-members.html people.html seminars.html software.html teaching.html publications.html
 .PHONY: blog
 
-all: setup blog prl
+all: blog prl
 
 preview: all
 	raco frog -p
 
-prl: $(TARGETS)
+prl: setup $(TARGETS)
 
 setup:
 	raco pkg install --auto --skip-installed gregor
