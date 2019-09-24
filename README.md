@@ -18,7 +18,7 @@ needs to change after every seminar).
 Building
 ========
 
-Build Prerequisites: [Racket](http://racket-lang.org/)
+Build Prerequisites: [Racket](http://racket-lang.org/), and python with the pygments library.
 
 To build the site + blog and open a new window:
 
