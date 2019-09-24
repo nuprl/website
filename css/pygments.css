@@ -39,11 +39,13 @@
 .nv { color: #008080 } /* Name.Variable */
 .ow { color: #000000; font-weight: bold } /* Operator.Word */
 .w { color: #bbbbbb } /* Text.Whitespace */
-.mf { color: #ffffff } /* Literal.Number.Float */
-.mh { color: #ffffff } /* Literal.Number.Hex */
-.mi { color: #ffffff } /* Literal.Number.Integer */
-.mo { color: #ffffff } /* Literal.Number.Oct */
-.mn { color: #ffffff } /* Literal.Number */
+
+/* see https://github.com/nuprl/website/issues/224#issuecomment-534255324 */
+.code .mf { color: #009999 } /* Literal.Number.Float */
+.code .mh { color: #009999 } /* Literal.Number.Hex */
+.code .mi { color: #009999 } /* Literal.Number.Integer */
+.code .mo { color: #009999 } /* Literal.Number.Oct */
+
 .sb { color: #d01040 } /* Literal.String.Backtick */
 .sc { color: #d01040 } /* Literal.String.Char */
 .sd { color: #d01040 } /* Literal.String.Doc */
