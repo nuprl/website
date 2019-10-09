@@ -81,6 +81,20 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "guha-serverless"
+     "Faster, Safer, and Cheaper Serverless Computing using Language-Based Techniques"
+     "Arjun Guha"
+     "https://people.cs.umass.edu/~arjun/main/home/"
+     "University of Massachusetts, Amherst"
+     (datetime 2019 11 12 10 00)
+     "WVH 366"
+     @list{
+       @p{Serverless computing is a cloud computing abstraction that makes it easier to write robust, large-scale web services. In serverless computing, programmers write what are called serverless functions, and the cloud platform transparently manages the operating system, resource allocation, load-balancing, and fault tolerance. When demand spikes, the platform automatically allocates additional hardware and manages load-balancing; when demand falls, the platform silently deallocates idle resources; and when the platform detects a failure, it transparently retries affected requests.}
+       @p{In this talk, we will see how language-based techniques can make serverless computing faster, safer, and cheaper for programmers. First, we present a detailed, operational model of a serverless computing platform, which shows that serverless computing is a leaky abstraction. We then derive a less-leaky "naive semantics" and precisely characterize how the two semantics coincide. Second, we extend the operational semantics with a domain-specific language for composing serverless functions, and show that the language design lends itself to an efficient implementation that lowers the cost of building modular applications. Finally, we present a "serverless function accelerator" that significantly reduces the latency of a large class of functions using language-based sandboxing and speculative optimizations.}}
+     @list{@p{Arjun Guha is an associate professor of Computer Science at the University of Massachusetts Amherst. Using the tools and techniques of programming languages, his research addresses security, reliability, and performance problems in web applications, systems, networking, and robotics. He received a PhD in Computer Science from Brown University in 2012 and a BA in Computer Science from Grinnell College in 2006.}}
+     )
+    
+    (seminar
      "brun-fairness"
      "Software Fairness"
      "Yuriy Brun"
