@@ -77,6 +77,11 @@
                  OOPSLA
                  2019
                  "http://janvitek.org/pubs/oopsla19a.pdf")
+    (publication "Complete Monitors for Gradual Types"
+                 "Ben Greenman, Matthias Felleisen, and Christos Dimoulas"
+                 OOPSLA
+                 2019
+                 "https://doi.org/10.1145/3360548")
     (publication "R Melts Brains: An IR for First-Class Environments and Lazy Effectful Arguments"
                  "Olivier Flückiger, Ming-Ho Yee, Guido Chari, Jakob Hain, Jan Ječmen and Jan Vitek"
                  DLS
