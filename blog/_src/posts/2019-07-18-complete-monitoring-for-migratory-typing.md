@@ -1,103 +1,115 @@
-    Title: Complete Monitoring for Gradual/Migratory Typing
+    Title: Complete Monitors for Gradual Types
     Date: 2019-07-18T14:33:47
     Tags: migratory typing, gradual typing, complete monitoring, extended abstract, by Ben Greenman
 
-Complete monitoring is a key semantic property for languages that mix typed
-and untyped code.
-If a semantics is a complete monitor, then untyped code can trust the type
-annotations and error messages can pinpoint the first mismatch between a
-(possibly incorrect) type annotation and an untyped value.
-
-<!-- This post explains -->
-<!-- **why** complete monitoring matters and -->
-<!-- **what** technical concepts are needed to state a complete monitoring theorem. -->
+Syntactic type soundness is too weak to tell apart different ways of running
+ a program that mixes typed and untyped code.
+Complete monitoring is a stronger property that captures a meaningful
+ distinction --- a language satisfies complete monitoring iff it checks
+ all interactions between typed and untyped code.
 
 <!-- more -->
 
-- - -
-
-<!-- OUTLINE -->
-<!-- - [ ] types are static claims about runtime values -->
-<!-- - [ ] in a typed language, type soundness is ox -->
-<!--   + beware the runtime library -->
-<!-- - [ ] in a mixed language, soundness is not enough -->
-<!--   + lambda-calculus example, for soundness with different behavior ? -->
-<!-- - [ ] example ... what went wrong? bad boundary-crossing -->
-<!-- - [ ] so, agreeing with the judgment "wrong" implies a few assumptions about the -->
-<!--   structure of a program: made of components, boundaries typed, value not -->
-<!--   allowed to cross without a full check. Express with static + dynamic axioms. -->
-<!-- - [ ] now can say when "wrong" happens --- its when value gets multiple owners -->
-<!-- - [ ] semantics is a complete monitor if never raises single-owner-policy errors -->
-<!-- - [ ] STOP reflect ... ownership explicit + new error, and done -->
-<!-- -  -->
-<!-- - [ ] example, int/pair language need to check boundaries else clearly bad -->
-<!-- - [ ] CM = monitor all channels of communication ... with full checks here -->
-<!--   + full not always possible, and formal CM does not guarantee the right checks -->
-<!-- -  -->
-<!-- - [ ] example 2, add functions, cannot do full check but can delay -->
-<!--   + proxy is a new value -->
-<!-- -  -->
-<!-- - [ ] reflection, why to not be complete -->
-
-The goal of [migratory typing]() is to add static types to an existing
-untyped language.
-The goal of [gradual typing](), similarly, is to add dynamic typing to an
-existing static type system.
-Both hope to end up with a programming language that combines the benefits
-of static and dynamic typing.
-
-In other words, the common end-goal is a [multi-language]() that combines
-two independently-useful languages.
-The dynamic part of the language must run any program that satisfies
-a basic well-formedness condition (perhaps "no free variables", or simply
-"no mismatched delimiters").
-The static part of the language must check code ahead-of-time and classify
-the kind of output the code will produce.
-Crucially, a program must be able to combine dynamic and static parts ---
-first by connecting pieces statically, and second by allowing values to
-flow between parts at runtime.
-
-<!-- > Assumptions: (1) if the dynamic code attempts an undefined operation, the -->
-<!-- > language will catch the error (e.g. raise a Python `ValueError` rather than -->
-<!-- > a C segfault); (2) the type system allows partial functions -->
-<!--  -->
-<!-- TODO does a blog post need to be so precise? Goal is attention to paper. -->
-
-In pictures, we can think of a program as a collection of cicle-shaped pieces.
-A green circle represents a dynamically-typed component,
-and a blue circle represents a statically-typed component.
-
-<img src="/img/complete-monitoring-0.png" alt="Nodes (of two colors), no edges"/>
-
-If one cicle directly depends on another, we draw a solid line between them.
-Think of a solid line as a line of code that imports some bindings.
-
-<img src="/img/complete-monitoring-1.png" alt="Nodes and solid edges"/>
-
-When a program runs, values flow across the edges.
-In a higher-order language, these values can accept input and lead to new
-interactions between new pairs of components; the shaded edges in the figure
-represent these new interactions.
-
-<img src="/img/complete-monitoring-2.png" alt="Nodes, solid edges, and dashed edges"/>
-
-The question is, what do the runtime interactions mean for the static types?
+> Note: this post is an extended abstract for the paper _Complete Monitors
+> for Gradual Types_ by Ben Greenman, Matthias Felleisen, and Christos Dimoulas.
+> For the full paper, proofs, and slides,
+> [click here](http://www.ccs.neu.edu/home/types/publications/publications.html#gfd-oopsla-2019).
 
 
-## Types and Type Soundness
+### Example: Clickable Plot
 
-A type is a claim.
-If an expression has the static type **Number** then the claim is that running
-the expression will produce a number (or diverge, or an acceptable error).
-Similarly for other types and expressions.
+The program below has a subtle bug.
+Can you find it?
 
-A type-sound language comes with a proof that these claims are always true.
+<img src="/img/complete-monitoring-0.png" alt="Untyped client code, a typed API, and untyped library code."/>
 
-In a fully-typed language, ... soundness statically. Mostly.
+First of all, this pseudocode program combines three chunks of code:
+
+- On the left, an **untyped** client script defines a function `h` that expects
+  a pair of numbers and returns an image. The client uses this function to
+  create a `ClickPlot` object, and then displays the plot --- ideally in a new
+  GUI window.
+
+- In the center, a **typed** API file describes a `ClickPlot` object as
+  something with one constructor and two methods. The constructor expects
+  a function; according to the type, such functions can expect a pair of
+  numbers and must compute an image. The `mouseHandler` method expects
+  a `MouseEvt` object and returns nothing. The `show` method expects no arguments
+  and returns nothing. (Presumably, these methods have side effects.)
+
+- On the right, an **untyped** library module implements a `ClickPlot` object.
+  Most of the code is omitted (`...`), but the `mouseHandler` method sends
+  its input directly to the `onClick` callback.
+
+The **bug** is in the API --- in the type `([N, N]) => Image`.
+This type promises that a given function can expect a pair of numbers,
+ and indeed the client script's callback `h` expects a pair.
+But the library code on the right passes a `MouseEvt` object to its callback.
+
+What happens when we run this program in a type-sound mixed-typed language?
+Does `h` receive the invalid input?
+
+As it turns out, type soundness cannot say.
+A type sound language may choose to enforce or ignore the fact that the
+ API promises a pair of numbers to the client.
 
 
-## Type Soundness in a Mixed-Typed Language
+### Type Soundness is Not Enough
 
-In a mixed language, more challenging for soundness.
+Sound types are statements about the behavior of a program.
+A normal type soundness theorem for a typed language says that a well-typed
+ program can either compute a value of the same type, compute forever (diverge),
+ or stop with an acceptable error (perhaps division by zero).
+No other behaviors are possible.
 
+> **Classic Type Soundness**
+>
+> If `e : T` then one of the following holds:
+>
+> - `e -->* v` and `v : T`
+> - `e` diverges
+> - `e -->* OkError`
+
+A mixed-typed language needs two "type soundness" theorems:
+ one for typed code and one for untyped code.
+The **typed** soundness theorem can resemble a classic theorem.
+The **untyped** soundness theorem is necessarily a weaker statement due to
+ the lack of types:
+
+> **Mixed-Typed Soundness**
+>
+> If `e : T` then one of the following holds:
+>
+> - `e -->* v` and `v : T`
+> - `e` diverges
+> - `e -->* OkError`
+>
+> And if `e` is untyped then one of the following holds:
+>
+> - `e -->* v` and `v` is a proper value
+> - `e` diverges
+> - `e -->* OkError`
+
+Now we can see why mixed-typed soundness is not strong enough to guarantee that
+ the callback `h` in the code above receives a pair value.
+We have an **untyped** function called from an **untyped** context --- since
+ there are no types sitting right there, type soundness has nothing to say
+ about types!
+
+<img src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client."/>
+
+Nevertheless, this channel of communication between the library and client
+ arose through the typed API.
+
+TODO
+
+
+### Complete Monitoring
+
+from contracts,
+....
+
+
+
+<!-- http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/ -->
 
