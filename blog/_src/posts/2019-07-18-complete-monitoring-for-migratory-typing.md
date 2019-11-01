@@ -43,8 +43,8 @@ First of all, this pseudocode program combines three chunks of code:
 
 The **bug** is in the API --- in the type `([N, N]) => Image`.
 This type promises that a given function can expect a pair of numbers,
- and indeed the client script's callback `h` expects a pair.
-But the library code on the right passes a `MouseEvt` object to its callback.
+ and indeed the client function `h` expects a pair.
+But the library code on the right sends a `MouseEvt` object.
 
 What happens when we run this program in a type-sound mixed-typed language?
 Does `h` receive the invalid input?
@@ -86,7 +86,7 @@ The **untyped** soundness theorem is necessarily a weaker statement due to
 >
 > And if `e` is untyped then one of the following holds:
 >
-> - `e -->* v` and `v` is a proper value
+> - `e -->* v` and `v` is an untyped value
 > - `e` diverges
 > - `e -->* OkError`
 
@@ -94,22 +94,70 @@ Now we can see why mixed-typed soundness is not strong enough to guarantee that
  the callback `h` in the code above receives a pair value.
 We have an **untyped** function called from an **untyped** context --- since
  there are no types sitting right there, type soundness has nothing to say
- about types!
+ except that the untyped code can expect an untyped value!
 
-<img src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client."/>
+<img height=200px src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client."/>
 
 Nevertheless, this channel of communication between the library and client
  arose through the typed API.
+One might expect the type `[N, N]` to restrict the values that can flow across
+ the channel; indeed, if types really are statements about the behavior of a program,
+ then the channel needs to be protected.
 
-TODO
+The question is: what formal property separates languages thet check
+ all typed/untyped channels of communication (whether direct or derived)?
+One answer is complete monitoring.
 
 
 ### Complete Monitoring
 
-from contracts,
-....
+A mixed-typed language satisfies complete monitoring iff evaluation never
+ lets a value flow un-checked across a type boundary.
+To make this idea precise, we need to enrich the syntax of the language
+ with a specification of _ownership_ to say what parts of the program are
+ responsible for different values, and to say how evalution changes
+ responsibilities.
+Relative to a specification, complete monitoring states that every expression
+ that arises during evaluation is made up of parts that each have a single
+ owner.
+
+> *Complete Monitoring*
+>
+> For all well-formed `e` and all `e'`, if `e -->* e'` then every subexpression
+> of `e'` has a unique owner.
+
+This property separates our two behaviors for the Clickable Plot code.
+A language that satisfies complete monitoring enforces the API types with
+ a runtime check.
+A language that merely satisfies type soundness may skip these checks.
 
 
+### An Aid to Debugging
 
-<!-- http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/ -->
+The question raised by the Clickable Plot example is whether a language can
+ **detect** one mismatch between a type and a value.
+A language that satisfies complete monitoring detects all such mis-matches.
+But we can say more.
+If a mismatch occurs, then programmer knows exactly where to start debugging
+ --- either the type is an incorrect specification, or the given value is
+ flawed.
+In other words, complete monitoring implies a concise 2-party explanation
+ for every type mismatch.
+
+The paper generalizes this goal of explaining a mismatch for languages
+ that fail to satisfy complete monitoring.
+There may be 2N parties to blame thanks to un-checked channels of communication,
+ and we want to be certain to report all these parties and no false positives.
+
+Also in the paper, you can find:
+
+- a model of ownership, clear _laws_ for how ownership changes during evaluation;
+- examples of how to systematically add ownership to an operational semantics
+  to attempt a proof of complete monitoring;
+- definitions for **blame soundness** and **blame completeness**;
+- an analysis of three semantics, which correspond to [Typed Racket](https://docs.racket-lang.org/ts-reference/index.html),
+  [Transient Reticulated](http://hdl.handle.net/2022/23172), and a compromise;
+- and discussion of an alternative, heap-based model of ownership.
+
+Paper: <https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf>
 
