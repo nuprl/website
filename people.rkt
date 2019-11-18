@@ -557,7 +557,9 @@
                         #:dissertation "http://hdl.handle.net/2047/D20318587"
                         #:extra "(Google)"
                         #:personal-site "http://jschuster.org/")
-              @(alumnus "Celeste Hollenbeck" #:year 2019)
+              @(alumnus "Celeste Hollenbeck" #:year 2019
+                        #:extra "(University of Edinburgh)"
+                        #:personal-site "http://celestehollenbeck.com")
              ]}}
 
         @div[class: "container"]{
