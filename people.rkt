@@ -335,6 +335,7 @@
           @person[#:name "Alexi Turcotte"
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "alexi@ccs.neu.edu"
+                  #:website "https://reallytg.github.io/"
                   #:history @list[
                     "Joined 2018"]
                   #:img "alexi_turcotte_small.jpg"]{
@@ -344,6 +345,7 @@
           @person[#:name "Ellen Arteca"
                   #:title "Advisor: Frank Tip"
                   #:e-mail "ellen@ccs.neu.edu"
+                  #:website "https://emarteca.github.io/"
                   #:history @list[
                     "Joined 2018"]
                   #:img "ellen_arteca_small.jpg"]{
@@ -552,7 +554,9 @@
                         #:personal-site "https://www.williamjbowman.com")
               @(alumnus "Andrew Cobb" #:year 2019)
               @(alumnus "Di Zhong" #:year 2019)
-              @(alumnus "Hyeyoung Shin" #:year 2019)
+              @(alumnus "Hyeyoung Shin" #:year 2019
+                        #:personal-site "https://hyeyoungshin.github.io/"
+                        #:extra "(Czech Technical University in Prague)")
               @(alumnus "Jonathan Schuster" #:year 2019
                         #:dissertation "http://hdl.handle.net/2047/D20318587"
                         #:extra "(Google)"
@@ -635,7 +639,8 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
-                @(alumnus "Will Clinger" #:year 2019)
+                @(alumnus "Will Clinger" #:year 2019
+                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
