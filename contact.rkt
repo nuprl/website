@@ -87,10 +87,18 @@
               }
 
               @div[class: "row"]{
-                @h3{Contact Manager}
-                @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} @br{}
-                Mailing Lists: @tt{prl-students}, @tt{prl-staff} @br{}
-                GitHub Organization: @a[href: "https://github.com/nuprl"]{@tt{NuPRL}}
+                @h3{Contact Managers}
+
+                @div[class: "col-xs-6 pad-contact"]{
+                  @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova} @br{}
+                  Mailing List: @tt{prl-students}@br{}
+                  GitHub Organization: @a[href: "https://github.com/nuprl"]{@tt{NuPRL}}
+                }
+
+                @div[class: "col-xs-6 pad-contact"]{
+                  @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek} @br{}
+                  Mailing List: @tt{prl-staff}
+                }
               }               
            }
           }
