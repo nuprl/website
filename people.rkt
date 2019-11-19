@@ -178,17 +178,6 @@
             My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
           }
 
-          @person[#:name "Saba Alimadadi"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail ""
-                  #:website "http://www.ece.ubc.ca/~saba/"
-                  #:history @list[
-                    "Joined Northeastern, 2017"
-                    "PhD, University of British Columbia, 2017"]
-                  #:img "saba.jpg"]{
-            I received my PhD in software engineering from University of British Columbia, Canada. My research has been focused on facilitating program comprehension through semi-automated techniques that improve developers’ performance in understanding program behaviour. Currently I am working on analysis of asynchrony in modern web applications.
-          }
-
           @person[#:name "Jason Hemann"
                   #:title "Clinical Lecturer"
                   #:e-mail "jhemann@ccis.neu.edu"
@@ -310,15 +299,6 @@
                   #:history @list["Joined 2017"]
                   #:img "aaron_weiss.jpg"]{
             I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
-          }
-
-          @person[#:name "Celeste Hollenbeck"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "hollenbeck.c@husky.neu.edu"
-                  #:website "http://celestehollenbeck.com"
-                  #:history @list["Joined 2017"]
-                  #:img "celeste_hollenbeck.jpg"]{
-            I am combining machine learning and programming languages to improve inlining decisions in compilers. My other interests in computer science include technical communication and reproducibility of research.
           }
 
           @person[#:name "Michael Ballantyne"
@@ -577,6 +557,9 @@
                         #:dissertation "http://hdl.handle.net/2047/D20318587"
                         #:extra "(Google)"
                         #:personal-site "http://jschuster.org/")
+              @(alumnus "Celeste Hollenbeck" #:year 2019
+                        #:extra "(University of Edinburgh)"
+                        #:personal-site "http://celestehollenbeck.com")
              ]}}
 
         @div[class: "container"]{
@@ -643,6 +626,9 @@
                 @(alumnus "Ryan Culpepper" #:year 2017
                           #:personal-site "http://www.ccs.neu.edu/home/ryanc/"
                           #:extra "(Czech Technical University in Prague)")
+                @(alumnus "Saba Alimadadi" #:year 2019
+                          #:personal-site "https://www.ece.ubc.ca/~saba/"
+                          #:extra "(Simon Fraser University)")
               ]}}
 
         @div[class: "container"]{
