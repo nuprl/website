@@ -195,6 +195,18 @@
             symbolic constraint systems and typesafe embeddings of logic
             languages.
           }
+
+          @person[#:name "John H. Reppy"
+                  #:title "Visiting Professor"
+                  #:e-mail "jhr@cs.uchicago.edu"
+                  #:website "http://people.cs.uchicago.edu/~jhr/"
+                  #:history @list[
+                  "Visiting Northeastern, 2019–2020"
+                  "Joined University of Chicago, 2002"
+                  ]
+                  #:img "john_h_reppy.jpg"]{
+            My main area of research is in the design and implementation of advanced programming languages, including functional languages, object-oriented languages, and concurrent languages. My current research focus is on parallel language design and implementation for multicore architectures and real-time graphical applications.
+          }
         }
 
         @div[class: "pn-separator-img"]{
