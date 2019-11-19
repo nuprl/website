@@ -96,7 +96,7 @@
                 }
 
                 @div[class: "col-xs-6 pad-contact"]{
-                  @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek} @br{}
+                  @a[href: "mailto:vitekj@me.com"]{Jan Vitek} @br{}
                   Mailing List: @tt{prl-staff}
                 }
               }               

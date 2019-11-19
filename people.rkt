@@ -153,7 +153,7 @@
 
           @person[#:name "Jan Vitek"
                   #:title "Professor"
-                  #:e-mail "j.vitek@neu.edu"
+                  #:e-mail "vitekj@me.com"
                   #:website "http://janvitek.org"
                   #:history '("Joined Northeastern, 2014"
                               "Joined Purdue, 1999"
