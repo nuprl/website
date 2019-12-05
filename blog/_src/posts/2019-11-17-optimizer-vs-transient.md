@@ -10,20 +10,23 @@ What type-directed optimizations does Typed Racket perform
 > This post is based on a short talk. Slides from the talk are here:
 > <http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf>
 
-<!-- TODO edit -->
-Lately, I've been working on a [transient](https://dl.acm.org/citation.cfm?id=3009849)
- back-end for Typed Racket.
-The goal of this project is to trade guarantees for performance.
-Standard Typed Racket guarantees full type soundness, but uses higher-order
+Standard Typed Racket guarantees full type soundness and uses higher-order
  contracts to make sure that interactions between Typed Racket and untyped
  Racket obey the types.
 These contracts can be very expensive [[JFP 2019](https://doi.org/10.1017/S0956796818000217)].
+And so, the standard types are very strong but (possibly) slow.
+
+Lately, I've been working on a [transient](https://dl.acm.org/citation.cfm?id=3009849)
+ back-end for Typed Racket.
 Transient Typed Racket provides a weaker guarantee --- only that typed code
  cannot get "stuck" --- via simpler run-time checks.
-Early data shows that these simple checks are sometimes better and sometimes
- worse than the standard boundary checks [[ICFP 2018](https://doi.org/10.1145/3236766)],
- hence we want both options for Typed Racket programmers.
+Early data shows that these simple checks are often faster 
+ than the standard boundary checks [[ICFP 2018](https://doi.org/10.1145/3236766)],
+ hence we want both options for Typed Racket programmers: slow/correct
+ and fast/wrong.
 
+The implementation of Transient needs to re-use some parts of Standard Typed
+ Racket and modify others.
 Typed Racket comes with three major components:
 
 1. a static type checker,
@@ -34,24 +37,26 @@ Transient Typed Racket can re-use all of the type checker
  and parts of the type-to-contract compiler.
 The question for this post is: can Transient re-use the optimizer?
 
+
+## Q. Can Transient re-use the Typed Racket optimizer?
+
 The answer requires some thought because Standard Typed Racket and Transient
  Typed Racket preserve different amounts of type information.
 
-- In Standard Typed Racket, if an expression `e` has type `T` and reduces
-  to a value `v` (for short, `e : T -->* v`), then the result `v` definitely
-  matches the full type `T`.
-- In Transient Typed Racket, if `e : T -->* v` then the result `v` matches
-  the toplevel "shape" of `T` but (maybe) nothing more.
+- In Standard Typed Racket, if an expression **e** has type **T** and reduces
+  to a value **v** (for short, **e : T -->* v**), then the result **v** definitely
+  matches the full type **T**.
+- In Transient Typed Racket, if **e : T -->* v** then the result **v** matches
+  the toplevel "shape" of **T** but (maybe) nothing more.
 
-A "shape" roughly corresponds to the outermost constructor of a type.
-The only requirement is that every shape check is decidable.
-Finding the best shapes is an engineering challenge.
+The idea of a "shape" is that it corresponds to the outermost constructor of
+ a type.
+A shape check must be decidable, but otherwise finding the best shape for a type
+ is an engineering challenge.
 On one hand, deeper checks give stronger guarantees.
-On the other hand, shallower checks give better performance.
+On the other hand, shallower checks are quicker to validate.
 
-Here are a few shapes according to the current Transient prototype.
-These shapes try to balance between guarantees and performance;
- for example, the shape of a function describes its arity.
+Here are a few shapes according to the current Transient prototype:
 
 ```
   Shape(Natural)                = Natural
@@ -64,18 +69,17 @@ These shapes try to balance between guarantees and performance;
 For the current shapes, can we re-use the Typed Racket optimizer?
 
 
-<!-- TODO do we know enough about Transient to explain these? -->
-<!-- x functions defend selves -->
-<!-- x list? walks list -->
-
-## Optimizations
+## Optimization Topics
 
 Typed Racket implements 15 kinds of type-directed transformation.
 Below, each gets: a short description, an example, and a verdict of "safe"
  or "unsafe" for Transient.
 
+To be clear: some optimization topics perform many kinds of transformations,
+but this post picks only one example transformation for each.
+
 - - -
-### apply
+### Topic 1: apply
 
 [apply.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/apply.rkt)
  "inlines" expressions of the form `(apply f (map g xs))` to map and fold
@@ -113,7 +117,7 @@ This unsoundness is no problem, though, as long as _every_ Transient-typed funct
 
 
 - - -
-### box
+### Topic 2: box
 
 [box.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/box.rkt)
  safely applies unsafe box operations to expressions with `Box` type.
@@ -137,7 +141,7 @@ This unsoundness is no problem, though, as long as _every_ Transient-typed funct
 
 
 - - -
-### dead-code
+### Topic 3: dead-code
 
 [dead-code.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/dead-code.rkt)
  uses type information to identify code that cannot run.
@@ -181,12 +185,12 @@ In Transient, though, there is no need to add a contract and therefore no
 An application in untyped code can enter the dead branch;
  if it does, then adding Transient types to part of a program can change
  its result to `(void)` and thereby violate the graduality design goal [[SNAPL 2015](http://drops.dagstuhl.de/opus/volltexte/2015/5031/), [ICFP 2018](https://doi.org/10.1145/3236768)]
- --- that is, that adding types can only change behavior by introducing runtime
+ --- that is, that adding types should only change behavior by introducing runtime
  type mismatches.
 
 
 - - -
-### extflonum
+### Topic 4: extflonum
 
 [extflonum.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/extflonum.rkt)
  safely applies unsafe extflonum operations to expressions with `Extflonum` type.
@@ -210,7 +214,7 @@ An application in untyped code can enter the dead branch;
 
 
 - - -
-### fixnum
+### Topic 5: fixnum
 
 [fixnum.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/fixnum.rkt)
  safely applies unsafe fixnum operations to expressions with `Fixnum` type.
@@ -234,7 +238,7 @@ An application in untyped code can enter the dead branch;
 
 
 - - -
-### float-complex
+### Topic 6: float-complex
 
 [float-complex.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float-complex.rkt)
  unboxes complex numbers (into one real-part variable and one imaginary-part variable)
@@ -267,15 +271,15 @@ An application in untyped code can enter the dead branch;
 
 **Verdict**: safe, with caution
 
-The body of a Transient-typed function must first check that its inputs have
- the correct shape.
-Currently, this pass creates functions that apply `unsafe-flreal-part` before
+The body of a Transient-typed function (that can flow to untyped code)
+ must first check that its inputs have the correct shape.
+Currently, the **float-complex** pass creates functions that apply `unsafe-flreal-part` before
  anything else; to be safe, the pass needs to make sure that Transient checks
  come first.
 
 
 - - -
-### float
+### Topic 7: float
 
 [float.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float.rkt)
  safely applies unsafe flonum operations to expressions with `Flonum` type
@@ -298,15 +302,15 @@ Currently, this pass creates functions that apply `unsafe-flreal-part` before
 
 Accessing a parameter, as in `(current-pseudo-random-generator)`, is an
  elimination form that may require a shape check.
-This particular parameter, however, is protected by a contract --- so there
- is no need for Transient-typed code to check.
+This particular parameter, however, is protected by a contract that enforces
+ the precondition of `unsafe-flrandom`.
 
 
 - - -
-### list
+### Topic 8: list
 
 [list.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/list.rkt)
- safely applies unsafe list operations to `(List T ...)` and `(Listof T)` expressions.
+ safely applies unsafe list operations to list expressions.
 
 #### Example
 
@@ -323,11 +327,16 @@ This particular parameter, however, is protected by a contract --- so there
   (unsafe-list-ref lst 0)
 ```
 
-**Verdict**: safe
+**Verdict**: safe, with strong-enough shape checks
+
+The shape check for a `(Listof T)` must check for proper lists (via `list?`);
+ note that the cost of this check depends on the size of incoming values.
+The shape check for a `(List T ...)` type must validate the length of incoming
+ values.
 
 
 - - -
-### number
+### Topic 9: number
 
 [number.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/number.rkt)
  performs simple transformations on `Real`-valued expressions.
@@ -351,7 +360,7 @@ This particular parameter, however, is protected by a contract --- so there
 
 
 - - -
-### pair
+### Topic 10: pair
 
 [pair.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/pair.rkt)
  safely applies pair-access operations to (possibly-nested) pairs.
@@ -375,11 +384,11 @@ This particular parameter, however, is protected by a contract --- so there
 
 Transient guarantees the first level of a type, but nothing more.
 Concretely, `Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any`
- and so the `unsafe-cdr` above is not safe to use.
+ and so the `unsafe-cdr` above is not safe.
 
 
 - - -
-### sequence
+### Topic 11: sequence
 
 [sequence.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/sequence.rkt)
  safely applies unsafe sequence operations to expressions with `(Sequenceof T)` type.
@@ -401,11 +410,11 @@ Concretely, `Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any`
     (void))
 ```
 
-**Verdict**: safe
+**Verdict**: safe, with strong enough shape checks (see **list** and **vector**)
 
 
 - - -
-### string
+### Topic 12: string
 
 [string.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/string.rkt)
  safely applies unsafe string operations to expressions with `String` type.
@@ -431,7 +440,7 @@ Concretely, `Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any`
 
 
 - - -
-### struct
+### Topic 13: struct
 
 [struct.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/struct.rkt)
  safely applies unsafe struct operations to struct expressions, using
@@ -457,10 +466,10 @@ Concretely, `Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any`
 
 
 - - -
-### unboxed-let
+### Topic 14: unboxed-let
 
-[unboxed-let.rkt](Keep it brie://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/unboxed-let.rkt)
- works together with the `float-complex` pass by unboxing the binding-site
+[unboxed-let.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/unboxed-let.rkt)
+ cooperates with the `float-complex` pass by transforming the binding-site
  of some complex numbers.
 This pass may change a `let`-expression into a `let-values` that expects
  a real-part and imag-part, and may change a function to expect twice as many
@@ -469,22 +478,25 @@ This pass may change a `let`-expression into a `let-values` that expects
 #### Example
 
 ```
+  ;; Type Assumptions
+  (: k Float-Complex)
+
   ;; --------------------------------------------------
   ;; Before Optimization
   (let ((f (lambda ((n : Float-Complex)) (+ n n))))
-    (void))
+    (f k))
 
   ;; --------------------------------------------------
   ;; After Optimization
   (let ((f (lambda (real-part-n imag-part-n) ....)))
-    (void))
+    (f (unsafe-flreal-part k) (unsafe-flimag-part k)))
 ```
 
-**Verdict**: safe, thanks to the escape analysis
+**Verdict**: safe, thanks to the (conservative) escape analysis
 
 
 - - -
-### vector
+### Topic 15: vector
 
 [vector.rkt](https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/vector.rkt)
  safely applies vector operations to vector expressions.
@@ -505,16 +517,19 @@ This pass may change a `let`-expression into a `let-values` that expects
   (unsafe-vector-set! v lst 0)
 ```
 
-**Verdict**: safe
+**Verdict**: safe, with strong-enough shape checks
+
+The check for `(Vector T ...)` must check the length of incoming values.
 
 - - -
 
 ## Summary
 
 The Typed Racket optimizer implements 15 kinds of transformations.
-Two are definitely unsafe for Transient as-is.
-One may limit our ability to reduce the number of run-time checks in a program.
-Two others require transient checks whose cost depends on the size of the input values.
+Two are definitely unsafe for Transient as-is (**dead-code**, **pair**).
+One must take care when rewriting a Transient function (**float-complex**).
+One may limit our ability to reduce the number of run-time checks in a program (**apply**).
+Two others require transient checks whose cost depends on the size of the input values (**list**, **sequence**).
 
 There may be other issues that I missed while reading the optimizer code.
 If so, I'll try to remember to update this post.
