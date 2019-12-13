@@ -81,6 +81,17 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "paraskevopoulou-certicoq"
+     "CertiCoq: Current and Future Directions"
+     "Zoe Paraskevopoulou"
+     "http://zoep.github.io"
+     "Princeton University"
+     (datetime 2019 12 3 10 00)
+     "WVH 366"
+     @list{@p{In this talk, I will give a high-level overview of CertiCoq, a verified compiler from Coq to C, focusing on my research on CertiCoq's backend. The backend of CertiCoq is based on a micro-pass compiler architecture: each stage in its pipeline performs a simple task, yet they combine to generate efficient code. The micro-pass design along with our proof framework based on logical relations greatly facilities modular reasoning and proof reuse. Furthermore, I will show how this logical relation framework can be extended to provide correctness guarantees for programs compiled separately with CertiCoq, using perhaps different sets of optimizations. Lastly, I will discuss future research directions with CertiCoq, such as provably correct interoperation of Coq and C using the Verified Software Toolchain.}}
+     @list{@p{Zoe Paraskevopoulou is a 5th year PhD student at Princeton University, working with professor Andrew Appel. Prior to that she obtained her master's degree from École normale supérieure Paris-Saclay and her undergraduate degree from National Technical University of Athens. She has done several internships at institutes such as INRIA Paris, Max Planck Institute of Software Systems, Microsoft Research and Facebook.}})
+
+    (seminar
      "guha-serverless"
      "Faster, Safer, and Cheaper Serverless Computing using Language-Based Techniques"
      "Arjun Guha"
@@ -91,20 +102,43 @@
      @list{
        @p{Serverless computing is a cloud computing abstraction that makes it easier to write robust, large-scale web services. In serverless computing, programmers write what are called serverless functions, and the cloud platform transparently manages the operating system, resource allocation, load-balancing, and fault tolerance. When demand spikes, the platform automatically allocates additional hardware and manages load-balancing; when demand falls, the platform silently deallocates idle resources; and when the platform detects a failure, it transparently retries affected requests.}
        @p{In this talk, we will see how language-based techniques can make serverless computing faster, safer, and cheaper for programmers. First, we present a detailed, operational model of a serverless computing platform, which shows that serverless computing is a leaky abstraction. We then derive a less-leaky "naive semantics" and precisely characterize how the two semantics coincide. Second, we extend the operational semantics with a domain-specific language for composing serverless functions, and show that the language design lends itself to an efficient implementation that lowers the cost of building modular applications. Finally, we present a "serverless function accelerator" that significantly reduces the latency of a large class of functions using language-based sandboxing and speculative optimizations.}}
-     @list{@p{Arjun Guha is an associate professor of Computer Science at the University of Massachusetts Amherst. Using the tools and techniques of programming languages, his research addresses security, reliability, and performance problems in web applications, systems, networking, and robotics. He received a PhD in Computer Science from Brown University in 2012 and a BA in Computer Science from Grinnell College in 2006.}}
-     )
-    
-    (seminar
-     "brun-fairness"
-     "Software Fairness"
-     "Yuriy Brun"
-     "https://people.cs.umass.edu/~brun/"
-     "University of Massachusetts Amherst"
-     (datetime 2019 10 30 12 00)
-     "WVH 366"
-     @list{@p{Modern software contributes to important societal decisions, and yet we know very little about its fairness properties. Can software discriminate? Evidence of software discrimination has been found in systems that recommend criminal sentences, grant access to loans and other financial products, transcribe YouTube videos, translate text, and perform facial recognition. Systems that select what ads to show users can similarly discriminate. For example, a professional social network site could, hypothetically, learn stereotypes and only advertise stereotypically female jobs to women and stereotypically male ones to men. Despite existing evidence of software bias, and significant potential for negative consequences, little technology exists to test software for such bias, to enforce lack of bias, and to learn fair models from potentially biased data. Even defining what it means for software to discriminate is a complex task. I will present recent research that defines software fairness and discrimination; develops a testing-based, causality-capturing method for measuring if and how much software discriminates; and provides provable formal guarantees on software fairness. I will also describe open problems in software fairness and how recent advances in machine learning and natural language modeling can help address them. Overall, I will argue that enabling and ensuring software fairness requires solving research challenges across computer science, including in machine learning, software and systems engineering, human-computer interaction, and theoretical computer science.}}
-     @list{@p{Yuriy Brun is an associate professor with the College of Information and Computer Sciences at the University of Massachusetts Amherst. His research interests include software engineering, software fairness and bias, self-adaptive systems, and distributed systems. He received his PhD from the University of Southern California in 2009 and was a Computing Innovation postdoctoral fellow at the University of Washington until 2012. Prof. Brun is a recipient of the NSF CAREER Award in 2015, the IEEE TCSC Young Achiever in Scalable Computing Award in 2013, a Best Paper Award in 2017, two ACM SIGSOFT Distinguished Paper Awards in 2011 and 2017, a Microsoft Research Software Engineering Innovation Foundation Award in 2014, a Google Faculty Research Award in 2015, a Lilly Fellowship for Teaching Excellence in 2017, a College Outstanding Teacher Award in 2017, and an ICSE 2015 Distinguished Reviewer Award.}})
-     
+     @list{@p{Arjun Guha is an associate professor of Computer Science at the University of Massachusetts Amherst. Using the tools and techniques of programming languages, his research addresses security, reliability, and performance problems in web applications, systems, networking, and robotics. He received a PhD in Computer Science from Brown University in 2012 and a BA in Computer Science from Grinnell College in 2006.}})
+
+     #;(seminar
+      "brun-fairness"
+      "Software Fairness"
+      "Yuriy Brun"
+      "https://people.cs.umass.edu/~brun/"
+      "University of Massachusetts Amherst"
+      (datetime 2019 10 30 12 00)
+      "WVH 366"
+      @list{@p{Modern software contributes to important societal decisions, and yet we know very little about its fairness properties. Can software discriminate? Evidence of software discrimination has been found in systems that recommend criminal sentences, grant access to loans and other financial products, transcribe YouTube videos, translate text, and perform facial recognition. Systems that select what ads to show users can similarly discriminate. For example, a professional social network site could, hypothetically, learn stereotypes and only advertise stereotypically female jobs to women and stereotypically male ones to men. Despite existing evidence of software bias, and significant potential for negative consequences, little technology exists to test software for such bias, to enforce lack of bias, and to learn fair models from potentially biased data. Even defining what it means for software to discriminate is a complex task. I will present recent research that defines software fairness and discrimination; develops a testing-based, causality-capturing method for measuring if and how much software discriminates; and provides provable formal guarantees on software fairness. I will also describe open problems in software fairness and how recent advances in machine learning and natural language modeling can help address them. Overall, I will argue that enabling and ensuring software fairness requires solving research challenges across computer science, including in machine learning, software and systems engineering, human-computer interaction, and theoretical computer science.}}
+      @list{@p{Yuriy Brun is an associate professor with the College of Information and Computer Sciences at the University of Massachusetts Amherst. His research interests include software engineering, software fairness and bias, self-adaptive systems, and distributed systems. He received his PhD from the University of Southern California in 2009 and was a Computing Innovation postdoctoral fellow at the University of Washington until 2012. Prof. Brun is a recipient of the NSF CAREER Award in 2015, the IEEE TCSC Young Achiever in Scalable Computing Award in 2013, a Best Paper Award in 2017, two ACM SIGSOFT Distinguished Paper Awards in 2011 and 2017, a Microsoft Research Software Engineering Innovation Foundation Award in 2014, a Google Faculty Research Award in 2015, a Lilly Fellowship for Teaching Excellence in 2017, a College Outstanding Teacher Award in 2017, and an ICSE 2015 Distinguished Reviewer Award.}})
+
+     (seminar
+      "jung-rustbelt"
+      "Understanding and evolving the Rust programming language"
+      "Ralf Jung"
+      "https://people.mpi-sws.org/~jung/"
+      "MPI-SWS"
+      (datetime 2019 10 4 11 00)
+      "WVH 366"
+      @list{
+        @p{Rust is a young and actively developed "systems programming language" that promises to overcome the seemingly fundamental tradeoff between high-level safety guarantees and low-level control over resource management. This talk is about my research on understanding and evolving this groundbreaking new language.}
+        @p{The first part of the talk is about building formal foundations for the existing Rust language. Rust employs a strong, ownership-based type system to rule out common systems programming anomalies, but then extends the expressive power of this core type system through libraries that internally use unsafe features. Unfortunately, this ``extensible'' aspect of the Rust language makes Rust's safety claims rather non-obvious, and there is good reason to question whether they actually hold. To address this, we have developed RustBelt, the first formal (and machine-checked) safety proof for a language representing a realistic subset of Rust. Our proof supports the extensible nature of Rust's safety story in the sense that, for each new Rust library that uses unsafe features, we can say what verification condition it must satisfy in order for it to be deemed a safe and compositional extension to the language.}
+        @p{The second part is about evolving the semantics of Rust to better support compiler optimizations. In particular, Rust's reference types provide strong aliasing guarantees, which a clever optimizing compiler should be able to exploit.  However, if no care is taken, unsafe code (which plays an essential role in the Rust ecosystem, as mentioned above) can subvert these guarantees. To address this, we have developed Stacked Borrows, a new operational semantics for memory accesses in Rust. On the one hand, Stacked Borrows defines an aliasing discipline and declares programs violating it to have undefined behavior, thus making it possible for us to formally verify the soundness of a number of useful type-based intraprocedural optimizations. On the other hand, we have also implemented the Stacked Borrows semantics in Miri, an interpreter for Rust, and run large parts of the Rust standard library test suite in Miri. In so doing, we have validated that our semantics is sufficiently permissive to account for real-world unsafe Rust code.}}
+      @list{@p{Ralf Jung is a PhD student at MPI-SWS in Saarbrücken, where he previously completed his undergraduate degree with Saarland University. Ralf’s research interests center around separation logic, operational semantics for low-level languages, (semantic) type systems, and mechanized+modular proof for program verification. Ralf also loves to learn about anything people do with Rust and the ways in which formal methods could help.}})
+
+      (seminar
+       "tate-nom"
+       "Towards Gradually Typed Nominal Languages"
+       "Ross Tate"
+       "https://http://www.cs.cornell.edu/~ross/"
+       "Cornell University"
+       (datetime 2019 9 26 14 00)
+       "WVH 366"
+       @list{@p{Nom demonstrated that efficient and well-behaved gradual typing is possible. But it did so by assuming all code was written using nominal patterns in a simplistic type system. The nominal patterns limit the applicability to existing untyped code, and the simplistic type system limits the applicability to modern industry languages. This talk will present recent results addressing both of these limitations. I will illustrate an implemented design that enables structural patterns to mix with nominal patterns while also providing a variant of the gradual guarantee that ensures interoperability between these patterns and a semantics-preserving migration path from structural patterns into nominal patterns. I will further demonstrate that Nom's design strategy scales to parametric polymorphism, where the key challenge is not actually generic classes or interfaces but rather generic methods and type-argument inference. Although preliminary, experiments suggest that these more expressive designs can still be implemented relatively efficiently, altogether indicating that gradual typing is a viable feature for nominal languages.}}
+       @list{@p{Ross Tate is an Assistant Professor in Computer Science at Cornell University and the Director of the Single Open Intermediate Language Initiative. His research combines theoretical foundations with studies of programmer behavior to develop language designs that ascribe to both academic and industrial principles. He collaborates with major programming languages such as Kotlin, WebAssembly, Julia, Ceylon, and Java to inform his work from practice and incorporate his work into practice. Due to his research contributions and industry impact, he was awarded the Dahl Nygaard Junior Prize in 2017.}})
 
     (seminar
      "gibbons-ans"
@@ -1525,5 +1559,3 @@ a Dr. sc. ETH in 2012.
     }}}}}}
     @footer{}
 }}
-
-
