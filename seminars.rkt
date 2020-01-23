@@ -81,6 +81,19 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "mazza-autodiff"
+     "Automatic Differentiation in PCF"
+     "Damiano Mazza"
+     "https://lipn.univ-paris13.fr/~mazza/"
+     "CNRS, Université Sorbonne Paris Nord"
+     (datetime 2020 1 28 10 00)
+     "WVH 366"
+     @list{
+       @p{Automatic differentiation (AD) is the science of efficiently computing the derivative (or gradient, or Jacobian) of functions specified by computer programs. It is a fundamental tool in several fields, most notably machine learning, where it is the key for training deep neural networks. Albeit AD techniques natively focus on a restricted class of programs, namely first-order straight-line programs, the rise of so-called differentiable programming in recent years has urged for the need of applying AD to complex programs, endowed with control flow operators and higher-order combinators, such as map and fold. In this talk, I will discuss the extension of AD algorithms to PCF, a(n idealized) purely functional programming language. We will first consider the simply-typed lambda-calculus, showing in particular how linear negation is related to reverse-mode AD (a.k.a., backpropagation), and then see how the extra features of PCF, namely full recursion and conditionals, may be dealt with, stressing the difficulties posed by the latter.}
+       @p{Joint work with Aloïs Brunel (Deepomatic) and Michele Pagani (IRIF, Université de Paris).}}
+     @list{@p{Damiano Mazza is chargé de recherche (researcher) at CNRS, working at the CS lab of Université Sorbonne Paris Nord, a position he has held since 2008. He obtained his Ph.D. in 2006 at the Institut de Mathématiques de Luminy, in Marseille. Before that, he studied CS Engineering in Rome, Italy, which is where he is from. His research interest are at the interface between logic in computer science, the theory of programming languages and complexity theory, with a bias towards the viewpoint provided by linear logic and category theory.}})
+
+    (seminar
      "paraskevopoulou-certicoq"
      "CertiCoq: Current and Future Directions"
      "Zoe Paraskevopoulou"
