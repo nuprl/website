@@ -81,6 +81,19 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "blasband-yafl"
+     "Grow your own language: The YAFL story"
+     "Darius Blasband"
+     "https://www.dariusblasband.com"
+     "Raincode"
+     (datetime 2020 2 17 11 00)
+     "WVH 366"
+     @list{
+       @p{This talk tells the rather uncommon story of the co-evolution of my company, Raincode, with a home-grown programming language, YAFL. The two are intimately intertwined: Raincode would crumble if YAFL was to disappear, and YAFL would have no reason to exist if Raincode was to stop its activities. YAFL is a strongly-typed object-oriented language originally designed and implemented a quarter of century ago. Our story starts with YAFL’s inception, its design, our motivations (including the usual fantasies of  world domination) and the technical underpinnings and some key implementation decisions.}
+       @p{Our story is rooted in the real-world where pragmatics reign. I will argue that out design choices and implementation decisions have converged to give YAFL its true value, and, that the fruits of growing our own language are well worth the maintenance burden. The talk will argue that YAFL is a non-DSL, and touch on the good ideas as well as the lousy ones. I will discuss how to evolve a language over time by judiciously adding, as well as removing, features. Above all, it is story about people. The language designer, its implementors, its first users, even its customers are the main. Their interplay sheds a light on how languages are created and maintained.}}
+     @list{@p{Darius Blasband was born in 1965 and has a PhD from the Université Libre de Bruxelles. His focus is legacy code modernization, articulated around compilers for legacy languages. He founded Raincode (https://www.raincode.com), and designed its core technology. Above all, Darius is a geek. Building software systems is what he likes best—after his family, chocolate, and on par with music.}})
+
+    (seminar
      "mazza-autodiff"
      "Automatic Differentiation in PCF"
      "Damiano Mazza"
