@@ -476,6 +476,11 @@ part](/blog/2019/09/10/four-kinds-of-scoping-in-r/) of this blog series is
 already published. In it, I walk through four different examples of using
 metaprogramming to simulate different scoping disciplines in R.
 
+**Edited 2020/02/21:** For another discussion on R environments and lookups,
+(and also packages and namespaces, which I did not cover in my post), [this blog
+post](http://blog.obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff/) has some
+nice examples and diagrams.
+
 
 [^4]: O. Flückiger, G. Chari, J. Ječmen, M.-H. Yee, J. Hain, and J. Vitek. "R
 Melts Brains: An IR for First-Class Environments and Lazy Effectful Arguments,"
