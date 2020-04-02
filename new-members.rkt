@@ -20,13 +20,13 @@
                   Visit WVH 202 and/or send mail to @mailto|{operations@ccs.neu.edu}| to register your card to unlock WVH 308, WVH 330, WVH 366, and your private office (if you have one).
                 }
                 @li{
-                  Apply for a CCIS account using
+                  Apply for a Khoury account using
                   @a[href: "https://www.ccis.northeastern.edu/systems/getting-started/"]{these instructions}.
                   This account comes with a @tt{ccs.neu.edu} email address and
                   allows you to access various computers around the college.
                   Make sure you are able to print using the @tt{gaugin} (in WVH 308)
                   or @tt{renoir} (outside WVH 366) printers; see @a[href: "https://its.northeastern.edu/services/network-printing/"]{this page}
-                  for help, or visit the CCIS Help Desk in WVH 312.
+                  for help, or visit the Khoury Systems Help Desk in WVH 312.
                 }
                 @li{
                   Coordinate with the lab member in charge of
@@ -44,6 +44,9 @@
                   ask questions on IRC, too!}
                 }
                 @li{
+                  Join the lab's slack channel, @url{https://prl-students.slack.com}.
+                }
+                @li{
                   Sign up for the mailing lists for the PL Seminar and the PL Jr.
                   seminar (links on the @a[href: "seminars.html"]{Seminars} page),
                   and check the @a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com&ctz=America%2FNew_York"]{calendar} for upcoming talks.
@@ -55,7 +58,7 @@
                 }
                 @li{
                   If you need a private place to store code, there is both a
-                  @a[href: "https://github.ccs.neu.edu/"]{CCIS-managed GitHub instance}
+                  @a[href: "https://github.ccs.neu.edu/"]{Khoury-managed GitHub instance}
                   and a @a[href: NuPRL-GITHUB]{NuPRL organization}
                   on GitHub. To get access to the @tt{nuprl}
                   organization, ask the webmaster to add you as a member.
@@ -63,25 +66,8 @@
                 @li{
                   Follow @a[href: NuPRL-TWITTER @tt|{@neu_prl}|] on Twitter.
                 }
-                @li{
-                  @p{
-                    Finally, if you haven't already found a place to live, this
-                    map (compiled by Northeastern CS grad students) can help
-                    you narrow down where to live in Boston. Colors on shaded
-                    regions indicate roughly how good the area is for grad
-                    students (green = good, yellow = okay, red = bad), and you
-                    can click on the regions and pins for more information
-                  }
-                  @iframe[src: "https://www.google.com/maps/d/u/0/embed?mid=zNp1Yae6mers.kT4sztNf9NgU" width: "640" height: "480"]
-                  @p{
-                    You might also find these maps (not compiled by grad students, or affiliated in any way with Northeastern University or the Programming Research Lab) helpful:
-                    @ul{
-                      @li{@url{https://www.jefftk.com/apartment_prices/index#2018-08-18&2}}
-                      @li{@url{https://www.trulia.com/local/boston-ma/tiles:1%7Cpoints:1_crime}}}
-                  }
-                }
               ]
-              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki}.}
+              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).}
   }}}}}
   @footer{}
 }}
