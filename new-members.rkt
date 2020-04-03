@@ -66,6 +66,17 @@
                 @li{
                   Follow @a[href: NuPRL-TWITTER @tt|{@neu_prl}|] on Twitter.
                 }
+                @li{
+                  @p{
+                    Finally, if you need a place to live, this map (compiled by
+                    Northeastern CS grad students circa 2010) may help. Colors
+                    on shaded regions indicate roughly how good the area is for
+                    grad students (green = good, yellow = okay, red = bad), and
+                    you can click on the regions and pins for more information.
+                    Click @a[href: "https://drive.google.com/open?id=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP&usp=sharing"]{here} to edit the map.
+                  }
+                  @iframe[src: "https://www.google.com/maps/d/u/0/embed?mid=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP" width: "640" height: "480"]
+                }
               ]
               @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).}
   }}}}}
