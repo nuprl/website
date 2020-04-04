@@ -651,11 +651,14 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
-                @(alumnus "Will Clinger" #:year 2019
-                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
+                @(alumnus "Karl Lieberherr" #:year 2015
+                          #:personal-site "http://www.ccs.neu.edu/home/lieber/"
+                          #:extra "(Northeastern University)")
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
+                @(alumnus "Will Clinger" #:year 2019
+                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
               ]}}
         @footer{}
 }}}}
