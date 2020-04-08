@@ -207,6 +207,22 @@
                   #:img "john_h_reppy.jpg"]{
             My main area of research is in the design and implementation of advanced programming languages, including functional languages, object-oriented languages, and concurrent languages. My current research focus is on parallel language design and implementation for multicore architectures and real-time graphical applications.
           }
+
+          @person[#:name "Arjun Guha"
+                  #:title "Associate Professor"
+                  #:e-mail "arjunguha@umass.edu"
+                  #:website "https://people.cs.umass.edu/~arjun/"
+                  #:history @list[
+                  "Joined Northeastern, 2020"
+                  "Joined University of Massachusetts Amherst, 2013"
+                  "Postdoc, Cornell University, 2012–2013"
+                  "PhD, Brown University, 2012"
+                  "BA, Grinnell College, Grinnell College"
+                  ]
+                  #:img "arjun_guha.png"]{
+            I have broad interests in programming languages, but usually work on language-based approaches to security, reliability, and performance. I've spent several years thinking about JavaScript (semantics, type checking, static analysis, reactive programming, and more). I also spent several years working on programming languages for software-defined networking. These days, I study problems that arise in cloud computing, system configurations, and robotics, through the lens of programming languages.
+          }
+
         }
 
         @div[class: "pn-separator-img"]{
