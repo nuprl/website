@@ -217,7 +217,7 @@
                   "Joined University of Massachusetts Amherst, 2013"
                   "Postdoc, Cornell University, 2012–2013"
                   "PhD, Brown University, 2012"
-                  "BA, Grinnell College, Grinnell College"
+                  "BA, Grinnell College, 2006"
                   ]
                   #:img "arjun_guha.png"]{
             I have broad interests in programming languages, but usually work on language-based approaches to security, reliability, and performance. I've spent several years thinking about JavaScript (semantics, type checking, static analysis, reactive programming, and more). I also spent several years working on programming languages for software-defined networking. These days, I study problems that arise in cloud computing, system configurations, and robotics, through the lens of programming languages.
