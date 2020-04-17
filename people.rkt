@@ -223,6 +223,25 @@
             I have broad interests in programming languages, but usually work on language-based approaches to security, reliability, and performance. I've spent several years thinking about JavaScript (semantics, type checking, static analysis, reactive programming, and more). I also spent several years working on programming languages for software-defined networking. These days, I study problems that arise in cloud computing, system configurations, and robotics, through the lens of programming languages.
           }
 
+          @person[#:name "Jon Bell"
+                  #:title "Assistant Professor"
+                  #:e-mail "jon@jonbell.net"
+                  #:website "https://www.jonbell.net/"
+                  #:history @list[
+
+                  "Joined Northeastern, 2020"
+                  "Joined George Mason University, 2016"
+                  "PhD, Columbia University, 2016"
+                  "M.Phil, Columbia University, 2014"
+                  "MS, Columbia University, 2011"
+                  "BS, Columbia University, 2010"
+
+                  ]
+                  #:img "jon_bell.jpg"]{
+             I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
+          }
+
+
         }
 
         @div[class: "pn-separator-img"]{
