@@ -32,6 +32,13 @@
      @meta[charset: "utf-8"]
      @meta[http-equiv: "X-UA-Compatible" content: "IE=edge"]
      @meta[name: "viewport" content: "width=device-width, initial-scale=1"]
+
+     @; Be friendly to embedding on social media platforms
+     @meta[property: "og:title" content: "NEU PRL"]
+     @meta[property: "og:description"
+           content:  "Programming Research Laboratory @ Northeastern&nbsp;University"]
+     @meta[property: "og:image" content: "img/prl-bg.png"]
+
      @title{@|title-str| - Programming Research Laboratory - Northeastern University}
 
      @<!--{Bootstrap}
