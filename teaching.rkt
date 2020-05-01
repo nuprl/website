@@ -96,6 +96,8 @@
                  @li{
                    @strong{7976} Directed Study
                    @br{}
+                   @indent{} S 2020 Seminar in Technical Writing @instructor{Mitch Wand}
+                   @br{}
                    @indent{} F 2019 Seminar in Technical Writing @a[href: "https://course.ccs.neu.edu/cs7976f19/" target: "_blank"]{link} @instructor{Mitch Wand}
                    @br{}
                    @indent{} F 2018 Seminar in Technical Writing @a[href: "https://course.ccs.neu.edu/cs7976f18/" target: "_blank"]{link} @instructor{Mitch Wand}
@@ -126,6 +128,7 @@
                  @li{
                    @strong{7400} Intensive Principles of Programming Languages
                    @br{}
+                   @indent{} S 2020 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s20/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                    @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s17/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                    @indent{} F 2016 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-f16/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                    @indent{} S 2016 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s16/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
@@ -178,12 +181,14 @@
                  }
                  @li{
                      @strong{4500} Software Development @br{}
+                     @indent[] S 2020 @a[href: "http://janvitek.org/events/NEU/4500/s20/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
                      @indent[] F 2019 @a[href: "https://felleisen.org/matthias/4500-f19/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://felleisen.org/matthias/4500-f18/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
                      @indent[] S 2016 @a[href: "https://felleisen.org/matthias/4500-s16/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
                      @strong{4410} Compilers @br{}
+                     @indent[] S 2020 @a[href: "https://course.ccs.neu.edu/cs4410sp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{} 
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs4410sp19/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
@@ -193,6 +198,7 @@
                  }
                  @li{
                      @strong{4400} Programming Languages @br{}
+                     @indent[] S 2020 @a[href: "https://felleisen.org/matthias/4400-s20/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://pl.barzilay.org/" target: "_blank"]{link} @instructor{Jason Hemann}
                  }
                  @li{
@@ -205,6 +211,10 @@
                      @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/cs3500f18/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh, Clark Freifeld} @br{}
                      @indent[] F 2016 @a[href: "https://course.ccs.neu.edu/cs3500f16/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh}
                      @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3500/" target: "_blank"]{link} @instructor{Ben Lerner}
+                 }
+                 @li{
+                     @strong{2800} Logic and Computation @br{}
+                     @indent[] S 2020 @a[href: "https://www.khoury.northeastern.edu/~pete/courses/Logic-and-Computation/2020-Spring/" target: "_blank"]{link} @instructor{Pete Manolios, Olin Shivers}
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
