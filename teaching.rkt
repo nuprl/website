@@ -209,7 +209,7 @@
                      @strong{3500} Object Oriented Design @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/cs3500f19/" target: "_blank"]{link} @instructor{Ben Lerner, Clark Freifeld, Alex Grob} @br{}
                      @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/cs3500f18/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh, Clark Freifeld} @br{}
-                     @indent[] F 2016 @a[href: "https://course.ccs.neu.edu/cs3500f16/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh}
+                     @indent[] F 2016 @a[href: "https://course.ccs.neu.edu/cs3500f16/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh} @br{}
                      @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3500/" target: "_blank"]{link} @instructor{Ben Lerner}
                  }
                  @li{
