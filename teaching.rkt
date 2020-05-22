@@ -181,7 +181,7 @@
                  }
                  @li{
                      @strong{4500} Software Development @br{}
-                     @indent[] S 2020 @a[href: "http://janvitek.org/events/NEU/4500/s20/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
+                     @indent[] S 2020 @a[href: "http://janvitek.org/events/NEU/4500/s20/" target: "_blank"]{link} @instructor{Jan Vitek, Jason Hemann, Ferdinand Vesely} @br{}
                      @indent[] F 2019 @a[href: "https://felleisen.org/matthias/4500-f19/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://felleisen.org/matthias/4500-f18/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
                      @indent[] S 2016 @a[href: "https://felleisen.org/matthias/4500-s16/" target: "_blank"]{link} @instructor{Matthias Felleisen}
@@ -218,6 +218,7 @@
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
+                     @indent[] S 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs2510sp19/" target: "_blank"]{link} @instructor{Leena Razzaq, Jason Hemann, Matthew Singer} @br{}
                      @indent[] S 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp19/" target: "_blank"]{link} @instructor{Ben Lerner, Matthew Singer} @br{}                
                      @indent[] S 2018 @a[href: "https://course.ccs.neu.edu/cs2510sp18/" target: "_blank"]{link} @instructor{Ben Lerner, Nada Naji, Clark Freifeld, Jan Vitek, Becca MacKenzie} @br{}
