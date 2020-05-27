@@ -82,6 +82,20 @@
             Here is a selected list, in roughly reverse chronological order: probabilistic programming languages, binding-safe programming, aspect-oriented programming, analysis-based program transformation, compiler correctness proofs, continuations, macros.
           }
 
+          @person[#:name "Karl Lieberherr "
+                  #:title "Professor"
+                  #:website "http://ccs.neu.edu/home/lieber/"
+                  #:e-mail "lieber@ccs.neu.edu"
+                  #:history @list[
+                    "Joined Northeastern, 1985"
+                    "Joined Princeton, 1979"
+                    "Ph.D. and Diplom ETH Zurich, 1968-1977"]
+                  #:img "karl_lieberherr.jpg"]{
+            My current research is about using deep reinforcement learning and Monte Carlo Tree Search (a Google/DeepMind algorithm) to synthesize instance-based programs to solve problems formulated in interpreted first-order logic, e.g., algorithmic problems.
+            My earlier work in programming methodology centers on using (1) context-free grammars for abstract data types and domain-specific languages (the Demeter Method); (2) a succinct and exact definition of a detector for an interesting class of software design problems: The Law of Demeter (Don't Talk to Strangers); it allows for a direct application when writing object-oriented code; (3) aspect-oriented programming.
+            I am also interested in problem-solving methodology in algorithms and I helped to develop the classical golden-ratio result for Satisfiability.
+          }
+
           @person[#:name "Matthias Felleisen"
                   #:title "Trustee Professor"
                   #:e-mail "matthias@ccs.neu.edu"
