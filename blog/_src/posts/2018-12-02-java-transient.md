@@ -387,7 +387,7 @@ class ArrayList<T> {
 }
 ```
 
-Both may potentially lead to heap pollution.
+Both may potentially lead to [heap pollution](http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ050).
 
 > "The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.
 >
