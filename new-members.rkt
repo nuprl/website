@@ -78,7 +78,8 @@
                   @iframe[src: "https://www.google.com/maps/d/u/0/embed?mid=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP" width: "640" height: "480"]
                 }
               ]
-              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).}
+              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on
+                @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).}
   }}}}}
   @footer{}
 }}
