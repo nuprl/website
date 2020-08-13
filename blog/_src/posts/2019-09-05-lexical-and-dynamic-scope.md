@@ -86,7 +86,8 @@ by default, but allow the programmer to select dynamic scoping.
 
 (**Edited 2020/08/13:** As of [Emacs
 27.1](https://www.gnu.org/savannah-checkouts/gnu/emacs/news/NEWS.27.1),
-"lexical binding is now used by default when evaluating interactive Elisp.")
+"lexical binding is now used by default when evaluating interactive Elisp."
+Thanks to Artem Pelenitsyn for bringing this to my attention.)
 
 
 ## Now for a digression
