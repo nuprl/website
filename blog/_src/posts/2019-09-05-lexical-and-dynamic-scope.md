@@ -84,6 +84,10 @@ version of Lisp. Emacs Lisp is dynamically scoped, but allows the programmer to
 select lexical scoping. Conversely, Perl and Common Lisp are lexically scoped
 by default, but allow the programmer to select dynamic scoping.
 
+(**Edited 2020/08/13:** As of [Emacs
+27.1](https://www.gnu.org/savannah-checkouts/gnu/emacs/news/NEWS.27.1),
+"lexical binding is now used by default when evaluating interactive Elisp.")
+
 
 ## Now for a digression
 
