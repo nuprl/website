@@ -140,20 +140,6 @@
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
           }
 
-          @person[#:name "Stephen Chang"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail "stchang@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/stchang"
-                  #:history @list[
-                    "Joined Northeastern, 2014"
-                    "PhD, Northeastern University, 2014"
-                    "MS, Harvard University, 2008"
-                    "BSE, Princeton University, 2001"
-                  ]
-                  #:img "stephen_chang.jpg"]{
-            I'm interested in the design of practical programming languages.
-          }
-
           @person[#:name "Ben Lerner"
                   #:title "Lecturer"
                   #:e-mail "blerner@ccs.neu.edu"
@@ -252,25 +238,30 @@
 
                   ]
                   #:img "jon_bell.jpg"]{
-             I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
+            I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
           }
 
+          @person[#:name "John Boyland"
+                  #:title "Visiting Professor"
+                  #:e-mail "j.boyland@northeastern.edu"
+                  #:website "http://www.cs.uwm.edu/faculty/boyland/"
+                  #:history @list[
 
+                  "Visiting Northeastern, 2020–2021"
+                  "Joined University of Wisconsin-Milwaukee, 1998"
+                  "Joined Carnegie Mellon University, 1996"
+                  "PhD University of California, Berkeley 1996"
+
+                  ]
+                  #:img "john_boyland.jpg"]{
+            I am interested in language description and meta-programming. My work is in (most recent first) gradual typing, logical meta-programming, permission systems, attribute grammars and compiler construction.  I particularly enjoy collaboration with others on their projects.
+          }
         }
 
         @div[class: "pn-separator-img"]{
            @h2{Students}}
 
         @div[class: "container"]{
-
-          @person[#:name "Justin Slepak"
-                  #:title "Advisor: Olin Shivers"
-                  #:e-mail "jrslepak@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/jrslepak"
-                  #:history @list["Joined 2011"]
-                  #:img "justin_slepak.jpg"]{
-            I came to Northeastern after spending several years studying in Upper Michigan. My current work focuses on array-oriented languages as an expressive way to write data-parallel numeric processing code.
-          }
 
           @person[#:name "Leif Andersen"
                   #:title "Advisor: Matthias Felleisen"
@@ -625,6 +616,9 @@
               @(alumnus "Celeste Hollenbeck" #:year 2019
                         #:extra "(University of Edinburgh)"
                         #:personal-site "http://celestehollenbeck.com")
+              @(alumnus "Justin Slepak" #:year 2020
+                        #:extra "(Facebook)"
+                        #:personal-site "https://jrslepak.github.io/")
              ]}}
 
         @div[class: "container"]{
@@ -694,6 +688,9 @@
                 @(alumnus "Saba Alimadadi" #:year 2019
                           #:personal-site "https://www.ece.ubc.ca/~saba/"
                           #:extra "(Simon Fraser University)")
+                @(alumnus "Stephen Chang" #:year 2020
+                          #:personal-site "https://stchang.github.io/"
+                          #:extra "(University of Massachusetts Boston)")
               ]}}
 
         @div[class: "container"]{
