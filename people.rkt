@@ -252,10 +252,24 @@
 
                   ]
                   #:img "jon_bell.jpg"]{
-             I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
+            I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
           }
 
+          @person[#:name "John Boyland"
+                  #:title "Visiting Professor"
+                  #:e-mail "j.boyland@northeastern.edu"
+                  #:website "http://www.cs.uwm.edu/faculty/boyland/"
+                  #:history @list[
 
+                  "Visiting Northeastern, 2020–2021"
+                  "Joined University of Wisconsin-Milwaukee, 1998"
+                  "Joined Carnegie Mellon University, 1996"
+                  "PhD University of California, Berkeley 1996"
+
+                  ]
+                  #:img "john_boyland.jpg"]{
+            I am interested in language description and meta-programming. My work is in (most recent first) gradual typing, logical meta-programming, permission systems, attribute grammars and compiler construction.  I particularly enjoy collaboration with others on their projects.
+          }
         }
 
         @div[class: "pn-separator-img"]{
