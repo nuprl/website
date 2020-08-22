@@ -140,20 +140,6 @@
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
           }
 
-          @person[#:name "Stephen Chang"
-                  #:title "Post-doctoral researcher"
-                  #:e-mail "stchang@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/stchang"
-                  #:history @list[
-                    "Joined Northeastern, 2014"
-                    "PhD, Northeastern University, 2014"
-                    "MS, Harvard University, 2008"
-                    "BSE, Princeton University, 2001"
-                  ]
-                  #:img "stephen_chang.jpg"]{
-            I'm interested in the design of practical programming languages.
-          }
-
           @person[#:name "Ben Lerner"
                   #:title "Lecturer"
                   #:e-mail "blerner@ccs.neu.edu"
@@ -276,15 +262,6 @@
            @h2{Students}}
 
         @div[class: "container"]{
-
-          @person[#:name "Justin Slepak"
-                  #:title "Advisor: Olin Shivers"
-                  #:e-mail "jrslepak@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/jrslepak"
-                  #:history @list["Joined 2011"]
-                  #:img "justin_slepak.jpg"]{
-            I came to Northeastern after spending several years studying in Upper Michigan. My current work focuses on array-oriented languages as an expressive way to write data-parallel numeric processing code.
-          }
 
           @person[#:name "Leif Andersen"
                   #:title "Advisor: Matthias Felleisen"
@@ -639,6 +616,9 @@
               @(alumnus "Celeste Hollenbeck" #:year 2019
                         #:extra "(University of Edinburgh)"
                         #:personal-site "http://celestehollenbeck.com")
+              @(alumnus "Justin Slepak" #:year 2020
+                        #:extra "(Facebook)"
+                        #:personal-site "https://jrslepak.github.io/")
              ]}}
 
         @div[class: "container"]{
@@ -708,6 +688,9 @@
                 @(alumnus "Saba Alimadadi" #:year 2019
                           #:personal-site "https://www.ece.ubc.ca/~saba/"
                           #:extra "(Simon Fraser University)")
+                @(alumnus "Stephen Chang" #:year 2020
+                          #:personal-site "https://stchang.github.io/"
+                          #:extra "(University of Massachusetts Boston)")
               ]}}
 
         @div[class: "container"]{
