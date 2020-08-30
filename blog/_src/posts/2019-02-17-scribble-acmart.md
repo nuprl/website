@@ -452,5 +452,5 @@ Finally, this repository provides a tool to start a new Scribble document:
 - [Checking Machine-Checked Proofs](https://project.inria.fr/coqexchange/checking-machine-checked-proofs/)
 
 
-[scribble/acmart]: <http://docs.racket-lang.org/scribble/ACM_Paper_Format.html>
-[scriblib/figure]: <http://docs.racket-lang.org/scriblib/figure.html#%28def._%28%28lib._scriblib%2Ffigure..rkt%29._figure%29%29>
+[scribble/acmart]: http://docs.racket-lang.org/scribble/ACM_Paper_Format.html
+[scriblib/figure]: http://docs.racket-lang.org/scriblib/figure.html#%28def._%28%28lib._scriblib%2Ffigure..rkt%29._figure%29%29
