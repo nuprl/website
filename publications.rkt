@@ -57,6 +57,26 @@
 
 @(define publications
    (list
+    (publication "Dependent Type Systems as Macros"
+                 "Stephen Chang, Michael Ballantyne, Milo Turner, William J. Bowman"
+                 POPL
+                 2020
+                 "https://www.ccs.neu.edu/home/stchang/pubs/cbtb-popl2020.pdf")
+    (publication "Graduality and Parametricity: Together Again for the First Time"
+                 "Max S. New, Dustin Jamner, and Amal Ahmed"
+                 POPL
+                 2020
+                 "https://www.ccs.neu.edu/home/amal/papers/gradparam.pdf")
+    (publication "A Study of Call Graph Construction for JVM-Hosted Languages"
+                 "Karim Ali, Xiaoni Lai, Zhaoyi Luo, Ondřej Lhoták, Julian Dolby, and Frank Tip"
+                 TSE
+                 2019
+                 "https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8944149")
+    (publication "Under Control: Compositionally Correct Closure Conversion with Mutable State"
+                 "Phillip Mates, Jamie Perconti, and Amal Ahmed"
+                 PPDP
+                 2019
+                 "https://www.ccs.neu.edu/home/amal/papers/refcc.pdf")
     (publication "From Macros to DSLs: The Evolution of Racket"
                  "Ryan Culpepper, Matthias Felleisen, Matthew Flatt, and Shriram Krishnamurthi"
                  SNAPL
