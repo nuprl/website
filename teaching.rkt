@@ -115,6 +115,8 @@
                  @li{
                    @strong{7480} Special Topics in Programming Languages
                    @br{}
+                   @indent{} F 2020 Type Systems @instructor{John Boyland}
+                   @br{}
                    @indent{} S 2019 Gradual Typing and Principled Language Interoperability @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s19/" target: "_blank"]{link} @instructor{Amal Ahmed}
                    @br{}
                    @indent{} S 2017 History of Programming Languages @a[href: "http://www.ccs.neu.edu/home/matthias/7480-s17/index.html" target: "_blank"]{link} @instructor{Matthias Fellsein}
@@ -152,7 +154,8 @@
                    @indent{} S 2019 Expeditions in Data Science @a[href: "http://janvitek.org/events/NEU/6050/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
                  }
                  @li{
-                   @strong{5500} Managing Software Development @br{}
+                   @strong{5500} Foundations of Software Engineering @br{}
+                   @indent{} F 2020 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/CS4530-CS5500-Fall2020/index.html" target: "_blank"]{link} @instructor{Mitch Wand, Frank Tip, Jon Bell} @br{}
                    @indent{} F 2019 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/2019-Fall-Section1/index.html" target: "_blank"]{link} @instructor{Frank Tip} @br{}
                    @indent{} S 2017 @a[href: "http://www.ccs.neu.edu/course/cs5500sp17/" target: "_blank"]{link} @instructor{Michael Weintraub, Frank Tip} @br{}
                  }
@@ -175,12 +178,17 @@
              @div[class: "col-md-6"]{
                @ul{
                  @li{
+                   @strong{4910} Type Systems @br{}
+                   @indent{} F 2020 @instructor{John Boyland}
+                 }
+                 @li{
                    @strong{4620} Building Extensible Systems @br{}
                    @indent{} S 2018 Hack Your Own Language @a[href: "https://felleisen.org/matthias/4620-s18/index.html" target: "_blank"]{link} @instructor{Matthias Felleisen, Stephen Chang} @br{}
                    @indent{} S 2015 @a[href: "http://www.ccs.neu.edu/home/matthias/4620-s15/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
                      @strong{4500} Software Development @br{}
+                     @indent[] F 2020 @a[href: "https://www.ccs.neu.edu/home/matthias/4500-f20/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "http://janvitek.org/events/NEU/4500/s20/" target: "_blank"]{link} @instructor{Jan Vitek, Jason Hemann, Ferdinand Vesely} @br{}
                      @indent[] F 2019 @a[href: "https://felleisen.org/matthias/4500-f19/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://felleisen.org/matthias/4500-f18/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
@@ -188,7 +196,7 @@
                  }
                  @li{
                      @strong{4410} Compilers @br{}
-                     @indent[] S 2020 @a[href: "https://course.ccs.neu.edu/cs4410sp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{} 
+                     @indent[] S 2020 @a[href: "https://course.ccs.neu.edu/cs4410sp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs4410sp19/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
@@ -200,6 +208,10 @@
                      @strong{4400} Programming Languages @br{}
                      @indent[] S 2020 @a[href: "https://felleisen.org/matthias/4400-s20/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://pl.barzilay.org/" target: "_blank"]{link} @instructor{Jason Hemann}
+                 }
+                 @li{
+                     @strong{4530} Fundamentals of Software Engineering @br{}
+                     @indent{} F 2020 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/CS4530-CS5500-Fall2020/index.html" target: "_blank"]{link} @instructor{Frank Tip, Jon Bell} @br{}
                  }
                  @li{
                      @strong{3800} Theory of Computation @br{}
@@ -214,6 +226,7 @@
                  }
                  @li{
                      @strong{2800} Logic and Computation @br{}
+                     @indent[] F 2020 @a[href: "https://pages.github.ccs.neu.edu/jhemann/20FA-2800/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "https://www.khoury.northeastern.edu/~pete/courses/Logic-and-Computation/2020-Spring/" target: "_blank"]{link} @instructor{Pete Manolios, Olin Shivers}
                  }
                  @li{
@@ -231,6 +244,8 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
+                     @indent{} F 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf20/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner} @br{}
+                     @indent{} F 2020 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner, Arjun Guha, John Park, Ferdinand Vesely} @br{}
                      @indent{} F 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf19/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                      @indent{} S 2019 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent{} F 2018 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf18/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
