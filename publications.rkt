@@ -59,12 +59,12 @@
 @(define publications
    (list
     (publication "Model-Based Warp Overlapped Tiling for Image Processing Programs on GPUs"
-                 "Abhinav Jangda, Arjun Guha"
+                 "Abhinav Jangda and Arjun Guha"
                  PACT
                  2020
                  "https://arxiv.org/abs/1909.07190")
     (publication "Dependent Type Systems as Macros"
-                 "Stephen Chang, Michael Ballantyne, Milo Turner, William J. Bowman"
+                 "Stephen Chang, Michael Ballantyne, Milo Turner, and William J. Bowman"
                  POPL
                  2020
                  "https://www.ccs.neu.edu/home/stchang/pubs/cbtb-popl2020.pdf")
