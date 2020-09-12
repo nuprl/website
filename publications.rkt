@@ -54,9 +54,15 @@
 @(define JAR "Journal of Automated Reasoning (JAR)")
 @(define TECS "ACM Transactions on Embedded Computing Systems (TECS)")
 @(define TSE "IEEE Transactions on Software Engineering (TSE)")
+@(define PACT "International Conference on Parallel Architectures and Compilation Techniques (PACT)")
 
 @(define publications
    (list
+    (publication "Model-Based Warp Overlapped Tiling for Image Processing Programs on GPUs"
+                 "Abhinav Jangda, Arjun Guha"
+                 PACT
+                 2020
+                 "https://arxiv.org/abs/1909.07190")
     (publication "Dependent Type Systems as Macros"
                  "Stephen Chang, Michael Ballantyne, Milo Turner, William J. Bowman"
                  POPL
