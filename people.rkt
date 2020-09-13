@@ -210,8 +210,8 @@
 
           @person[#:name "Arjun Guha"
                   #:title "Associate Professor"
-                  #:e-mail "arjunguha@umass.edu"
-                  #:website "https://people.cs.umass.edu/~arjun/"
+                  #:e-mail "a.guha@northeastern.edu"
+                  #:website "https://ccs.neu.edu/~arjunguha/"
                   #:history @list[
                   "Joined Northeastern, 2020"
                   "Joined University of Massachusetts Amherst, 2013"
