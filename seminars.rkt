@@ -81,6 +81,17 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "balzer"
+     "TBA"
+     "Stephanie Balzer"
+     "http://www.cs.cmu.edu/~balzers/"
+     "Carnegie Mellon University"
+     (datetime 2020 11 13 12 00)
+     "Video Conference (link TBA)"
+     @list{@p{TBA}}
+     @list{@p{TBA}})
+
+    (seminar
      "blasband-yafl"
      "Grow your own language: The YAFL story"
      "Darius Blasband"
