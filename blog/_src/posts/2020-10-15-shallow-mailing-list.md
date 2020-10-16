@@ -10,10 +10,11 @@ answers under a "transient" Typed Racket.
 - - -
 
 For the past few months, I've been adding a transient semantics to Typed Racket.
+The project is called Shallow Typed Racket.
 Details are in the [RFC](https://github.com/racket/typed-racket/pull/952)
  and [pull request](https://github.com/racket/typed-racket/pull/948).
 
-The short story is that the new Shallow Typed Racket does less to enforce types
+The short story is that the new Shallow Racket does less to enforce types
  when typed code interacts with untyped code.
 Typed code is still type-sound, but that's about it.
 By contrast, types are much stronger in classic Typed Racket.
@@ -38,7 +39,7 @@ Going forward, **Deep** refers to normal Typed Racket and **Shallow** refers to 
 
 ## Higher-Order Value as Any
 
-Original message : <https://groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ>
+Original message : [groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ](https://groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ)
 
 #### On 2018-04-16, _mailoo_ wrote:
 
@@ -80,7 +81,7 @@ Things would go badly if an Any-typed function expected a String but got an
 
 ## Parametric Contract Affects Untyped Code
 
-Original message : <https://groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ>
+Original message : [groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ](https://groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ)
 
 #### On 2019-12-15, John Clements wrote:
 
@@ -117,7 +118,7 @@ ps John, thanks very much for working on [Advent of Code](https://adventofcode.c
 
 ## Unable to Protect Opaque Value as Any
 
-Original message : <https://groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ>
+Original message : [groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ](https://groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ)
 
 #### On 2019-12-11, Marc Kaufmann wrote:
 
@@ -191,7 +192,7 @@ This program runs, and in general Shallow never complains about opaque values.
 
 ## Type Inference Installs a Precise Type
 
-Original message : <https://groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ>
+Original message : [groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ](https://groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ)
 
 #### On 2020-02-14, John Clements wrote:
 
@@ -255,7 +256,7 @@ The cast looks for a hash, does not make a contract, and ignores the inferred
 
 ## Same-Arity Functions in a Case Lambda
 
-Original message : <https://groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ>
+Original message : [groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ](https://groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ)
 
 
 #### On 2019-07-05, Ryan Kramer wrote:
@@ -290,9 +291,11 @@ Type Checker:
 
 ### What's going on?
 
-**Deep** tries to enforce the type with a Racket `or/c` contract, but or/c
- does not allow two function contracts with the same arity because has to
- pick one to apply at run-time, but cannot.
+**Deep** tries to enforce the type with a Racket `or/c` contract, but cannot.
+The problem is that or/c only has partial support for unions.
+If or/c ends up with two possible higher-order options at runtime, it halts.
+In this case, we end up with two function contracts that have the same arity
+ and don't know which to apply to an incoming function.
 
 Note, the "Type Checker" error message is much better than what or/c would
  give on its own.
@@ -302,7 +305,7 @@ Note, the "Type Checker" error message is much better than what or/c would
 
 **Shallow** simply checks that maybe-car accepts both arities inside the
  case-> type.
-The code runs without error.
+The code runs fine.
 Later, when the function gets applied in typed code, Shallow spot-checks the
  results.
 
@@ -311,7 +314,7 @@ Later, when the function gets applied in typed code, Shallow spot-checks the
 
 ### Immutable Type Affects Untyped Code
 
-Original message : <https://groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ>
+Original message : [groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ](https://groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ)
 
 #### On 2020-02-17, Bertrand Augereau wrote:
 
@@ -376,6 +379,14 @@ Original message : <https://groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmu
 The original value does change in typed code, but the main module only has
  access to the empty copy.
 
+Here's a step-by-step breakdown:
+
+1. the typed module creates an empty list-of-s2
+2. the main module imports the list and receives a new copy
+3. the main module calls set-list-of-s2! and the typed module updates the original list-of-s2 variable
+4. the main module reads from its copy --- and it's still empty
+
+
 
 ### How's transient?
 
@@ -411,4 +422,6 @@ Follow the [pull request](https://github.com/racket/typed-racket/pull/948)
   [Reticulated Python](https://github.com/mvitousek/reticulated).
 - My [upcoming dissertation](https://ccs.neu.edu/home/types/publications/publications.html#g-thesis-2020)
   has lots more to say about Shallow Typed Racket.
+
+_Thanks to Artem Pelenitsyn for reading and criticizing an early version of this post._
 
