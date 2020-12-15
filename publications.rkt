@@ -55,10 +55,86 @@
 @(define TECS "ACM Transactions on Embedded Computing Systems (TECS)")
 @(define TSE "IEEE Transactions on Software Engineering (TSE)")
 @(define PACT "International Conference on Parallel Architectures and Compilation Techniques (PACT)")
+@(define HOPL "History of Programming Languages (HOPL)")
 
 @(define publications
    (list
-    (publication "Model-Based Warp Overlapped Tiling for Image Processing Programs on GPUs"
+    (publication "Corpse Reviver: Sound And Efficient Gradual Typing Via Contract Verification"
+                 "Cameron Moy, Phúc C. Nguyễn, Sam Tobin-Hochstadt, and David Van Horn"
+                 POPL
+                 2021
+                 "https://arxiv.org/abs/2007.12630")
+    (publication "Formally Verified Speculation and Deoptimization in a JIT Compiler"
+                 "Aurèle Barrière, Olivier Flückiger, Sandrine Blazy, David Pichardie, and Jan Vitek"
+                 POPL
+                 2021
+                 "http://janvitek.org/pubs/popl21.pdf")
+    (publication "Sampling Optimized Code For Type Feedback"
+                 "Olivier Flückiger, Andreas Wälchli, Sebastián Krynski, and Jan Vitek"
+                 DLS
+                 2020
+                 "https://arxiv.org/abs/2010.02080")
+    (publication "Wasm/K: Delimited Continuations For Webassembly"
+                 "Donald Pinckney, Arjun Guha, and Yuriy Brun"
+                 DLS
+                 2020
+                 "https://arxiv.org/abs/2010.01723")
+    (publication "A Large-Scale Longitudinal Study of Flaky Tests"
+                 "Wing Lam, Stefan Winter, Anjiang Wei, Tao Xie, Darko Marinov, and Jonathan Bell"
+                 OOPSLA
+                 2020
+                 "https://jonbell.net/publications/oopsla20flaky")
+    (publication "World Age in Julia: Optimizing Method Dispatch in the Presence of Eval"
+                 "Julia Belyakova, Benjamin Chung, Jack Gelinas, Jameson Nash, Ross Tate, and Jan Vitek"
+                 OOPSLA
+                 2020
+                 "http://janvitek.org/pubs/oopsla20-j.pdf")
+    (publication "Contextual Dispatch for Function Specialization"
+                 "Olivier Flückiger, Guido Chari, Ming-Ho Yee, Jan Ječmen, Jakob Hain, and Jan Vitek"
+                 OOPSLA
+                 2020
+                 "http://janvitek.org/pubs/oopsla20-cd.pdf")
+    (publication "Designing Types for R, Empirically"
+                 "Alexi Turcotte, Aviral Goel, Filip Křikava, and Jan Vitek"
+                 OOPSLA
+                 2020
+                 "http://janvitek.org/pubs/oopsla20-r.pdf")
+    (publication "Adding Interactive Visual Syntax to Textual Code"
+                 "Leif Andersen, Michael Ballantyne, and Matthias Felleisen"
+                 OOPSLA
+                 2020
+                 "https://www2.ccs.neu.edu/racket/pubs/oopsla20-abf.pdf")
+    (publication "Macros for Domain-Specific Languages"
+                 "Michael Ballantyne, Alexis King, and Matthias Felleisen"
+                 OOPSLA
+                 2020
+                 "https://www2.ccs.neu.edu/racket/pubs/oopsla20-bkf.pdf")
+    (publication "TacTok: Semantics-Aware Proof Synthesis"
+                 "Emily First, Yuriy Brun, and Arjun Guha"
+                 OOPSLA
+                 2020
+                 "https://doi.org/10.1145/3428299")
+    (publication "A Semantics for the Essence of React"
+                 "Magnus Madsen, Ondřej Lhoták, and Frank Tip"
+                 ECOOP
+                 2020
+                 "https://www.franktip.org/pubs/ecoop2020.pdf")
+    (publication "Typed Dataspace Actors"
+                 "Samuel Caldwell, Tony Garnock-Jones, and Matthias Felleisen"
+                 JFP
+                 2020
+                 "https://www2.ccs.neu.edu/racket/pubs/cgjf-jfp20.pdf")
+    (publication "Hygienic Macro Technology"
+                 "William D. Clinger and Mitchell Wand"
+                 HOPL
+                 2020
+                 "https://doi.org/10.1145/3386330")
+    (publication "Learning Self-Play Agents For Combinatorial Optimization Problems"
+                 "Ruiyang Xu and Karl Lieberherr"
+                 "The Knowledge Engineering Review"
+                 2020
+                 "https://doi.org/10.1017/s026988892000020x")
+   (publication "Model-Based Warp Overlapped Tiling for Image Processing Programs on GPUs"
                  "Abhinav Jangda and Arjun Guha"
                  PACT
                  2020
