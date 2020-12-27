@@ -2,8 +2,8 @@
     Date: 2020-11-12T10:15:16
     Tags: typed racket, transient, by Ben Greenman
 
-Join me for a short adventure into the depths of optional and/or keyword
- functions.
+A short adventure into the depths of optional and/or keyword
+ functions in Racket.
 
 <!-- more -->
 
@@ -13,10 +13,13 @@ Transient, or rather _the Transient semantics for a mixed-typed language_,
  is one way to let statically-typed code safely interact with untyped code.
 You can read all about it in
  [Michael Vitousek's 2019 dissertation](http://hdl.handle.net/2022/23172)
- and see how it compares to other mixed-typed semantics
+ or [my 2020 dissertation](https://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020),
+ and you can see how it compares to other mixed-typed semantics
  [here](http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/).
-The idea is to rewrite typed code with assertions called _shape checks_;
- for example:
+The idea is to give up on [behavioral type guarantees](http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/)
+ and focus on a kind of type soundness.
+To enforce soundness, Transient rewrites every expression in typed code
+ with assertions called _shape checks_; for example:
 
 - if a typed module imports an untyped library, then every value that crosses
   the module boundary gets a shape check;
@@ -25,14 +28,15 @@ The idea is to rewrite typed code with assertions called _shape checks_;
 - if a typed function escapes to untyped code, then the function must use
   a shape check to validate every input that it receives.
 
-Our focus today is on rewriting typed functions.
-Suppose we know how to turn a type `T` into a shape check, and we know every
- function that needs to check its inputs.
+Our goal today is to understand the shape checks for functions.
+Suppose we know how to turn a type **T** into a shape check, and we have a
+ function with type **T** that needs to check its inputs.
 The question is how to actually do the check in Racket.
 
-In theory, rewriting is no problem.
-A function takes exactly one argument and needs exactly one shape check in
- the body:
+In your standard theory, rewriting is no problem.
+A (simplified, model) function takes exactly one argument and needs exactly one
+ shape check in the body; if **T = (-> Symbol Symbol)** then we need
+ to check the shape (**symbol?**) of the domain type (**Symbol**):
 
 ```
 ;; source code
@@ -50,7 +54,8 @@ A function takes exactly one argument and needs exactly one shape check in
 
 A Typed Racket function can accept optional arguments, keyword arguments,
  and optional keyword arguments.
-These are still fairly easy to handle in theory:
+These are still fairly easy to handle in theory.
+Below, the function type **T** accepts 1 to 3 inputs:
 
 ```
 ;; source code
@@ -69,49 +74,101 @@ These are still fairly easy to handle in theory:
 ```
 
 Good --- we basically know what we want.
-The question is how to get there because Racket compiles optional and keyword
+If the Racket core language had optional and keyword functions, then we'd be
+ done.
+
+But no, Racket expands these optional/keyword
  functions into primitive [`lam`](https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._lam)))
- and [`case-lam`](https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._case-lam)))
- forms.
+ and [`case-lam`](https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._case-lam))).
+Typed Racket type-checks this expanded code, thus Shallow Typed Racket
+ (the Transient version) must rewrite the expanded code.
+
+Let's keep digging.
+
+From now on, ``Shallow'' or ``Shallow TR'' refers to my implementation
+ of Transient for Typed Racket (TR).
+We'll talk about Shallow instead of ``Transient'' in case someone later finds
+ a better way to implement the Transient idea.
 
 
 ## False Start: Follow the Type
 
-Beware, a Transient cannot rely on type annotations to decide which shape
+Beware, Shallow TR cannot rely on type annotations to decide which shape
  checks to insert.
-The example function `g` from before demonstrates that annotations are not
- good enough --- with our imagined rewrite, calls that leave out the optional
+The example function `g` above demonstrates that annotations are not
+ good enough.
+With our imagined rewrite, calls that leave out the optional
  `#:c` keyword lead to a shape-check failure because the variable `c` gets
  the default value `#f` instead of a void value.
-
-The problem arises from subtyping.
-According to the annotations, the function `g` has a type that is less precise
- than its true ``internal'' type:
+Concretely, the third assert from above fails:
 
 ```
-;; external type
+(define (g #:a a [b 'b] #:c [c #f])
+  ....
+  (assert void? c) ;; fails if c is #f
+  ....)
+```
+
+The problem arises from subtyping.
+According to the annotations, the function `g` has an external type that is
+ less precise than the internal type that validates the function body::
+
+```
+;; external type T
 (: g (->* [#:a Boolean] [Symbol #:c Void] Symbol))
 
-;; internal type, subtype of external, used for checking body
+;; internal type T2, subtype of external (T2 <: T), validates body
 (: g (->* [#:a Boolean] [Symbol #:c (U #f Void)] Symbol))
 ```
 
-Thanks to this external / internal distinction,
+Thanks to this external / internal distinction, the following easy
+ rewrite solution fails.
+Despite the failure, this first solution is a useful starting point.
+
+
+### Solution 0, Step 1: Mimic the Typechecker
+
+Shallow TR rewrites well-typed code.
+
+```
+      [(~and (let-values ([(f) fun]) . body) kw:kw-lambda^)
+      ....]
+      [(~and (let-values ([(f) fun]) . body) opt:opt-lambda^)
+      ....]
+```
+
+
+### Solution 0, Step 2: Parse the Domain Type
+
+
+### Solution 0, Step 3: Insert a Shape Check
+
+
  the straightforward TR pattern match solution fails ....
 
-
-A first complication shows up in the theory.
-If the type system allows subtyping, then 
+TODO show the TR matching code, explain what could work but fails
 
 
 
-But the question is how to implement what we want
+## On the Trail: optkey Expansion
 
-In Typed Racket, though, a function may accept optional arguments,
- keyword arguments, and optional keyword arguments.
-These 
+Nevermind the TR syntax class, go deeper what is actually there
+A few example expansions.
+Discuss methods ... or just acknowledge
 
 
+## The Shallow TR Rewrite Strategy
+
+ok expansion above leads us to plan
+
+interesting note: for subtyping example, arg starts with bottom type,
+ occurrence typing deals with defaults
+
+
+## Trouble with Methods, a Bugfix
+
+
+## Discussion
 
 
 <!-- 1. basics, transient idea / goal -->
