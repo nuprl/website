@@ -1,6 +1,6 @@
     Title: Java and Migratory Typing
     Date: 2018-12-02T14:41:53
-    Tags: migratory typing, java, by Ben Greenman
+    Tags: migratory typing, java, transient, by Ben Greenman
 
 The _transient_ approach to migratory typing (circa [2014](http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf))
   is similar to type erasure in Java (circa [2004](https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html))

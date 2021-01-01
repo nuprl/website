@@ -1,6 +1,6 @@
     Title: Transient Answers Old Questions
     Date: 2020-10-15T13:32:12
-    Tags: typed racket, by Ben Greenman
+    Tags: typed racket, transient, by Ben Greenman
 
 Several old questions from the Typed Racket mailing list have new and simple
 answers under a "transient" Typed Racket.

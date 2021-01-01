@@ -1,6 +1,6 @@
     Title: The Typed Racket Optimizer vs. Transient
     Date: 2020-01-15T12:16:35
-    Tags: typed racket, offsite, by Ben Greenman
+    Tags: typed racket, transient, offsite, by Ben Greenman
 
 What type-directed optimizations does Typed Racket perform
  and do any require full types?
