@@ -281,15 +281,6 @@
             I like constructions. My current goal is to lower the huge run-time cost of gradual typing. I believe that safely mixing languages is the way of the future.
           }
 
-          @person[#:name "Max New"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "maxnew@ccs.neu.edu"
-                  #:website "http://maxsnew.github.io"
-                  #:history @list["Joined 2014"]
-                  #:img "max_new.jpg"]{
-            I like reasonable programming languages.
-          }
-
           @person[#:name "Sam Caldwell"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "samc@ccs.neu.edu"
@@ -620,6 +611,9 @@
                         #:dissertation "http://ccs.neu.edu/~jrslepak/Dissertation.pdf"
                         #:extra "(Facebook)"
                         #:personal-site "https://jrslepak.github.io/")
+              @(alumnus "Max S. New" #:year 2020
+                        #:extra "(Wesleyan University)"
+                        #:personal-site "http://maxsnew.com/")
              ]}}
 
         @div[class: "container"]{
