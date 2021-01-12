@@ -272,15 +272,6 @@
             I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
           }
 
-          @person[#:name "Ben Greenman"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "types@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/types"
-                  #:history @list["Joined 2014"]
-                  #:img "ben_greenman.jpg"]{
-            I like constructions. My current goal is to lower the huge run-time cost of gradual typing. I believe that safely mixing languages is the way of the future.
-          }
-
           @person[#:name "Sam Caldwell"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "samc@ccs.neu.edu"
@@ -614,6 +605,10 @@
               @(alumnus "Max S. New" #:year 2020
                         #:extra "(Wesleyan University)"
                         #:personal-site "http://maxsnew.com/")
+              @(alumnus "Ben Greenman" #:year 2020
+                        #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
+                        #:extra "(Brown University)"
+                        #:personal-site "http://ccs.neu.edu/home/types/")
              ]}}
 
         @div[class: "container"]{
