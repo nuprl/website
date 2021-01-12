@@ -617,6 +617,7 @@
                         #:extra "(University of Edinburgh)"
                         #:personal-site "http://celestehollenbeck.com")
               @(alumnus "Justin Slepak" #:year 2020
+                        #:dissertation "http://ccs.neu.edu/~jrslepak/Dissertation.pdf"
                         #:extra "(Facebook)"
                         #:personal-site "https://jrslepak.github.io/")
              ]}}
