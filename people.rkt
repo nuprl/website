@@ -415,6 +415,15 @@
                   #:img "nate_yazdani.jpg"]{
              I like types, proofs, and occasionally programs.
           }
+
+          @person[#:name "Andrew Wagner"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "ahwagner@ccs.neu.edu"
+                  #:history @list[
+                    "Joined 2020"]
+                  #:img "andrew_wagner.jpeg"]{
+            I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
+          }
         }
 
         @div[class: "pn-separator-img"]{
