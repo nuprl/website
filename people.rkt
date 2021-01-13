@@ -272,24 +272,6 @@
             I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
           }
 
-          @person[#:name "Ben Greenman"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "types@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/types"
-                  #:history @list["Joined 2014"]
-                  #:img "ben_greenman.jpg"]{
-            I like constructions. My current goal is to lower the huge run-time cost of gradual typing. I believe that safely mixing languages is the way of the future.
-          }
-
-          @person[#:name "Max New"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "maxnew@ccs.neu.edu"
-                  #:website "http://maxsnew.github.io"
-                  #:history @list["Joined 2014"]
-                  #:img "max_new.jpg"]{
-            I like reasonable programming languages.
-          }
-
           @person[#:name "Sam Caldwell"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "samc@ccs.neu.edu"
@@ -432,6 +414,15 @@
                     "MS, University of Washington, 2019"]
                   #:img "nate_yazdani.jpg"]{
              I like types, proofs, and occasionally programs.
+          }
+
+          @person[#:name "Andrew Wagner"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "ahwagner@ccs.neu.edu"
+                  #:history @list[
+                    "Joined 2020"]
+                  #:img "andrew_wagner.jpeg"]{
+            I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
         }
 
@@ -617,8 +608,16 @@
                         #:extra "(University of Edinburgh)"
                         #:personal-site "http://celestehollenbeck.com")
               @(alumnus "Justin Slepak" #:year 2020
+                        #:dissertation "http://ccs.neu.edu/~jrslepak/Dissertation.pdf"
                         #:extra "(Facebook)"
                         #:personal-site "https://jrslepak.github.io/")
+              @(alumnus "Max S. New" #:year 2020
+                        #:extra "(Wesleyan University)"
+                        #:personal-site "http://maxsnew.com/")
+              @(alumnus "Ben Greenman" #:year 2020
+                        #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
+                        #:extra "(Brown University)"
+                        #:personal-site "http://ccs.neu.edu/home/types/")
              ]}}
 
         @div[class: "container"]{
