@@ -44,4 +44,5 @@ To the PRL: thanks for a wonderful 6.5 years.
 > This dissertation proves that deep and shallow types can interoperate
 >  and measures the benefits of a three-way mix.
 
+Next year, I'll be a [CI Fellow](https://cifellows2020.org) at Brown.
 
