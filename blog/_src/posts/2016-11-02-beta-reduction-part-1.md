@@ -44,7 +44,7 @@ With the substitution function defined, we can write a semantics for evaluation:
 --------------------
   e1 e2 ->β e1' e2
 
-    e2 ->β e2
+    e2 ->β e2'
 --------------------
   e1 e2 ->β e1 e2'
 ```
