@@ -126,5 +126,5 @@ See table 2 of [the paper][paper] for coded responses to this question,
 Most preferred typed programming.
 
 
-[paper]: <http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study>
-[data]: <http://cs.brown.edu/research/plt/dl/dls2018>
+[paper]: http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study
+[data]: http://cs.brown.edu/research/plt/dl/dls2018
