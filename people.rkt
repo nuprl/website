@@ -424,6 +424,17 @@
                   #:img "andrew_wagner.jpeg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
+
+          @person[#:name "Katherine Hough"
+                  #:title "Advisors: Jonathan Bell and Frank Tip"
+                  #:e-mail "hough.k@northeastern.edu"
+                  #:history @list[
+                    "Joined 2020"
+                    "MS, George Mason University"
+                    "BS, George Mason University"]
+                  #:img "Katherine_Hough.png"]{
+            My research focuses on helping developers identify and correct software bugs and vulnerabilities.
+          }
         }
 
         @div[class: "pn-separator-img"]{
