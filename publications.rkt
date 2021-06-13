@@ -69,12 +69,17 @@
                  POPL
                  2021
                  "http://janvitek.org/pubs/popl21.pdf")
+    (publication "Robot Action Selection Learning via Layered Dimension Informed Program Synthesis"
+                 "Jarrett Holtz, Arjun Guha, and Joydeep Biswas"
+                 "Conference on Robot Learning (CoRL)"
+                 2020
+                 "https://arxiv.org/abs/2008.04133")
     (publication "Sampling Optimized Code For Type Feedback"
                  "Olivier Flückiger, Andreas Wälchli, Sebastián Krynski, and Jan Vitek"
                  DLS
                  2020
                  "https://arxiv.org/abs/2010.02080")
-    (publication "Wasm/K: Delimited Continuations For Webassembly"
+    (publication "Wasm/K: Delimited Continuations For WebAssembly"
                  "Donald Pinckney, Arjun Guha, and Yuriy Brun"
                  DLS
                  2020
