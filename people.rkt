@@ -267,7 +267,7 @@
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "leif@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/leif"
-                  #:history @list["Joined 2014"]
+                  #:history @list["Joined Northeastern, 2014"]
                   #:img "leif_andersen.jpg"]{
             I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
           }
@@ -276,7 +276,7 @@
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "samc@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/samc"
-                  #:history @list["Joined 2015"]
+                  #:history @list["Joined Northeastern, 2015"]
                   #:img "Samuel-Caldwell-Index-Image.jpg"]{
             I came to Northeastern from Austin, Texas, where I did my undergrad and spent several years working in embedded software. I’m interested in using ideas and tools from programming languages to make the world a better place for everyone that uses computers.
           }
@@ -285,7 +285,7 @@
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "bchung@ccs.neu.edu"
                   #:website "http://benchung.github.io"
-                  #:history @list["Joined 2015"]
+                  #:history @list["Joined Northeastern, 2015"]
                   #:img "Benjamin-Chung-Index-Image.jpg"]{
             I usually work on types, currently focusing on gradual type systems.
           }
@@ -294,7 +294,7 @@
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "o@o1o.ch"
                   #:website "http://www.o1o.ch/about"
-                  #:history @list["Joined 2015"]
+                  #:history @list["Joined Northeastern, 2015"]
                   #:img "olivier_fluckiger.jpg"]{
             My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
           }
@@ -303,7 +303,7 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "dbp@ccs.neu.edu"
                   #:website "https://dbp.io"
-                  #:history @list["Joined 2016"]
+                  #:history @list["Joined Northeastern, 2016"]
                   #:img "daniel_patterson.jpg"]{
             I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
           }
@@ -312,7 +312,7 @@
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "mhyee@ccs.neu.edu"
                   #:website "http://mhyee.com/"
-                  #:history @list["Joined 2016"]
+                  #:history @list["Joined Northeastern, 2016"]
                   #:img "yee-crop.jpg"]{
             I'm interested in programming language design and implementation, as well as static program analysis.
           }
@@ -321,7 +321,7 @@
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "goel.av@husky.neu.edu"
                   #:website "http://aviral.io/"
-                  #:history @list["Joined 2017"]
+                  #:history @list["Joined Northeastern, 2017"]
                   #:img "aviral-goel.jpeg"]{
             Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
           }
@@ -330,7 +330,7 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "weiss@ccs.neu.edu"
                   #:website "https://aaronweiss.us/"
-                  #:history @list["Joined 2017"]
+                  #:history @list["Joined Northeastern, 2017"]
                   #:img "aaron_weiss.jpg"]{
             I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
           }
@@ -339,7 +339,7 @@
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "michael.ballantyne@gmail.com"
                   #:website "http://mballantyne.net"
-                  #:history @list["Joined 2017"]
+                  #:history @list["Joined Northeastern, 2017"]
                   #:img "ballantyne.jpg"]{
             I find delight in programming languages that allow extension of their notation, syntactic forms, type systems, runtime behaviors, and development environments. My research aims to build the foundations needed to bring these extensibility features into widespread use.
           }
@@ -347,7 +347,7 @@
           @person[#:name "Artem Pelenitsyn"
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "a.pelenitsyn@gmail.com"
-                  #:history @list["Joined 2018"]
+                  #:history @list["Joined Northeastern, 2018"]
                   #:website "http://mmcs.sfedu.ru/~ulysses"
                   #:img "artem_pelenitsyn.jpg"]{
             I am interested in typed functional programming and corresponding languages, mostly Haskell, type and effect systems, mathematics of program construction. Lately, I was working on a principled approach to the Julia programming language.
@@ -371,7 +371,7 @@
                   #:e-mail "alexi@ccs.neu.edu"
                   #:website "https://reallytg.github.io/"
                   #:history @list[
-                    "Joined 2018"]
+                    "Joined Northeastern, 2018"]
                   #:img "alexi_turcotte_small.jpg"]{
             I like reasoning about programs and implementing languages. Programming makes me happy. Programming about programming makes me happier.
           }
@@ -381,7 +381,7 @@
                   #:e-mail "ellen@ccs.neu.edu"
                   #:website "https://emarteca.github.io/"
                   #:history @list[
-                    "Joined 2018"]
+                    "Joined Northeastern, 2018"]
                   #:img "ellen_arteca_small.jpg"]{
             My previous work was in gradual typing; now I'm starting a project looking at program analysis for asynchronous JavaScript.
           }
@@ -390,7 +390,7 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "gierczak.o@husky.neu.edu"
                   #:history @list[
-                    "Joined 2019"]
+                    "Joined Northeastern, 2019"]
                   #:img "olek_gierczak.jpg"]{
             I like reasoning about programming languages and compilers, using pencil and paper or proof assistants.
           }
@@ -400,7 +400,7 @@
                   #:e-mail "camoy@ccs.neu.edu"
                   #:website "http://camoy.name"
                   #:history @list[
-                    "Joined 2019"]
+                    "Joined Northeastern, 2019"]
                   #:img "cameron_camoy.jpg"]{
              I enjoy flexible programming languages and elegant software. I'm interested in designing tools that enable everyday developers to build more robust programs.
           }
@@ -420,7 +420,7 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "ahwagner@ccs.neu.edu"
                   #:history @list[
-                    "Joined 2020"]
+                    "Joined Northeastern, 2020"]
                   #:img "andrew_wagner.jpeg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
@@ -429,7 +429,7 @@
                   #:title "Advisor: Jonathan Bell"
                   #:e-mail "hough.k@northeastern.edu"
                   #:history @list[
-                    "Joined 2020"
+                    "Joined Northeastern, 2020"
                     "MS, George Mason University"
                     "BS, George Mason University"]
                   #:img "Katherine_Hough.png"]{
@@ -441,7 +441,7 @@
                   #:e-mail "donald_pinckney@icloud.com"
                   #:website "https://donaldpinckney.com"
                   #:history @list[
-                    "Joined 2020"
+                    "Joined Northeastern, 2020"
                     "MS, UMass Amherst"
                     "BS, UC Davis"]
                   #:img "donald_pinckney.jpg"]{
