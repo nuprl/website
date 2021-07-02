@@ -56,9 +56,31 @@
 @(define TSE "IEEE Transactions on Software Engineering (TSE)")
 @(define PACT "International Conference on Parallel Architectures and Compilation Techniques (PACT)")
 @(define HOPL "History of Programming Languages (HOPL)")
+@(define EuroSys "European Conference on Computer Systems (EuroSys)")
+@(define ICSE "International Conference on Software Engineering (ICSE)")
 
 @(define publications
    (list
+    (publication "Accelerating Graph Sampling For Graph Machine Learning Using GPUs"
+                 "Abhinav Jangda, Sandeep Polisetty, Arjun Guha, and Marco Serafini"
+                 EuroSys
+                 2021
+                 "https://arxiv.org/pdf/2009.06693.pdf")
+    (publication "Flakeflagger: Predicting Flakiness Without Rerunning Tests"
+                 "Abdulrahman Alshammari, Christopher Morris, Michael Hilton, and Jonathan Bell"
+                 ICSE
+                 2021
+                 "https://www.jonbell.net/preprint/icse21-flakeflagger.pdf")
+    (publication "CodeDJ: Reproducible Queries over Large-Scale Software Repositories"
+                 "Petr Maj, Konrad Siek, Jan Vitek, and Alexander Kovalenko"
+                 ECOOP
+                 2021
+                 "http://janvitek.org/pubs/ecoop21.pdf")
+    (publication "Enabling Additional Parallelism in Asynchronous JavaScript Applications"
+                 "Ellen Arteca, Frank Tip, and Max Schäefer"
+                 ECOOP
+                 2021
+                 "https://emarteca.github.io/files/ecoop21.pdf")
     (publication "Corpse Reviver: Sound And Efficient Gradual Typing Via Contract Verification"
                  "Cameron Moy, Phúc C. Nguyễn, Sam Tobin-Hochstadt, and David Van Horn"
                  POPL
