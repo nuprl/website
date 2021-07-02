@@ -426,7 +426,7 @@
           }
 
           @person[#:name "Katherine Hough"
-                  #:title "Advisors: Jonathan Bell and Frank Tip"
+                  #:title "Advisor: Jonathan Bell"
                   #:e-mail "hough.k@northeastern.edu"
                   #:history @list[
                     "Joined 2020"
