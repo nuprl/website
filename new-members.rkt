@@ -32,24 +32,26 @@
                   Coordinate with the lab member in charge of
                   @a[href: "people.html"]{the people page}
                   (see the @a[href: "contact.html"]{Contact} page) to add your
-                  picture and bio. Contact also the @strong{prl-students} mailing list 
-                  maintainer and add yourself to
-                  that mailing list (and contact the @strong{prl-staff} mailing list
-                  maintainer to add yourself there, if appropriate.)
+                  picture and bio. Contact also the mailing lists maintainers to
+                  add yourself to appropriate lists: @strong{prl-all} for everyone,
+                  @strong{prl-students} for students, and @strong{prl-staff}
+                  for faculty, visiting faculty, and post-docs.
                 }
                 @li{
-                  Join the lab's IRC channel, @tt{#prl}, on Freenode. Current
-                  lab members can help you get started on IRC if you've never
-                  used it before. @strong{Prospective students are welcome to
-                  ask questions on IRC, too!}
+                  Join the lab's channel on matrix, @tt{#prl:@a[href: "https://matrix.org"]{matrix.org}}.
+                  @strong{Prospective students are welcome to
+                  ask questions on matrix, too!}
                 }
                 @li{
-                  Join the lab's slack channel, @url{https://prl-students.slack.com}.
+                  For students: join the lab's slack channel, @url{https://prl-students.slack.com},
+                  by contacting the people page maintainer.
                 }
                 @li{
                   Sign up for the mailing lists for the PL Seminar and the PL Jr.
                   seminar (links on the @a[href: "seminars.html"]{Seminars} page),
                   and check the @a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com&ctz=America%2FNew_York"]{calendar} for upcoming talks.
+                  Sign up for the Reading Group mailing list (contact the
+                  reading group maintainer).
                   You may also wish to subscribe to the
                   @a[href: "https://groups.google.com/a/eecs.harvard.edu/d/forum/programming"]{Harvard PL list} (@a[href: "https://calendar.google.com/calendar/embed?src=harvardplseminar@gmail.com"]{calendar})
                   and
@@ -61,7 +63,7 @@
                   @a[href: "https://github.ccs.neu.edu/"]{Khoury-managed GitHub instance}
                   and a @a[href: NuPRL-GITHUB]{NuPRL organization}
                   on GitHub. To get access to the @tt{nuprl}
-                  organization, ask the webmaster to add you as a member.
+                  organization, ask the contact manager to add you as a member.
                 }
                 @li{
                   Follow @a[href: NuPRL-TWITTER @tt|{@neu_prl}|] on Twitter.
@@ -79,7 +81,10 @@
                 }
               ]
               @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on
-                @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).}
+                @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).
+                Students are also welcome to join @a[href: "https://khouryphds.slack.com/"]{Khoury PHDs Slack}
+                and check out @a[href: "https://khoury-gsa.github.io/"]{Khoury GSA website}.
+              }
   }}}}}
   @footer{}
 }}
