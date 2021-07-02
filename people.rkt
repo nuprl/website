@@ -435,6 +435,18 @@
                   #:img "Katherine_Hough.png"]{
             My research focuses on helping developers identify and correct software bugs and vulnerabilities.
           }
+
+          @person[#:name "Donald Pinckney"
+                  #:title "Advisor: Arjun Guha"
+                  #:e-mail "donald_pinckney@icloud.com"
+                  #:website "https://donaldpinckney.com"
+                  #:history @list[
+                    "Joined 2020"
+                    "MS, UMass Amherst"
+                    "BS, UC Davis"]
+                  #:img "donald_pinckney.jpg"]{
+            I enjoy working on formalizing semantics of systems so as to uncover surprising behavior, and fix related bugs. Recently I'm working on understanding the semantics of package managers.
+          }
         }
 
         @div[class: "pn-separator-img"]{
