@@ -635,6 +635,7 @@
                         #:extra "(Facebook)"
                         #:personal-site "https://jrslepak.github.io/")
               @(alumnus "Max S. New" #:year 2020
+                        #:dissertation "http://maxsnew.com/docs/dissertation.pdf"
                         #:extra "(Wesleyan University)"
                         #:personal-site "http://maxsnew.com/")
               @(alumnus "Ben Greenman" #:year 2020
