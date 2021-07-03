@@ -21,22 +21,30 @@
               @div[class: "row"]{
                 @h3{Inside PRL}
 
-                @div[class: "col-xs-6 col-md-3 pad-contact"]{
-                  @h4{PL Seminar and Internal Talks} @a[href: "mailto:mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
+                @div[class: "row"]{
+                  @div[class: "col-xs-6 col-md-3 pad-contact"]{
+                    @h4{PL Seminar and Internal Talks} @a[href: "mailto:mailto:artem@ccs.neu.edu"]{Artem Pelenitsyn}
+                  }
+
+                  @div[class: "col-xs-6 col-md-3 pad-contact"]{
+                    @h4{PL Seminar, Junior @br{} 
+                      @small{@linksym["Website" "https://github.com/nuprl/prl-seminar-junior"]}} 
+                    @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
+                  }
+
+                  @div[class: "col-xs-6 col-md-3 pad-contact"]{
+                    @h4{Reading Group @br{} 
+                      @small{@linksym["Mailing list" "https://groups.google.com/forum/#!forum/prl-reading-group"]}}
+                    @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}
+                  }
+
+                  @div[class: "col-xs-6 col-md-3 pad-contact"]{
+                    @h4{ZED-talks} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}, @a[href: "mailto:ellen@ccs.neu.edu"]{Ellen Arteca}
+                  }
                 }
 
-                @div[class: "col-xs-6 col-md-3 pad-contact"]{
-                  @h4{PL Seminar, Junior @br{} 
-                    @small{@linksym["Link" "https://github.com/nuprl/prl-seminar-junior"]}} 
-                  @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
-                }
-
-                @div[class: "col-xs-6 col-md-3 pad-contact"]{
-                  @h4{ZED-talks} @a[href: "mailto:alexi@ccs.neu.edu"]{Alexi Turcotte}, @a[href: "mailto:ellen@ccs.neu.edu"]{Ellen Arteca}
-                }
-
-                @div[class: "col-xs-6 col-md-3 pad-contact"]{
-                  @h4{Applications for internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
+                @div[class: "col-xs-6 col-md-12 pad-contact"]{
+                  @h4{Applications for Internship, PhD, Postdoc} @a[href: "mailto:j.vitek@neu.edu"]{Jan Vitek}
                 }
               }
 
