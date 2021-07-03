@@ -32,10 +32,12 @@
                   Coordinate with the lab member in charge of
                   @a[href: "people.html"]{the people page}
                   (see the @a[href: "contact.html"]{Contact} page) to add your
-                  picture and bio. Contact also the mailing lists maintainers to
-                  add yourself to appropriate lists: @strong{prl-all} for everyone,
-                  @strong{prl-students} for students, and @strong{prl-staff}
-                  for faculty, visiting faculty, and post-docs.
+                  picture and bio. Contact also maintainers of the lab mailing lists to
+                  add yourself to appropriate lists:
+                  @a[href: "mailto:prl-all@googlegroups.com"]{@strong{prl-all}} for everyone,
+                  @a[href: "mailto:prl-students@googlegroups.com"]{@strong{prl-students}} for students,
+                  and @a[href: "mailto:prl-staff@googlegroups.com"]{@strong{prl-staff}}
+                  for faculty, visiting faculty, and postdocs.
                 }
                 @li{
                   Join the lab's channel on matrix, @tt{#prl:@a[href: "https://matrix.org"]{matrix.org}}.
@@ -43,15 +45,15 @@
                   ask questions on matrix, too!}
                 }
                 @li{
-                  For students: join the lab's slack channel, @url{https://prl-students.slack.com},
+                  For grad students and postdocs: join the lab's slack channel, @url{https://prl-students.slack.com},
                   by contacting the people page maintainer.
                 }
                 @li{
                   Sign up for the mailing lists for the PL Seminar and the PL Jr.
                   seminar (links on the @a[href: "seminars.html"]{Seminars} page),
                   and check the @a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com&ctz=America%2FNew_York"]{calendar} for upcoming talks.
-                  Sign up for the Reading Group mailing list (contact the
-                  reading group maintainer).
+                  Sign up for the Reading Group @a[href: "https://groups.google.com/forum/#!forum/prl-reading-group"]{mailing list}
+                  (send a request with a Google account or contact the reading group maintainer).
                   You may also wish to subscribe to the
                   @a[href: "https://groups.google.com/a/eecs.harvard.edu/d/forum/programming"]{Harvard PL list} (@a[href: "https://calendar.google.com/calendar/embed?src=harvardplseminar@gmail.com"]{calendar})
                   and
@@ -68,6 +70,12 @@
                 @li{
                   Follow @a[href: NuPRL-TWITTER @tt|{@neu_prl}|] on Twitter.
                 }
+                @li{For grad students: more information about Northeastern's Khoury College of Computer Sciences can be found on
+                  @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).
+                  Students are also welcome to join @a[href: "https://khouryphds.slack.com/"]{Khoury PHDs Slack}
+                  (use your @tt{husky.neu.edu} email address)
+                  and check out @a[href: "https://khoury-gsa.github.io/"]{Khoury GSA website}.
+                }
                 @li{
                   @p{
                     Finally, if you need a place to live, this map (compiled by
@@ -80,11 +88,6 @@
                   @iframe[src: "https://www.google.com/maps/d/u/0/embed?mid=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP" width: "640" height: "480"]
                 }
               ]
-              @p{More grad-student-specific information about Northeastern's Khoury College of Computer Sciences can be found on
-                @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).
-                Students are also welcome to join @a[href: "https://khouryphds.slack.com/"]{Khoury PHDs Slack}
-                and check out @a[href: "https://khoury-gsa.github.io/"]{Khoury GSA website}.
-              }
   }}}}}
   @footer{}
 }}

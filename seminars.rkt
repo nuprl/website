@@ -1561,7 +1561,10 @@ a Dr. sc. ETH in 2012.
           @div[class: "row"]{
             @div[class: "col-md-12"]{
               @h2{Programming Language Seminar, Junior}
-              @p{The junior PL seminar (@a[href: "http://lists.ccs.neu.edu/pipermail/pl-sem-jr"]{mailing list}) (@a[href: "http://www.ccs.neu.edu/home/stamourv/pljr.html"]{home page}): a regular student-only seminar, suitable for those new to the study of programming languages.}
+              @p{The junior PL seminar
+                (@a[href: "http://lists.ccs.neu.edu/pipermail/pl-sem-jr"]{mailing list})
+                (@a[href: "https://github.com/nuprl/prl-seminar-junior/wiki"]{home page}):
+                a regular student-only seminar, suitable for those new to the study of programming languages.}
               @br{}
               @p{The PL Seminar, Jr. is a seminar where students new to the area can discuss the study of programming languages. This seminar is not intended to replace the main PL Seminar, but we hope that it can augment that by providing a place where junior students can discuss topics and ask questions at a pace better suited to our level of knowledge. Topics include:
                 @ul{
