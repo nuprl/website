@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Transient for Optional and Keyword Functions</title>
+    <meta name="description" content="A short adventure into the depths of optional and/or keyword  functions in Racket....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="typed racket, transient, by Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2020/11/12/transient-for-optional-and-keyword-functions/">
+    <link rel="next" href="/blog/2020/10/15/transient-answers-old-questions/">
+    <link rel="prev" href="/blog/2020/12/23/deep-and-shallow-types/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Transient for Optional and Keyword Functions</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-11-12" pubdate="true">2020-11-12</time> :: <span class="tags"><a href="/blog/tags/typed-racket.html">typed racket</a>, <a href="/blog/tags/transient.html">transient</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p>A short adventure into the depths of optional and/or keyword  functions in Racket.</p>
+<!-- more-->
+
+<hr />
+
+<p>Transient, or rather <em>the Transient semantics for a mixed-typed language</em>,  is one way to let statically-typed code safely interact with untyped code. You can read all about it in  <a href="http://hdl.handle.net/2022/23172">Michael Vitousek&rsquo;s 2019 dissertation</a>  or <a href="https://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020">my 2020 dissertation</a>,  and you can see how it compares to other mixed-typed semantics  <a href="http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/">here</a>. The idea is to give up on <a href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/">behavioral type guarantees</a>  and focus on a (weak) form of type soundness. To enforce soundness, Transient rewrites every expression in typed code  with assertions called <em>shape checks</em>; for example:</p>
+
+<ul>
+ <li>if a typed module imports an untyped library, then every value that crosses  the module boundary gets a shape check;</li>
+ <li>if typed code reads from an array, then every element that comes out of the  array must satisfy a shape check; and</li>
+ <li>if a typed function escapes to untyped code, then the function must use  a shape check to validate every input that it receives.</li></ul>
+
+<p>Our goal today is to understand the shape checks for functions. Suppose we know how to turn a type <strong>T</strong> into a shape check, and we have a  function with type <strong>T</strong> that needs to check its inputs. The question is how to actually do the check in Racket v7.9.</p>
+
+<p>In your standard theory, rewriting is no problem. A (simplified, model) function takes exactly one argument and needs exactly one  shape check in the body; if <strong>T = (-&gt; Symbol Boolean)</strong> then we need  to check the shape <strong>symbol?</strong> of the domain type <strong>Symbol</strong>:</p>
+
+<pre><code>;; source code
+(: f (-&gt; Symbol Boolean))
+(define (f sym)
+  (eq? sym 'hola))
+
+;; ===&gt;
+
+;; imaginary (but realistic) rewritten code
+(define (f sym)
+  (assert sym symbol?)
+  (eq? sym 'hola))</code></pre>
+
+<p>A Typed Racket function can accept optional arguments, keyword arguments,  and optional keyword arguments. These are still fairly easy to handle in theory. Below, the function type <strong>T</strong> accepts 1 to 3 inputs:</p>
+
+<pre><code>;; source code
+(: g (-&gt;* [#:a Boolean] [Symbol #:c Void] Symbol))
+(define (g #:a a [b 'b] #:c [c #f])
+  (if a b (if c 'left 'right)))
+
+;; ===&gt;
+
+;; imaginary, unrealistic rewritten code
+(define (g #:a a [b 'b] #:c [c #f])
+  (assert a boolean?)
+  (assert b symbol?)
+  (assert c void?)
+  (if a b (if c 'left 'right)))</code></pre>
+
+<p>Good &mdash; we basically know what we want. If the Racket core language had optional and keyword functions, then we&rsquo;d be  done.</p>
+
+<p>But no, Racket expands these optional/keyword  functions into primitive <a href="https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._lam))"><strong>lambda</strong></a>  and <a href="https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._case-lam))"><strong>case-lambda</strong></a>  forms. Typed Racket type-checks this expanded code, thus Shallow Typed Racket  (the Transient version) must rewrite the expanded code.</p>
+
+<p>Let&rsquo;s keep digging.</p>
+
+<p>From now on, &ldquo;Shallow&rdquo; or &ldquo;Shallow TR&rdquo; refers to my implementation  of Transient for Typed Racket (TR). We&rsquo;ll talk about Shallow instead of &ldquo;Transient&rdquo; in case future work reveals a  better way to implement the Transient idea.</p>
+
+<h2 id="false-start-follow-the-type">False Start: Follow the Type</h2>
+
+<p>Beware &mdash; Shallow TR cannot rely on type annotations to decide which shape  checks to insert. The example function <strong>g</strong> above demonstrates that annotations are not  good enough. With our imagined rewrite, calls that leave out the optional  <strong>#:c</strong> keyword lead to a shape-check failure because the variable <strong>c</strong> gets  the default value <strong>#f</strong> instead of a void value. Concretely, the third assert from above fails:</p>
+
+<pre><code>(define (g #:a a [b 'b] #:c [c #f])
+  ....
+  (assert c void?) ;; fails if c is the #f default value
+  ....)</code></pre>
+
+<p>The problem arises from subtyping. According to the annotations, the function <strong>g</strong> has an external type that is  less precise than the internal type that validates the function body:</p>
+
+<pre><code>;; external type T
+(: g (-&gt;* [#:a Boolean] [Symbol #:c Void] Symbol))
+
+;; internal type T2, subtype of external (T2 &lt;: T), validates body
+(: g (-&gt;* [#:a Boolean] [Symbol #:c (U #f Void)] Symbol))</code></pre>
+
+<p>Thanks to this external / internal distinction, the following easy  rewrite idea, <em>Solution 0</em>, fails. Despite the failure, this first solution is a useful starting point for  a success.</p>
+
+<h4 id="solution-0-step-1-mimic-the-typechecker">Solution 0, Step 1: Mimic the Typechecker</h4>
+
+<p>Shallow TR uses the same type checker as classic <em>Deep</em> TR. If type checking succeeds, then Shallow must insert shape checks. Otherwise, compilation stops with a type error.</p>
+
+<p>Thanks to its wholesale reuse of the type checker, Shallow TR can use  syntax patterns from the type checker to navigate expanded Racket code. For optional and keyword functions in particular, Shallow can get started  by looking at how the type checker recognizes these forms in expanded code.</p>
+
+<p>Here are two syntax patterns for keyword functions and optional functions  in the Deep TR type checker (<a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/typecheck/tc-expr-unit.rkt#L274-L295">typecheck/tc-expr-unit.rkt</a>). The omitted code (<strong>&hellip;.</strong>) does actual type checking:</p>
+
+<pre><code>(define (tc-expr/check/internal form expected-type)
+  ....
+  (syntax-parse form
+    #:literal-sets (kernel-literals tc-expr-literals)
+    ....
+    [(~and (let-values ([(f) fun]) . body) kw:kw-lambda^)
+    ....]
+    [(~and (let-values ([(f) fun]) . body) opt:opt-lambda^)
+    ....]</code></pre>
+
+<p>Ok! Those two patterns say a lot about the expansion of optional and keyword  functions:</p>
+
+<ol>
+ <li>Both forms expand to a <strong>let-values</strong> that binds one function <strong>fun</strong>.</li>
+ <li>TR uses the syntax classes <strong>kw-lambda^</strong> and <strong>opt-lambda^</strong> to  tell these particular <strong>let-values</strong> apart from others.</li></ol>
+
+<p>Shallow TR can use exactly these patterns to   recognize optional/keyword functions.</p>
+
+<h4 id="solution-0-step-2-parse-the-domain-type">Solution 0, Step 2: Parse the Domain Type</h4>
+
+<p>Once the Shallow TR rewriter has found an optional/keyword function,  the next step is to find the function&rsquo;s type and figure out the right  shape check. For an optional function, the rewriter has an expression that  matches the following pattern:</p>
+
+<pre><code>    [(~and (let-values ([(f) fun]) . body) opt:opt-lambda^)
+    ....]</code></pre>
+
+<p>First, we need a type. The type checker decorates (almost) every expression with a type as a syntax  property. (Unreachable code may not have a type.) The <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/types/type-table.rkt#L80"><strong>type-of</strong></a>  function gets the type decoration from an expression. A little experimentation shows that the function  part of our expression, <strong>fun</strong>, has a type. Great.</p>
+
+<p>Second, we need to parse the domain from the function type. This is easier said than done. Fortunately, our final solution does not need the parsing step so I will  list the challenges and move on:</p>
+
+<ul>
+ <li>The type of <strong>fun</strong> could be a straightforward <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L693"><strong>Fun type</strong></a>,  but it could also be a: <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L701"><strong>DepFun type</strong></a>,  or <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L521"><strong>Poly type</strong></a>,  or <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L531"><strong>PolyDots type</strong></a>,  or even a <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L900"><strong>Union type</strong></a>.</li>
+ <li>Each part of the domain type corresponds to one parameter of the <strong>fun</strong> expression.  Matching the parameter names to types is not straightforward; for example,  do the mandatory parameters come first in <strong>fun</strong>, or the mandatory keywords?</li></ul>
+
+<h4 id="solution-0-step-3-insert-a-shape-check">Solution 0, Step 3: Insert a Shape Check</h4>
+
+<p>Once we have the target <strong>fun</strong> expression and a map from parameter names  to types, the final step of our tentative solution is easy. First, convert the types to shape predicates. Second, parse <strong>fun</strong> to separate the parameters from the body. Third, insert a block of shape checks to the top of the body. All together, rewriting <strong>fun</strong> goes something like this:</p>
+
+<pre><code>(syntax-parse fun
+  [(#%plain-lambda formals . body)
+   #:with (shape-check ...)
+          (make-shape-checks #'formals (type-of fun))
+   #'(#%plain-lambda formals (#%plain-app void shape-check ...) . body)])</code></pre>
+
+<p>The rewritten function executes shape checks immediately, and then proceeds  with the <strong>body</strong> after validating each actual parameter.</p>
+
+<h2 id="on-the-trail-optkey-expansion">On the Trail: optkey Expansion</h2>
+
+<p>Our <em>Solution 0</em> fails because the type of the <strong>fun</strong> expression  that it gets from the type-checked code is an external type. In terms of the <strong>g</strong> function from above, <em>Solution 0</em> uses the type  <strong>Void</strong> instead of the internal type <strong>(U Void #f)</strong> to check the <strong>c</strong> parameter. To get internal types, we need to look closer at <strong>fun</strong> and the rest of  the optional/keyword expansion.</p>
+
+<p>Let&rsquo;s study three example functions and their expanded forms. The expansions reveal a common pattern that motivates a new Shallow TR strategy.</p>
+
+<p>If you want to expand these examples yourself, hide them from the Racket  toplevel as follows. For each example function <strong>X</strong> create a module <strong>test.rkt</strong> like this:</p>
+
+<pre><code>#lang racket/base
+
+(define _ignore
+  (let ()
+    X
+    (void)))</code></pre>
+
+<p>Invoke the expander with <code>raco expand test.rkt &gt; test.rkt.txt</code> and explore  the generated <strong>.txt</strong> file.</p>
+
+<h3 id="example-1-mandatory-keyword">Example 1: mandatory keyword</h3>
+
+<p>The source is a function with one mandatory positional argument and one optional positional argument.</p>
+
+<pre><code>(lambda (x [y 0])
+  (+ x y))</code></pre>
+
+<p>Expansion generates a <strong>case-lambda</strong> that accepts one or two arguments. The one-argument case supplies a default value for the missing parameter. Both cases call a generated function <strong>F</strong> that expects two arguments,  resolves defaults in a different way,  and executes the function body.</p>
+
+<pre><code>(let-values (((F)
+              (lambda (x2 y1)
+                (let-values (((x) x2))
+                  (let-values (((y) (if '#f '0 y1)))
+                    (let-values () (#%app + x y)))))))
+  (case-lambda
+   ((x) (#%app F x '0))
+   ((x y1) (#%app F x y1))))</code></pre>
+
+<p>Note: the expression <strong>(if &rsquo;#f &rsquo;0 y1)</strong> in the generated <strong>F</strong> function  is equal to <strong>y1</strong> alone. In general, the <strong>if</strong> is for default expressions. (<a href="https://pythonconquerstheuniverse.wordpress.com/2012/02/15/mutable-default-arguments/">Unlike Python</a>,  Racket evaluates a mutable default once for each function call.) When the default is an immediate value, as this example illustrates,  the expander generates a <strong>#f</strong> test. A general-purpose optimizer can remove this test before the code runs.</p>
+
+<h3 id="example-2">Example 2:</h3>
+
+<p>The source is a function with one mandatory positional argument and one mandatory keyword argument:</p>
+
+<pre><code>(lambda (x #:y y)
+  (+ x y))</code></pre>
+
+<p>Expansion generates several functions:</p>
+
+<ul>
+ <li><strong>F0</strong> expects a plain list of arguments and executes the source function&rsquo;s body</li>
+ <li><strong>F1</strong> expects a list of keywords, a list of arguments, and a final argument.  The purpose of <strong>F1</strong> is to organize a call to <strong>F0</strong>.</li>
+ <li><strong>lifted/2</strong> is the constructor for a generated struct type.  Other functions help the struct call <strong>F1</strong>.  Nevermind the details; I don&rsquo;t fully understand them either.</li></ul>
+
+<p>The important piece for Shallow TR is the <strong>F0</strong> function  because the goal of rewriting is to protect the original  function body against untyped inputs.</p>
+
+<pre><code>(let-values (((F0)
+              (lambda (y1 x3)
+                (let-values (((x) x3))
+                  (let-values (((y) y1))
+                    (let-values () (#%app + x y)))))))
+  (let-values (((F1)
+                (lambda (given-kws given-args x3)
+                  (let-values (((y1) (#%app car given-args)))
+                    (#%app F0 y1 x3)))))
+    (#%app
+     lifted/2
+     (lambda (given-kws given-argc)
+       (if (#%app = given-argc '3)
+         (let-values (((l2571) given-kws))
+           (if (#%app pair? l2571)
+             (if (#%app eq? (#%app car l2571) '#:y)
+               (#%app null? (#%app cdr l2571))
+               '#f)
+             '#f))
+         '#f))
+     (case-lambda
+      ((given-kws given-args x)
+       (#%app F1 given-kws given-args x)))
+     '(#:y)
+     '(#:y))))</code></pre>
+
+<h3 id="example-3">Example 3:</h3>
+
+<p>The source is a function with one mandatory positional argument and one optional keyword argument:</p>
+
+<pre><code>(lambda (x #:y [y 0])
+  (+ x y))</code></pre>
+
+<p>Expansion again generates several functions:</p>
+
+<ul>
+ <li><strong>F0</strong> expects a plain list of arguments, resolves the optional default,  and executes the source function&rsquo;s body</li>
+ <li><strong>F1</strong> calls <strong>F0</strong></li>
+ <li>At the bottom, there are two <strong>case-lambda</strong> functions that call  <strong>F1</strong></li></ul>
+
+<p>Again, the <strong>F0</strong> function is the focal point for Shallow TR rewriting.</p>
+
+<pre><code>(let-values (((F0)
+              (lambda (y1 x3)
+                (let-values (((x) x3))
+                  (let-values (((y) (if '#f '0 y1)))
+                    (let-values () (#%app + x y)))))))
+  (let-values (((F1)
+                (lambda (given-kws given-args x3)
+                  (let-values (((y2) (#%app pair? given-kws)))
+                    (let-values (((y1)
+                                  (if y2 (#%app car given-args) '0)))
+                      (#%app F0 y1 x3))))))
+    (#%app
+     make-optional-keyword-procedure
+     (lambda (given-kws given-argc)
+       (if (#%app = given-argc '3)
+         (let-values (((l1571) given-kws))
+           (let-values (((l1571)
+                         (if (#%app null? l1571)
+                           l1571
+                           (if (#%app eq? (#%app car l1571) '#:y)
+                             (#%app cdr l1571)
+                             l1571))))
+             (#%app null? l1571)))
+         '#f))
+     (case-lambda
+      ((given-kws given-args x)
+       (#%app F1 given-kws given-args x)))
+     null
+     '(#:y)
+     (case-lambda
+      ((x) (#%app F1 null null x))))))</code></pre>
+
+<h2 id="solution-the-shallow-tr-rewrite-strategy">Solution: The Shallow TR Rewrite Strategy</h2>
+
+<p>All three examples show a common pattern among the expansions of optional  and keyword functions. Each function expands to a <strong>let-values</strong> form:</p>
+
+<pre><code>(let-values (((f) fun)) . body)</code></pre>
+
+<p>Furthermore, the generated <strong>fun</strong> is a lambda that first resolves optional  arguments and then executes the body of the original function. Here is the <strong>fun</strong> from <em>Example 3</em> again;  it has formal parameters for the keyword arg. and the mandatory arg.,  and one <strong>let-values</strong> to resolve each parameter:</p>
+
+<pre><code>  (lambda (y1 x3)
+    (let-values (((x) x3))
+      (let-values (((y) (if '#f '0 y1)))
+        (let-values () (#%app + x y)))))</code></pre>
+
+<p>Another experiment with <strong>type-of</strong> shows that the right-hand side of  each <strong>let-values</strong> has an internal type annotation. Excellent! Both <strong>(type-of x3)</strong>  and <strong>(type-of (if &rsquo;#f &rsquo;0 y1))</strong> are the right types for shape checks. Shallow TR can:</p>
+
+<ul>
+ <li>inspect the <strong>let-values</strong> one-by-one;</li>
+ <li>convert the type of each right-hand expression to a shape predicate; and</li>
+ <li>rewrite each right-hand <strong>expr</strong> into <strong>(assert expr shape?)</strong>.</li></ul>
+
+<p>This should work! In fact, we can do slightly better:</p>
+
+<ul>
+ <li>when the right-hand expression is a conditional <strong>(if test default-expr supplied-arg)</strong></li>
+ <li>then Shallow only needs to check the supplied arg: <strong>(if test default-expr (assert supplied-arg shape?))</strong></li></ul>
+
+<p>Note: Shallow needs to rewrite the default expression, but it can trust its  final shape because of (Transient) type soundness.</p>
+
+<h2 id="a-problem-with-methods-and-a-bugfix">A Problem with Methods and a Bugfix</h2>
+
+<p>Currently, Shallow TR rewrites optional and keyword functions using  the <strong>let-values</strong> plan described above. Each formal parameter has one <strong>let-values</strong> binding,  and the type on each bound expression defines the shape check.</p>
+
+<p>Last May, though, this rewriting caused new failures in methods  with optional arguments. The failure was due to a mismatch between Typed Racket  and the Racket class expander. Since then, we <a href="https://github.com/racket/racket/pull/3182">fixed the class expander</a>.</p>
+
+<p>First, here is a class with one method that runs correctly. The method <strong>f</strong> accepts an optional positional argument <strong>x</strong>; the default  value of <strong>x</strong> is the current value of the field <strong>my-num</strong> (fields are mutable):</p>
+
+<pre><code>(define c0%
+  (class object%
+    (super-new)
+    (field (my-num 2))
+    (define/public (f [x my-num])
+      (+ x x))))</code></pre>
+
+<p>Second, here is a similar method that fails. This time, the default is an immediate value <strong>2</strong>:</p>
+
+<pre><code>(define c1%
+  (class object%
+    (super-new)
+    (define/public (f [x 2])
+      (+ x x))))</code></pre>
+
+<p>Running a call <strong>(send o1 f)</strong> used to raise a shape-check failure about  a strange value:</p>
+
+<blockquote>
+ <p>shape error: Expected a real number, got <code>#&lt;unsafe-undefined&gt;</code></p></blockquote>
+
+<p>What is going on?</p>
+
+<p>It turns out, the undefined value comes from the expander. Here is an optional function with a default expression:</p>
+
+<pre><code>(lambda (x [y z])
+  (+ x y))</code></pre>
+
+<p>Expansion generates a function <strong>F0</strong> that checks for the undefined value,  and an outer <strong>case-lambda</strong> that supplies undefined when the default  is needed:</p>
+
+<pre><code>(let-values (((F0)
+              (lambda (x2 y1)
+                (let-values (((x) x2))
+                  (let-values (((y)
+                                (if (#%app eq? y1 unsafe-undefined)
+                                  z
+                                  y1)))
+                    (let-values () (#%app + x y)))))))
+  (case-lambda
+   ((x) (#%app F0 x unsafe-undefined))
+   ((x y1) (#%app F0 x y1))))</code></pre>
+
+<p>That&rsquo;s the normal way that <strong>unsafe-undefined</strong> shows up:  the <a href="https://github.com/racket/racket/blob/c0ff11e27bd28e070c20b7a9b0f7365f8f2b665a/racket/collects/racket/private/kw.rkt">expander for optional/keyword functions</a>  looks for default expressions  vs. default values and uses the undefined value for expressions.</p>
+
+<p>Three other facts conspired to make the problem with optional methods:</p>
+
+<ol>
+ <li>Typed Racket also looks for default expressions vs. default values  (search for <strong>immediate-default</strong> <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/base-env/annotate-classes.rkt">here</a>).  When an optional parameter has a default expression, Typed Racket  widens its internal type to accept the <strong>unsafe-undefined</strong> value  (search for <strong>-Unsafe-Undefined</strong>  <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/types/kw-types.rkt">here (kw)</a>  and  <a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/typecheck/tc-lambda-unit.rkt">here (opt)</a>).</li>
+ <li>The class expander does some pre-processing on optional methods and  inadvertantly turned every default value into a default expression.</li>
+ <li>Shallow TR pushes default expression checks <strong>(if test default-expr supplied-arg)</strong>  to the <strong>supplied-arg</strong> instead of wrapping the whole <strong>if</strong> form.</li></ol>
+
+<p>In the end, Typed Racket saw a default value and inferred an overly-precise  type. The type would be correct but for the class expander. As-is, the type was unsound&mdash;but harmless because the false assumption  was guarded by an <strong>if</strong> test for <strong>unsafe-undefined</strong>. Running Shallow TR revealed the unsoundness with its eager shape check.</p>
+
+<p>Again, the resolution was to fix the class expander (<a href="https://github.com/racket/racket/pull/3182">racket/racket #3182</a>). Both Typed Racket and Shallow TR stayed the same. The change removes an unnecessary run-time check from expanded optional methods.</p>
+
+<h2 id="lessons">Lessons</h2>
+
+<ol>
+ <li>Optional and keyword functions are not core forms in Racket.  They expand to a combination of simple functions.</li>
+ <li>Digging into the expansion is sometimes necessary.  There are at least three places that do so&mdash;the class expander, TR, and Shallow TR&mdash;and unfortunately they all need to cooperate.</li>
+ <li>The development of Shallow TR helped find several latent bugs in TR, Racket, and other libraries.  Figure 57 of <a href="https://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020">my dissertation</a>  lists them all.</li></ol>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2020/11/12/transient-for-optional-and-keyword-functions/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2020/12/23/deep-and-shallow-types/">&larr; <em>Deep and Shallow Types</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2020/10/15/transient-answers-old-questions/"><em>Transient Answers Old Questions</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

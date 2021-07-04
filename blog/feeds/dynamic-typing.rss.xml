@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'dynamic typing'</title>
+  <description>PRL Blog: Posts tagged 'dynamic typing'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/dynamic-typing.html</link>
+  <lastBuildDate>Mon, 01 May 2017 12:25:17 UT</lastBuildDate>
+  <pubDate>Mon, 01 May 2017 12:25:17 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Categorical Semantics for Dynamically Typed Programming Languages</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/?utm_source=dynamic-typing&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-05-01-categorical-semantics-for-dynamically-typed-programming-languages</guid>
+   <pubDate>Mon, 01 May 2017 12:25:17 UT</pubDate>
+   <author>PRL</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;p&gt;In 1969, Dana Scott wrote an &lt;a href="/blog/static/scott-69-93-type-theoretical-alternative.pdf"&gt;unpublished manuscript&lt;/a&gt; in which he said untyped lambda calculus had no mathematical meaning, 11 years later he wrote &lt;a href="/blog/static/scott-80-relating-theories.pdf"&gt;a paper&lt;/a&gt; that organized many of the different semantics he and others had since found using the language of category theory.&lt;/p&gt;
+
+&lt;p&gt;This latter paper is really the first deserving of the title &amp;ldquo;categorical semantics of dynamic typing&amp;rdquo;, and so I&amp;rsquo;m going to present some of the theorems and &amp;ldquo;theorems&amp;rdquo; presented in that paper, but mingled with the history of the idea and the preceding papers that led to them.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/blog/static/dyn-cats.pdf"&gt;My Full Notes&lt;/a&gt; continue the story, and you might also be interested in the &lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-07.md"&gt;discussion during the lecture&lt;/a&gt;.&lt;/p&gt;</description></item></channel></rss>
