@@ -46,7 +46,7 @@
                 }
                 @li{
                   For grad students and postdocs: join the lab's slack channel, @url{https://prl-students.slack.com},
-                  by contacting the people page maintainer.
+                  by contacting the contact manager.
                 }
                 @li{
                   Sign up for the mailing lists for the PL Seminar and the PL Jr.
