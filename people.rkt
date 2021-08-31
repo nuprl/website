@@ -196,18 +196,6 @@
             languages.
           }
 
-          @person[#:name "John H. Reppy"
-                  #:title "Visiting Professor"
-                  #:e-mail "jhr@cs.uchicago.edu"
-                  #:website "http://people.cs.uchicago.edu/~jhr/"
-                  #:history @list[
-                  "Visiting Northeastern, 2019–2020"
-                  "Joined University of Chicago, 2002"
-                  ]
-                  #:img "john_h_reppy.jpg"]{
-            My main area of research is in the design and implementation of advanced programming languages, including functional languages, object-oriented languages, and concurrent languages. My current research focus is on parallel language design and implementation for multicore architectures and real-time graphical applications.
-          }
-
           @person[#:name "Arjun Guha"
                   #:title "Associate Professor"
                   #:e-mail "a.guha@northeastern.edu"
@@ -241,20 +229,18 @@
             I apply a systems perspective to software engineering challenges, observing the issues that developer face when creating reliable software, and then designing new mechanisms to support developers. My research focuses on improving existing developer-written tests, making them run faster and more reliably while amplifying them to be more comprehensive and also tracking their overall quality. Rather than focus solely on finding a handful of high-value “million dollar bugs” in a small pool of high-assurance software, my research aims to have very broad impacts, helping everyday developers just as much as experts.
           }
 
-          @person[#:name "John Boyland"
-                  #:title "Visiting Professor"
-                  #:e-mail "j.boyland@northeastern.edu"
-                  #:website "http://www.cs.uwm.edu/faculty/boyland/"
+          @person[#:name "Steven Holtzen"
+                  #:title "Assistant Professor"
+                  #:e-mail "s.holtzen@northeastern.edu"
+                  #:website "https://www.khoury.northeastern.edu/home/sholtzen/"
                   #:history @list[
 
-                  "Visiting Northeastern, 2020–2021"
-                  "Joined University of Wisconsin-Milwaukee, 1998"
-                  "Joined Carnegie Mellon University, 1996"
-                  "PhD University of California, Berkeley 1996"
+                  "Joined Northeastern, 2021"
+                  "PhD, University of California, Los Angeles, 2021"
 
                   ]
-                  #:img "john_boyland.jpg"]{
-            I am interested in language description and meta-programming. My work is in (most recent first) gradual typing, logical meta-programming, permission systems, attribute grammars and compiler construction.  I particularly enjoy collaboration with others on their projects.
+                  #:img "steven_holtzen.png"]{
+            My research focuses on programming languages and artificial intelligence. In particular, my goal is to use programming languages and program analysis techniques as a foundation for specifying and reasoning about probabilistic models. Towards this end I am interested in the design, implementation, and applications of probabilistic programming languages; foundations of probabilistic inference and tractable probabilistic modeling; automated reasoning; and probabilistic verification.
           }
         }
 
@@ -646,7 +632,7 @@
 
         @div[class: "container"]{
           @div[class: "row"]{
-            @h3[style: "text-align: center;"]{Former Associates (Research Scientists, Post-Docs)}
+            @h3[style: "text-align: center;"]{Former Associates (Research Scientists, Post-Docs, Visiting Faculty)}
               @alumnus-list[
                 @(alumnus "Kenichi Asai" #:year 2004
                           #:personal-site "http://www.is.ocha.ac.jp/~asai/"
@@ -714,6 +700,12 @@
                 @(alumnus "Stephen Chang" #:year 2020
                           #:personal-site "https://stchang.github.io/"
                           #:extra "(University of Massachusetts Boston)")
+                @(alumnus "John H. Reppy" #:year 2020
+                          #:personal-site "http://people.cs.uchicago.edu/~jhr/"
+                          #:extra "(visited from University of Chicago)")
+                @(alumnus "John Boyland" #:year 2021
+                          #:personal-site "http://www.cs.uwm.edu/faculty/boyland/"
+                          #:extra "(visited from University of Wisconsin-Milwaukee)")
               ]}}
 
         @div[class: "container"]{
