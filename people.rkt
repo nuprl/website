@@ -256,6 +256,20 @@
                   #:img "john_boyland.jpg"]{
             I am interested in language description and meta-programming. My work is in (most recent first) gradual typing, logical meta-programming, permission systems, attribute grammars and compiler construction.  I particularly enjoy collaboration with others on their projects.
           }
+
+          @person[#:name "Steven Holtzen"
+                  #:title "Assistant Professor"
+                  #:e-mail "s.holtzen@northeastern.edu"
+                  #:website "https://www.khoury.northeastern.edu/home/sholtzen/"
+                  #:history @list[
+
+                  "Joined Northeastern, 2021"
+                  "PhD, University of California, Los Angeles, 2021"
+
+                  ]
+                  #:img "steven_holtzen.png"]{
+            My research focuses on programming languages and artificial intelligence. In particular, my goal is to use programming languages and program analysis techniques as a foundation for specifying and reasoning about probabilistic models. Towards this end I am interested in the design, implementation, and applications of probabilistic programming languages; foundations of probabilistic inference and tractable probabilistic modeling; automated reasoning; and probabilistic verification.
+          }
         }
 
         @div[class: "pn-separator-img"]{
