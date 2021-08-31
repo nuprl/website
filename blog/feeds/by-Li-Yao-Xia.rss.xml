@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'by Li-Yao Xia'</title>
+  <description>PRL Blog: Posts tagged 'by Li-Yao Xia'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/by-Li-Yao-Xia.html</link>
+  <lastBuildDate>Mon, 05 Jun 2017 14:27:44 UT</lastBuildDate>
+  <pubDate>Mon, 05 Jun 2017 14:27:44 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Syntactic parametricity strikes again</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/06/05/syntactic-parametricity-strikes-again/?utm_source=by-Li-Yao-Xia&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-06-05-syntactic-parametricity-strikes-again</guid>
+   <pubDate>Mon, 05 Jun 2017 14:27:44 UT</pubDate>
+   <author>PRL</author>
+   <description>
+&lt;p&gt;In this blog post, reporting on a collaboration with &lt;a href="https://poisson.chat/"&gt;Li-Yao Xia&lt;/a&gt;, I will show an example of how some results that we traditionally think of as arising from free theorems / parametricity can be established in a purely &amp;ldquo;syntactic&amp;rdquo; way, by looking at the structure of canonical derivations. More precisely, I prove that 
+ &lt;script type="math/tex"&gt;
+\newcommand{\List}[1]{\mathsf{List}~#1}
+\newcommand{\Fin}[1]{\mathsf{Fin}~#1}
+\newcommand{\Nat}[1]{\mathbb{N}}
+\newcommand{\rule}[2]{\frac{\displaystyle \array{#1}}{\displaystyle #2}}
+\newcommand{\judge}[2]{{#1} \vdash {#2}}
+\newcommand{\emptyrule}[1]{\begin{array}{c}\\[-1em] #1 \end{array}}
+  ∀α. \List α → \List \alpha&lt;/script&gt; is isomorphic to 
+ &lt;script type="math/tex"&gt;
+    Π(n:\Nat{}). \List{(\Fin{n})}&lt;/script&gt; where 
+ &lt;script type="math/tex"&gt;\Fin{n}&lt;/script&gt; is the type of integers smaller than 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt;, corresponding to the set 
+ &lt;script type="math/tex"&gt;\{0, 1, \dots, n-1\}&lt;/script&gt;.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Context: Last week I had the pleasure of visiting UPenn, where I had many interesting discussions with various people. It was also an occasion to temporarily resume a discussion/collaboration I have with Li-Yao Xia, who is currently an intern there, and Jean-Philippe Bernardy, about testing polymorphic programs and its relation to canonical representations for System F.&lt;/p&gt;
+
+&lt;p&gt;During one of our blackboard discussion, Li-Yao and I did a manual proof of a cool result: we proved a parametricity theorem for 
+ &lt;script type="math/tex"&gt;∀α. \List α → \List α&lt;/script&gt; using syntactic methods, namely proof search among canonical proofs. (This is an idea that I have been playing with since the last year of my &lt;a href="http://www.ccs.neu.edu/home/gasche/phd_thesis/"&gt;PhD thesis&lt;/a&gt;, where I unsuccessfully tried to extend my work on canonical forms for the simply-typed lambda-calculus to polymorphism. It is here worked out on an specific example, but my end goal is to turn the manual reasoning into an algorithm.)&lt;/p&gt;
+
+&lt;p&gt;You may wonder, first, why the isomorphism holds. The idea is that a polymorphic function of type 
+ &lt;script type="math/tex"&gt;\List α → \List α&lt;/script&gt; cannot inspect the elements of the input list; it can only use them in the resulting list, possibly duplicating, reordering or dropping some elements. On any input list of size 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt;, the behavior of the function can be described by a list of indices in 
+ &lt;script type="math/tex"&gt;[0; n-1]&lt;/script&gt;. For example, if the input 
+ &lt;script type="math/tex"&gt;[x, y, z]&lt;/script&gt; (for some values of 
+ &lt;script type="math/tex"&gt;x, y, z&lt;/script&gt;) gives the output 
+ &lt;script type="math/tex"&gt;[y, y, x]&lt;/script&gt;, then this relation will hold on &lt;em&gt;any&lt;/em&gt; value of 
+ &lt;script type="math/tex"&gt;x, y, z&lt;/script&gt;, as the function cannot inspect their value or even test them for equality. The behavior of this function on lists of size 3 can be fully described by the list of indices 
+ &lt;script type="math/tex"&gt;[1, 1, 0]&lt;/script&gt;. Its whole behavior is then uniquely determined by one such list for each possible size:&lt;/p&gt;
+
+&lt;p&gt;
+ &lt;script type="math/tex; mode=display"&gt;
+    ∀α. \List α → \List α  \quad≃\quad  Π(n:\Nat{}). \List{(\Fin n)}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The idea behind the &amp;ldquo;syntactic&amp;rdquo; (proof-theoretic?) proof method is the following: the set of closed values at a type 
+ &lt;script type="math/tex"&gt;A&lt;/script&gt; is isomorphic to the &lt;em&gt;search space&lt;/em&gt; for canonical/normal derivations of 
+ &lt;script type="math/tex"&gt;\judge{}{A}&lt;/script&gt;. We have tools (in particular the notion of &lt;em&gt;invertible&lt;/em&gt; inference rules) to reason on those – in this post I will only present the reasoning informally, but it can easily be made formally precise.&lt;/p&gt;
+
+&lt;p&gt;We start by looking at the shape of the search space for&lt;/p&gt;
+
+&lt;p&gt;
+ &lt;script type="math/tex; mode=display"&gt;
+    \judge{}{∀α. \List α → \List α}&lt;/script&gt; or, said otherwise, of the judgment 
+ &lt;script type="math/tex; mode=display"&gt;
+    \judge{}{\List α → \List α}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;with a fresh/abstract type variable 
+ &lt;script type="math/tex"&gt;α&lt;/script&gt;. (I will not be keeping opened type variables in context to avoid confusing them with hypotheses.)&lt;/p&gt;
+
+&lt;p&gt;Any derivation of a function type, without loss of generality (w.l.o.g), is equivalent to a derivation starting with a function introduction. This is the η-expansion rule for functions: any proof term 
+ &lt;script type="math/tex"&gt;e&lt;/script&gt; is equivalent to 
+ &lt;script type="math/tex"&gt;λx.~(e~x)&lt;/script&gt;, a proof that starts with a 
+ &lt;script type="math/tex"&gt;λ&lt;/script&gt;. So any proof can be taken to start as follows: 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\judge{\List \alpha}{\List \alpha}
+}{
+\judge{}{\List \alpha \to \List \alpha}
+}&lt;/script&gt; we can, w.l.o.g, unfold the recursive type in the context (\(\List α = 1 + (α × \List α)\)): 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;A derivation with a sum type as hypothesis can, w.l.o.g, be assumed to start by splitting on this pair (this is the η-expansion rule for sums): 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\judge{1}{\List α}
+\quad
+\judge{α × \List α}{\List α}
+}{
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;In the right subgoal, we can always, w.l.o.g, split a hypothesis of product type: 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\emptyrule{\judge{1}{\List α}}
+\quad
+\rule{
+\judge{α, \List α}{\List α}
+}{
+\judge{α × \List α}{\List α}
+}}{
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, an interesting pattern emerges. In the process of trying to prove 
+ &lt;script type="math/tex"&gt;\judge{\List α}{\List α}&lt;/script&gt;, we have to prove the (right) subgoal 
+ &lt;script type="math/tex"&gt;\judge{α,\List α}{α}&lt;/script&gt;. We can generalize this derivation by assuming that we start with some number 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt; of variables of type 
+ &lt;script type="math/tex"&gt;α&lt;/script&gt; in the context (we write 
+ &lt;script type="math/tex"&gt;α^n&lt;/script&gt; for this): 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\rule{
+\judge{\alpha^n}{\List \alpha}
+}{
+\judge{\alpha^n, 1}{\List \alpha}
+}
+\quad
+\rule{
+\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}
+}{
+\judge{\alpha^n, \alpha \times \List \alpha}{\List \alpha}
+}}{
+\rule{
+\judge{\alpha^n, 1 + (\alpha \times \List \alpha)}{\List \alpha}
+}{
+\judge{\alpha^n, \List \alpha}{\List \alpha}
+}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;
+ &lt;script type="math/tex; mode=display"&gt;
+\newcommand{\llbracket}{〚}
+\newcommand{\rrbracket}{〛}
+\newcommand{\sem}[1]{\llbracket{} #1 \rrbracket{}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Let us write 
+ &lt;script type="math/tex"&gt;\sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}&lt;/script&gt; for the search space corresponding to all possible derivations of the judgment 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n, \List \alpha}{\List \alpha}&lt;/script&gt;. All the proof steps above have been done &amp;ldquo;without loss of generality&amp;rdquo; (in terms of focusing, we only used invertible rules), so they appear in any such derivation. Similarly, let us write 
+ &lt;script type="math/tex"&gt;\sem{\judge{\alpha^n}{\List \alpha}}&lt;/script&gt; for the space of all possible derivations of 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{\List \alpha}&lt;/script&gt;, then above we have proven that 
+ &lt;script type="math/tex; mode=display"&gt;
+\sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}
+\quad=\quad
+\sem{\judge{\alpha^n}{\List \alpha}}
+\times
+\sem{\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;This equality can be unfolded at will 
+ &lt;script type="math/tex; mode=display"&gt;
+\begin{align}
+&amp; \sem{\judge{\alpha^n, \List \alpha}{\List \alpha}} \\
+= &amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}} \\
+= &amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+2}, \List \alpha}{\List \alpha}} \\
+= &amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+2}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+3}, \List \alpha}{\List \alpha}} \\
+= &amp; \dots \\
+\end{align}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;or written as an infinite product 
+ &lt;script type="math/tex; mode=display"&gt;
+    \sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}
+    \quad=\quad
+    \prod_{k \in \Nat{}}{\sem{\judge{\alpha^{n+k}}{\List \alpha}}}&lt;/script&gt; and, in particular, 
+ &lt;script type="math/tex; mode=display"&gt;
+\begin{align}
+&amp; \sem{\judge{}{\List \alpha \to \List \alpha}} \\
+= &amp; \sem{\judge{\alpha^0, \List \alpha}{\List \alpha}} \\
+= &amp; \prod_{n \in \Nat{}}{\sem{\judge{\alpha^n}{\List \alpha}}} \\
+\end{align}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s look at the structure of the derivations of 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{\List \alpha}&lt;/script&gt;. A proof of this judgment cannot start with a &amp;ldquo;left rule&amp;rdquo;, inspecting the value of one of the 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt; variables of type 
+ &lt;script type="math/tex"&gt;α&lt;/script&gt;, given that the structure of 
+ &lt;script type="math/tex"&gt;α&lt;/script&gt; is unknown/abstract. It must start by choosing to either build the empty list or a cons cell. We write this as follows (after unfolding the type):&lt;/p&gt;
+
+&lt;p&gt;
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\rule{
+\judge{\alpha^n}{1}
+\quad\oplus\quad
+\judge{\alpha^n}{\alpha \times \List \alpha}
+}{
+\judge{\alpha^n}{1 + (\alpha \times \List \alpha)}
+}}{
+\judge{\alpha^n}{\List \alpha}
+}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The 
+ &lt;script type="math/tex"&gt;\oplus&lt;/script&gt; notation between two judgments is non-standard; it means that they are not two requirements of the same proof, but two alternatives for possible proofs. All valid proofs fit that structure, and they either have a 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{1}&lt;/script&gt; premise or a 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{\alpha \times \List \alpha}&lt;/script&gt; premise. With this syntax, we are describing a set of possible derivations, rather than a single (partial) derivation.&lt;/p&gt;
+
+&lt;p&gt;Proofs of 
+ &lt;script type="math/tex"&gt;\judge{\Gamma}{1}&lt;/script&gt; are trivial, and a proof of a product is always, w.l.o.g, a product of proofs (in intuitionistic logic / the λ-calculus they reuse the same context), so we can decompose further: 
+ &lt;script type="math/tex; mode=display"&gt;
+\rule{
+\rule{
+\rule{
+}{
+\judge{\alpha^n}{1}
+}
+\quad\oplus\quad
+\rule
+{
+\judge{\alpha^n}{\alpha}
+\quad
+\judge{\alpha^n}{\List \alpha}
+}{
+\judge{\alpha^n}{\alpha \times \List \alpha}
+}
+}{
+\judge{\alpha^n}{1 + (\alpha \times \List \alpha)}
+}}{
+\judge{\alpha^n}{\List \alpha}
+}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;There is exactly one possible proof of 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{1}&lt;/script&gt;, so its search space is 
+ &lt;script type="math/tex"&gt;1&lt;/script&gt;, the unit set (with a single element). There are exactly 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt; possible proofs of 
+ &lt;script type="math/tex"&gt;\judge{\alpha^n}{\alpha}&lt;/script&gt;, so the search space is just 
+ &lt;script type="math/tex"&gt;n&lt;/script&gt;, seen as a set, or, in type-theoretic notation, 
+ &lt;script type="math/tex"&gt;\Fin{n}&lt;/script&gt;. We thus have the recursive equation: 
+ &lt;script type="math/tex; mode=display"&gt;
+\sem{\judge{\alpha^n}{\List \alpha}}
+\quad=\quad
+1 + (\Fin n \times \sem{\judge{\alpha^n}{\List \alpha}})&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;This type is either 
+ &lt;script type="math/tex"&gt;1&lt;/script&gt;, or a 
+ &lt;script type="math/tex"&gt;\Fin{n}&lt;/script&gt; and itself, recursively. This is exactly a list: 
+ &lt;script type="math/tex; mode=display"&gt;
+\sem{\judge{\alpha^n}{\List \alpha}}
+\quad=\quad
+\List{(\Fin{n})}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;so, plugging everything together: 
+ &lt;script type="math/tex; mode=display"&gt;
+\begin{align}
+&amp; \sem{\forall \alpha. \List \alpha \to \List \alpha} \\
+= &amp; \prod_{n \in \Nat{}}{\sem{\judge{\alpha^n}{\List \alpha}}} \\
+= &amp; \prod_{n \in \Nat{}}{\List{(\Fin{n})}} \\
+\end{align}&lt;/script&gt;&lt;/p&gt;
+
+&lt;h3 id="post-scriptum"&gt;Post Scriptum&lt;/h3&gt;
+
+&lt;p&gt;Some of reasoning steps above can be formulated in a way that is less clear but more familiar, as a sequence of type isomorphisms. For example, the first part on 
+ &lt;script type="math/tex"&gt;\sem{\judge{\alpha^n, \List
+\alpha}{\List \alpha}}&lt;/script&gt; can written as:&lt;/p&gt;
+
+&lt;p&gt;
+ &lt;script type="math/tex; mode=display"&gt;
+\begin{align}
+&amp;
+∀α. αⁿ × \List α → \List α
+\\ &amp;
+= \text{(unfold List)}
+\\ &amp;
+    ∀α. αⁿ × (1 + α × \List α) → \List α
+\\ &amp;
+    = \text{(distribute × over +)}
+\\ &amp;
+    ∀α. ((αⁿ × 1) + (αⁿ⁺¹ × \List α)) → \List α
+\\ &amp;
+    = \text{(A × 1 ≃ A)}
+\\ &amp;
+    ∀α. (αⁿ + (αⁿ⁺¹ × \List α)) → \List α
+\\ &amp;
+    = \text{(A+B) → C ≃ (A→C)×(B→C)}
+\\ &amp;
+    ∀α. (αⁿ → \List α) × (αⁿ⁺¹ × \List α → \List α)
+\\ &amp;
+    = \text{(distribute ∀α below product)}
+\\ &amp;
+    (∀α. αⁿ → \List α) × (∀α. αⁿ⁺¹ × \List α → \List α)
+\\
+\end{align}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Reading this equational sequence, it may look like we had to make the right choice at each step; but the proof-search perspective reveals that there were in fact no choices, as each time we apply invertible rules (&amp;ldquo;w.l.o.g. rules&amp;rdquo;).&lt;/p&gt;
+
+&lt;p&gt;Furthermore, some parts cannot be derived in this style; in the latter part of the proof, the isomorphism between 
+ &lt;script type="math/tex"&gt;∀\alpha. \alpha^n → \alpha&lt;/script&gt; and 
+ &lt;script type="math/tex"&gt;\Fin{n}&lt;/script&gt;, which is immediate from a proof search perspective, cannot be justified in this way. (In particular, 
+ &lt;script type="math/tex"&gt;A×B → C&lt;/script&gt; is &lt;em&gt;not&lt;/em&gt; isomorphic to 
+ &lt;script type="math/tex"&gt;(A→C)+(B→C)&lt;/script&gt;.)&lt;/p&gt;
+
+&lt;h3 id="going-further"&gt;Going further&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;It is an unfortunately-little-known obvious fact that many things we  associate to &amp;ldquo;free theorems&amp;rdquo; can be recovered by proof search. For  example, it is much simpler to prove that the only inhabitant of  
+   &lt;script type="math/tex"&gt;\forall \alpha. \alpha \to \alpha&lt;/script&gt; is the identity using proof  search than parametricity. I briefly discussed the idea in the  section 1.3 of my 2015 article, &lt;a href="http://gallium.inria.fr/~scherer/research/unique_inhabitants/unique_stlc_sums-long.pdf"&gt;Which simple types have a unique  inhabitant?&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you are unfamiliar with proof search (or the LF community) and  curious about what I mean by &amp;ldquo;canonical forms&amp;rdquo; and why I think this  is an important idea, see my non-technical 2017 article &lt;a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf"&gt;Search for  Program  Structure&lt;/a&gt;. The  problem of extending the notion of canonical forms to arbitrary  polymorphic types is briefly discussed in the section 14.5 of my  2016 &lt;a href="http://www.ccs.neu.edu/home/gasche/phd_thesis/scherer-thesis.pdf"&gt;phd  manuscript&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you haven&amp;rsquo;t heard of it yet, you would probably be interested in  the 2010 article &lt;a href="http://publications.lib.chalmers.se/records/fulltext/local_99387.pdf"&gt;Testing Polymorphic  Properties&lt;/a&gt;  by Jean-Philippe Bernardy, Patrik Jansson and Koen Claessen. Li-Yao  has a 2016 implementation called  &lt;a href="https://github.com/Lysxia/metamorph"&gt;Metamorph&lt;/a&gt; that got us talking  together. The problems of understanding canonical forms and testing  are quite related, but yet not exactly the same&amp;hellip;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="you-might-also-like"&gt;You might also like&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/"&gt;Categorical Semantics for Dynamically Typed Programming  Languages&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://williamjbowman.com/blog/2017/01/03/toward-type-preserving-compilation-of-coq-at-popl17-src/"&gt;Toward Type-Preserving Compilation of Coq, at POPL17 SRC&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/11/16/understanding-constructive-galois-connections/"&gt;Understanding Constructive Galois  Connections&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>

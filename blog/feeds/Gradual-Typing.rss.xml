@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Gradual Typing'</title>
+  <description>PRL Blog: Posts tagged 'Gradual Typing'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Gradual-Typing.html</link>
+  <lastBuildDate>Tue, 09 May 2017 14:04:31 UT</lastBuildDate>
+  <pubDate>Tue, 09 May 2017 14:04:31 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>No Good Answers, Gradually Typed Object-Oriented Languages</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/05/09/no-good-answers-gradually-typed-object-oriented-languages/?utm_source=Gradual-Typing&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-05-09-no-good-answers-gradually-typed-object-oriented-languages</guid>
+   <pubDate>Tue, 09 May 2017 14:04:31 UT</pubDate>
+   <author>PRL</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;p&gt;Untyped code remains a real problem in practice, as a result of reduced performance and hindered readability. One approach to solve this problem is gradual typing.&lt;/p&gt;
+
+&lt;p&gt;Gradual typing puts the onus on the developer to add type annotations, statically checks whatever type annotations have been written, and dynamically ensures that untyped code does not violate those annotations. A number of approaches have been put forward to try to achieve these objectives while retaining efficiency, semantic meaning, and the ability to actually type untyped code.&lt;/p&gt;
+
+&lt;p&gt;I discussed three systems, all of which achieve the objective of typing untyped code in different ways, and all of which have different tradeoffs.&lt;/p&gt;
+
+&lt;p&gt;Unofficial Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Code Examples:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL"&gt;https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>

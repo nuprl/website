@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'dynamic typing'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/dynamic-typing.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/dynamic-typing.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-dynamic-typing-html</id>
+ <updated>2017-05-01T12:25:17Z</updated>
+ <entry>
+  <title type="text">Categorical Semantics for Dynamically Typed Programming Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/?utm_source=dynamic-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-01-categorical-semantics-for-dynamically-typed-programming-languages</id>
+  <published>2017-05-01T12:25:17Z</published>
+  <updated>2017-05-01T12:25:17Z</updated>
+  <author>
+   <name>PRL</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;In 1969, Dana Scott wrote an &lt;a href="/blog/static/scott-69-93-type-theoretical-alternative.pdf"&gt;unpublished manuscript&lt;/a&gt; in which he said untyped lambda calculus had no mathematical meaning, 11 years later he wrote &lt;a href="/blog/static/scott-80-relating-theories.pdf"&gt;a paper&lt;/a&gt; that organized many of the different semantics he and others had since found using the language of category theory.&lt;/p&gt;
+
+&lt;p&gt;This latter paper is really the first deserving of the title &amp;ldquo;categorical semantics of dynamic typing&amp;rdquo;, and so I&amp;rsquo;m going to present some of the theorems and &amp;ldquo;theorems&amp;rdquo; presented in that paper, but mingled with the history of the idea and the preceding papers that led to them.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/blog/static/dyn-cats.pdf"&gt;My Full Notes&lt;/a&gt; continue the story, and you might also be interested in the &lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-07.md"&gt;discussion during the lecture&lt;/a&gt;.&lt;/p&gt;</content></entry></feed>

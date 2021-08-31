@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>PRL Blog (page 2)</title>
+    <meta name="description" content="PRL Blog (page 2)">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="ocaml, lectures, by Max New, announcement, all, by Tony Garnock-Jones, by Aaron Weiss, category theory, conference, by Leif Andersen, array language, by Milo Davis, compilers, coYoneda, by Ming-Ho Yee, language implementation, by Kevin Clancy, by Daniel Patterson, eventual consistency, by Rob Kleffner, dynamic typing, by Olek Gierczak, r, types, transient, reduction, Takikawa constant, language, by Li-Yao Xia, package, migratory typing, definitions, final encoding, offsite, NEPLS, Emacs, ghc, haskell, Scribble, dawn of the digital era, by Matt Kolosick, by Asumu Takikawa, Gradual Typing, by Dustin Jamner, by Ben Chung, 1st blog post, higher-order contracts, compiler correctness, lang-extension, instrumentation, ICFP, by Artem Pelenitsyn, castle, by Justin Slepak, FFI, typed racket, math, coq, by Alexi Turcotte, statistics, closure conversion, by Zeina Migeed, tutorial, constructions, racket, by Ben Greenman, garbage collection, beta, complete monitoring, by Gabriel Scherer, performance, by Julia Belyakova, calculus, lost time, by Jan Vitek, pliss, by Jonathan Schuster, gradual typing, benchmarking, about, Racket, PL Junior, PLT Redex, by Sam Caldwell, tutorials, PI meeting, lambda, adjunction, dsl, monotonicity, windows, latency, event, observational equivalence, scope, semantics, CRDTs, bugs, dissertation, galois connection, HOPL, System Administration, icfp, Yoneda, books, by Stephen Chang, history, proceedings, by William J. Bowman, turnstile, extended abstract, dear diary, java">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/index-2.html">
+
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h2><a href='/blog/2019/04/07/forgetful-and-heedful-contracts/'>Forgetful and Heedful contracts</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2019-04-07" pubdate="true">2019-04-07</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/higher-order-contracts.html">higher-order contracts</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p><em>Forgetful</em> and <em>heedful</em> are two methods for space-efficient contracts  developed by <a href="http://www.cs.pomona.edu/~michael/">Michael Greenberg</a> in <a href="https://arxiv.org/abs/1410.2813">2014</a>. These methods were born in the shadow of a third method, <em>eidetic</em>,  with stronger theoretic properties. Since then, however, the forgetful method has been re-invented at least twice. Both deserve a second look.</p>
+  <footer>
+    <a href='/blog/2019/04/07/forgetful-and-heedful-contracts/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2019/03/09/pliss-learn-about-pl-implementation-in-a-castle/'>PLISS: Learn About PL Implementation in a Castle</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2019-03-09" pubdate="true">2019-03-09</time> :: <span class="tags"><a href="/blog/tags/event.html">event</a>, <a href="/blog/tags/lectures.html">lectures</a>, <a href="/blog/tags/castle.html">castle</a>, <a href="/blog/tags/language-implementation.html">language implementation</a>, <a href="/blog/tags/by-Alexi-Turcotte.html">by Alexi Turcotte</a></span></p>
+  </header>
+
+<p>We love programming languages (PLs), and we should all be in on the ins and outs of implementing them. If you&rsquo;re interested in learning the tricks of the trade of PL design and implementation, what better opportunity than the second Programming Languages Implementation Summer School (<a href="https://pliss2019.github.io/">PLISS</a> for short).</p>
+
+<p>PLISS will be held from May 19th to 24th 2019, and the deadline to express your interest is <em>March 29th, 2019</em> at <em>17:00 GMT</em>. More details can be found <a href="https://pliss2019.github.io/registration.html">here</a>.</p>
+  <footer>
+    <a href='/blog/2019/03/09/pliss-learn-about-pl-implementation-in-a-castle/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2019/02/17/writing-a-paper-with-scribble/'>Writing a paper with Scribble</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2019-02-17" pubdate="true">2019-02-17</time> :: <span class="tags"><a href="/blog/tags/Scribble.html">Scribble</a>, <a href="/blog/tags/tutorial.html">tutorial</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p>This post explains how to get started using Scribble to write a research paper.</p>
+  <footer>
+    <a href='/blog/2019/02/17/writing-a-paper-with-scribble/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2019/01/28/on-stack-replacement/'>On-Stack Replacement</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2019-01-28" pubdate="true">2019-01-28</time> :: <span class="tags"><a href="/blog/tags/by-Ming-Ho-Yee.html">by Ming-Ho Yee</a></span></p>
+  </header>
+
+<p>Last semester, I took <a href="https://course.ccs.neu.edu/cs7600/">a course</a> where the final project was to write a survey paper on &ldquo;a topic in the intersection between computer systems and your area.&rdquo; So I wrote about on-stack replacement.</p>
+  <footer>
+    <a href='/blog/2019/01/28/on-stack-replacement/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/'>The Behavior of Gradual Types: A User Study</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-12-11" pubdate="true">2018-12-11</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/extended-abstract.html">extended abstract</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+  <footer>
+    <a href='/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/12/02/java-and-migratory-typing/'>Java and Migratory Typing</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-12-02" pubdate="true">2018-12-02</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/java.html">java</a>, <a href="/blog/tags/transient.html">transient</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p>The <em>transient</em> approach to migratory typing (circa <a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf">2014</a>)  is similar to type erasure in Java (circa <a href="https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html">2004</a>)  in a few interesting ways.</p>
+  <footer>
+    <a href='/blog/2018/12/02/java-and-migratory-typing/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/11/30/turnstile-mailing-list/'>Turnstile Mailing List</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-11-30" pubdate="true">2018-11-30</time> :: <span class="tags"><a href="/blog/tags/announcement.html">announcement</a>, <a href="/blog/tags/turnstile.html">turnstile</a>, <a href="/blog/tags/by-Stephen-Chang.html">by Stephen Chang</a></span></p>
+  </header>
+
+<p><a href="https://docs.racket-lang.org/turnstile/The_Turnstile_Guide.html">Turnstile</a> now has a mailing list: <a href="https://groups.google.com/forum/#!forum/turnstile-users">https://groups.google.com/forum/#!forum/turnstile-users</a></p>
+  <footer>
+    <a href='/blog/2018/11/30/turnstile-mailing-list/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/11/24/disappearing-code/'>Disappearing Code</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-11-24" pubdate="true">2018-11-24</time> :: <span class="tags"><a href="/blog/tags/dear-diary.html">dear diary</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p>Two experiences at <a href="https://2018.splashcon.org/home">SPLASH 2018</a> reminded me that software gets thrown away and replaced.</p>
+  <footer>
+    <a href='/blog/2018/11/24/disappearing-code/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/'>Defining Local Bindings in Turnstile Languages</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-10-22" pubdate="true">2018-10-22</time> :: <span class="tags"><a href="/blog/tags/turnstile.html">turnstile</a>, <a href="/blog/tags/tutorial.html">tutorial</a>, <a href="/blog/tags/language.html">language</a>, <a href="/blog/tags/dsl.html">dsl</a>, <a href="/blog/tags/by-Sam-Caldwell.html">by Sam Caldwell</a></span></p>
+  </header>
+
+<p>In <a href="http://racket-lang.org/">Racket</a>, programmers can create powerful abstractions by bundling together a family of values, functions, and syntax extensions in the form of a new language. These languages, however, are typically untyped. <a href="http://docs.racket-lang.org/turnstile/The_Turnstile_Guide.html">Turnstile</a> is a new Racket {library,language} for creating typed languages by integrating type checking with Racket&rsquo;s existing tools for describing languages. The technique is described by fellow PRL&rsquo;ers in the paper <a href="http://www.ccs.neu.edu/home/stchang/pubs/ckg-popl2017.pdf"><em>Type Systems as Macros</em></a>.</p>
+
+<p>Racket encourages language developers to take full advantage of <a href="https://scholarship.rice.edu/handle/1911/17993">linguistic reuse</a> by defining new language forms in terms of existing constructs. Unsurprisingly, language extensions often retain some of the Racket-y flavor from the underlying constructs. Implementors save time and energy while users of the language benefit from the familiarity they already have with the Racket ecosystem.</p>
+
+<p>Unfortunately, Turnstile does not lend itself to expressing one of Racket&rsquo;s most ubiquitous idioms: naming local bindings with <code>define</code>. Early experience reports from Turnstile, including my own, suggest that language implementors very much desire to include <code>define</code>-like binding forms in their languages.</p>
+
+<p>This blog post provides a brief overview of what Turnstile is and how it works, an introduction to defining typed language forms, and how to equip these languages with a <code>define</code> binding form.</p>
+  <footer>
+    <a href='/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/'>A Spectrum of Type Soundness and Performance</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2018-10-06" pubdate="true">2018-10-06</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/extended-abstract.html">extended abstract</a>, <a href="/blog/tags/by-Ben-Greenman.html">by Ben Greenman</a></span></p>
+  </header>
+
+<p>The literature on mixed-typed languages presents (at least) three fundamentally different ways of thinking about the integrity of programs that combine  statically typed and dynamically typed code. Recently, we have been sorting them out.</p>
+  <footer>
+    <a href='/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<footer>
+ <ul class="pagination">
+  <li class="page-item"><a class="page-link" href="/blog/index.html">
+    <quote>&larr;</quote></a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index.html">1</a></li>
+  <li class="page-item active"><a class="page-link" href="/blog/index-2.html">2</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-3.html">3</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-4.html">4</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-5.html">5</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-6.html">6</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-7.html">7</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-8.html">8</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-9.html">9</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-3.html">
+    <quote>&rarr;</quote></a></li></ul></footer>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

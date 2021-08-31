@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'announcement'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/announcement.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/announcement.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-announcement-html</id>
+ <updated>2018-11-30T14:55:30Z</updated>
+ <entry>
+  <title type="text">Turnstile Mailing List</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/11/30/turnstile-mailing-list/?utm_source=announcement&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-11-30-turnstile-mailing-list</id>
+  <published>2018-11-30T14:55:30Z</published>
+  <updated>2018-11-30T14:55:30Z</updated>
+  <author>
+   <name>PRL</name></author>
+  <content type="html">
+&lt;p&gt;&lt;a href="https://docs.racket-lang.org/turnstile/The_Turnstile_Guide.html"&gt;Turnstile&lt;/a&gt; now has a mailing list: &lt;a href="https://groups.google.com/forum/#!forum/turnstile-users"&gt;https://groups.google.com/forum/#!forum/turnstile-users&lt;/a&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;There is also a &lt;code&gt;#turnstile&lt;/code&gt; channel on &lt;a href="https://racket.slack.com"&gt;the Racket Slack&lt;/a&gt;.&lt;/p&gt;</content></entry></feed>

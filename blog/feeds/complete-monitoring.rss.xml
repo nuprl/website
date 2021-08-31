@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'complete monitoring'</title>
+  <description>PRL Blog: Posts tagged 'complete monitoring'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/complete-monitoring.html</link>
+  <lastBuildDate>Thu, 31 Oct 2019 21:58:26 UT</lastBuildDate>
+  <pubDate>Thu, 31 Oct 2019 21:58:26 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Complete Monitors for Gradual Types</title>
+   <link>http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/?utm_source=complete-monitoring&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2019-10-31-complete-monitors-for-gradual-types</guid>
+   <pubDate>Thu, 31 Oct 2019 21:58:26 UT</pubDate>
+   <author>PRL</author>
+   <description>
+&lt;p&gt;Syntactic type soundness is too weak to tell apart different ways of running  a program that mixes typed and untyped code. Complete monitoring is a stronger property that captures a meaningful  distinction &amp;mdash; a language satisfies complete monitoring iff it checks  all interactions between typed and untyped code.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;Complete Monitors for Gradual Types&lt;/em&gt; by Ben Greenman, Matthias Felleisen, and Christos Dimoulas. For the full paper, proofs, and slides, &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gfd-oopsla-2019"&gt;click here&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="example-clickable-plot"&gt;Example: Clickable Plot&lt;/h3&gt;
+
+&lt;p&gt;The program below has a subtle bug. Can you find it?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/img/complete-monitoring-0.png" alt="Untyped client code, a typed API, and untyped library code." /&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all, this pseudocode program combines three chunks of code:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the left, an &lt;strong&gt;untyped&lt;/strong&gt; client script defines a function &lt;code&gt;h&lt;/code&gt; that expects  a pair of numbers and returns an image. The client uses this function to  create a &lt;code&gt;ClickPlot&lt;/code&gt; object, and then displays the plot &amp;mdash; ideally in a new  GUI window.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;In the center, a &lt;strong&gt;typed&lt;/strong&gt; API file describes a &lt;code&gt;ClickPlot&lt;/code&gt; object as  something with one constructor and two methods. The constructor expects  a function; according to the type, such functions can expect a pair of  numbers and must compute an image. The &lt;code&gt;mouseHandler&lt;/code&gt; method expects  a &lt;code&gt;MouseEvt&lt;/code&gt; object and returns nothing. The &lt;code&gt;show&lt;/code&gt; method expects no arguments  and returns nothing. (Presumably, these methods have side effects.)&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the right, an &lt;strong&gt;untyped&lt;/strong&gt; library module implements a &lt;code&gt;ClickPlot&lt;/code&gt; object.  Most of the code is omitted (&lt;code&gt;...&lt;/code&gt;), but the &lt;code&gt;mouseHandler&lt;/code&gt; method sends  its input directly to the &lt;code&gt;onClick&lt;/code&gt; callback.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The &lt;strong&gt;bug&lt;/strong&gt; is in the API &amp;mdash; in the type &lt;code&gt;([N, N]) =&amp;gt; Image&lt;/code&gt;. This type promises that a given function can expect a pair of numbers,  and indeed the client function &lt;code&gt;h&lt;/code&gt; expects a pair. But the library code on the right sends a &lt;code&gt;MouseEvt&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;p&gt;What happens when we run this program in a type-sound mixed-typed language? Does &lt;code&gt;h&lt;/code&gt; receive the invalid input?&lt;/p&gt;
+
+&lt;p&gt;As it turns out, type soundness cannot say. A type sound language may choose to enforce or ignore the fact that the  API promises a pair of numbers to the client.&lt;/p&gt;
+
+&lt;h3 id="type-soundness-is-not-enough"&gt;Type Soundness is Not Enough&lt;/h3&gt;
+
+&lt;p&gt;Sound types are statements about the behavior of a program. A normal type soundness theorem for a typed language says that a well-typed  program can either compute a value of the same type, compute forever (diverge),  or stop with an acceptable error (perhaps division by zero). No other behaviors are possible.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Classic Type Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;A mixed-typed language needs two &amp;ldquo;type soundness&amp;rdquo; theorems:  one for typed code and one for untyped code. The &lt;strong&gt;typed&lt;/strong&gt; soundness theorem can resemble a classic theorem. The &lt;strong&gt;untyped&lt;/strong&gt; soundness theorem is necessarily a weaker statement due to  the lack of types:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Mixed-Typed Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+ &lt;p&gt;And if &lt;code&gt;e&lt;/code&gt; is untyped then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt; is an untyped value&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Now we can see why mixed-typed soundness is not strong enough to guarantee that  the callback &lt;code&gt;h&lt;/code&gt; in the code above receives a pair value. We have an &lt;strong&gt;untyped&lt;/strong&gt; function called from an &lt;strong&gt;untyped&lt;/strong&gt; context &amp;mdash; since  there are no types sitting right there, type soundness has nothing to say  except that the untyped code can expect an untyped value!&lt;/p&gt;
+
+&lt;p&gt;&lt;img height="200px" src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client." /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, this channel of communication between the library and client  arose through the typed API. One might expect the type &lt;code&gt;[N, N]&lt;/code&gt; to restrict the values that can flow across  the channel; indeed, if types really are statements about the behavior of a program,  then the channel needs to be protected.&lt;/p&gt;
+
+&lt;p&gt;The question is: what formal property separates languages thet check  all typed/untyped channels of communication (whether direct or derived)? One answer is complete monitoring.&lt;/p&gt;
+
+&lt;h3 id="complete-monitoring"&gt;Complete Monitoring&lt;/h3&gt;
+
+&lt;p&gt;A mixed-typed language satisfies complete monitoring iff evaluation never  lets a value flow un-checked across a type boundary. To make this idea precise, we need to enrich the syntax of the language  with a specification of &lt;em&gt;ownership&lt;/em&gt; to say what parts of the program are  responsible for different values, and to say how evalution changes  responsibilities. Relative to a specification, complete monitoring states that every expression  that arises during evaluation is made up of parts that each have a single  owner.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;em&gt;Complete Monitoring&lt;/em&gt;&lt;/p&gt;
+ &lt;p&gt;For all well-formed &lt;code&gt;e&lt;/code&gt; and all &lt;code&gt;e'&lt;/code&gt;, if &lt;code&gt;e --&amp;gt;* e'&lt;/code&gt; then every subexpression of &lt;code&gt;e'&lt;/code&gt; has a unique owner.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;This property separates our two behaviors for the Clickable Plot code. A language that satisfies complete monitoring enforces the API types with  a runtime check. A language that merely satisfies type soundness may skip these checks.&lt;/p&gt;
+
+&lt;h3 id="an-aid-to-debugging"&gt;An Aid to Debugging&lt;/h3&gt;
+
+&lt;p&gt;The question raised by the Clickable Plot example is whether a language can  &lt;strong&gt;detect&lt;/strong&gt; one mismatch between a type and a value. A language that satisfies complete monitoring detects all such mis-matches. But we can say more. If a mismatch occurs, then programmer knows exactly where to start debugging  &amp;mdash; either the type is an incorrect specification, or the given value is  flawed. In other words, complete monitoring implies a concise 2-party explanation  for every type mismatch.&lt;/p&gt;
+
+&lt;p&gt;The paper generalizes this goal of explaining a mismatch for languages  that fail to satisfy complete monitoring. There may be 2N parties to blame thanks to un-checked channels of communication,  and we want to be certain to report all these parties and no false positives.&lt;/p&gt;
+
+&lt;p&gt;Also in the paper, you can find:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;a model of ownership, clear &lt;em&gt;laws&lt;/em&gt; for how ownership changes during evaluation;&lt;/li&gt;
+ &lt;li&gt;examples of how to systematically add ownership to an operational semantics  to attempt a proof of complete monitoring;&lt;/li&gt;
+ &lt;li&gt;definitions for &lt;strong&gt;blame soundness&lt;/strong&gt; and &lt;strong&gt;blame completeness&lt;/strong&gt;;&lt;/li&gt;
+ &lt;li&gt;an analysis of three semantics, which correspond to &lt;a href="https://docs.racket-lang.org/ts-reference/index.html"&gt;Typed Racket&lt;/a&gt;,  &lt;a href="http://hdl.handle.net/2022/23172"&gt;Transient Reticulated&lt;/a&gt;, and a compromise;&lt;/li&gt;
+ &lt;li&gt;and discussion of an alternative, heap-based model of ownership.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Paper: &lt;a href="https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf"&gt;https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf&lt;/a&gt;&lt;/p&gt;</description></item></channel></rss>

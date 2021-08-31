@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'array language'</title>
+  <description>PRL Blog: Posts tagged 'array language'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/array-language.html</link>
+  <lastBuildDate>Thu, 04 May 2017 18:26:48 UT</lastBuildDate>
+  <pubDate>Thu, 04 May 2017 18:26:48 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Rank Polymorphism</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/05/04/rank-polymorphism/?utm_source=array-language&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-05-04-rank-polymorphism</guid>
+   <pubDate>Thu, 04 May 2017 18:26:48 UT</pubDate>
+   <author>PRL</author>
+   <description>
+&lt;p&gt;Rank polymorphism gives you code reuse on arguments of different dimensions. Take a linear interpolation function (let&amp;rsquo;s just call it &lt;code&gt;lerp&lt;/code&gt;) for scalars:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(λ ((lo 0) (hi 0) (α 0)) (+ (* lo (- 1 α)) (* hi α)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The number marks on each argument indicate the expected &amp;ldquo;rank&amp;rdquo; of the argument: how many dimensions it should have. In this case, each one is marked &lt;code&gt;0&lt;/code&gt;, indicating a scalar (&lt;em&gt;i.e.&lt;/em&gt;, 0-dimensional) argument. The function is usable as-is for&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;α-blending two RGB pixels&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;dimming or brightening an image&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;fade transition between video scenes&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Each of these use cases mixes the argument dimensions a little differently. A pixel is a vector (a rank&amp;ndash;1 structure) of numbers representing color channel values, so the α-blending case uses two vector arguments and one scalar argument.&lt;/p&gt;
+
+&lt;p&gt;The only real difference between these use cases is the iteration space: they&amp;rsquo;re all effectively loop nests around the same basic scalar operation. In a rank-polymorphic language, the iteration space is derived automatically from the data, so you don&amp;rsquo;t need to write out the control structure yourself.&lt;/p&gt;
+
+&lt;p&gt;The fundamental idea behind function application here is breaking the argument arrays into lower-ranked pieces called &amp;ldquo;cells.&amp;rdquo; Each cell has the rank expected by the function being applied. In the case of &lt;code&gt;lerp&lt;/code&gt;, the pixels, images, videos, etc. are all broken up into rank&amp;ndash;0 (scalar) cells because &lt;code&gt;lerp&lt;/code&gt; expects rank&amp;ndash;0 arguments. Other expected ranks are possible as well— a vector dot product function &lt;code&gt;dot-prod&lt;/code&gt; would call for rank&amp;ndash;1 cells, and a matrix inversion function &lt;code&gt;minv&lt;/code&gt; would call for rank&amp;ndash;2 cells.&lt;/p&gt;
+
+&lt;p&gt;The structure built up around the cells is called the &amp;ldquo;frame.&amp;rdquo; A matrix array is a rank&amp;ndash;2 frame containing rank&amp;ndash;0 cells for &lt;code&gt;lerp&lt;/code&gt;, but it would be a rank&amp;ndash;1 frame containing rank&amp;ndash;1 cells for &lt;code&gt;dot-prod&lt;/code&gt; and a rank&amp;ndash;0 frame containing a single rank&amp;ndash;1 cell for &lt;code&gt;minv&lt;/code&gt;. A rank-&lt;em&gt;n&lt;/em&gt; array could be broken down into a frame of cells in &lt;em&gt;n+1&lt;/em&gt; different ways, and it&amp;rsquo;s the function being applied that determines which decomposition to use.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, the implicit control structure that&amp;rsquo;s so convenient for the programmer is a problem for a compiler. Historically, implementations of such languages have had to do without static information about the iteration space. Interpreters (and line-at-a-time compilers, to a lesser extent) get to inspect the concrete data they&amp;rsquo;re dealing with, but static compilers have had to make do with emitting a generic loop structure. A &amp;ldquo;loop&amp;rdquo; over a scalar might sound like trivial overhead, but not when it appears within some other hot loop. Being unable to see when loop boundaries match up is also a barrier to loop fusion. The lack of thorough static shape information was a long-standing problem my advisor pointed out to me when I was a new student looking at possible research projects, and he was interested in applying some form of static analysis to gather that information.&lt;/p&gt;
+
+&lt;p&gt;The first step in addressing it was to come up with a formal semantics for rank polymorphism. Although &lt;a href="http://www.jsoftware.com/papers/APL.htm"&gt;APL has existed since the 1960s&lt;/a&gt;, it had mostly lived in a separate world from mainstream programming language research. The formal techniques developed in PL had seen little to no application to APL and its &amp;ldquo;successor&amp;rdquo; language J.&lt;/p&gt;
+
+&lt;p&gt;There&amp;rsquo;s a lot to dislike about APL and J—special case behavior in many of the primitive operators, limited function arity, syntactic separation of first-order and second-order functions, the impossibility of parsing an entire program at once (fun fact: static analysis &lt;a href="http://dl.acm.org/citation.cfm?id=805380"&gt;has been tried&lt;/a&gt; there)—and of course the idiosyncratic identifiers used for primops have prompted plenty of internet arguments. None of those things are essential to the programming model, so I&amp;rsquo;m &lt;a href="http://www.ccs.neu.edu/home/jrslepak/proposal.pdf"&gt;building a new language called Remora&lt;/a&gt; to isolate the aspects I want to study.&lt;/p&gt;
+
+&lt;p&gt;People don&amp;rsquo;t always think of a type system as a form of static analysis, but it turned out to be an effective way of gathering shape information. Remora&amp;rsquo;s &lt;a href="http://www.ccs.neu.edu/home/jrslepak/esop14-full.pdf"&gt;type system&lt;/a&gt; uses a restricted form of dependent types, in the style of &lt;a href="https://www.cs.cmu.edu/~rwh/theses/xi.pdf"&gt;Dependent ML&lt;/a&gt;. An array type is indexed by the shape, the numeric sizes of the array&amp;rsquo;s individual dimensions. Index polymorphism (&lt;em&gt;i.e.&lt;/em&gt;, Π types) allows functions to work on varying cell shapes and even varying cell ranks (which is essential for primitives like &lt;code&gt;append&lt;/code&gt; and &lt;code&gt;reduce&lt;/code&gt;, which operate along the major axis of arrays, no matter their rank). Frame-rank polymorphism, which gives rise to the control structure, remains completely implicit, leaving it to be identified by the type rule for function application. As a nice bonus, type soundness rules out run-time errors arising from incompatible argument shapes.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;If you liked this post, you may also be interested in:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/10/19/history-of-actors/"&gt;History of Actors&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2017/02/21/datalog-for-static-analysis/"&gt;Datalog for Static Analysis&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>
