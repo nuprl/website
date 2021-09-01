@@ -1,6 +1,7 @@
     Title: Emacs daemon for fast editor startup
     Date: 2016-10-17T21:48:25
-    Tags: System Administration, Emacs, by Gabriel Scherer
+    Tags: System Administration, Emacs
+    Authors: Gabriel Scherer
 
 In the early days of the famous Emacs/Vim debates, Emacs was often
 ridiculed for its bulkiness (Eight Megabytes-of-RAM And Constantly

@@ -1,6 +1,7 @@
     Title: Datalog for Static Analysis
     Date: 2017-02-21T12:58:27
-    Tags: HOPL, by Ben Greenman
+    Tags: HOPL
+    Authors: Ben Greenman
 
 <!-- more -->
 

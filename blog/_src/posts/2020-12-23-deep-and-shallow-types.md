@@ -1,6 +1,7 @@
     Title: Deep and Shallow Types
     Date: 2020-12-23T18:21:55
-    Tags: dissertation, migratory typing, by Ben Greenman
+    Tags: dissertation, migratory typing
+    Authors: Ben Greenman
 
 I successfully defended my Ph.D. dissertation.
 You can find the document, a talk recording, and much more here:

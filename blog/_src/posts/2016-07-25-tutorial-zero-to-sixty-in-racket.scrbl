@@ -5,7 +5,8 @@
 
 Title: Tutorial: Zero to Sixty in Racket
 Date: 2016-08-02T01:29:11
-Tags: Racket, tutorial, by Ben Greenman
+Tags: Racket, tutorial
+Authors: Ben Greenman
 
 @(require scribble/example
           scribble/racket

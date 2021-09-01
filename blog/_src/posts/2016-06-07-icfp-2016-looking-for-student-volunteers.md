@@ -1,6 +1,7 @@
     Title: ICFP 2016: looking for student volunteers
     Date: 2016-06-07T11:53:47
-    Tags: ICFP, by Gabriel Scherer
+    Tags: ICFP
+    Authors: Gabriel Scherer
 
 If you are a student, you should consider
 [applying](http://goo.gl/forms/fKg3vpjNryBlGWB32) to become an ICFP

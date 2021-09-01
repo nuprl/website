@@ -1,6 +1,7 @@
     Title: Tracing JITs for Dynamic Languages
     Date: 2017-03-15T10:54:39
-    Tags: HOPL, by Ming-Ho Yee
+    Tags: HOPL
+    Authors: Ming-Ho Yee
 
 <!-- more -->
 

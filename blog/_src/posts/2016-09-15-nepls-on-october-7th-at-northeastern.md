@@ -1,6 +1,7 @@
     Title: NEPLS on October 7th at Northeastern University
     Date: 2016-09-15T21:18:45
-    Tags: NEPLS, conference, by Ben Greenman
+    Tags: NEPLS, conference
+    Authors: Ben Greenman
 
 The next edition of the New England Programming Language Seminar (NEPLS) will
 be held on Friday, October 7th at Northeastern University.

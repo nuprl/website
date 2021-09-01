@@ -1,6 +1,7 @@
     Title: Programming Language Conference in Russia
     Date: 2017-05-24T12:25:17
-    Tags: by Artem Pelenitsyn
+    Tags:
+    Authors: Artem Pelenitsyn
 
 In April 3--5 I took part into a Russian conference exclusively devoted to programming languages: [Programming Languages and Compilers][PLC] ([Google.Translated version of the site][PLCGT]). I was a member of organizing committee and had a paper there. 
 

@@ -1,6 +1,7 @@
     Title: Defining Local Bindings in Turnstile Languages
     Date: 2018-10-22T15:05:17
-    Tags: turnstile, tutorial, language, dsl, by Sam Caldwell
+    Tags: turnstile, tutorial, language, dsl
+    Authors: Sam Caldwell
 
 In [Racket][2], programmers can create powerful abstractions by bundling
 together a family of values, functions, and syntax extensions in the form of a

@@ -1,6 +1,7 @@
     Title: A few cores too many
     Date: 2016-08-03T14:09:02
-    Tags: performance, benchmarking, lost time, by Ben Greenman
+    Tags: performance, benchmarking, lost time
+    Authors: Ben Greenman
 
 Performance matters for software systems, but performance is not always easy
  to measure.

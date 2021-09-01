@@ -1,6 +1,7 @@
     Title: Meaningful Distinctions
     Date: 2016-10-31T17:20:33
-    Tags: history, constructions, by Ben Greenman
+    Tags: history, constructions
+    Authors: Ben Greenman
 
 > "Meaningful distinctions deserve to be maintained." -- Errett A. Bishop
 

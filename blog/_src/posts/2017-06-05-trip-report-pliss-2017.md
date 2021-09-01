@@ -1,6 +1,7 @@
     Title: Report: PLISS 2017
     Date: 2017-06-05T15:47:59
-    Tags: pliss, event, by Ming-Ho Yee
+    Tags: pliss, event
+    Authors: Ming-Ho Yee
 
 Two weeks ago, I attended the first [Programming Language Implementation Summer
 School][PLISS], held in beautiful Bertinoro, Italy.

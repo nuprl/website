@@ -1,6 +1,7 @@
     Title: Refinement Types
     Date: 2017-04-20T23:38:23
-    Tags: HOPL, by Kevin Clancy
+    Tags: HOPL
+    Authors: Kevin Clancy
 
 <!-- more -->
 

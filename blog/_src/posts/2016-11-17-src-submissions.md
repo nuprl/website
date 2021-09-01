@@ -1,6 +1,7 @@
     Title: SRC-submissions
     Date: 2016-11-17T13:52:52
-    Tags: by Gabriel Scherer
+    Tags:
+    Authors: Gabriel Scherer
 
 Max New, Daniel Patterson and Ben Greenman recently wrote three
 two-page abstracts on what they are working on right now. Come have

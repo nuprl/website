@@ -1,6 +1,7 @@
     Title: The Behavior of Gradual Types: A User Study
     Date: 2018-12-11T19:50:33
-    Tags: migratory typing, gradual typing, extended abstract, by Ben Greenman
+    Tags: migratory typing, gradual typing, extended abstract
+    Authors: Ben Greenman
 
 <!-- more -->
 

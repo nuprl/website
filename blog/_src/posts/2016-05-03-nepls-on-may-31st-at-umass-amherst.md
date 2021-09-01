@@ -1,6 +1,7 @@
     Title: NEPLS on May 31st at UMass, Amherst
     Date: 2016-05-03T08:21:07
-    Tags: NEPLS, conference, by Gabriel Scherer
+    Tags: NEPLS, conference
+    Authors: Gabriel Scherer
 
 It is my pleasure to relay the following announcement for the next
 edition of the New England Programming Language Seminer (NEPLS), to be

@@ -1,6 +1,7 @@
     Title: Reviews and author responses: we should stop asking for 500-word responses
     Date: 2017-08-13T14:29:41
-    Tags: by Gabriel Scherer
+    Tags:
+    Authors: Gabriel Scherer
 
 This year I reviewed many ICFP submissions, and got to be on the
 receiving end of equally many author responses (also sometimes called,

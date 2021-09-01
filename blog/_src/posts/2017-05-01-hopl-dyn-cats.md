@@ -1,6 +1,7 @@
     Title: Categorical Semantics for Dynamically Typed Programming Languages
     Date: 2017-05-01T12:25:17
-    Tags: HOPL, category theory, dynamic typing, gradual typing, by Max New
+    Tags: HOPL, category theory, dynamic typing, gradual typing
+    Authors: Max New
 
 <!-- more -->
 

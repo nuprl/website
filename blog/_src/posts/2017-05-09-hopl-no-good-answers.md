@@ -1,6 +1,7 @@
     Title: No Good Answers, Gradually Typed Object-Oriented Languages
     Date: 2017-05-09T14:04:31
-    Tags: HOPL, Gradual Typing, by Ben Chung
+    Tags: HOPL, Gradual Typing
+    Authors: Ben Chung
 
 <!-- more -->
 

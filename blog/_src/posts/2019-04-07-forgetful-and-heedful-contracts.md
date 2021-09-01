@@ -1,6 +1,7 @@
     Title: Forgetful and Heedful contracts
     Date: 2019-04-07T23:15:11
-    Tags: migratory typing, higher-order contracts, by Ben Greenman
+    Tags: migratory typing, higher-order contracts
+    Authors: Ben Greenman
 
 _Forgetful_ and _heedful_ are two methods for space-efficient contracts
  developed by [Michael Greenberg](http://www.cs.pomona.edu/~michael/) in [2014][g].

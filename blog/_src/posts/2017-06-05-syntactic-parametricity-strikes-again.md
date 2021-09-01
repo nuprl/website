@@ -1,6 +1,7 @@
     Title: Syntactic parametricity strikes again
     Date: 2017-06-05T14:27:44
-    Tags: by Gabriel Scherer, by Li-Yao Xia
+    Tags:
+    Authors: Gabriel Scherer, Li-Yao Xia
 
 In this blog post, reporting on a collaboration with [Li-Yao
 Xia](https://poisson.chat/), I will show an example of

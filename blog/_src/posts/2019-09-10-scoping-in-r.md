@@ -1,6 +1,7 @@
     Title: Scoping in R
     Date: 2019-09-10T10:00:00
-    Tags: scope, r, by Ming-Ho Yee
+    Tags: scope, r
+    Authors: Ming-Ho Yee
 
 In the [previous post](/blog/2019/09/05/lexical-and-dynamic-scope/) of this
 three-part blog series, we discussed lexical and dynamic scope. Now, in this

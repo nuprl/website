@@ -2,7 +2,8 @@
 
 Title: Tutorial: Using Racket's FFI
 Date: 2016-06-27T16:22:11
-Tags: Racket, FFI, tutorial, by Asumu Takikawa
+Tags: Racket, FFI, tutorial
+Authors: Asumu Takikawa
 
 @(require scribble/example
           scribble/racket

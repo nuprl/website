@@ -1,6 +1,7 @@
     Title: What is Soft Typing?
     Date: 2017-04-28T12:25:17
-    Tags: HOPL, by Ben Greenman
+    Tags: HOPL
+    Authors: Ben Greenman
 
 <!-- more -->
 

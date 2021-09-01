@@ -1,6 +1,7 @@
     Title: Linear Types for Low-level Languages
     Date: 2017-02-28T09:51:55
-    Tags: HOPL, by Daniel Patterson
+    Tags: HOPL
+    Authors: Daniel Patterson
 
 <!-- more -->
 

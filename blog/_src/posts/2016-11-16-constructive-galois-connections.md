@@ -1,6 +1,7 @@
     Title: Understanding Constructive Galois Connections
     Date: 2016-11-16T00:00:00
-    Tags: icfp, galois connection, adjunction, category theory, math, by Max New
+    Tags: icfp, galois connection, adjunction, category theory, math
+    Authors: Max New
 
 One of my favorite papers at ICFP 2016 (in lovely
 [Nara, Japan](http://conf.researchr.org/home/icfp-2016)) was

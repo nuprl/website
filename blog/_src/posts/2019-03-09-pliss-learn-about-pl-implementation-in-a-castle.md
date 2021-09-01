@@ -1,6 +1,7 @@
     Title: PLISS: Learn About PL Implementation in a Castle
     Date: 2019-03-09T14:40:16
-    Tags: event, lectures, castle, language implementation, by Alexi Turcotte
+    Tags: event, lectures, castle, language implementation
+    Authors: Alexi Turcotte
 
 We love programming languages (PLs), and we should all be in on the ins and outs of
 implementing them.

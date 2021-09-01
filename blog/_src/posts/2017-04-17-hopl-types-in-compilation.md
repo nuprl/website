@@ -1,6 +1,7 @@
     Title: Type-Directed Compilation, Parts I and II
     Date: 2017-04-17T12:00:17
-    Tags: HOPL, by Leif Andersen, by William J. Bowman
+    Tags: HOPL
+    Authors: Leif Andersen, William J. Bowman
 
 <!-- more -->
 

@@ -1,6 +1,7 @@
     Title: On-Stack Replacement
     Date: 2019-01-28T10:29:57
-    Tags: by Ming-Ho Yee
+    Tags:
+    Authors: Ming-Ho Yee
 
 Last semester, I took [a course][cs7600] where the final project was to write a
 survey paper on "a topic in the intersection between computer systems and your

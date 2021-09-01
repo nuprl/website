@@ -1,6 +1,7 @@
     Title: Closure Conversion as CoYoneda
     Date: 2017-08-28T10:30:00
-    Tags: Yoneda, coYoneda, category theory, compilers, closure conversion, math, by Max New
+    Tags: Yoneda, coYoneda, category theory, compilers, closure conversion, math
+    Authors: Max New
 
 The continuation-passing style transform (cps) and closure conversion
 (cc) are two techniques widely employed by compilers for functional

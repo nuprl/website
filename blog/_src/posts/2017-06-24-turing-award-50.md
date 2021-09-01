@@ -1,6 +1,7 @@
     Title: Quotes and Stories from "Turing 50"
     Date: 2017-06-24T20:00:52
-    Tags: dear diary, by Ben Greenman
+    Tags: dear diary
+    Authors: Ben Greenman
 
 The ACM recently hosted [a celebration of 50 years of the A.M. Turing award](https://www.acm.org/turing-award-50).
 These are some notes and thoughts from the event,
