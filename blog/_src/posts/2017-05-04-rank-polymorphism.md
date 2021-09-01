@@ -1,6 +1,7 @@
     Title: Rank Polymorphism
     Date: 2017-05-04T18:26:48
-    Tags: by Justin Slepak, array language, 
+    Tags: array language
+    Authors: Justin Slepak
 
 
 Rank polymorphism gives you code reuse on arguments of different dimensions.

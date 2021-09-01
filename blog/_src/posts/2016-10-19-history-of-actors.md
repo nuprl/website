@@ -1,6 +1,7 @@
     Title: History of Actors
     Date: 2016-10-19T17:26:16
-    Tags: history, by Tony Garnock-Jones
+    Tags: history
+    Authors: Tony Garnock-Jones
 
 Christos Dimoulas is currently teaching a
 ["History of Programming Languages" class at Harvard](http://www.seas.harvard.edu/courses/cs252/2016fa/).

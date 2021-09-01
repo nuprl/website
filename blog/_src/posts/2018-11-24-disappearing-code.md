@@ -1,6 +1,7 @@
     Title: Disappearing Code
     Date: 2018-11-24T09:52:58
-    Tags: dear diary, by Ben Greenman
+    Tags: dear diary
+    Authors: Ben Greenman
 
 Two experiences at [SPLASH 2018](https://2018.splashcon.org/home)
 reminded me that software gets thrown away and replaced.

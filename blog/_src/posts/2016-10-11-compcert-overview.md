@@ -1,6 +1,7 @@
     Title: CompCert Overview
     Date: 2016-10-11T17:41:16
-    Tags: tutorial, coq, compiler correctness, by Ben Greenman
+    Tags: tutorial, coq, compiler correctness
+    Authors: Ben Greenman
 
 If you are interested in learning about the _internals_ of the CompCert C
 compiler but would rather not read its source code, this post is for you.

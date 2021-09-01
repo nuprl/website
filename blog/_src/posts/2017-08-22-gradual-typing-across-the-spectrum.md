@@ -1,6 +1,7 @@
     Title: Gradual Typing Across the Spectrum, part II
     Date: 2017-08-22T15:54:06
-    Tags: gradual typing, PI meeting, by Ben Greenman
+    Tags: gradual typing, PI meeting
+    Authors: Ben Greenman
 
 Last week, Northeastern hosted a PI meeting for the [Gradual Typing Across the
  Spectrum](http://prl.ccs.neu.edu/gtp/) NSF grant.

@@ -1,6 +1,7 @@
     Title: Racket 6.9 and Windows 10 Creators Update
     Date: 2017-05-26T17:00:28
-    Tags: racket, windows, bugs, by Leif Andersen
+    Tags: racket, windows, bugs
+    Authors: Leif Andersen
 
 [Racket][racket] 6.9 was released in April and it has been smooth sailing for
 many people. However, some people using the [Windows 10 Creators Update][WCU] have

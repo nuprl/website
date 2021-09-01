@@ -1,6 +1,7 @@
     Title: Building a Website with Scribble
     Date: 2017-05-23T01:53:13
-    Tags: Scribble, tutorial, by Ben Greenman
+    Tags: Scribble, tutorial
+    Authors: Ben Greenman
 
 The source code for the PRL website is written using Scribble, the Racket
  documentation tool.

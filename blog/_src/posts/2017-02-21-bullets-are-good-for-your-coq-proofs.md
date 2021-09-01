@@ -1,6 +1,7 @@
     Title: Bullets are good for your Coq proofs
     Date: 2017-02-21T19:04:28
-    Tags: coq, by Gabriel Scherer
+    Tags: coq
+    Authors: Gabriel Scherer
 
 I believe that bullets are one of the most impactful features of
 recent versions of Coq, among those that non-super-expert users can

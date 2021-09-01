@@ -1,6 +1,7 @@
     Title: Does anyone still care about printed proceedings? (Grab some at NEU this week!)
     Date: 2016-06-13T10:50:14
-    Tags: proceedings,dawn of the digital era, by Gabriel Scherer
+    Tags: proceedings,dawn of the digital era
+    Authors: Gabriel Scherer
 
 Are you interested in printed conference Proceedings? We have a good
 stack of them left away at Northeastern University (Boston, MA) and it

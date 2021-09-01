@@ -1,6 +1,7 @@
     Title: Measuring GC latencies in Haskell, OCaml, Racket
     Date: 2016-05-24T10:51:34
-    Tags: garbage collection,latency,instrumentation,haskell,ghc,ocaml,racket,by Gabriel Scherer
+    Tags: garbage collection,latency,instrumentation,haskell,ghc,ocaml,racket
+    Authors: Gabriel Scherer
 
 James Fisher has a blog post on a case where GHC's runtime system
 imposed unpleasant latencies on their Haskell program:

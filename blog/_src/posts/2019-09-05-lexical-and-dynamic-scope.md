@@ -1,6 +1,7 @@
     Title: Lexical and Dynamic Scope
     Date: 2019-09-05T10:00:00
-    Tags: scope, definitions, history, by Ming-Ho Yee
+    Tags: scope, definitions, history
+    Authors: Ming-Ho Yee
 
 This all started with a simple question about the R programming language: _is R
 lexically or dynamically scoped?_

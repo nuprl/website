@@ -1,6 +1,7 @@
     Title: Gradual Typing Across the Spectrum
     Date: 2016-05-18T07:58:56
-    Tags: gradual typing, PI meeting, by Asumu Takikawa
+    Tags: gradual typing, PI meeting
+    Authors: Asumu Takikawa
 
 > Instead of being Pythonistas, Rubyists, or Racketeers we have to
 > be scientists. -- Matthias Felleisen

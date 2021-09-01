@@ -1,6 +1,7 @@
     Title: Fall 2016 PL Junior Retrospective
     Date: 2017-01-02T16:39:37
-    Tags: PL Junior, by Ben Chung, by Milo Davis, by Ming-Ho Yee, by Sam Caldwell
+    Tags: PL Junior
+    Authors: Ben Chung, Milo Davis, Ming-Ho Yee, Sam Caldwell
 
 The [Programming Language Seminar, Junior] [10] (or “PL Junior”), is a
 seminar for junior students to learn and discuss topics at a pace more

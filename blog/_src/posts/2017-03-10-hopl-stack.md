@@ -1,6 +1,7 @@
     Title: Type Inference in Stack-Based Programming Languages
     Date: 2017-03-10T16:23:30
-    Tags: HOPL, by Rob Kleffner
+    Tags: HOPL
+    Authors: Rob Kleffner
 
 <!-- more -->
 

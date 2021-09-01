@@ -1,6 +1,7 @@
     Title: Beta Reduction (Part 1)
     Date: 2016-11-02T21:10:18
-    Tags: lambda,calculus,beta,reduction,semantics,by Milo Davis
+    Tags: lambda,calculus,beta,reduction,semantics
+    Authors: Milo Davis
 
 The λ-calculus is often introduced by showing how to build a real programming language from it's simple syntactic forms.  In this series of post, I attempt to introduce it as a tool for modeling semantics.  So if you're opening [Barendregt](https://www.amazon.com/Calculus-Semantics-Studies-Foundations-Mathematics/dp/0444875085) for the first time, trying to understand a lecture from a programming languages or functional programming class, or just starting to become involved in PL research, I hope this post will help you understand evaluation by substitution (β-reduction).
 

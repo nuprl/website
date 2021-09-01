@@ -1,6 +1,7 @@
     Title: Writing a paper with Scribble
     Date: 2019-02-17T16:20:50
-    Tags: Scribble, tutorial, by Ben Greenman
+    Tags: Scribble, tutorial
+    Authors: Ben Greenman
 
 This post explains how to get started using Scribble to write a research paper.
 

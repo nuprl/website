@@ -1,6 +1,7 @@
     Title: Monotonicity Types: Towards A Type System for Eventual Consistency
     Date: 2017-10-22T11:59:06
-    Tags: types, monotonicity, CRDTs, eventual consistency, by Kevin Clancy
+    Tags: types, monotonicity, CRDTs, eventual consistency
+    Authors: Kevin Clancy
 
 
 A few weeks back, we published a draft of an article entitled [_Monotonicity Types_](https://infoscience.epfl.ch/record/231867). In it, we describe a type system which we hope can aid the design of distributed systems by tracking monotonicity with types.

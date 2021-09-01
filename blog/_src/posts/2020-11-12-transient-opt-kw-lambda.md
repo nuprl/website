@@ -1,6 +1,7 @@
     Title: Transient for Optional and Keyword Functions
     Date: 2020-11-12T10:15:16
-    Tags: typed racket, transient, by Ben Greenman
+    Tags: typed racket, transient
+    Authors: Ben Greenman
 
 A short adventure into the depths of optional and/or keyword
  functions in Racket.

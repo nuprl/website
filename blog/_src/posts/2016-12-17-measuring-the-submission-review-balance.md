@@ -1,6 +1,7 @@
     Title: Measuring the submission/review balance
     Date: 2016-12-17T16:33:10
-    Tags: by Gabriel Scherer
+    Tags:
+    Authors: Gabriel Scherer
 
 How do researchers know whether they are doing "enough" or "too many"
 reviews? A measurable goal is to be review-neutral: to have demanded,

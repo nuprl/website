@@ -1,6 +1,7 @@
     Title: PLISS: Oregon without the greek
     Date: 2017-02-28T23:01:00
-    Tags: event, lectures, language implementation, by Jan Vitek
+    Tags: event, lectures, language implementation
+    Authors: Jan Vitek
 
 What does every student interested in programming languages need to
 learn about the practical side of the field? That is the question that

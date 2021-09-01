@@ -1,6 +1,7 @@
     Title: PLT Redex: mf-apply
     Date: 2017-03-03T08:54:20
-    Tags: PLT Redex, package, lang-extension, by Ben Greenman
+    Tags: PLT Redex, package, lang-extension
+    Authors: Ben Greenman
 
 The `mf-apply` keyword is for checked metafunction application in PLT Redex.
 In other words, `(mf-apply f x)` is just like `(f x)`, but errors if `f` is

@@ -1,6 +1,7 @@
     Title: Complete Monitors for Gradual Types
     Date: 2019-10-31T21:58:26
-    Tags: migratory typing, gradual typing, complete monitoring, extended abstract, by Ben Greenman
+    Tags: migratory typing, gradual typing, complete monitoring, extended abstract
+    Authors: Ben Greenman
 
 Syntactic type soundness is too weak to tell apart different ways of running
  a program that mixes typed and untyped code.

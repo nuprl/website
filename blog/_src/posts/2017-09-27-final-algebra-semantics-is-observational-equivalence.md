@@ -1,6 +1,7 @@
     Title: Final Algebra Semantics is Observational Equivalence
     Date: 2017-09-27T15:44:57
-    Tags: category theory, math, final encoding, observational equivalence, by Max New
+    Tags: category theory, math, final encoding, observational equivalence
+    Authors: Max New
 
 Recently, "final encodings" and "finally tagless style" have become
 popular techniques for defining embedded languages in functional
