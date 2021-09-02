@@ -576,8 +576,8 @@
                         #:dissertation "http://www.ccs.neu.edu/home/lieber/theses/abdelmeged/scg/ahmed-thesis.html"
                         #:personal-site "http://www.ccs.neu.edu/home/mohsen/HomePage/index.html")
               @(alumnus "Phillip Mates" #:year 2015
-                        #:personal-site "http://www.ccs.neu.edu/home/mates/"
-                        #:extra "(Dimagi)")
+                        #:personal-site "https://philomates.github.io/"
+                        #:extra "(Igalia)")
               @(alumnus "Erik Silkensen" #:year 2015
                         #:personal-site "http://www.ccs.neu.edu/home/ejs/")
               @(alumnus "Christos Dimoulas" #:year 2012
