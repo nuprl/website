@@ -15,7 +15,7 @@
             We design, implement, and maintain software systems.
             @div[class: "col-md-12"]{
               @h1[id: "pn-anchor-home"]{@a[href: "http://racket-lang.org/"]{
-                @img[height: 40 src: "img/racket-logo.png"]}}}
+                @img[height: 60 src: "img/racket-logo.png"]}}}
             @div[class: "col-md-12"]{
               @p{
                 The Racket language is a vehicle for most of our research and teaching.
