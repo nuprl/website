@@ -15,7 +15,7 @@
             We design, implement, and maintain software systems.
             @div[class: "col-md-12"]{
               @h1[id: "pn-anchor-home"]{@a[href: "http://racket-lang.org/"]{
-                @img[height: 40 src: "http://racket-lang.org/logo-and-text.png"]}}}
+                @img[height: 40 src: "img/racket-logo.png"]}}}
             @div[class: "col-md-12"]{
               @p{
                 The Racket language is a vehicle for most of our research and teaching.
@@ -26,12 +26,12 @@
 
             @div[class: "col-md-12"]{
               @h1[id: "pn-anchor-home"]{@a[href: "http://fiji-systems.com/"]{
-                @img[height: 60 src: "http://janvitek.github.io/img/fiji.gif"]}}}
+                @img[height: 60 src: "img/fiji.gif"]}}}
             @div[class: "col-md-12"]{
               @p{The Fiji real-time JVM and Fiji C1 compiler run on on a broad range of HW/OS (ARM and ERC32 to PowerPC and x86/x86_64, from RTEMS to Linux or Darwin), execute Java with deterministic garbage collection, or safe GC-less allocation.}}
             @div[class: "col-md-12"]{
               @h1[id: "pn-anchor-home"]{@a[href: "http://plg.uwaterloo.ca/~dynjs/"]{
-                @img[height: 40 src: "http://janvitek.github.io/img/dynjs.png"]}}}
+                @img[height: 40 src: "img/dynjs.png"]}}}
             @div[class: "col-md-12"]{
               @p{This project intends to analyze the dynamic behavior of JavaScript programs and its implications on analyses and security.}}
 
@@ -44,7 +44,7 @@
             @div[class: "col-md-12"]{
               @h1[id: "pn-anchor-home"]{
                 @a[href: "http://larcenists.org"]{
-                  @img[style: "background:white;" height: 60 src: "http://larcenists.org/images/larceny.png"]}}}
+                  @img[style: "background:white;" height: 60 src: "img/larceny.png"]}}}
             @div[class: "col-md-12"]{
               @p{Larceny is an implementation of the Scheme programming language written by
                  Will Clinger and his students.}}
