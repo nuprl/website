@@ -115,6 +115,8 @@
                  @li{
                    @strong{7480} Special Topics in Programming Languages
                    @br{}
+                   @indent{} S 2021 History of Programming Languages @a[href: "https://felleisen.org/matthias/7480-s21/index.html" target: "_blank"]{link} @instructor{Matthias Fellsein}
+                   @br{}
                    @indent{} F 2020 Type Systems @instructor{John Boyland}
                    @br{}
                    @indent{} S 2019 Gradual Typing and Principled Language Interoperability @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s19/" target: "_blank"]{link} @instructor{Amal Ahmed}
@@ -152,6 +154,10 @@
                  @li{
                    @strong{6050 DS} Seminar in Data Science @br{}
                    @indent{} S 2019 Expeditions in Data Science @a[href: "http://janvitek.org/events/NEU/6050/" target: "_blank"]{link} @instructor{Jan Vitek} @br{}
+                 }
+                 @li{
+                   @strong{5963} Relation and Constraint Programming @br{}
+                   @indent{} S 2021 @a[href: "https://pages.github.ccs.neu.edu/jhemann/21SP-CS5963/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                  }
                  @li{
                    @strong{5500} Foundations of Software Engineering @br{}
@@ -196,6 +202,7 @@
                  }
                  @li{
                      @strong{4410} Compilers @br{}
+                     @indent[] S 2021 @a[href: "https://courses.ccs.neu.edu/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2020 @a[href: "https://course.ccs.neu.edu/cs4410sp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs4410sp19/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
@@ -206,11 +213,13 @@
                  }
                  @li{
                      @strong{4400} Programming Languages @br{}
+                     @indent[] S 2021 @a[href: "https://pages.github.ccs.neu.edu/jhemann/21SP-CS4400/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "https://felleisen.org/matthias/4400-s20/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
                      @indent[] F 2018 @a[href: "https://pl.barzilay.org/" target: "_blank"]{link} @instructor{Jason Hemann}
                  }
                  @li{
                      @strong{4530} Fundamentals of Software Engineering @br{}
+                     @indent{} S 2021 @a[href: "https://neu-se.github.io/CS4530-CS5500-Spring-2021" target: "_blank"]{link} @instructor{Jon Bell, John Boyland, Mitch Wand} @br{}
                      @indent{} F 2020 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/CS4530-CS5500-Fall2020/index.html" target: "_blank"]{link} @instructor{Frank Tip, Jon Bell} @br{}
                  }
                  @li{
@@ -226,11 +235,13 @@
                  }
                  @li{
                      @strong{2800} Logic and Computation @br{}
+                     @indent[] S 2021 @a[href: "https://pages.github.ccs.neu.edu/jhemann/21SP-CS2800/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] F 2020 @a[href: "https://pages.github.ccs.neu.edu/jhemann/20FA-2800/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "https://www.khoury.northeastern.edu/~pete/courses/Logic-and-Computation/2020-Spring/" target: "_blank"]{link} @instructor{Pete Manolios, Olin Shivers}
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
+                     @indent[] S 2021 accelerated @a[href: "https://course.ccs.neu.edu/cs2510a/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs2510sp19/" target: "_blank"]{link} @instructor{Leena Razzaq, Jason Hemann, Matthew Singer} @br{}
                      @indent[] S 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp19/" target: "_blank"]{link} @instructor{Ben Lerner, Matthew Singer} @br{}                
