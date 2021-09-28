@@ -451,7 +451,7 @@
                     "Joined Northeastern, 2021"
                     "BA, Grinnell College"]
                   #:img "john_gouwar.jpg"]{
-            I really enjoy functional programming and would like to develop languages that allow for the use of functional programming techniques in areas that it has not been used before.
+            I really enjoy functional programming and would like to develop languages that allow for the use of functional programming techniques in areas that they have not been used before.
           }
 
           @person[#:name "John Li"
