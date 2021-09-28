@@ -433,6 +433,45 @@
                   #:img "donald_pinckney.jpg"]{
             I enjoy working on formalizing semantics of systems so as to uncover surprising behavior, and fix related bugs. Recently I'm working on understanding the semantics of package managers.
           }
+
+          @person[#:name "Michelle Thalakottur"
+                  #:title "Advisor: Amal Ahmed, Frank Tip"
+                  #:e-mail "michelledt@ccs.neu.edu"
+                  #:website "https://michelledaviest.github.io/"
+                  #:history @list[
+                    "Joined Northeastern, 2021"]
+                  #:img "michelle_thalakottur.jpg"]{
+            I like thinking about programming languages and compilers.
+          }
+
+          @person[#:name "John Gouwar"
+                  #:title "Advisor: Arjun Guha"
+                  #:e-mail "gouwar.j@northeastern.edu"
+                  #:history @list[
+                    "Joined Northeastern, 2021"
+                    "BA, Grinnell College"]
+                  #:img "john_gouwar.jpg"]{
+            I really enjoy functional programming and would like to develop languages that allow for the use of functional programming techniques in areas that it has not been used before.
+          }
+
+          @person[#:name "John Li"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "johnli0135@gmail.com"
+                  #:history @list[
+                    "Joined Northeastern, 2021"]
+                  #:img "john_li.jpg"]{
+            I like logic, semantics, and interactive theorem proving.
+          }
+          
+          @person[#:name "Satyajit Gokhale"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "gokhale.sa@northeastern.edu"
+                  #:history @list[
+                    "Joined PRL, 2021"
+                    "MS, Northeastern University"]
+                  #:img "satyajit_gokhale.jpg"]{
+            I am interested in program analysis and security. I am currently working on static analysis for JavaScript, and security in PLCs.
+          }
         }
 
         @div[class: "pn-separator-img"]{
