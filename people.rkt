@@ -305,7 +305,7 @@
 
           @person[#:name "Aviral Goel"
                   #:title "Advisor: Jan Vitek"
-                  #:e-mail "goel.av@husky.neu.edu"
+                  #:e-mail "goel.aviral@gmail.com"
                   #:website "http://aviral.io/"
                   #:history @list["Joined Northeastern, 2017"]
                   #:img "aviral-goel.jpeg"]{
@@ -374,7 +374,7 @@
 
           @person[#:name "Olek Gierczak"
                   #:title "Advisor: Amal Ahmed"
-                  #:e-mail "gierczak.o@husky.neu.edu"
+                  #:e-mail "gierczak.o@northeastern.edu"
                   #:history @list[
                     "Joined Northeastern, 2019"]
                   #:img "olek_gierczak.jpg"]{
