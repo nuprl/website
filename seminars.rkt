@@ -1537,11 +1537,14 @@ a Dr. sc. ETH in 2012.
            @div[class: "col-md-12"]{
              @h2{Programming Language Seminar}
              @p{
-              The PL seminar meets in WVH
-              [@a[href: "http://www.ccs.neu.edu/home/wand/directions.html"]{directions}]. The @a[href: "http://lists.ccs.neu.edu/pipermail/pl-seminar"]{mailing
-                list} is public. An @a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc@group.calendar.google.com&ctz=America/New_York"]{HTML calendar}
-                and an @a[href: "https://calendar.google.com/calendar/ical/k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com/public/basic.ics"]{ICAL calendar}
-              are available for your convenience.}}}
+              The PL Seminar generally meets
+              in @a[href: "http://www.ccs.neu.edu/home/wand/directions.html"]{WVH 366}
+              and on @a[href: "https://northeastern.zoom.us/j/98598689387?pwd=Z0tyT2FFdFVsZGFKbDltMjRhS095Zz09"]{Zoom}
+              on Fridays from 1:00-3:25pm (ET).
+              The @a[href: "http://lists.ccs.neu.edu/pipermail/pl-seminar"]{mailing list} is public.
+              An @a[href: "https://outlook.office365.com/owa/calendar/a3c884a0aa1a44258f5f6ab04f328737@northeastern.edu/968391c9df94443a93cb6afecd2562c813340509926710825269/calendar.html"]{HTML calendar}
+              and an @a[href: "https://outlook.office365.com/owa/calendar/a3c884a0aa1a44258f5f6ab04f328737@northeastern.edu/968391c9df94443a93cb6afecd2562c813340509926710825269/calendar.ics"]{ICAL calendar}
+              are available for your convenience. (Note: These calendars were changed in Fall 2021, so returning attendees should resubscribe.)}}}
 
          @br{}
 
