@@ -81,6 +81,26 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "namin-tbd"
+     "TBD"
+     "Nada Amin"
+     "https://namin.seas.harvard.edu/"
+     "Harvard University"
+     (datetime 2021 10 29 13 00)
+     "WVH 366 and Zoom"
+     @list{@p{TBD}}
+     @list{@p{"Nada Amin is an Assistant Professor of Computer Science at Harvard SEAS. Previously, she was a University Lecturer in Programming Languages at the University of Cambridge;  a member of the team behind the Scala programming language at the Ecole Polytechnique Federale de Lausanne (EPFL), where she pursued her PhD; and a software engineer at Google, on the compiler infrastructure supporting Gmail and other Google Apps. She holds bachelor of science and master of engineering degrees from the Massachusetts Institute of Technology (MIT)."}})
+    (seminar
+     "heineman-synthexp"
+     "Synthesizing Solutions to the Expression Problem"
+     "George T. Heineman"
+     "https://web.cs.wpi.edu/~heineman/"
+     "Worcester Polytechnic Institute"
+     (datetime 2021 10 22 13 00)
+     "WVH 366 and Zoom"
+     @list{@p{The Expression Problem (EP) describes a common software issue that appears regardless of programming language or programming paradigm. As coined by Philip Wadler in 1998, EP is a new name for an old problem. Given a data type defined by cases, consider two independent extensions, namely, adding new cases to the data type and new functions over the datatype. Dozens of papers in the research literature present their solutions to the EP, using a variety of programming languages and approaches.} @p{In this talk I present EpCoGen, a Scala-based framework that can synthesize full solutions to the EP problem.  We designed a common API for all EP approaches, independent of programming language and application domain. An important contribution of this work is the scientific reproduction of known EP approaches from the literature. In designing EpCoGen, we devised a novel EP approach called Covariant Conversions (CoCo), published in ECOOP 2021, that describes a design pattern for type-safe modular software evolution in object-oriented systems.} @p{This work is based on an ongoing collaboration with Jan Bessai (TU Dortmund) and Boris Düdder (Univ. Copenhagen).}}
+     @list{@p{George T. Heineman is an Associate Professor of Computer Science at WPI. His research interests are in Software Engineering, specifically synthesizing software systems from composable units. He is author of "Learning Algorithms" (O'Reilly Media, 2021) and "Algorithms in a Nutshell, 2ed," (O'Reilly Media, 2016). Aside from his professional pursuits, George is an avid puzzler. He invented Sujiken® , a Sudoku variation played on a right-triangle arrangement of cells in which numbers cannot repeat in a horizontal row, vertical column or diagonal in any direction.}})
+    (seminar
      "balzer"
      "Manifest Deadlock-Freedom for Shared Session Types"
      "Stephanie Balzer"
