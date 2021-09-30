@@ -73,7 +73,7 @@
                 @li{For grad students: more information about Northeastern's Khoury College of Computer Sciences can be found on
                   @a[href: "https://wiki.ccs.neu.edu/display/phdhub"]{the PhD Hub wiki}, a successor of @a[href: "https://wiki.ccs.neu.edu/display/GRADWIKI/Home"]{the grad wiki} (login required).
                   Students are also welcome to join @a[href: "https://khouryphds.slack.com/"]{Khoury PHDs Slack}
-                  (use your @tt{husky.neu.edu} email address)
+                  (use your @tt{northeastern.edu} email address)
                   and check out @a[href: "https://khoury-gsa.github.io/"]{Khoury GSA website}.
                 }
                 @li{
