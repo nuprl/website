@@ -5,6 +5,7 @@ setup:
 
 blog:
 	raco frog -b
+	cp author_redirects/* tags/
 
 clean:
 	raco frog -c
