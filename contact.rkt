@@ -82,7 +82,7 @@
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
                     @h4{Twitter @br{} 
                       @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}} 
-                      @a[href: "a.pelenitsyn@gmail.com"]{Artem Pelenitsyn}, @a[href: "mailto:weiss@ccs.neu.edu"]{Aaron Weiss}, @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}
+                      @a[href: "mailto:a.pelenitsyn@gmail.com"]{Artem Pelenitsyn}, @a[href: "mailto:weiss@ccs.neu.edu"]{Aaron Weiss}, @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}
                   }
 
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
