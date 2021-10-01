@@ -43,3 +43,9 @@ Blog
 ====
 
 See `blog/README.md`
+
+
+Contributing
+====
+
+Please, submit any meaningful change (e.g., larger than a typo) as a pull request against `master`.
