@@ -472,6 +472,26 @@
                   #:img "satyajit_gokhale.jpg"]{
             I am interested in program analysis and security. I am currently working on static analysis for JavaScript, and security in PLCs.
           }
+        
+          @person[#:name "James Perretta"
+                  #:title "Advisors: Jonathan Bell and Arjun Guha"
+                  #:e-mail "perretta.j@northeastern.edu"
+                  #:history @list[
+                    "Joined Northeastern, 2021"
+                    "MS, University of Michigan"]
+                  #:img "james_perretta.jpg"]{
+            I completed my master's degree at University of Michigan, where I also developed an automated grading system that is used by over 5000 students per semester. My research interests lie at the intersection of PL and Software Engineering, and my current work is focused on mutation testing.
+          }
+
+          @person[#:name "Yangtian Zi"
+                  #:title "Advisor: Arjun Guha"
+                  #:e-mail "ytzi@ccs.neu.edu"
+                  #:website "http://ytzi.org"
+                  #:history @list[
+                    "Joined Northeastern, 2021"]
+                  #:img "ytzi.jpg"]{
+            My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
+          }
         }
 
         @div[class: "pn-separator-img"]{
