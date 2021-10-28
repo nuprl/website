@@ -82,13 +82,15 @@
     ;;  @list{@p{BIO}})
     (seminar
      "namin-tbd"
-     "TBD"
+     "Beyond Collapsing Towers: Staging a Relational Interpreter"
      "Nada Amin"
      "https://namin.seas.harvard.edu/"
      "Harvard University"
      (datetime 2021 10 29 13 00)
      "WVH 366 and Zoom"
-     @list{@p{TBD}}
+     @list{@p{Staging -- splitting a program into stages, the code generator and the generated code -- can mechanically turn an interpreter into a compiler. Going further, we can collapse a tower of interpreters into a one-pass compiler.
+An interpreter written in a relational programming language (miniKanren) for a functional programming language (subset of Racket) can not only evaluate an expression to a value, but also synthesize an expression (or more generally, term) for a hole -- in particular, turning functions into relations.
+We adapt staging to the relational setting, turning functions into relations -- and more -- with reduced interpretive overhead, promising a tractable avenue for the synthesis of functional programs.}}
      @list{@p{"Nada Amin is an Assistant Professor of Computer Science at Harvard SEAS. Previously, she was a University Lecturer in Programming Languages at the University of Cambridge;  a member of the team behind the Scala programming language at the Ecole Polytechnique Federale de Lausanne (EPFL), where she pursued her PhD; and a software engineer at Google, on the compiler infrastructure supporting Gmail and other Google Apps. She holds bachelor of science and master of engineering degrees from the Massachusetts Institute of Technology (MIT)."}})
     #;(seminar
      "heineman-synthexp"
