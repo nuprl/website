@@ -13,7 +13,7 @@ jobs:
         with:
           architecture: 'x64'
           distribution: 'full'
-          version: '7.2'
+          version: '7.9'
           packages: 'gregor,frog,honu'
       #- name: Setup upterm session
       #  uses: lhotari/action-upterm@v1
