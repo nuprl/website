@@ -19,7 +19,7 @@ jobs:
       #  uses: lhotari/action-upterm@v1
       - name: Build website
         run: |
-          sudo apt-get install -y python-pygments racket
+          sudo apt-get install -y python-pygments 
           sudo make all
           sudo git config --global user.name "github-actions[bot]"
           sudo git config --global user.email "nuprl+github-actions[bot]@users.noreply.github.com"
