@@ -8,8 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup upterm session
-        uses: lhotari/action-upterm@v1
+      - name: Install Racket
+        uses: Bogdanp/setup-racket@v0.8
+        with:
+          architecture: 'x64'
+          distribution: 'full'
+          version: '7.2'
+          packages: ['gregor', 'frog', 'honu']
+      #- name: Setup upterm session
+      #  uses: lhotari/action-upterm@v1
       - name: Build website
         run: |
           sudo apt-get install -y python-pygments racket
