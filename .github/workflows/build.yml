@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-#      - name: Cache Racket dependencies
-#        uses: actions/cache@v2
-#        with:
-#          path: |
-#            ~/.cache/racket
-#            ~/.local/share/racket
-#          key: default
+      - name: Cache Racket dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/racket
+            ~/.local/share/racket
+          key: default
       - name: Install Racket
-        uses: Bogdanp/setup-racket@v0.8
+        uses: Bogdanp/setup-racket@v1.7
         with:
           architecture: 'x64'
           distribution: 'full'
