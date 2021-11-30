@@ -81,6 +81,19 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+      "mcoblenz-squash"
+      "Squashing Bugs and Empowering Programmers with User-Centered Programming Language Design"
+      "Michael Coblenz"
+      "https://www.cs.umd.edu/~mcoblenz/"
+      "University of Maryland"
+      (datetime 2021 12 10 13 00)
+      "WVH 366 and Teams"
+      @list{@p{Programming languages are simultaneously formal systems and user interfaces with which programmers work. Unfortunately, programmers have a hard time writing safe software: serious bugs and security vulnerabilities are common. In many cases, however, languages with strong safety guarantees have been hard to use, and safer languages have seen slow adoption. In this talk, I’ll discuss user-centered design methods I developed to help language designers create languages that are easier to use. I’ll show how I created and evaluated Glacier, an extension for Java that enforces immutability, Obsidian, a new smart contract language that uses a linear type system, and Bronze, a new garbage collector for Rust. In each case, I found that the resulting language helps programmers write software more effectively than with prior approaches.}}
+      @list{
+      	@p{Excerpt from website:}
+      	@p{"I completed my Ph.D. in the Carnegie Mellon University Computer Science Department. I was a student of Jonathan Aldrich and Brad A. Myers. I also collaborated closely with Joshua Sunshine. Now, I’m a postdoctoral fellow at the University of Maryland. I work with Michael Hicks and Adam Porter."}
+	@p{"I spent ten years at Apple. For eight years, I was a full-time software engineer on the iWork team, focusing on Numbers. I worked on versions for macOS, iOS, and iCloud. If you’re still using some other spreadsheet app, give Numbers a try!"}})
+    (seminar
      "namin-tbd"
      "Beyond Collapsing Towers: Staging a Relational Interpreter"
      "Nada Amin"
