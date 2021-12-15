@@ -20,7 +20,7 @@
 @(define ECOOP "European Conference on Object-Oriented Programming (ECOOP)")
 @(define SNAPL "Summit on Advances in Programming Langugages (SNAPL)")
 @(define CC "International Conference on Compiler Construction (CC)")
-@(define SIGCSE "SIGCSE")
+@(define SIGCSE "Technical Symposium on Computer Science Education (SIGCSE)")
 @(define TOPLAS "Transactions on Programming Languages and Systems (TOPLAS)")
 @(define IFL "Implementation and Application of Functional Languages (IFL)")
 @(define PADL "Practical Aspects of Declarative Languages (PADL)")
@@ -61,12 +61,77 @@
 
 @(define publications
    (list
+    (publication "First-Class Environments in R"
+                 "Aviral Goel and Jan Vitek"
+                 DLS
+                 2021
+                 "https://doi.org/10.1145/3486602.3486768")
+    (publication "What We Eval in the Shadows: A Large-Scale Study of Eval in R Programs"
+                 "Aviral Goel, Pierre Donat-Bouillud, Filip Křikava, Christoph M. Kirsch, and Jan Vitek"
+                 OOPSLA
+                 2021
+                 "https://doi.org/10.1145/3485502")
+    (publication "Type Stability in Julia: Avoiding Performance Pathologies in JIT Compilation"
+                 "Artem Pelenitsyn, Julia Belyakova, Benjamin Chung, Ross Tate, and Jan Vitek"
+                 OOPSLA
+                 2021
+                 "https://doi.org/10.1145/3485527")
+    (publication "Promises Are Made to Be Broken: Migrating R to Strict Semantics"
+                 "Aviral Goel, Jan Ječmen, Sebastián Krynski, Olivier Flückiger, and Jan Vitek"
+                 OOPSLA
+                 2021
+                 "https://doi.org/10.1145/3485478")
+    (publication "Solver-Based Gradual Type Migration"
+                 "Luna Phipps-Costin, Carolyn Jane Anderson, Michael Greenberg, and Arjun Guha"
+                 OOPSLA
+                 2021
+                 "https://arxiv.org/abs/2109.05049")
+    (publication "Automatic Migration from Synchronous to Asynchronous Javascript APIs"
+                 "Satyajit Gokhale, Alexi Turcotte, and Frank Tip"
+                 OOPSLA
+                 2021
+                 "https://www.franktip.org/pubs/oopsla2021.pdf")
+    (publication "Compiling with Continuations, Correctly"
+                 "Zoe Paraskevopoulou and Anvay Grover"
+                 OOPSLA
+                 2021
+                 "https://doi.org/10.1145/3485491")
+    (publication "How to Evaluate Blame for Gradual Types"
+                 "Lukas Lazarek, Ben Greenman, Matthias Felleisen, and Christos Dimoulas"
+                 ICFP
+                 2021
+                 "https://www2.ccs.neu.edu/racket/pubs/icfp21-lgfd.pdf")
+    (publication "Compositional Optimizations for Certicoq"
+                 "Zoe Paraskevopoulou, John M. Li, and Andrew W. Appel"
+                 ICFP
+                 2021
+                 "https://www.cs.princeton.edu/~appel/papers/comp-opt-certicoq.pdf")
+    (publication "Iterative Program Synthesis For Adaptable Social Navigation"
+                 "Jarrett Holtz, Simon Andrews, Arjun Guha, and Joydeep Biswas"
+                 "International Conference on Intelligent Robots and Systems (IROS)"
+                 2021
+                 "https://arxiv.org/abs/2103.04880")
+    (publication "A Transient Semantics For Typed Racket"
+                 "Ben Greenman, Lukas Lazarek, Christos Dimoulas, and Matthias Felleisen"
+                 "The Art, Science, and Engineering of Programming"
+                 2022
+                 "http://www.ccis.neu.edu/racket/pubs/programming-gldf.pdf")
+    (publication "Cryptographic Hardness Under Projections For Time-Bounded Kolmogorov Complexity"
+                 "Eric Allender, John Gouwar, Shuichi Hirahara, and Caleb Robelle"
+                 "International Symposium on Algorithms and Computation (ISAAC)"
+                 2021
+                 "https://doi.org/10.4230/lipics.isaac.2021.54")
+    (publication "Evolving A K-12 Curriculum For Integrating Computer Science Into Mathematics"
+                 "Kathi Fisler, Emmanuel Schanzer, Steve Weimar, Annie Fetter, K. Ann Renninger, Shriram Krishnamurthi, Joe Gibbs Politz, Benjamin Lerner, Jennifer Poole, and Christine Koerner"
+                 SIGCSE
+                 2021
+                 "https://doi.org/10.1145/3408877.3432546")
     (publication "Accelerating Graph Sampling For Graph Machine Learning Using GPUs"
                  "Abhinav Jangda, Sandeep Polisetty, Arjun Guha, and Marco Serafini"
                  EuroSys
                  2021
                  "https://arxiv.org/pdf/2009.06693.pdf")
-    (publication "Flakeflagger: Predicting Flakiness Without Rerunning Tests"
+    (publication "FlakeFlagger: Predicting Flakiness Without Rerunning Tests"
                  "Abdulrahman Alshammari, Christopher Morris, Michael Hilton, and Jonathan Bell"
                  ICSE
                  2021
@@ -80,7 +145,7 @@
                  "Ellen Arteca, Frank Tip, and Max Schäefer"
                  ECOOP
                  2021
-                 "https://emarteca.github.io/files/ecoop21.pdf")
+                 "https://www.franktip.org/pubs/ecoop2021.pdf")
     (publication "Corpse Reviver: Sound And Efficient Gradual Typing Via Contract Verification"
                  "Cameron Moy, Phúc C. Nguyễn, Sam Tobin-Hochstadt, and David Van Horn"
                  POPL
