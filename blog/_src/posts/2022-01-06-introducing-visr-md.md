@@ -96,7 +96,7 @@ the `VISr` the same semantics as a function application. It also allows the
 `defvisr` form to work in the same file as the VISr itself. Additionally, VISrs
 that use `elaborate-fn` can be defined and used in the same file.
 
-![Example of elaborate-fn semantics](/img/intro-vise/sig.png)
+![Example of elaborate-fn semantics](/img/intro-visr/sig.png)
 
 
 # The Render Method for Edit-Time Semantics
