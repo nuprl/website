@@ -82,7 +82,7 @@ into [visr.pl][visr] yields its visual representation.
 # Making a new VISr
 
 The `defvisr` form creates a VISr type. This form has two methods: a `render`
-method that runs as code is edited, and an `elaborate`/`elaborate-fn` method
+method that runs when code is edited, and an `elaborate`/`elaborate-fn` method
 that gives the VISr compile-time and run-time semantics. The following is the
 signature for a simple VISr:
 
@@ -96,8 +96,7 @@ signature for a simple VISr:
 
 This example uses `elaborate-fn`, a simplified version of `elaborate` that gives
 the `VISr` the same semantics as a function application. It also allows the
-`defvisr` form to work in the same file as the VISr itself. Additionally, VISrs
-that use `elaborate-fn` can be defined and used in the same file.
+`defvisr` form to work in the same file as the VISr itself. 
 
 ![Example of elaborate-fn semantics](/img/intro-visr/sig.png)
 
@@ -118,8 +117,8 @@ And in action:
 
 ![Simple Count Example](/img/intro-visr/simpl-count.png)
 
-This VISr doesn't match the theme of the page, and requires its state to be a
-single number. Using [React Bootstrap][react-bootstrap] and Reagent cursors
+This VISr doesn't match the theme of the page; it also requires the state to be
+a single number. Using [React Bootstrap][react-bootstrap] and Reagent cursors
 fixes both of these issues:
 
 ```clojurescript
@@ -139,7 +138,7 @@ fixes both of these issues:
 
 The elaborate method takes the VISr state, and is expected to provide a
 compile-time or run-time semantics. In the simplified case of `elaborate-fn`,
-this semantics takes the form of a function:
+the VISr semantics takes the form of a function application:
 
 ```clojurescript
 (elaborate-fn [{:keys [count]}] count)
