@@ -1,4 +1,4 @@
-    Title: Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript
+    Title: Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)
     Date: 2022-01-06T17:56:08
     Authors: Leif Andersen
     Tags: visr, clojure, clojurescript, interactive syntax
@@ -10,17 +10,18 @@
 </style>
 
 Visual and interactive-syntax is a type of language-oriented programming that
-allows developers to use view and edit portions of a textual program with
-graphics. This gives you all of the benefits of a graphical programming
-language, while keeping all of the benefits of a purely textual language. Here
-is an example of a small network embedded in a program, next to the plain text
-rendering of the same program:
+allows developers to use, view, and edit portions of a textual program with
+graphics. Using interactive-syntax provides the benefits of a graphical
+programming language, while keeping all of the benefits of a purely textual
+language. For example, the following is an example of a small network embedded
+in a program:
 
 ![Graphical network embedded in text](/img/intro-visr/visr-and-text.png)
 
-Because visual and interactive-syntax only exists when writing and editing
-programs, all of the tools involved in software development work with
-interactive-syntax extensions. For example:
+Interactive-syntax is backed by human readable code; the visual components
+exists purely when writing and editing code. This backing means all of the tools
+involved in software development work with interactive-syntax extensions. For
+example:
 
 * version control, such as git, works with interactive-syntax;
 * programs using interactive-syntax can be written and edited with your favorite
@@ -32,41 +33,43 @@ interactive-syntax extensions. For example:
 * you can use interactive-syntax in any language or environment that supports
   language-oriented programming.
   
-To learn more about interactive-syntax, watch [this video][is-video] or read the
-[accompanying paper][is-paper].
+To learn more about interactive-syntax, watch [this video][is-video] or read
+[the accompanying paper][is-paper].
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8htgAxJuK5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 [VISr (Visual and Interactive-Syntax realized) for ClojureScript][visr] is a
 practical implementation of interactive-syntax in web browsers. In addition to
 ClojureScript, the VISr environment works with any [NPM package][npm]. This
-article is a brief introduction to VISr. It will discuss how to insert a VISr
-into code and create a new type of VISr. Future articles will discuss more
-advanced uses such as integrating NPM packages and using VISr to other
-languages.
+article is a brief introduction to VISr. It discusses how to insert a VISr into
+code, how to use a VISr, and how to create a new type of VISr. Future articles
+will discuss more advanced uses such as integrating NPM packages and using VISr
+for other languages.
 
 <!-- more -->
 
 # Getting started with VISr
     
-    Start by going to [visr.pl][visr], which is a web-based IDE that directly
+Start by going to [visr.pl][visr], which is a web-based IDE that directly
 supports VISrs. Once in the IDE, press `Insert VISr` to place a VISr at the
-cursor's current position. The VISr contains two buttons: the first shows the
+current cursor position. The VISr contains two buttons: the first shows the
 VISr's visual representation, and the second shows its textual representation.
 
 ![VISr](/img/intro-visr/visr.png)
 
 Opening the code shows that the new VISr is an instance of
 `visr.core/empty-visr`, a default VISr provided by the IDE. This VISr expects a
-message to display in the visual view, in this case "Endless Possibility".
+map with the key `:message` to display in the visual view. Changing the value
+associated with `:message` changes what is displayed, in this case "Endless
+Possibility":
 
 ![Open Visr](/img/intro-visr/visr-open.png)
 
-Remember that while this VISr is displayed graphically, it still is text. You
-can see this by highlighting the VISr and copying it. When placed back into the
-IDE a copy of the same VISr will appear. However, pasting it into other text
-editors that don't natively support VISrs yields the following human readable,
-and editable, text:
+Remember that, although this VISr is displayed graphically, it still exists as
+human-readable text. One way to see this text is by copying and pasting the
+VISr. A copy of the same VISr will appear. when its placed back into the IDE .
+However, pasting it into other text editors that do not natively support VISrs
+yields the following human readable, and editable, text:
 
 ```clojurescript
 ^{:editor visr.core/empty-visr}(visr.core/empty-visr+elaborate 
