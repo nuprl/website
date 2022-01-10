@@ -39,12 +39,16 @@ To learn more about interactive-syntax, watch [this video][is-video] or read
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8htgAxJuK5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 [VISr (Visual and Interactive-Syntax realized) for ClojureScript][visr] is a
-practical implementation of interactive-syntax in web browsers. In addition to
-ClojureScript, the VISr environment works with any [NPM package][npm]. This
-article is a brief introduction to VISr. It discusses how to insert a VISr into
-code, how to use a VISr, and how to create a new type of VISr. Future articles
-will discuss more advanced uses such as integrating NPM packages and using VISr
-for other languages.
+practical implementation of interactive-syntax in web browsers. The VISr
+environment is a full-featured IDE that supports interactive-syntax components
+called VISrs. Additionally, the VISr environment comes with a package manager
+that supports [NPM packages][npm].
+
+This article is a brief introduction to both the VISr environment and the
+components that make up a VISrs. It discusses how to insert a VISr into code,
+how to manipulate a VISr, and how to create a new types of VISr. Future articles
+will discuss more advanced uses such as integrating NPM packages and using VISrs
+in other languages.
 
 <!-- more -->
 
@@ -52,8 +56,10 @@ for other languages.
     
 Start by going to [visr.pl][visr], which is a web-based IDE that directly
 supports VISrs. Once in the IDE, press `Insert VISr` to place a VISr at the
-current cursor position. The VISr contains two buttons: the first shows the
-VISr's visual representation, and the second shows its textual representation.
+current cursor position. This VISr contains two buttons: 
+
+- clicking the first displays the VISr's visual representation, and
+- clicking the second shows its textual representation. 
 
 ![VISr](/img/intro-visr/visr.png)
 
@@ -81,10 +87,15 @@ into [visr.pl][visr] yields its visual representation.
 
 # Making a new VISr
 
-The `defvisr` form creates a VISr type. This form has two methods: a `render`
-method that runs when code is edited, and an `elaborate`/`elaborate-fn` method
-that gives the VISr compile-time and run-time semantics. The following is the
-signature for a simple VISr:
+The `defvisr` form creates a VISr type. This form introduced two methods:
+
+1. a `render` method that runs as code is edited
+2. an `elaborate`/`elaborate-fn` method that gives the VISr compile-time and
+   run-time semantics.
+
+The following is the signature for a simple VISr type:
+
+
 
 ```clojurescript
 (ns example.core)
@@ -165,6 +176,7 @@ The final result is:
   (elaborate-fn [{:keys [count]}] count)
   (render [this]
     (let [count (cursor this :count)]
+      (when-not @count (reset! count 0))
       [:> Button {:on-click (swap! count inc)} @count])))
 ```
 
