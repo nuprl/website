@@ -73,7 +73,7 @@ Possibility":
 
 Remember that, although this VISr is displayed graphically, it still exists as
 human-readable text. One way to see this text is by copying and pasting the
-VISr. A copy of the same VISr will appear. when its placed back into the IDE .
+VISr. A copy of the same VISr will appear when it is placed back into the IDE.
 However, pasting it into other text editors that do not natively support VISrs
 yields the following human readable, and editable, text:
 
@@ -87,9 +87,10 @@ into [visr.pl][visr] yields its visual representation.
 
 # Making a new VISr
 
-The `defvisr` form creates a VISr type. This form introduced two methods:
+The `defvisr` form creates a VISr type. This form expects two methods:
 
-1. a `render` method that runs as code is edited
+1. a `render` method that provides visualization and interaction when code is
+   edited, and 
 2. an `elaborate`/`elaborate-fn` method that gives the VISr compile-time and
    run-time semantics.
 
@@ -155,8 +156,8 @@ the VISr semantics takes the form of a function application:
 (elaborate-fn [{:keys [count]}] count)
 ```
 
-This `elaborate` method expects a dictionary with the key `:count`, it evaluates
-to the value associated with that key. It makes use of [ClojureScript's
+This `elaborate` method expects a dictionary with the key `:count` and returns
+the value associated with that key. It makes use of [ClojureScript's
 Destructuring][destructure] for brevity. The following code is equivalent:
 
 ```clojurescript
@@ -190,7 +191,7 @@ own programs using VISr. You can also [take this survey][survey], which contains
 more advanced example uses for VISr. If you find any bugs or want to contribute,
 you can also head to [the visr project page][github].
 
-Thanks for reader, happy coding!
+Thanks for reading, happy coding!
 
 
 [visr]: https://visr.pl
