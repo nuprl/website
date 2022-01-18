@@ -176,9 +176,9 @@ The final result is:
 (defvisr Counter
   (elaborate-fn [{:keys [count]}] count)
   (render [this]
-    (let [count (cursor this :count)]
+    (let [count (cursor this [:count])]
       (when-not @count (reset! count 0))
-      [:> Button {:on-click (swap! count inc)} @count])))
+      [:> Button {:on-click #(swap! count inc)} @count])))
 ```
 
 
