@@ -1587,7 +1587,7 @@ a Dr. sc. ETH in 2012.
               The PL Seminar generally meets
               in @a[href: "http://www.ccs.neu.edu/home/wand/directions.html"]{WVH 366}
               and on @a[href: "https://northeastern.zoom.us/j/98598689387?pwd=Z0tyT2FFdFVsZGFKbDltMjRhS095Zz09"]{Zoom}
-              on Fridays from 1:00-3:25pm (ET).
+              on Fridays from 11:00am-12:00pm (ET).
               The @a[href: "http://lists.ccs.neu.edu/pipermail/pl-seminar"]{mailing list} is public.
               A calendar 
 	      (@a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com&ctz=America%2FNew_York"]{HTML}
