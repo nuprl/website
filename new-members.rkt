@@ -84,9 +84,14 @@
                     grad students (green = good, yellow = okay, red = bad), and
                     you can click on the regions and pins for more information.
                     Click @a[href: "https://drive.google.com/open?id=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP&usp=sharing"]{here} to edit the map.
+
+                    Note: This map might contain not up-to-date information.
                   }
                   @iframe[src: "https://www.google.com/maps/d/u/0/embed?mid=13h-W6XWFql35Cs6Xk_c9MnTEsRbAE1qP" width: "640" height: "480"]
-                }
+
+                  @p{
+                  Also check out @a[href: "https://www.jefftk.com/apartment_prices"]{this map} for average rent prices of the surrounding area. This map is regularly updated.
+                }}
               ]
   }}}}}
   @footer{}
