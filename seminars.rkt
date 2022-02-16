@@ -81,6 +81,18 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "kkallas-pash"
+     "PaSh: Light-touch Data-Parallel Shell Processing"
+     "Konstantinos Kallas"
+     "https://angelhof.github.io/"
+     "University of Pennsylvania"
+     (datetime 2022 2 25 11 00)
+     "WVH 366 and Zoom"
+     @list{@p{"In this talk I will present PaSh, a system that exposes data parallelism in POSIX shell scripts. To achieve that, PaSh offers: (i) an order-aware dataflow model that precisely captures a fragment of the shell, (ii) a set of dataflow transformations that extract parallelism and have been proven to be correct, and (iii) a lightweight framework that captures the correspondence of shell commands and order-aware dataflow nodes. PaSh achieves orders-of-magnitude performance improvements on a variety of scripts found in the wild. PaSh is open-source https://github.com/binpash/pash and hosted under the Linux Foundation. The talk that I will be giving roughly corresponds to two publications, one at EuroSys 2021 (which also received the best paper award) and one at ICFP 2021."}}
+     @list{
+           @p{Excerpt from website:}
+           @p{"I am a PhD student at the University of Pennsylvania, where I am fortunate to be advised by Rajeev Alur. My research interests lie in the intersection of programming languages, distributed systems, and software verification. I have done an internship in Microsoft Research, where I worked with Sebastian Burckhardt, and an internship in the Automated Reasoning Group in AWS, where I worked with Daniel Schwartz-Narbonne. Before my PhD, I did my undergraduate studies at the National Technical University of Athens, where I was advised by Kostis Sagonas."}})
+    (seminar
       "mcoblenz-squash"
       "Squashing Bugs and Empowering Programmers with User-Centered Programming Language Design"
       "Michael Coblenz"
