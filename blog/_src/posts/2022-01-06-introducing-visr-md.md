@@ -197,7 +197,7 @@ Thanks for reading, happy coding!
 [visr]: https://visr.pl
 [npm]: https://www.npmjs.com/
 [is-video]: https://www.youtube.com/watch?v=8htgAxJuK5c
-[is-paper]: https://dl.acm.org/doi/10.3115/981732.981776
+[is-paper]: https://dl.acm.org/doi/10.1145/3428290
 [reagent]: https://reagent-project.github.io/
 [atom]: https://clojure.org/reference/atoms
 [destructure]: https://clojure.org/guides/destructuring
