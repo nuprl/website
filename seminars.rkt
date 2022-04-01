@@ -81,6 +81,18 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+     "rnigam-calyx"
+     "Compiler Infrastructure for Accelerator Generators"
+     "Rachit Nigam"
+     "rachitnigam.com"
+     "Cornell University"
+     (datetime 2022 4 7 13 30)
+     "WVH 366 and Zoom"
+     @list{
+           @p{Specialized, application-specific hardware accelerators are chipping away at the dominance of traditional, general-purpose CPUs. We need to make it possible for domain experts—not just hardware experts—to harness the efficiency of hardware specialization for the computations they care about. Domain-specific languages (DSLs) for building hardware accelerators offer a way to raise the level of abstraction in hardware design from gates, wires, and clock cycles. Unfortunately, building a new hardware DSL is a gargantuan task requiring not only the design of new abstractions, but also supporting tools such as an optimizing compiler, testing, and debugging infrastructure.}
+           @p{Our solution is Calyx (calyxir.org), an intermediate language and a compiler infrastructure that can represent, optimize, and lower accelerators to synthesizable hardware designs. By targeting Calyx instead of a traditional hardware design language, designers can build new DSLs and generate a custom hardware accelerator without needing hardware expertise.}}
+     @list{Rachit Nigam (rachitnigam.com) is PhD candidate at Cornell University interested in programming languages, computer architectures, and compilers that turn programs to architectures.})
+    (seminar
      "kkallas-pash"
      "PaSh: Light-touch Data-Parallel Shell Processing"
      "Konstantinos Kallas"
