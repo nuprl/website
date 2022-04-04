@@ -58,14 +58,45 @@
 @(define HOPL "History of Programming Languages (HOPL)")
 @(define EuroSys "European Conference on Computer Systems (EuroSys)")
 @(define ICSE "International Conference on Software Engineering (ICSE)")
+@(define TOSEM "ACM Transactions on Software Engineering and Methodology (TOSEM)")
 
 @(define publications
    (list
+    (publication "Learning How to Listen: Automatically Finding Bug Patterns in Event-Driven JavaScript APIs"
+                 "Ellen Arteca, Max Schäfer, and Frank Tip"
+                 TSE
+                 2022
+                 "https://www.franktip.org/pubs/tse-eventlisteners2022.pdf")
+    (publication "Nessie: Automatically Testing JavaScript APIs with Asynchronous Callbacks"
+                 "Ellen Arteca, Sebastian Harner, Michael Pradel, and Frank Tip"
+                 ICSE
+                 2022
+                 "https://www.franktip.org/pubs/icse2022-nessie.pdf")
+    (publication "CONFETTI: Amplifying Concolic Guidance for Fuzzers"
+                 "James Kukucka, Luís Pina, Paul Ammann, and Jonathan Bell"
+                 ICSE
+                 2022
+                 "https://www.jonbell.net/preprint/confetti.pdf")
+    (publication "A Transient Semantics For Typed Racket"
+                 "Ben Greenman, Lukas Lazarek, Christos Dimoulas, and Matthias Felleisen"
+                 "The Art, Science, and Engineering of Programming"
+                 2022
+                 "http://www.ccis.neu.edu/racket/pubs/programming-gldf.pdf")
+    (publication "A Practical Approach for Dynamic Taint Tracking with Control-flow Relationships"
+                 "Katherine Hough and Jonathan Bell"
+                 TOSEM
+                 2021
+                 "https://www.jonbell.net/preprint/tosem22-conflux.pdf")
     (publication "First-Class Environments in R"
                  "Aviral Goel and Jan Vitek"
                  DLS
                  2021
                  "https://doi.org/10.1145/3486602.3486768")
+    (publication "Coarsening Optimization for Differentiable Programming"
+                 "Xipeng Shen, Guoqiang Zhang, Irene Dea, Samantha Andow, Emilio Arroyo-Fang, Neal Gafter, Johann George, Melissa Grueter, Erik Meijer, Olin Shivers, Steffi Stumpos, Alanna Tempest, Christy Warden, and Shannon Yang"
+                 OOPSLA
+                 2021
+                 "https://doi.org/10.1145/3485507")
     (publication "What We Eval in the Shadows: A Large-Scale Study of Eval in R Programs"
                  "Aviral Goel, Pierre Donat-Bouillud, Filip Křikava, Christoph M. Kirsch, and Jan Vitek"
                  OOPSLA
@@ -111,11 +142,6 @@
                  "International Conference on Intelligent Robots and Systems (IROS)"
                  2021
                  "https://arxiv.org/abs/2103.04880")
-    (publication "A Transient Semantics For Typed Racket"
-                 "Ben Greenman, Lukas Lazarek, Christos Dimoulas, and Matthias Felleisen"
-                 "The Art, Science, and Engineering of Programming"
-                 2022
-                 "http://www.ccis.neu.edu/racket/pubs/programming-gldf.pdf")
     (publication "Cryptographic Hardness Under Projections For Time-Bounded Kolmogorov Complexity"
                  "Eric Allender, John Gouwar, Shuichi Hirahara, and Caleb Robelle"
                  "International Symposium on Algorithms and Computation (ISAAC)"
