@@ -62,6 +62,16 @@
 
 @(define publications
    (list
+    (publication "Deoptless: Speculation with Dispatched On-Stack Replacement and Specialized Continuations"
+                 "Olivier Flückiger, Jan Ječmen, Sebastián Krynski, and Jan Vitek"
+                 PLDI
+                 2022
+                 "https://arxiv.org/pdf/2203.02340")
+    (publication "Semantic Soundness for Language Interoperability"
+                 "Daniel Patterson, Noble Mushtak, Andrew Wagner, and Amal Ahmed"
+                 PLDI
+                 2022
+                 "https://arxiv.org/pdf/2202.13158")
     (publication "Learning How to Listen: Automatically Finding Bug Patterns in Event-Driven JavaScript APIs"
                  "Ellen Arteca, Max Schäfer, and Frank Tip"
                  TSE
