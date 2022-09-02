@@ -45,8 +45,7 @@
                   ask questions on matrix, too!}
                 }
                 @li{
-                  For grad students and postdocs: join the lab's slack channel, @url{https://prl-students.slack.com},
-                  by contacting the contact manager.
+                  For grad students and postdocs: join the lab's Discord channel, by contacting the contact manager.
                 }
                 @li{
                   Sign up for the mailing lists for the PL Seminar and the PL Jr.
