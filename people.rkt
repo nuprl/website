@@ -295,7 +295,7 @@
           }
 
           @person[#:name "Ming-Ho Yee"
-                  #:title "Advisor: Jan Vitek"
+                  #:title "Advisor: Arjun Guha"
                   #:e-mail "mhyee@ccs.neu.edu"
                   #:website "http://mhyee.com/"
                   #:history @list["Joined Northeastern, 2016"]
