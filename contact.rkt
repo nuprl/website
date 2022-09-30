@@ -23,17 +23,17 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{PL Seminar and Internal Talks} @a[href: "mailto:a.guha@northeastern.edu"]{Arjun Guha}, @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}, @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}
+                    @h4{PL Seminar and Internal Talks} @a[href: "mailto:a.guha@northeastern.edu"]{Arjun Guha}, @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar}, @a[href: "mailto:johnli0135@gmail.com"]{John Li}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
                     @h4{PL Seminar, Junior @br{} 
                       @small{@linksym["Website" "https://github.com/nuprl/prl-seminar-junior"]}} 
-                    @a[href: "mailto:gierczak.o@northeastern.edu"]{Olek Gierczak}
+                    @a[href: "mailto:johnli0135@gmail.com"]{John Li}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{ZED-talks} @a[href: "mailto:julbinb@gmail.com"]{Julia Belyakova}, @a[href: "mailto:johnli0135@gmail.com"]{John Li}
+                    @h4{ZED-talks} @a[href: "mailto:gokhale.sa@northeastern.edu"]{Satyajit Gokhale}, @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar}
                   }
                 }
 
@@ -47,11 +47,11 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{Webmaster} @a[href: "mailto:zi.ya@northeastern.edu"]{Yangtian Zi}
+                    @h4{Webmaster} @a[href: "mailto:phipps-costin.l@northeastern.edu"]{Luna Phipps-Costin}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{Blog Editor} @a[href: "mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee}
+                    @h4{Blog Editor} @a[href: "mailto:amidon.p@northeastern.edu"]{Lucy Amidon}
                   }
 
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
@@ -61,11 +61,11 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{People Page Maintainer} @a[href: "mailto:donald_pinckney@icloud.com"]{Donald Pinckney}
+                    @h4{People Page Maintainer} @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:michael.ballantyne@gmail.com"]{Michael Ballantyne}
+                    @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
                   }
                 }
               }
@@ -75,29 +75,24 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{PRL Social Virtually} @a[href: "mailto:perretta.j@northeastern.edu"]{James Perretta}, @a[href: "mailto:goel.aviral@gmail.com"]{Aviral Goel} @br{}
+                    @h4{PRL Social} @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}, @a[href:"mailto: mhyee@ccs.neu.edu"]{Ming-Ho Yee} @br{}
                     PRL parties, tea time, bingewatching
                   }
 
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
                     @h4{Twitter @br{} 
                       @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}} 
-                      @a[href: "mailto:a.pelenitsyn@gmail.com"]{Artem Pelenitsyn}, @a[href: "mailto:weiss@ccs.neu.edu"]{Aaron Weiss}, @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}
-                  }
-
-                  @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{Happy Hour}
-                    temporarily off (COVID-19)
+                      @a[href: "mailto:a.pelenitsyn@gmail.com"]{Artem Pelenitsyn}, @a[href: "mailto:sam@stites.io"]{Sam Stites}
                   }
                 }
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Coffee Czar} @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar}
+                    @h4{Coffee Czar} @a[href: "mailto:cho.mins@northeastern.edu"]{Minsung Cho}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Tea Tzar} @a[href: "mailto:johnli0135@gmail.com"]{John Li}
+                    @h4{Tea Tzar} @a[href: "mailto:gierczak.o@northeastern.edu"]{Olek Gierczak}
                   }
                 }
               }
