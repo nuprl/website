@@ -126,7 +126,7 @@
           }
 
           @person[#:name "Amal Ahmed"
-                  #:title "Associate Professor"
+                  #:title "Professor"
                   #:e-mail "amal@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/amal"
                   #:history @list[
@@ -242,6 +242,21 @@
                   #:img "steven_holtzen.png"]{
             My research focuses on programming languages and artificial intelligence. In particular, my goal is to use programming languages and program analysis techniques as a foundation for specifying and reasoning about probabilistic models. Towards this end I am interested in the design, implementation, and applications of probabilistic programming languages; foundations of probabilistic inference and tractable probabilistic modeling; automated reasoning; and probabilistic verification.
           }
+
+          @person[#:name "Daniel Patterson"
+                  #:title "Assistant Teaching Professor"
+                  #:e-mail "dbp@ccs.neu.edu"
+                  #:website "https://dbp.io"
+                  #:history @list[
+
+                  "Joined Northeastern Faculty, 2022"
+                  "Joined Northeastern, 2016"
+
+                  ]
+                  #:img "daniel_patterson.jpg"]{
+            I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
+          }
+
         }
 
         @div[class: "pn-separator-img"]{
@@ -283,15 +298,6 @@
                   #:history @list["Joined Northeastern, 2015"]
                   #:img "olivier_fluckiger.jpg"]{
             My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
-          }
-
-          @person[#:name "Daniel Patterson"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "dbp@ccs.neu.edu"
-                  #:website "https://dbp.io"
-                  #:history @list["Joined Northeastern, 2016"]
-                  #:img "daniel_patterson.jpg"]{
-            I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
           }
 
           @person[#:name "Ming-Ho Yee"
@@ -406,7 +412,8 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "ahwagner@ccs.neu.edu"
                   #:history @list[
-                    "Joined Northeastern, 2020"]
+                    "Joined Northeastern, 2020"
+                    "BS, Brown University, 2020"]
                   #:img "andrew_wagner.jpeg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
