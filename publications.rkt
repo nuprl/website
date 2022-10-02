@@ -62,16 +62,46 @@
 
 @(define publications
    (list
+    (publication "DrAsync: Identifying and Visualizing Anti-Patterns in Asynchronous JavaScript"
+                 "Alexi Turcotte, Michael D. Shah, Mark W. Aldrich, and Frank Tip"
+                 ICSE
+                 2022
+                 "https://www.franktip.org/pubs/icse2022-drasync.pdf")
+    (publication "On the Use of Mutation Analysis For Evaluating Student Test Suite Quality"
+                 "James Perretta, Andrew DeOrio, Arjun Guha, and Jonathan Bell"
+                 ISSTA
+                 2022
+                 "https://jonbell.net/publications/issta22mutants")
+    (publication "Stubbifier: Debloating Dynamic Server-Side JavaScript Applications"
+                 "Alexi Turcotte, Ellen Arteca, Ashish Mishra, Saba Alimadadi, and Frank Tip"
+                 "Empirical Software Engineering"
+                 2022
+                 "https://www.franktip.org/pubs/emse2022.pdf")
+    (publication "Computing Correctly With Inductive Relations"
+                 "Zoe Paraskevopoulou, Aaron Eline, and Leonidas Lampropoulos"
+                 PLDI
+                 2022
+                 "https://doi.org/10.1145/3519939.3523707")
+    (publication "Analyzing Binding Extent in 3CPS"
+                 "Benjamin Quiring, Olin Shivers, and John Reppy"
+                 ICFP
+                 2022
+                 "https://doi.org/10.1145/3547645")
+    (publication "ANF Preserves Dependent Types up to Extensional Equality"
+                 "Paulette Koronkevich, Ramon Rakow, Amal Ahmed, and William J. Bowman"
+                 JFP
+                 2022
+                 "https://doi.org/10.1017/S0956796822000090")
     (publication "Deoptless: Speculation with Dispatched On-Stack Replacement and Specialized Continuations"
                  "Olivier Flückiger, Jan Ječmen, Sebastián Krynski, and Jan Vitek"
                  PLDI
                  2022
-                 "https://arxiv.org/pdf/2203.02340")
+                 "http://janvitek.org/pubs/pldi22.pdf")
     (publication "Semantic Soundness for Language Interoperability"
                  "Daniel Patterson, Noble Mushtak, Andrew Wagner, and Amal Ahmed"
                  PLDI
                  2022
-                 "https://arxiv.org/pdf/2202.13158")
+                 "http://www.ccs.neu.edu/home/amal/papers/seminterop.pdf")
     (publication "Learning How to Listen: Automatically Finding Bug Patterns in Event-Driven JavaScript APIs"
                  "Ellen Arteca, Max Schäfer, and Frank Tip"
                  TSE
