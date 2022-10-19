@@ -80,6 +80,19 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+    (seminar 
+      "dracordon-val"
+      "Val Programming Language"
+      "Dimitri Racordon"
+      "https://kyouko-taiga.github.io/"
+      "Northeastern University"
+      (datetime 2022 10 21 12 00)
+      "WVF 118 and Zoom"
+      @list{ 
+      	@p{Val is a zero-cost abstraction language based on two of the best ideas behind C++: generic programming and first-class value semantics. Unlike C++, however, Val achieves memory safety without resorting to defensive copying.}
+	@p{In this talk, I will explain how Val codifies best practices from modern C++ into a type system that guarantees type and memory safety while being able to express 99% of the low-level bit pushing one can write in C++ with the same predictable efficiency. I will also attempt to convince you that you don't need neither pointers, references, nor sophisticated lifetime annotations to get there.}
+      }
+      @list{})
     (seminar
      "rnigam-calyx"
      "Compiler Infrastructure for Accelerator Generators"
