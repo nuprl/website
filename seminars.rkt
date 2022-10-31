@@ -81,6 +81,18 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar 
+      "cogumbreiro-tbd"
+      "TBD"
+      "Tiago Cogumbreiro"
+      "https://cogumbreiro.github.io/"
+      "University of Massachusetts, Boston"
+      (datetime 2022 11 4 12 00)
+      "WVF 118 and Zoom"
+      @list{}
+      @list{
+      	@p {Tiago Cogumbreiro is an assistant professor at UMass Boston. His research helps programmers write software with fewer bugs. He develops tools that localize errors, prove the correctness of algorithms, and mines how we write code to identify anomalies.}
+      })
+    (seminar 
       "dracordon-val"
       "Val Programming Language"
       "Dimitri Racordon"
