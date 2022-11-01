@@ -82,16 +82,33 @@
     ;;  @list{@p{BIO}})
     (seminar 
       "cogumbreiro-tbd"
-      "TBD"
+      "Checking Data-Race Freedom of GPU Kernels, Compositionally"
       "Tiago Cogumbreiro"
       "https://cogumbreiro.github.io/"
       "University of Massachusetts, Boston"
       (datetime 2022 11 4 12 00)
       "WVF 118 and Zoom"
-      @list{}
       @list{
-      	@p{Tiago Cogumbreiro is an assistant professor at UMass Boston. His research helps programmers write software with fewer bugs. He develops tools that localize errors, prove the correctness of algorithms, and mines how we write code to identify anomalies.}
-      })
+      	@p{GPUs offer parallelism as a commodity, but they are difficult to programcorrectly. Static analyzers that guarantee data-race freedom 
+	(DRF) areessential to help programmers establish the correctness of theirprograms (kernels). However, existing approaches produce too
+many false alarms and struggle to handle larger programs. To address
+these limitations we formalize a novel compositional analysis for DRF,
+based on access memory protocols. These protocols are behavioral types
+that codify the way threads interact over shared memory.
+Our work includes fully mechanized proofs of our theoretical results, the
+first mechanized proofs in the field of DRF analysis for GPU kernels.
+Our theory is implemented in Faial, a tool that outperforms the state-of-
+the-art. Notably, it can correctly verify at least 1.42× more real-world
+kernels, and it exhibits a linear growth in 4 out of 5 experiments, while
+others grow exponentially in all 5 experiments}
+	@p{This talk presents the CAV21 publication and reports updates on this research (journal and workshop publications)}}
+      @list{
+      	@p{Tiago Cogumbreiro joined the Department of Computer Science at the University of
+Massachusetts Boston in fall 2018 as an assistant professor. Prior to that,
+Tiago was a postdoctoral researcher at the Georgia Institute of Technology and
+Rice University, supervised by Professor Vivek Sarkar, and a research assistant
+at Imperial College London, supervised by Professor Nobuko Yoshida. Tiago
+obtained a PhD from the University of Lisbon, Portugal.}})
     (seminar 
       "dracordon-val"
       "Val Programming Language"
