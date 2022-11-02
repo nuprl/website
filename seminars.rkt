@@ -80,6 +80,33 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+    (seminar
+    	"balzer-session-types"
+	"Session Types for Information Flow Control and a Logical Relation for Noninterference"
+	"Stephaie Balzer"
+	"https://www.cs.cmu.edu/~balzers/"
+	"Carnegie Mellon University"
+	(datetime 2022 11 18 12 00)
+	"WVF 118 and Zoom"
+	@list{
+	  @p{Noninterference guarantees that an attacker cannot infer secrets by interacting with a program.  
+	  An information flow control (IFC) type system asserts noninterference by tracking the level of information learned and 
+	  disallowing leakage to parties of lesser or unrelated level.  In this talk, I explore session types as an enabler for 
+	  tracking the flow of information. Session types stipulate according to which protocol messages must be exchanged along 
+	  channels connecting concurrently executing processes (or threads).  I develop an IFC type system for linear session-typed process 
+	  calculus that employs possible worlds from hybrid logic to reason about security levels.  To prove that well-typed programs in the 
+	  resulting language ensure noninterference, I develop a logical relation.  I survey what the main challenges in the development 
+	  are --- non-termination (because of general recursive types) and non-determinism (because of concurrency) --- and explain how to 
+	  address them.  Distinguishing features of the resulting logical relation are its interactive nature (the program interacts with its context) 
+	  and the use of an observation index (as opposed to a step index or later modality).  The latter ensures compositionality despite concurrency.}
+	}
+	@list{
+	  @p{Stephanie Balzer is an Assistant Research Professor in the Principles of Programming group at CMU.  
+	  Her research is concerned with compositional verification of concurrent programs, using logic and type 
+	  systems, logical relations, and verification logics.}
+	  })
+
+
     (seminar 
       "cogumbreiro-tbd"
       "Checking Data-Race Freedom of GPU Kernels, Compositionally"
