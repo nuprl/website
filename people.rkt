@@ -178,24 +178,6 @@
             My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
           }
 
-          @person[#:name "Jason Hemann"
-                  #:title "Clinical Lecturer"
-                  #:e-mail "jhemann@ccis.neu.edu"
-                  #:website "http://hemann.pl"
-                  #:history @list[
-                    "Joined Northeastern, 2018"
-                    "PhD, Indiana University, 2018"]
-                  #:img "jhemann.jpg"]{
-            My research interests include functional and logic programming. I
-            focus on embeddings and extensions to support logic programming in
-            numerous host languages and transforming functional programs to
-            relational ones. The microKanren model has inspired scores of
-            implementations (more than 120), in over 40 host languages, in just five
-            years. My other interests concern novel uses of logic programming and
-            symbolic constraint systems and typesafe embeddings of logic
-            languages.
-          }
-
           @person[#:name "Arjun Guha"
                   #:title "Associate Professor"
                   #:e-mail "a.guha@northeastern.edu"
@@ -771,6 +753,9 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
+                @(alumnus "Jason Hemann" #:year 2022
+                          #:personal-site "https://jasonhemann.github.io/"
+                          #:extra "(Seton Hall University)")
                 @(alumnus "Will Clinger" #:year 2019
                           #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Heather Miller" #:year 2018
