@@ -499,6 +499,37 @@
                   #:img "ytzi.jpg"]{
             My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
           }
+
+          @person[#:name "Max Bernstein"
+                  #:title "Advisor: Frank Tip and Jan Vitek"
+                  #:e-mail "bernstein.ma@northeastern.edu"
+                  #:website "https://bernsteinbear.com"
+                  #:history @list[
+                    "Joined Northeastern, 2022"]
+                  #:img "max_bernstein.png"]{
+          }
+
+          @person[#:name "Minsung Cho"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "minsung@ccs.neu.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2022"
+                      "BS, Carnegie Mellon University"]
+                  #:img "minsung_cho.jpg"
+                  #:website "https://khoury.northeastern.edu/home/minsung/index.html"]{
+            I'm a pure math ex-pat using logic and algebra to make probabilistic programming better.
+          }
+
+          @person[#:name "Gwenyth Lincroft"
+                  #:title "Advisor: Jonathan Bell"
+                  #:e-mail "lincroft.g@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2022"
+                      "BS, NC State University"
+                                  ]
+                  #:img "gwenyth_lincroft.png"]{
+            I am interested in improving tools used by data scientists.
+          }
         }
 
         @div[class: "pn-separator-img"]{
@@ -694,6 +725,10 @@
                         #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
                         #:extra "(Brown University)"
                         #:personal-site "http://ccs.neu.edu/home/types/")
+              @(alumnus "Daniel Patterson" #:year 2022
+                        #:dissertation "https://dbp.io/pubs/2022/dbp-dissertation.pdf"
+                        #:extra "(Northeastern University)"
+                        #:personal-site "https://dbp.io/")
              ]}}
 
         @div[class: "container"]{
