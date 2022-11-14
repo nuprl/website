@@ -245,7 +245,7 @@
 
           @person[#:name "Daniel Patterson"
                   #:title "Assistant Teaching Professor"
-                  #:e-mail "dbp@ccs.neu.edu"
+                  #:e-mail "dbp@dbpmail.net"
                   #:website "https://dbp.io"
                   #:history @list[
 
