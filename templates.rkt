@@ -54,17 +54,18 @@
            type: "text/css"]
 
      @<!--{For IE 9 and below. ICO should be 32x32 pixels in size}
-     @<!--{[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]}
+     @; <!--[if IE] doesn't support whitespace
+     @literal{<!--[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]-->}
 
      @<!--{Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size.}
      @link[rel: "icon" href: "img/favicon.png"]
 
      @<!--{HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries}
      @<!--{WARNING: Respond.js doesn't work if you view the page via file://}
-     @<!--{[if lt IE 9]}
-       @script[src: "https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"]
-       @script[src: "https://oss.maxcdn.com/respond/1.4.2/respond.min.js"]
-     @<!--{<![endif]} })
+     @literal[@list[ "<!--[if lt IE 9]"
+       @script[src: "https://cdn.jsdelivr.net/html5shiv/3.7.2/html5shiv.min.js"]
+       @script[src: "https://cdn.jsdelivr.net/respond/1.4.2/respond.min.js"]
+       "<![endif]-->" ]]})
 
 @(define (footer)
    @list{
