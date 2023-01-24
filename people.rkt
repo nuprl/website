@@ -141,7 +141,7 @@
           }
 
           @person[#:name "Ben Lerner"
-                  #:title "Lecturer"
+                  #:title "Associate Teaching Professor"
                   #:e-mail "blerner@ccs.neu.edu"
                   #:history @list[
                     "Joined Northeastern, 2014"
@@ -176,24 +176,6 @@
                   ]
                   #:img "frank_tip.jpg"]{
             My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
-          }
-
-          @person[#:name "Jason Hemann"
-                  #:title "Clinical Lecturer"
-                  #:e-mail "jhemann@ccis.neu.edu"
-                  #:website "http://hemann.pl"
-                  #:history @list[
-                    "Joined Northeastern, 2018"
-                    "PhD, Indiana University, 2018"]
-                  #:img "jhemann.jpg"]{
-            My research interests include functional and logic programming. I
-            focus on embeddings and extensions to support logic programming in
-            numerous host languages and transforming functional programs to
-            relational ones. The microKanren model has inspired scores of
-            implementations (more than 120), in over 40 host languages, in just five
-            years. My other interests concern novel uses of logic programming and
-            symbolic constraint systems and typesafe embeddings of logic
-            languages.
           }
 
           @person[#:name "Arjun Guha"
@@ -250,7 +232,7 @@
                   #:history @list[
 
                   "Joined Northeastern Faculty, 2022"
-                  "Joined Northeastern, 2016"
+                  "PhD, Northeastern University, 2022"
 
                   ]
                   #:img "daniel_patterson.jpg"]{
@@ -263,15 +245,6 @@
            @h2{Students}}
 
         @div[class: "container"]{
-
-          @person[#:name "Leif Andersen"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "leif@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/leif"
-                  #:history @list["Joined Northeastern, 2014"]
-                  #:img "leif_andersen.jpg"]{
-            I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
-          }
 
           @person[#:name "Sam Caldwell"
                   #:title "Advisor: Matthias Felleisen"
@@ -316,15 +289,6 @@
                   #:history @list["Joined Northeastern, 2017"]
                   #:img "aviral-goel.jpeg"]{
             Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
-          }
-
-          @person[#:name "Aaron Weiss"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "weiss@ccs.neu.edu"
-                  #:website "https://aaronweiss.us/"
-                  #:history @list["Joined Northeastern, 2017"]
-                  #:img "aaron_weiss.jpg"]{
-            I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
           }
 
           @person[#:name "Michael Ballantyne"
@@ -725,10 +689,16 @@
                         #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
                         #:extra "(Brown University)"
                         #:personal-site "http://ccs.neu.edu/home/types/")
+              @(alumnus "Leif Andersen" #:year 2022
+                      #:personal-site "https://leifandersen.net/index.html"
+                      #:extra "(UMass Boston)")
               @(alumnus "Daniel Patterson" #:year 2022
                         #:dissertation "https://dbp.io/pubs/2022/dbp-dissertation.pdf"
                         #:extra "(Northeastern University)"
                         #:personal-site "https://dbp.io/")
+              @(alumnus "Aaron Weiss" #:year 2022
+                        #:extra "(Roblox)"
+                        #:personal-site "https://aaronweiss.us/")
              ]}}
 
         @div[class: "container"]{
@@ -818,6 +788,8 @@
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
+                @(alumnus "Jason Hemann" #:year 2022
+                          #:extra "(Seton Hall)")
               ]}}
         @footer{}
 }}}}
