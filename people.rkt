@@ -361,6 +361,16 @@
              I enjoy flexible programming languages and elegant software. I'm interested in designing tools that enable everyday developers to build more robust programs.
           }
 
+          @person[#:name "Sam Stites"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "prl@s.ptr.dev"
+                  #:history @list[
+                    "Joined Northeastern, 2019"]
+                  #:img "sam_stites.jpg"
+                  ]{
+              I research probabilistic programming languages, specifically designing languages that let users fine-tune the (statistical) inference process.
+          }
+
           @person[#:name "Nate Yazdani"
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "nyazdani@ccs.neu.edu"
@@ -378,7 +388,7 @@
                   #:history @list[
                     "Joined Northeastern, 2020"
                     "BS, Brown University, 2020"]
-                  #:img "andrew_wagner.jpeg"]{
+                  #:img "andrew_wagner.jpg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
 
