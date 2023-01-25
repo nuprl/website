@@ -787,14 +787,14 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
-                @(alumnus "Jason Hemann" #:year 2022
-                          #:personal-site "https://jasonhemann.github.io/"
-                          #:extra "(Seton Hall University)")
-                @(alumnus "Will Clinger" #:year 2019
-                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
+                @(alumnus "Will Clinger" #:year 2019
+                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
+                @(alumnus "Jason Hemann" #:year 2022
+                          #:personal-site "https://jasonhemann.github.io/"
+                          #:extra "(Seton Hall University)")
               ]}}
         @footer{}
 }}}}
