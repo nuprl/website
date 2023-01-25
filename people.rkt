@@ -264,15 +264,6 @@
             I usually work on types, currently focusing on gradual type systems.
           }
 
-          @person[#:name "Olivier Flückiger"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "o@o1o.ch"
-                  #:website "http://www.o1o.ch/about"
-                  #:history @list["Joined Northeastern, 2015"]
-                  #:img "olivier_fluckiger.jpg"]{
-            My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
-          }
-
           @person[#:name "Ming-Ho Yee"
                   #:title "Advisor: Arjun Guha"
                   #:e-mail "mhyee@ccs.neu.edu"
@@ -702,6 +693,9 @@
               @(alumnus "Leif Andersen" #:year 2022
                       #:personal-site "https://leifandersen.net/index.html"
                       #:extra "(UMass Boston)")
+              @(alumnus "Olivier Flückiger" #:year 2022
+                      #:personal-site "http://www.o1o.ch/about"
+                      #:dissertation "https://thesis.r-vm.net/main.pdf")
               @(alumnus "Daniel Patterson" #:year 2022
                         #:dissertation "https://dbp.io/pubs/2022/dbp-dissertation.pdf"
                         #:extra "(Northeastern University)"
@@ -793,16 +787,14 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
-                @(alumnus "Jason Hemann" #:year 2022
-                          #:personal-site "https://jasonhemann.github.io/"
-                          #:extra "(Seton Hall University)")
-                @(alumnus "Will Clinger" #:year 2019
-                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
+                @(alumnus "Will Clinger" #:year 2019
+                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Jason Hemann" #:year 2022
-                          #:extra "(Seton Hall)")
+                          #:personal-site "https://jasonhemann.github.io/"
+                          #:extra "(Seton Hall University)")
               ]}}
         @footer{}
 }}}}
