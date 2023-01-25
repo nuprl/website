@@ -481,7 +481,7 @@
                       "Joined Northeastern, 2022"
                       "BS, Carnegie Mellon University"]
                   #:img "minsung_cho.jpg"
-                  #:website "https://khoury.northeastern.edu/home/minsung/index.html"]{
+                  #:website "https://cho.minsung.pl"]{
             I'm a pure math ex-pat using logic and algebra to make probabilistic programming better.
           }
 
