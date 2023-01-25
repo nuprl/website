@@ -240,6 +240,10 @@
                      @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3800f15wc/" target: "_blank"]{link} @instructor{William D. Clinger}
                  }
                  @li{
+                     @strong{3520} Programming in C++ @br{}
+                     @indent[] S 2023 @instructor{James Perretta}
+                 }
+                 @li{
                      @strong{3500} Object Oriented Design @br{}
                      @indent[] F 2022 @instructor{Ben Lerner} @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/cs3500f19/" target: "_blank"]{link} @instructor{Ben Lerner, Clark Freifeld, Alex Grob} @br{}
