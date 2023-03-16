@@ -62,6 +62,11 @@
 
 @(define publications
    (list
+    (publication "Do Machine Learning Models Produce TypeScript Types that Type Check?"
+                 "Ming-Ho Yee and Arjun Guha"
+                 ECOOP
+                 2023
+                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-typeweaver.html")
     (publication "DrAsync: Identifying and Visualizing Anti-Patterns in Asynchronous JavaScript"
                  "Alexi Turcotte, Michael D. Shah, Mark W. Aldrich, and Frank Tip"
                  ICSE
