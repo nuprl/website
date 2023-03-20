@@ -1532,8 +1532,9 @@
    @subpage-title{Publications}
 
    @div[class: "pn-main-wrapper"]{
-     @div[class: "row"]{
-       @(map publication-group->html
-             (arrange-publications publications))}}
+     @div[class: "container"]{
+       @div[class: "row"]{
+         @(map publication-group->html
+               (arrange-publications publications))}}}
    @footer{}
 }}
