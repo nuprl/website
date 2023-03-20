@@ -29,7 +29,7 @@ jobs:
       #  uses: lhotari/action-upterm@v1
       - name: Build website
         run: |
-          sudo apt-get install -y python-pygments 
+          sudo apt-get install -y python3-pygments 
           sudo make all
       - name: Deploy website
         if: ${{ github.event_name == 'push' }}

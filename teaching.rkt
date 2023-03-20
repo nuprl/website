@@ -184,6 +184,10 @@
              @div[class: "col-md-6"]{
                @ul{
                  @li{
+                   @strong{4973/7580} Advanced Software Engineering @br{}
+                   @indent{} S 2023 @a[href: "https://neu-se.github.io/CS4910-7580-Spring-2023/" target: "_blank"]{link} @instructor{Jon Bell}
+                 }
+                 @li{
                    @strong{4910} Type Systems @br{}
                    @indent{} F 2020 @instructor{John Boyland}
                  }
@@ -194,6 +198,7 @@
                  }
                  @li{
                      @strong{4500} Software Development @br{}
+                     @indent[] F 2022 @a[href: "https://felleisen.org/matthias/4500-f22/index.html" target: "_blank"]{link} @instructor{Matthias Felleisen, Ben Lerner} @br{}
                      @indent[] F 2020 @a[href: "https://www.ccs.neu.edu/home/matthias/4500-f20/" target: "_blank"]{link} @instructor{Matthias Felleisen, Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "http://janvitek.org/events/NEU/4500/s20/" target: "_blank"]{link} @instructor{Jan Vitek, Jason Hemann, Ferdinand Vesely} @br{}
                      @indent[] F 2019 @a[href: "https://felleisen.org/matthias/4500-f19/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
@@ -201,7 +206,9 @@
                      @indent[] S 2016 @a[href: "https://felleisen.org/matthias/4500-s16/" target: "_blank"]{link} @instructor{Matthias Felleisen}
                  }
                  @li{
-                     @strong{4410} Compilers @br{}
+                     @strong{4410/6410} Compilers @br{}
+                     @indent[] S 2023 @a[href: "https://courses.ccs.neu.edu/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] F 2022 @a[href: "https://courses.ccs.neu.edu/cs4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
                      @indent[] S 2021 @a[href: "https://courses.ccs.neu.edu/cs4410/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2020 @a[href: "https://course.ccs.neu.edu/cs4410sp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
@@ -212,6 +219,10 @@
                      @indent[] S 2012 @a[href: "http://www.ccs.neu.edu/course/csu4410/" target: "_blank"]{link} @instructor{Olin Shivers}
                  }
                  @li{
+                    @strong{4100} Artificial Intelligence @br{}
+                    @indent[] F 2022 @instructor{Steven Holtzen} @br{}
+                 }
+                 @li{
                      @strong{4400} Programming Languages @br{}
                      @indent[] S 2021 @a[href: "https://pages.github.ccs.neu.edu/jhemann/21SP-CS4400/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "https://felleisen.org/matthias/4400-s20/" target: "_blank"]{link} @instructor{Matthias Felleisen} @br{}
@@ -219,6 +230,8 @@
                  }
                  @li{
                      @strong{4530} Fundamentals of Software Engineering @br{}
+                     @indent{} S 2023 @a[href: "https://neu-se.github.io/CS4530-Spring-2023/" target: "_blank"]{link} @instructor{Mitch Wand, Jan Vitek} @br{}
+                     @indent{} F 2022 @a[href: "https://neu-se.github.io/CS4530-Fall-2022/" target: "_blank"]{link} @instructor{Mitch Wand, Jon Bell} @br{}
                      @indent{} S 2021 @a[href: "https://neu-se.github.io/CS4530-CS5500-Spring-2021" target: "_blank"]{link} @instructor{Jon Bell, John Boyland, Mitch Wand} @br{}
                      @indent{} F 2020 @a[href: "https://pages.github.ccs.neu.edu/CS5500-CourseMaterials/CS4530-CS5500-Fall2020/index.html" target: "_blank"]{link} @instructor{Frank Tip, Jon Bell} @br{}
                  }
@@ -227,7 +240,12 @@
                      @indent[] F 2015 @a[href: "http://www.ccs.neu.edu/course/cs3800f15wc/" target: "_blank"]{link} @instructor{William D. Clinger}
                  }
                  @li{
+                     @strong{3520} Programming in C++ @br{}
+                     @indent[] S 2023 @instructor{James Perretta}
+                 }
+                 @li{
                      @strong{3500} Object Oriented Design @br{}
+                     @indent[] F 2022 @instructor{Ben Lerner} @br{}
                      @indent[] F 2019 @a[href: "https://course.ccs.neu.edu/cs3500f19/" target: "_blank"]{link} @instructor{Ben Lerner, Clark Freifeld, Alex Grob} @br{}
                      @indent[] F 2018 @a[href: "https://course.ccs.neu.edu/cs3500f18/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh, Clark Freifeld} @br{}
                      @indent[] F 2016 @a[href: "https://course.ccs.neu.edu/cs3500f16/" target: "_blank"]{link} @instructor{Ben Lerner, Amit Shesh} @br{}
@@ -235,12 +253,15 @@
                  }
                  @li{
                      @strong{2800} Logic and Computation @br{}
+                     @indent[] S 2023 @a[href: "https://course.ccs.neu.edu/cs2800sp23/" target: "_blank"]{link} @instructor{Daniel Patterson} @br{}
                      @indent[] S 2021 @a[href: "https://pages.github.ccs.neu.edu/jhemann/21SP-CS2800/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] F 2020 @a[href: "https://pages.github.ccs.neu.edu/jhemann/20FA-2800/" target: "_blank"]{link} @instructor{Jason Hemann} @br{}
                      @indent[] S 2020 @a[href: "https://www.khoury.northeastern.edu/~pete/courses/Logic-and-Computation/2020-Spring/" target: "_blank"]{link} @instructor{Pete Manolios, Olin Shivers}
                  }
                  @li{
                      @strong{2510} Fundamentals of Computer Science 2 @br{}
+                     @indent[] S 2023 @a[href: "https://course.ccs.neu.edu/cs2510/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
+                     @indent[] S 2023 accelerated @a[href: "https://course.ccs.neu.edu/cs2510a/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2021 accelerated @a[href: "https://course.ccs.neu.edu/cs2510a/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2510asp20/" target: "_blank"]{link} @instructor{Ben Lerner} @br{}
                      @indent[] S 2019 @a[href: "https://course.ccs.neu.edu/cs2510sp19/" target: "_blank"]{link} @instructor{Leena Razzaq, Jason Hemann, Matthew Singer} @br{}
@@ -255,6 +276,9 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
+                     @indent{} S 2023 @a[href: "https://course.ccs.neu.edu/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
+                     @indent{} F 2022 accelerated @a[href: "https://arjunguha.github.io/nu-2022F-CS2500Accel/" target: "_blank"]{link} @instructor{Arjun Guha} @br{}
+                     @indent{} F 2022 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Nate Derbinsky, John Park, Daniel Patterson, Leena Razzaq, Olin Shivers} @br{}
                      @indent{} F 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf20/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner} @br{}
                      @indent{} F 2020 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner, Arjun Guha, John Park, Ferdinand Vesely} @br{}
                      @indent{} F 2019 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf19/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
@@ -271,6 +295,11 @@
                      @indent{} S 2014 @a[href: "http://www.ccs.neu.edu/course/cs2500sp14/index.html" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
                      @indent{} F 2013 @a[href: "http://www.ccs.neu.edu/course/cs2500f13/index.html" target: "_blank"]{link} @instructor{Matthias Felleisen, Amal Ahmed} @br{}
                      @indent{} F 2011 @a[href: "http://www.ccs.neu.edu/course/csu211/" target: "_blank"]{link} @instructor{Amal Ahmed}
+                 }
+                 @li{
+                     @strong{1101} Computer Science and its Applications @br{}
+                     @indent{} S 2023 @a[href: "https://docs.google.com/document/d/1uQDyacA0GwsQMGqKo4eMRhXOf1uFcOZbxykmmAp2nQQ/edit" target: "_blank"]{link} @instructor{Karl Lieberherr} @br{}
+                     @indent{} F 2022 @a[href: "https://docs.google.com/document/d/1uQDyacA0GwsQMGqKo4eMRhXOf1uFcOZbxykmmAp2nQQ/edit" target: "_blank"]{link} @instructor{Karl Lieberherr} @br{}
                  }}}}}
 
          @div[class: "pn-separator-img-short"]

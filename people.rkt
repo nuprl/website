@@ -126,7 +126,7 @@
           }
 
           @person[#:name "Amal Ahmed"
-                  #:title "Associate Professor"
+                  #:title "Professor"
                   #:e-mail "amal@ccs.neu.edu"
                   #:website "http://ccs.neu.edu/home/amal"
                   #:history @list[
@@ -141,7 +141,7 @@
           }
 
           @person[#:name "Ben Lerner"
-                  #:title "Lecturer"
+                  #:title "Associate Teaching Professor"
                   #:e-mail "blerner@ccs.neu.edu"
                   #:history @list[
                     "Joined Northeastern, 2014"
@@ -176,24 +176,6 @@
                   ]
                   #:img "frank_tip.jpg"]{
             My research is in the areas of Programming Languages and Software Engineering and is focused on the use of program analysis in tools that help increase programmer productivity and software quality. Specific topics that I've worked on in recent years include tools for detecting and localizing bugs, refactoring, test generation, and optimization.
-          }
-
-          @person[#:name "Jason Hemann"
-                  #:title "Clinical Lecturer"
-                  #:e-mail "jhemann@ccis.neu.edu"
-                  #:website "http://hemann.pl"
-                  #:history @list[
-                    "Joined Northeastern, 2018"
-                    "PhD, Indiana University, 2018"]
-                  #:img "jhemann.jpg"]{
-            My research interests include functional and logic programming. I
-            focus on embeddings and extensions to support logic programming in
-            numerous host languages and transforming functional programs to
-            relational ones. The microKanren model has inspired scores of
-            implementations (more than 120), in over 40 host languages, in just five
-            years. My other interests concern novel uses of logic programming and
-            symbolic constraint systems and typesafe embeddings of logic
-            languages.
           }
 
           @person[#:name "Arjun Guha"
@@ -242,21 +224,27 @@
                   #:img "steven_holtzen.png"]{
             My research focuses on programming languages and artificial intelligence. In particular, my goal is to use programming languages and program analysis techniques as a foundation for specifying and reasoning about probabilistic models. Towards this end I am interested in the design, implementation, and applications of probabilistic programming languages; foundations of probabilistic inference and tractable probabilistic modeling; automated reasoning; and probabilistic verification.
           }
+
+          @person[#:name "Daniel Patterson"
+                  #:title "Assistant Teaching Professor"
+                  #:e-mail "dbp@dbpmail.net"
+                  #:website "https://dbp.io"
+                  #:history @list[
+
+                  "Joined Northeastern Faculty, 2022"
+                  "PhD, Northeastern University, 2022"
+
+                  ]
+                  #:img "daniel_patterson.jpg"]{
+            I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
+          }
+
         }
 
         @div[class: "pn-separator-img"]{
            @h2{Students}}
 
         @div[class: "container"]{
-
-          @person[#:name "Leif Andersen"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "leif@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/leif"
-                  #:history @list["Joined Northeastern, 2014"]
-                  #:img "leif_andersen.jpg"]{
-            I study programming languages in PLT at Northeastern University. I study compilers, domain specific languages for writing compilers, and performance tools.
-          }
 
           @person[#:name "Sam Caldwell"
                   #:title "Advisor: Matthias Felleisen"
@@ -276,24 +264,6 @@
             I usually work on types, currently focusing on gradual type systems.
           }
 
-          @person[#:name "Olivier Flückiger"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "o@o1o.ch"
-                  #:website "http://www.o1o.ch/about"
-                  #:history @list["Joined Northeastern, 2015"]
-                  #:img "olivier_fluckiger.jpg"]{
-            My passion lies in language implementation @|mdash| creating the tools and techniques required to get from powerful abstractions to efficient execution.
-          }
-
-          @person[#:name "Daniel Patterson"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "dbp@ccs.neu.edu"
-                  #:website "https://dbp.io"
-                  #:history @list["Joined Northeastern, 2016"]
-                  #:img "daniel_patterson.jpg"]{
-            I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
-          }
-
           @person[#:name "Ming-Ho Yee"
                   #:title "Advisor: Arjun Guha"
                   #:e-mail "mhyee@ccs.neu.edu"
@@ -310,15 +280,6 @@
                   #:history @list["Joined Northeastern, 2017"]
                   #:img "aviral-goel.jpeg"]{
             Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
-          }
-
-          @person[#:name "Aaron Weiss"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "weiss@ccs.neu.edu"
-                  #:website "https://aaronweiss.us/"
-                  #:history @list["Joined Northeastern, 2017"]
-                  #:img "aaron_weiss.jpg"]{
-            I'm interested in type systems and verification. I want to help build a world where the critical software that runs our lives is provably safe.
           }
 
           @person[#:name "Michael Ballantyne"
@@ -391,6 +352,16 @@
              I enjoy flexible programming languages and elegant software. I'm interested in designing tools that enable everyday developers to build more robust programs.
           }
 
+          @person[#:name "Sam Stites"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "prl@s.ptr.dev"
+                  #:history @list[
+                    "Joined Northeastern, 2019"]
+                  #:img "sam_stites.jpg"
+                  ]{
+              I research probabilistic programming languages, specifically designing languages that let users fine-tune the (statistical) inference process.
+          }
+
           @person[#:name "Nate Yazdani"
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "nyazdani@ccs.neu.edu"
@@ -406,8 +377,9 @@
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "ahwagner@ccs.neu.edu"
                   #:history @list[
-                    "Joined Northeastern, 2020"]
-                  #:img "andrew_wagner.jpeg"]{
+                    "Joined Northeastern, 2020"
+                    "BS, Brown University, 2020"]
+                  #:img "andrew_wagner.jpg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
           }
 
@@ -491,6 +463,37 @@
                     "Joined Northeastern, 2021"]
                   #:img "ytzi.jpg"]{
             My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
+          }
+
+          @person[#:name "Max Bernstein"
+                  #:title "Advisor: Frank Tip and Jan Vitek"
+                  #:e-mail "bernstein.ma@northeastern.edu"
+                  #:website "https://bernsteinbear.com"
+                  #:history @list[
+                    "Joined Northeastern, 2022"]
+                  #:img "max_bernstein.png"]{
+          }
+
+          @person[#:name "Minsung Cho"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "minsung@ccs.neu.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2022"
+                      "BS, Carnegie Mellon University"]
+                  #:img "minsung_cho.jpg"
+                  #:website "https://cho.minsung.pl"]{
+            I'm a pure math ex-pat using logic and algebra to make probabilistic programming better.
+          }
+
+          @person[#:name "Gwenyth Lincroft"
+                  #:title "Advisor: Jonathan Bell"
+                  #:e-mail "lincroft.g@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2022"
+                      "BS, NC State University"
+                                  ]
+                  #:img "gwenyth_lincroft.png"]{
+            I am interested in improving tools used by data scientists.
           }
         }
 
@@ -687,6 +690,19 @@
                         #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
                         #:extra "(Brown University)"
                         #:personal-site "http://ccs.neu.edu/home/types/")
+              @(alumnus "Leif Andersen" #:year 2022
+                      #:personal-site "https://leifandersen.net/index.html"
+                      #:extra "(UMass Boston)")
+              @(alumnus "Olivier Flückiger" #:year 2022
+                      #:personal-site "http://www.o1o.ch/about"
+                      #:dissertation "https://thesis.r-vm.net/main.pdf")
+              @(alumnus "Daniel Patterson" #:year 2022
+                        #:dissertation "https://dbp.io/pubs/2022/dbp-dissertation.pdf"
+                        #:extra "(Northeastern University)"
+                        #:personal-site "https://dbp.io/")
+              @(alumnus "Aaron Weiss" #:year 2022
+                        #:extra "(Roblox)"
+                        #:personal-site "https://aaronweiss.us/")
              ]}}
 
         @div[class: "container"]{
@@ -771,11 +787,14 @@
           @div[class: "row"]{
             @h3[style: "text-align: center;"]{Former Faculty}
               @alumnus-list[
-                @(alumnus "Will Clinger" #:year 2019
-                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
                 @(alumnus "Heather Miller" #:year 2018
                           #:personal-site "http://heather.miller.am/"
                           #:extra "(Carnegie Mellon University)")
+                @(alumnus "Will Clinger" #:year 2019
+                          #:personal-site "https://en.wikipedia.org/wiki/William_Clinger_(computer_scientist)")
+                @(alumnus "Jason Hemann" #:year 2022
+                          #:personal-site "https://jasonhemann.github.io/"
+                          #:extra "(Seton Hall University)")
               ]}}
         @footer{}
 }}}}

@@ -3,3 +3,4 @@ compiled/
 *.swo
 *.swp
 *.html
+.DS_STORE

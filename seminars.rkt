@@ -81,6 +81,75 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+    	"balzer-session-types"
+	"Session Types for Information Flow Control and a Logical Relation for Noninterference"
+	"Stephaie Balzer"
+	"https://www.cs.cmu.edu/~balzers/"
+	"Carnegie Mellon University"
+	(datetime 2022 11 18 12 00)
+	"WVF 118 and Zoom"
+	@list{
+	  @p{Noninterference guarantees that an attacker cannot infer secrets by interacting with a program.  
+	  An information flow control (IFC) type system asserts noninterference by tracking the level of information learned and 
+	  disallowing leakage to parties of lesser or unrelated level.  In this talk, I explore session types as an enabler for 
+	  tracking the flow of information. Session types stipulate according to which protocol messages must be exchanged along 
+	  channels connecting concurrently executing processes (or threads).  I develop an IFC type system for linear session-typed process 
+	  calculus that employs possible worlds from hybrid logic to reason about security levels.  To prove that well-typed programs in the 
+	  resulting language ensure noninterference, I develop a logical relation.  I survey what the main challenges in the development 
+	  are --- non-termination (because of general recursive types) and non-determinism (because of concurrency) --- and explain how to 
+	  address them.  Distinguishing features of the resulting logical relation are its interactive nature (the program interacts with its context) 
+	  and the use of an observation index (as opposed to a step index or later modality).  The latter ensures compositionality despite concurrency.}
+	}
+	@list{
+	  @p{Stephanie Balzer is an Assistant Research Professor in the Principles of Programming group at CMU.  
+	  Her research is concerned with compositional verification of concurrent programs, using logic and type 
+	  systems, logical relations, and verification logics.}
+	  })
+
+
+    (seminar 
+      "cogumbreiro-tbd"
+      "Checking Data-Race Freedom of GPU Kernels, Compositionally"
+      "Tiago Cogumbreiro"
+      "https://cogumbreiro.github.io/"
+      "University of Massachusetts, Boston"
+      (datetime 2022 11 4 12 00)
+      "WVF 118 and Zoom"
+      @list{
+      	@p{GPUs offer parallelism as a commodity, but they are difficult to programcorrectly. Static analyzers that guarantee data-race freedom 
+	(DRF) areessential to help programmers establish the correctness of theirprograms (kernels). However, existing approaches produce too
+many false alarms and struggle to handle larger programs. To address
+these limitations we formalize a novel compositional analysis for DRF,
+based on access memory protocols. These protocols are behavioral types
+that codify the way threads interact over shared memory.
+Our work includes fully mechanized proofs of our theoretical results, the
+first mechanized proofs in the field of DRF analysis for GPU kernels.
+Our theory is implemented in Faial, a tool that outperforms the state-of-
+the-art. Notably, it can correctly verify at least 1.42× more real-world
+kernels, and it exhibits a linear growth in 4 out of 5 experiments, while
+others grow exponentially in all 5 experiments}
+	@p{This talk presents the CAV21 publication and reports updates on this research (journal and workshop publications)}}
+      @list{
+      	@p{Tiago Cogumbreiro joined the Department of Computer Science at the University of
+Massachusetts Boston in fall 2018 as an assistant professor. Prior to that,
+Tiago was a postdoctoral researcher at the Georgia Institute of Technology and
+Rice University, supervised by Professor Vivek Sarkar, and a research assistant
+at Imperial College London, supervised by Professor Nobuko Yoshida. Tiago
+obtained a PhD from the University of Lisbon, Portugal.}})
+    (seminar 
+      "dracordon-val"
+      "Val Programming Language"
+      "Dimitri Racordon"
+      "https://kyouko-taiga.github.io/"
+      "Northeastern University"
+      (datetime 2022 10 21 12 00)
+      "WVF 118 and Zoom"
+      @list{ 
+      	@p{Val is a zero-cost abstraction language based on two of the best ideas behind C++: generic programming and first-class value semantics. Unlike C++, however, Val achieves memory safety without resorting to defensive copying.}
+	@p{In this talk, I will explain how Val codifies best practices from modern C++ into a type system that guarantees type and memory safety while being able to express 99% of the low-level bit pushing one can write in C++ with the same predictable efficiency. I will also attempt to convince you that you don't need neither pointers, references, nor sophisticated lifetime annotations to get there.}
+      }
+      @list{})
+    (seminar
      "rnigam-calyx"
      "Compiler Infrastructure for Accelerator Generators"
      "Rachit Nigam"
