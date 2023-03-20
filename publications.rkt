@@ -59,9 +59,30 @@
 @(define EuroSys "European Conference on Computer Systems (EuroSys)")
 @(define ICSE "International Conference on Software Engineering (ICSE)")
 @(define TOSEM "ACM Transactions on Software Engineering and Methodology (TOSEM)")
+@(define MSR "Mining Software Repositories (MSR)")
 
 @(define publications
    (list
+    (publication "A Large Scale Analysis of Semantic Versioning in NPM"
+                 "Donald Pinckney, Federico Cassano, Arjun Guha, and Jonathan Bell"
+                 MSR
+                 2023
+                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-npm-mining.html")
+    (publication "SantaCoder: don't reach for the stars!"
+                 "Loubna Ben Allal, Raymond Li, Denis Kocetkov, Chenghao Mou, Christopher Akiki, Carlos Munoz Ferrandis, Niklas Muennighoff, Mayank Mishra, Alex Gu, Manan Dey, Logesh Kumar Umapathi, Carolyn Jane Anderson, Yangtian Zi, Joel Lamy Poirier, Hailey Schoelkopf, Sergey Troshin, Dmitry Abulkhanov, Manuel Romero, Michael Lappert, Francesco De Toni, Bernardo García del Río, Qian Liu, Shamik Bose, Urvashi Bhattacharyya, Terry Yue Zhuo, Ian Yu, Paulo Villegas, Marco Zocca, Sourab Mangrulkar, David Lansky, Huu Nguyen, Danish Contractor, Luis Villa, Jia Li, Dzmitry Bahdanau, Yacine Jernite, Sean Hughes, Daniel Fried, Arjun Guha, Harm de Vries, and Leandro von Werra"
+                 "Deep Learning for Code Workshop (DL4C)"
+                 2023
+                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-santacoder.html")
+    (publication "Do Machine Learning Models Produce TypeScript Types that Type Check?"
+                 "Ming-Ho Yee and Arjun Guha"
+                 ECOOP
+                 2023
+                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-typeweaver.html")
+    (publication "Flexible and Optimal Dependency Management via Max-SMT"
+                 "Donald Pinckney, Federico Cassano, Arjun Guha, Jonathan Bell, Massimiliano Culpo, Todd Gamblin"
+                 ICSE
+                 2023
+                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-maxnpm.html")
     (publication "DrAsync: Identifying and Visualizing Anti-Patterns in Asynchronous JavaScript"
                  "Alexi Turcotte, Michael D. Shah, Mark W. Aldrich, and Frank Tip"
                  ICSE
