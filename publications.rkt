@@ -60,6 +60,9 @@
 @(define ICSE "International Conference on Software Engineering (ICSE)")
 @(define TOSEM "ACM Transactions on Software Engineering and Methodology (TOSEM)")
 @(define MSR "Mining Software Repositories (MSR)")
+@(define SLE "International Conference on Software Language Engineering (SLE)")
+@(define CSF "Computer Security Foundations Symposium (CSF)")
+@(define ASE "International Conference on Automated Software Engineering (ASE)")
 
 @(define publications
    (list
@@ -83,6 +86,36 @@
                  ICSE
                  2023
                  "https://ccs.neu.edu/~arjunguha/main/papers/2023-maxnpm.html")
+    (publication "Adversary Safety By Construction In A Language Of Cryptographic Protocols"
+                 "Timothy M. Braje, Alice R. Lee, Andrew Wagner, Benjamin Kaiser, Daniel Park, Martine Kalke, Robert K. Cunningham, and Adam Chlipala"
+                 CSF
+                 2022
+                 "https://doi.org/10.1109/csf54842.2022.9919638")
+    (publication "A Retrospective Study Of One Decade Of Artifact Evaluations"
+                 "Stefan Winter, Christopher Steven Timperley, Ben Hermann, Jürgen Cito, Jonathan Bell, Michael Hilton, and Dirk Beyer"
+                 ESECFSE
+                 2022
+                 "https://www.jonbell.net/preprint/fse22artifacts.pdf")
+    (publication "Reformulator: Automated Refactoring Of The N+1 Problem In Database-Backed Applications"
+                 "Alexi Turcotte, Mark W. Aldrich, and Frank Tip"
+                 ASE
+                 2022
+                 "https://www.franktip.org/pubs/ase2022.pdf")
+    (publication "Augur: Dynamic Taint Analysis For Asynchronous Javascript"
+                 "Mark W. Aldrich, Alexi Turcotte, Matthew Blanco, and Frank Tip"
+                 ASE
+                 2022
+                 "https://doi.org/10.1145/3551349.3559522")
+    (publication "signatr: A Data-Driven Fuzzing Tool For R"
+                 "Alexi Turcotte, Pierre Donat-Bouillud, Filip Křikava, and Jan Vitek"
+                 SLE
+                 2022
+                 "https://doi.org/10.1145/3567512.3567530")
+    (publication "Integrated Data Science for Secondary Schools: Design and Assessment of a Curriculum"
+                 "Emmanuel Schanzer, Nancy Pfenning, Flannery Denny, Sam Dooman, Joe Gibbs Politz, Benjamin S. Lerner, Kathi Fisler, and Shriram Krishnamurthi"
+                 SIGCSE
+                 2022
+                 "https://www.ccs.neu.edu/home/blerner/papers/sigcse2022_ds_curriculum.pdf")
     (publication "DrAsync: Identifying and Visualizing Anti-Patterns in Asynchronous JavaScript"
                  "Alexi Turcotte, Michael D. Shah, Mark W. Aldrich, and Frank Tip"
                  ICSE
@@ -143,6 +176,11 @@
                  "The Art, Science, and Engineering of Programming"
                  2022
                  "http://www.ccis.neu.edu/racket/pubs/programming-gldf.pdf")
+    (publication "3CPS: The Design of an Environment-Focussed Intermediate Representation"
+                 "Benjamin Quiring, John Reppy, and Olin Shivers"
+                 IFL
+                 2021
+                 "https://doi.org/10.1145/3544885.3544889")
     (publication "A Practical Approach for Dynamic Taint Tracking with Control-flow Relationships"
                  "Katherine Hough and Jonathan Bell"
                  TOSEM
