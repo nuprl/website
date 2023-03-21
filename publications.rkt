@@ -1519,7 +1519,7 @@
    (sort unsorted-groups > #:key publication-group-year))
 
 @(define (publication-group->html pub-group)
-   @div[class: "pn-pub-group col-md-12 compact"]{
+   @div[class: "pn-pub-group compact"]{
      @span[class: "pn-pub-year " (publication-group-year pub-group)]
      @br{}
      @(map publication->html (publication-group-publications pub-group))})
