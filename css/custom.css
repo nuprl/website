@@ -422,6 +422,8 @@ ul
 .pn-pub-group
 {
     margin-bottom: 20px;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .pn-pub-year
