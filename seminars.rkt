@@ -80,6 +80,76 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
+    
+    (seminar
+    	"hsu-probsep"
+	"Separation Logics for Probabilistic Programs"
+	"Justin Hsu"
+	"https://www.justinhsu.net/"
+	"Cornell University"
+	(datetime 2023 04 07 12 00)
+	"Kariotis 302 and Zoom"
+	@list{
+	  @p{Separation is a powerful concept when verifying programs that
+manipulate memory, and concurrent programs. In the probabilistic setting, there
+are also natural notions of separation. For instance, probabilistic independence
+is useful for describing the result of random sampling---a basic operation in
+all probabilistic languages---and for reasoning about groups of random
+variables. Nevertheless, existing verification methods handle independence
+poorly, if at all.}
+    @p{
+      I will survey our recent work on probabilistic separation logics, based on
+      probabilistic models of the logic of bunched implication (BI) and other bunched
+      logics. In the program logic PSL, separation models probabilistic independence;
+      we have used PSL to verify information-theoretic security of some well-known
+      cryptographic constructions. I'll also describe extensions to reason about other
+      separation-like relations between random variables, like conditional
+      independence and negative association.
+    }
+	}
+	@list{
+	  @p{Justin Hsu is an assistant professor of Computer Science at Cornell University.
+      He was previously an assistant professor at UW--Madison and a postdoc at Cornell
+      and UCL, after receiving his doctorate in Computer Science from the University
+      of Pennsylvania. His research focuses on formal verification of probabilistic
+      programs, including algorithms from differential privacy, protocols from
+      cryptography, and mechanisms from game theory. His work has been recognized by
+      an NSF CAREER award, a SIGPLAN John C. Reynolds Doctoral Dissertation award,
+      distinguished paper awards from POPL and CAV, and industrial awards from
+      Facebook.}
+	  })
+
+
+    (seminar
+    	"doenges-leapfrog"
+	"Leapfrog: Certified Equivalence for Protocol Parsers"
+	"Ryan Doenges"
+	"https://ryandoeng.es/"
+	"Cornell University"
+	(datetime 2023 03 13 12 00)
+	"Kariotis 302 and Zoom"
+	@list{
+	  @p{
+      In this talk I will describe some recent work on the P4 programming language,
+      a domain-specific language for programming networking accelerators. First,
+      I will describe Petr4 (pron. "petra"), our semantics for P4, and give a brief
+      overview of the language's syntax, type system, and operational semantics. Then
+      I will cover Leapfrog, a Coq-based framework for verifying the equivalence of
+      packet parsers defined in P4. Leapfrog is based on P4 Automata (P4A), an
+      automata-theoretic model based on Petr4's semantics of packet parsers. We
+      provide a decision procedure for P4A equivalence based on symbolic bisimilarity;
+      it is implemented in Coq as a tactic and proved sound with respect to the
+      operational semantics of P4A. The tactic relies on a trusted SAT solver to
+      decide symbolic entailments. We find the bisimilarity algorithm generalizes to
+      certain relational properties beyond mere equivalence.
+    }
+	}
+	@list{
+	  @p{Ryan Doenges is a Ph.D. candidate at Cornell University, where he
+	  studies programming language principles for emerging networking devices.
+	  He is advised by Nate Foster. }
+	  })
+
     (seminar
     	"balzer-session-types"
 	"Session Types for Information Flow Control and a Logical Relation for Noninterference"
