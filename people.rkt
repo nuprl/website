@@ -687,11 +687,12 @@
                         #:extra "(Wesleyan University)"
                         #:personal-site "http://maxsnew.com/")
               @(alumnus "Ben Greenman" #:year 2020
-                        #:dissertation "http://ccs.neu.edu/home/types/resources/pdf/g-dissertation-2020.pdf"
+                        #:dissertation "http://hdl.handle.net/2047/D20398329"
                         #:extra "(Brown University)"
-                        #:personal-site "http://ccs.neu.edu/home/types/")
+                        #:personal-site "https://users.cs.utah.edu/~blg/")
               @(alumnus "Leif Andersen" #:year 2022
                       #:personal-site "https://leifandersen.net/index.html"
+                      #:dissertation "https://www2.ccs.neu.edu/racket/pubs/dissertation-andersen.pdf"
                       #:extra "(UMass Boston)")
               @(alumnus "Olivier Flückiger" #:year 2022
                       #:personal-site "http://www.o1o.ch/about"
