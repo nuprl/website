@@ -81,11 +81,11 @@
                  "Deep Learning for Code Workshop (DL4C)"
                  2023
                  "https://ccs.neu.edu/~arjunguha/main/papers/2023-santacoder.html")
-    (publication "Do Machine Learning Models Produce TypeScript Types that Type Check?"
+    (publication "Do Machine Learning Models Produce TypeScript Types That Type Check?"
                  "Ming-Ho Yee and Arjun Guha"
                  ECOOP
                  2023
-                 "https://ccs.neu.edu/~arjunguha/main/papers/2023-typeweaver.html")
+                 "https://doi.org/10.4230/LIPIcs.ECOOP.2023.37")
     (publication "Flexible and Optimal Dependency Management via Max-SMT"
                  "Donald Pinckney, Federico Cassano, Arjun Guha, Jonathan Bell, Massimiliano Culpo, Todd Gamblin"
                  ICSE
