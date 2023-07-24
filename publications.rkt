@@ -66,6 +66,11 @@
 
 @(define publications
    (list
+    (publication "Lilac: A Modal Separation Logic for Conditional Probability"
+                 "John M. Li, Amal Ahmed, Steven Holtzen"
+                 PLDI
+                 2023
+                 "https://johnm.li/lilac-a-modal-separation-logic-for-conditional-probability.pdf")
     (publication "A Large Scale Analysis of Semantic Versioning in NPM"
                  "Donald Pinckney, Federico Cassano, Arjun Guha, and Jonathan Bell"
                  MSR
