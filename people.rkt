@@ -255,15 +255,6 @@
             I came to Northeastern from Austin, Texas, where I did my undergrad and spent several years working in embedded software. I’m interested in using ideas and tools from programming languages to make the world a better place for everyone that uses computers.
           }
 
-          @person[#:name "Benjamin Chung"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "bchung@ccs.neu.edu"
-                  #:website "http://benchung.github.io"
-                  #:history @list["Joined Northeastern, 2015"]
-                  #:img "Benjamin-Chung-Index-Image.jpg"]{
-            I usually work on types, currently focusing on gradual type systems.
-          }
-
           @person[#:name "Ming-Ho Yee"
                   #:title "Advisor: Arjun Guha"
                   #:e-mail "mhyee@ccs.neu.edu"
@@ -271,15 +262,6 @@
                   #:history @list["Joined Northeastern, 2016"]
                   #:img "yee-crop.jpg"]{
             I'm interested in programming language design and implementation, as well as static program analysis.
-          }
-
-          @person[#:name "Aviral Goel"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "goel.aviral@gmail.com"
-                  #:website "http://aviral.io/"
-                  #:history @list["Joined Northeastern, 2017"]
-                  #:img "aviral-goel.jpeg"]{
-            Currently, I am working on static program analysis. I am interested in all aspects of programming languages @|mdash| syntax, semantics, type-systems, and compilers.
           }
 
           @person[#:name "Michael Ballantyne"
@@ -295,42 +277,9 @@
                   #:title "Advisor: Jan Vitek"
                   #:e-mail "a.pelenitsyn@gmail.com"
                   #:history @list["Joined Northeastern, 2018"]
-                  #:website "http://mmcs.sfedu.ru/~ulysses"
+                  #:website "https://a.pelenitsyn.top/"
                   #:img "artem_pelenitsyn.jpg"]{
             I am interested in typed functional programming and corresponding languages, mostly Haskell, type and effect systems, mathematics of program construction. Lately, I was working on a principled approach to the Julia programming language.
-          }
-
-          @person[#:name "Julia Belyakova"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "julbinb@gmail.com"
-                  #:website "http://julbinb.github.io/"
-                  #:history @list[
-                    "Joined Northeastern, 2018"
-                    "Joined Czech Technical University in Prague, 2017"
-                    "Joined Southern Federal University, 2014"
-                    "MS, Southern Federal University, 2014"]
-                  #:img "julia_belyakova.jpg"]{
-            My primary research interests are programming languages and type theory. I am also fond of theorem proving, generic programming, object-oriented and functional programming, software engineering, programming by contracts, software testing. Currently I work on formalizing subtyping for the Julia programming language.
-          }
-
-          @person[#:name "Alexi Turcotte"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "alexi@ccs.neu.edu"
-                  #:website "https://reallytg.github.io/"
-                  #:history @list[
-                    "Joined Northeastern, 2018"]
-                  #:img "alexi_turcotte_small.jpg"]{
-            I like reasoning about programs and implementing languages. Programming makes me happy. Programming about programming makes me happier.
-          }
-
-          @person[#:name "Ellen Arteca"
-                  #:title "Advisor: Frank Tip"
-                  #:e-mail "ellen@ccs.neu.edu"
-                  #:website "https://emarteca.github.io/"
-                  #:history @list[
-                    "Joined Northeastern, 2018"]
-                  #:img "ellen_arteca_small.jpg"]{
-            My previous work was in gradual typing; now I'm starting a project looking at program analysis for asynchronous JavaScript.
           }
 
           @person[#:name "Olek Gierczak"
@@ -705,6 +654,21 @@
               @(alumnus "Aaron Weiss" #:year 2022
                         #:extra "(Roblox)"
                         #:personal-site "https://aaronweiss.us/")
+              @(alumnus "Benjamin Chung" #:year 2023
+                      #:personal-site "http://benchung.github.io"
+                      #:dissertation "https://benchung.github.io/papers/thesis.pdf")
+              @(alumnus  "Aviral Goel" #:year 2023
+                         #:personal-site "http://aviral.io/"
+                         #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2802795686")
+              @(alumnus "Julia Belyakova" #:year 2023
+                        #:personal-site "http://julbinb.github.io/"
+                        #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2853689755")
+              @(alumnus "Alexi Turcotte" #:year 2023
+                        #:personal-site "https://reallytg.github.io/"
+                        #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851062525")
+              @(alumnus "Ellen Arteca" #:year 2023
+                        #:personal-site "https://emarteca.github.io/"
+                        #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851106784")
              ]}}
 
         @div[class: "container"]{
