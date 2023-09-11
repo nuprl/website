@@ -419,6 +419,7 @@
           @person[#:name "John Gouwar"
                   #:title "Advisor: Arjun Guha"
                   #:e-mail "gouwar.j@northeastern.edu"
+                  #:website "https://johngouwar.github.io/"
                   #:history @list[
                     "Joined Northeastern, 2021"
                     "BA, Grinnell College"]
