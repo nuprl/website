@@ -246,15 +246,6 @@
 
         @div[class: "container"]{
 
-          @person[#:name "Sam Caldwell"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "samc@ccs.neu.edu"
-                  #:website "http://ccs.neu.edu/home/samc"
-                  #:history @list["Joined Northeastern, 2015"]
-                  #:img "Samuel-Caldwell-Index-Image.jpg"]{
-            I came to Northeastern from Austin, Texas, where I did my undergrad and spent several years working in embedded software. I’m interested in using ideas and tools from programming languages to make the world a better place for everyone that uses computers.
-          }
-
           @person[#:name "Ming-Ho Yee"
                   #:title "Advisor: Arjun Guha"
                   #:e-mail "mhyee@ccs.neu.edu"
@@ -676,6 +667,10 @@
               @(alumnus "Ellen Arteca" #:year 2023
                         #:personal-site "https://emarteca.github.io/"
                         #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851106784")
+          @(alumnus "Sam Caldwell" #:year 2023
+                  #:personal-site "http://ccs.neu.edu/home/samc"
+                  #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851110205")
+
              ]}}
 
         @div[class: "container"]{
