@@ -66,6 +66,36 @@
 
 @(define publications
    (list
+    (publication "Typed–Untyped Interactions: A Comparative Analysis"
+                 "Ben Greenman, Christos Dimoulas, and Matthias Felleisen"
+                 TOPLAS
+                 2023
+                 "https://www2.ccs.neu.edu/racket/pubs/toplas23-gdf.pdf")
+    (publication "Injecting Language Workbench Technology Into Mainstream Languages"
+                 "Michael Ballantyne and Matthias Felleisen"
+                 "Eelco Visser Commemorative Symposium (EVCS)"
+                 2023
+                 "https://www2.ccs.neu.edu/racket/pubs/evcs.pdf")
+    (publication "Faster, Simpler Red-Black Trees"
+                 "Cameron Moy"
+                 TFP
+                 2023
+                 "https://doi.org/10.1007/978-3-031-38938-2_3")
+    (publication "That's a Tough Call: Studying the Challenges of Call Graph Construction for WebAssembly"
+                 "Daniel Lehmann, Michelle Thalakottur, Frank Tip, and Michael Pradel"
+                 ISSTA
+                 2023
+                 "https://doi.org/10.1145/3597926.3598104")
+    (publication "MultiPL-E: A Scalable And Polyglot Approach To Benchmarking Neural Code Generation"
+                 "Federico Cassano, John Gouwar, Daniel Nguyen, Sydney Nguyen, Luna Phipps-Costin, Donald Pinckney, Ming-Ho Yee, Yangtian Zi, Carolyn Jane Anderson, Molly Q. Feldman, Arjun Guha, Michael Greenberg, and Abhinav Jangda"
+                 TSE
+                 2023
+                 "https://doi.org/10.1109/tse.2023.3267446")
+    (publication "Scaling Integer Arithmetic in Probabilistic Programs"
+                 "William X. Cao, Poorva Garg, Ryan Tjoa, Steven Holtzen, Todd D. Millstein, and Guy Van den Broeck"
+                 "Conference on Uncertainty in Artificial Intelligence (UAI)"
+                 2023
+                 "https://neuppl.khoury.northeastern.edu/assets/pdf/CaoUAI23.pdf")
     (publication "Lilac: A Modal Separation Logic for Conditional Probability"
                  "John M. Li, Amal Ahmed, Steven Holtzen"
                  PLDI
@@ -87,7 +117,7 @@
                  2023
                  "https://doi.org/10.4230/LIPIcs.ECOOP.2023.37")
     (publication "Flexible and Optimal Dependency Management via Max-SMT"
-                 "Donald Pinckney, Federico Cassano, Arjun Guha, Jonathan Bell, Massimiliano Culpo, Todd Gamblin"
+                 "Donald Pinckney, Federico Cassano, Arjun Guha, Jonathan Bell, Massimiliano Culpo, and Todd Gamblin"
                  ICSE
                  2023
                  "https://ccs.neu.edu/~arjunguha/main/papers/2023-maxnpm.html")
@@ -181,6 +211,11 @@
                  "The Art, Science, and Engineering of Programming"
                  2022
                  "http://www.ccis.neu.edu/racket/pubs/programming-gldf.pdf")
+    (publication "Proof Repair Across Type Equivalences"
+                 "Talia Ringer, RanDair Porter, Nathaniel Yazdani, John Leo, and Dan Grossman"
+                 PLDI
+                 2021
+                 "https://doi.org/10.1145/3453483.3454033")
     (publication "3CPS: The Design of an Environment-Focussed Intermediate Representation"
                  "Benjamin Quiring, John Reppy, and Olin Shivers"
                  IFL
