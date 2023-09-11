@@ -667,11 +667,11 @@
               @(alumnus "Ellen Arteca" #:year 2023
                         #:personal-site "https://emarteca.github.io/"
                         #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851106784")
-          @(alumnus "Sam Caldwell" #:year 2023
-                  #:personal-site "http://ccs.neu.edu/home/samc"
-                  #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851110205")
+              @(alumnus "Sam Caldwell" #:year 2023
+                        #:personal-site "http://ccs.neu.edu/home/samc"
+                        #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851110205")
 
-             ]}}
+              ]}}
 
         @div[class: "container"]{
           @div[class: "row"]{
