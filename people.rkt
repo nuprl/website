@@ -445,6 +445,13 @@
                   #:img "gwenyth_lincroft.png"]{
             I am interested in improving tools used by data scientists.
           }
+
+          @person[#:name "Francesca Lucchetti"
+                  #:title "Advisor: Arjun Guha"
+                  #:e-mail "lucchetti.f@northeastern.edu"
+                  #:history @list["Joined Northeastern, 2022"
+                                  "BA, Vassar College, 2022"]
+                  #:img "franlucc.jpg"]{I’m interested in developing robust, performant Large Language Models for code that can be deployed with limited compute. I like taking apart transformer layers to interpret their inner workings.}
         }
 
         @div[class: "pn-separator-img"]{
