@@ -239,6 +239,15 @@
             I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
           }
 
+          @person[#:name "Ryan Doenges"
+                  #:title "Postdoc"
+                  #:e-mail "r.doenges@northeastern.edu"
+                  #:website "http://ryandoeng.es"
+                  #:history @list[
+                                  "Joined Northeastern, 2023"
+                                  "PhD, Cornell University, 2023"
+                                  "BS, University of Washington, 2017"]
+                  #:img "ryan_doenges.jpg"]{I study computer systems using tools from programming languages and formal verification, especially domain-specific languages (DSLs). My PhD introduced mechanized semantics and certified translation validators for P4, a networking DSL. My postdoctoral research focuses on DSLs for hardware. }
         }
 
         @div[class: "pn-separator-img"]{
