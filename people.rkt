@@ -673,7 +673,7 @@
               @(alumnus "Artem Pelenitsyn" #:year 2023
                         #:personal-site "httpa://a.pelenitsyn.top"
                         #:extra "(Purdue University)"
-                        #:dissertation "httpa://a.pelenitsyn.top/Papers/2023-dissertation.pdf")
+                        #:dissertation "https://a.pelenitsyn.top/Papers/2023-dissertation.pdf")
 
               ]}}
 
