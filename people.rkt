@@ -273,15 +273,6 @@
             I find delight in programming languages that allow extension of their notation, syntactic forms, type systems, runtime behaviors, and development environments. My research aims to build the foundations needed to bring these extensibility features into widespread use.
           }
 
-          @person[#:name "Artem Pelenitsyn"
-                  #:title "Advisor: Jan Vitek"
-                  #:e-mail "a.pelenitsyn@gmail.com"
-                  #:history @list["Joined Northeastern, 2018"]
-                  #:website "https://a.pelenitsyn.top/"
-                  #:img "artem_pelenitsyn.jpg"]{
-            I am interested in typed functional programming and corresponding languages, mostly Haskell, type and effect systems, mathematics of program construction. Lately, I was working on a principled approach to the Julia programming language.
-          }
-
           @person[#:name "Olek Gierczak"
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "gierczak.o@northeastern.edu"
@@ -679,6 +670,10 @@
               @(alumnus "Sam Caldwell" #:year 2023
                         #:personal-site "http://ccs.neu.edu/home/samc"
                         #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851110205")
+              @(alumnus "Artem Pelenitsyn" #:year 2023
+                        #:personal-site "httpa://a.pelenitsyn.top"
+                        #:extra "(Purdue University)"
+                        #:dissertation "httpa://a.pelenitsyn.top/Papers/2023-dissertation.pdf")
 
               ]}}
 
