@@ -671,7 +671,7 @@
                         #:personal-site "http://ccs.neu.edu/home/samc"
                         #:dissertation "https://onesearch.library.northeastern.edu/permalink/01NEU_INST/87npqb/cdi_proquest_journals_2851110205")
               @(alumnus "Artem Pelenitsyn" #:year 2023
-                        #:personal-site "httpa://a.pelenitsyn.top"
+                        #:personal-site "https://a.pelenitsyn.top"
                         #:extra "(Purdue University)"
                         #:dissertation "https://a.pelenitsyn.top/Papers/2023-dissertation.pdf")
 
