@@ -1,7 +1,7 @@
 #lang scribble/html
 @require["templates.rkt"]
 
-@(define (linksym name link) 
+@(define (linksym name link)
   @a[href: link]{@name @span[class: "glyphicon glyphicon-link"]})
 
 @doctype{html}
@@ -23,17 +23,17 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{PL Seminar and Internal Talks} @a[href: "mailto:a.guha@northeastern.edu"]{Arjun Guha}, @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar}, @a[href: "mailto:johnli0135@gmail.com"]{John Li}
+                    @h4{PL Seminar and Internal Talks} @a[href: "mailto:s.holtzen@northeastern.edu"]{Steven Holtzen}, @a[href: "mailto:phipps-costin.l@northeastern.edu"]{Luna Phipps-Costin}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{PL Seminar, Junior @br{} 
-                      @small{@linksym["Website" "https://github.com/nuprl/prl-seminar-junior"]}} 
-                    @a[href: "mailto:johnli0135@gmail.com"]{John Li}
+                    @h4{PL Seminar, Junior @br{}
+                      @small{@linksym["Website" "https://github.com/nuprl/prl-seminar-junior"]}}
+                      @a[href: "mailto:devoe.l@northeastern.edu"]{Liam DeVoe}, @a[href: "marshall.sa@northeastern.edu"]{Sarah Marshall}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{ZED-talks} @a[href: "mailto:gokhale.sa@northeastern.edu"]{Satyajit Gokhale}, @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar}
+                    @h4{ZED-talks} @a[href: "mailto:mail@camoy.name"]{Cameron Moy}
                   }
                 }
 
@@ -47,25 +47,25 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{Webmaster} @a[href: "mailto:phipps-costin.l@northeastern.edu"]{Luna Phipps-Costin}
+                    @h4{Webmaster} @a[href: "mailto:devoe.l@northeastern.edu"]{Liam DeVoe}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{Blog Editor} @a[href: "mailto:amidon.p@northeastern.edu"]{Lucy Amidon}
+                    @h4{Blog Editor} @a[href: "mailto:katiehough19@gmail.com"]{Katie Hough}
                   }
 
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{Publication Page Maintainer} @a[href: "mailto:katiehough19@gmail.com"]{Katie Hough}
+                    @h4{Publication Page Maintainer} @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
                   }
                 }
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{People Page Maintainer} @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
+                    @h4{People Page Maintainer} @a[href: ""]{Farideh Khalili}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:ahwagner@ccs.neu.edu"]{Andrew Wagner}
+                    @h4{Teaching & Software Pages Maintainer} @a[href: ""]{Farideh Khalili}
                   }
                 }
               }
@@ -80,19 +80,19 @@
                   }
 
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{Twitter @br{} 
-                      @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}} 
-                      @a[href: "mailto:a.pelenitsyn@gmail.com"]{Artem Pelenitsyn}, @a[href: "mailto:sam@stites.io"]{Sam Stites}
+                    @h4{Twitter @br{}
+                      @small{@linksym["@neu_prl" "https://twitter.com/neu_prl"]}}
+                      @a[href: "mailto:johnli0135@gmail.com"]{John Li}
                   }
                 }
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Coffee Czar} @a[href: "mailto:cho.mins@northeastern.edu"]{Minsung Cho}
+                    @h4{Coffee Czar} @a[href: "mailto:cho.mins@northeastern.edu"]{Minsung Cho}, @a[href: "r.doenges@northeastern.edu"]{Ryan Doenges}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Tea Tzar} @a[href: "mailto:gierczak.o@northeastern.edu"]{Olek Gierczak}
+                    @h4{Tea Tzar} @a[href: "bernstein.ma@northeastern.edu"]{Max Bernstein}
                   }
                 }
               }
@@ -101,7 +101,7 @@
                 @h3{Contact Managers}
 
                 @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                  @a[href: "mailto:mail@camoy.name"]{Cameron Moy} @br{}
+                  @a[href: "gouwar.j@northeastern.edu"]{John Gouwar} @br{}
                   Mailing Lists: @tt{prl-all}, @tt{prl-students}@br{}
                   GitHub Organization: @a[href: "https://github.com/nuprl"]{@tt{NuPRL}}
                 }
@@ -110,10 +110,9 @@
                   @a[href: "mailto:vitekj@me.com"]{Jan Vitek} @br{}
                   Mailing List: @tt{prl-staff}
                 }
-              }               
+              }
            }
           }
-          
 
           @h2[id: "directions"]{How to find us}
           @p{
@@ -147,7 +146,7 @@
             }
 
             @p{
-              The PRL lab is spread across rooms 308 and 330. 
+              The PRL lab is spread across rooms 308 and 330.
               Room 308 is behind the glass walls with Racket code on them.
             }
 
