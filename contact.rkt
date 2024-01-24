@@ -29,7 +29,7 @@
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
                     @h4{PL Seminar, Junior @br{}
                       @small{@linksym["Website" "https://github.com/nuprl/prl-seminar-junior"]}}
-                      @a[href: "mailto:devoe.l@northeastern.edu"]{Liam DeVoe}, @a[href: "marshall.sa@northeastern.edu"]{Sarah Marshall}
+                      @a[href: "mailto:devoe.l@northeastern.edu"]{Liam DeVoe}, @a[href: "mailto:marshall.sa@northeastern.edu"]{Sarah Marshall}
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
@@ -61,11 +61,11 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{People Page Maintainer} @a[href: ""]{Farideh Khalili}
+                    @h4{People Page Maintainer} @a[href: "mailto:khalili.f@northeastern.edu"]{Farideh Khalili}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Teaching & Software Pages Maintainer} @a[href: ""]{Farideh Khalili}
+                    @h4{Teaching & Software Pages Maintainer} @a[href: "mailto:khalili.f@northeastern.edu"]{Farideh Khalili}
                   }
                 }
               }
@@ -75,7 +75,7 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{PRL Social} @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}, @a[href:"mailto: mhyee@ccs.neu.edu"]{Ming-Ho Yee} @br{}
+                    @h4{PRL Social} @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}, @a[href:"mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee} @br{}
                     PRL parties, tea time, bingewatching
                   }
 
@@ -88,11 +88,11 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Coffee Czar} @a[href: "mailto:cho.mins@northeastern.edu"]{Minsung Cho}, @a[href: "r.doenges@northeastern.edu"]{Ryan Doenges}
+                    @h4{Coffee Czar} @a[href: "mailto:cho.mins@northeastern.edu"]{Minsung Cho}, @a[href: "mailto:r.doenges@northeastern.edu"]{Ryan Doenges}
                   }
 
                   @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                    @h4{Tea Tzar} @a[href: "bernstein.ma@northeastern.edu"]{Max Bernstein}
+                    @h4{Tea Tzar} @a[href: "mailto:bernstein.ma@northeastern.edu"]{Max Bernstein}
                   }
                 }
               }
@@ -101,7 +101,7 @@
                 @h3{Contact Managers}
 
                 @div[class: "col-xs-12 col-md-6 pad-contact"]{
-                  @a[href: "gouwar.j@northeastern.edu"]{John Gouwar} @br{}
+                  @a[href: "mailto:gouwar.j@northeastern.edu"]{John Gouwar} @br{}
                   Mailing Lists: @tt{prl-all}, @tt{prl-students}@br{}
                   GitHub Organization: @a[href: "https://github.com/nuprl"]{@tt{NuPRL}}
                 }
