@@ -75,7 +75,7 @@
 
                 @div[class: "row"]{
                   @div[class: "col-xs-12 col-md-4 pad-contact"]{
-                    @h4{PRL Social} @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur}, @a[href:"mailto:mhyee@ccs.neu.edu"]{Ming-Ho Yee} @br{}
+                    @h4{PRL Social} @a[href: "mailto:michelledt@ccs.neu.edu"]{Michelle Thalakottur} @br{}
                     PRL parties, tea time, bingewatching
                   }
 
