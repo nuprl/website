@@ -375,7 +375,7 @@
                   #:img "john_li.jpg"]{
             I like logic, semantics, and interactive theorem proving.
           }
-          
+
           @person[#:name "Satyajit Gokhale"
                   #:title "Advisor: Frank Tip"
                   #:e-mail "gokhale.sa@northeastern.edu"
@@ -385,7 +385,7 @@
                   #:img "satyajit_gokhale.jpg"]{
             I am interested in program analysis and security. I am currently working on static analysis for JavaScript, and security in PLCs.
           }
-        
+
           @person[#:name "James Perretta"
                   #:title "Advisors: Jonathan Bell and Arjun Guha"
                   #:e-mail "perretta.j@northeastern.edu"
@@ -443,6 +443,26 @@
                   #:history @list["Joined Northeastern, 2022"
                                   "BA, Vassar College, 2022"]
                   #:img "franlucc.jpg"]{I’m interested in developing robust, performant Large Language Models for code that can be deployed with limited compute. I like taking apart transformer layers to interpret their inner workings.}
+
+          @person[#:name "Farideh Khalili"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "khalili.f@northeastern.edu"
+                  #:history @list[
+                    "Joined Northeastern, 2023"]
+                  #:img "Farideh_khalili.jpg"]{
+            I'm interested in program analysis and optimization.
+          }
+
+          @person[#:name "Liam DeVoe"
+                  #:title "Advisor: Jonathan Bell"
+                  #:e-mail "devoe.l@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2023"
+                      "B.S. University of Maryland"]
+                  #:website "https://tybug.github.io/"
+                  #:img "Liam_DeVoe.jpg"]{
+            I'm interested in property based testing, open-source ecosystems, formal verification, and testing of all kinds.
+          }
         }
 
         @div[class: "pn-separator-img"]{
