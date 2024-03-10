@@ -63,9 +63,95 @@
 @(define SLE "International Conference on Software Language Engineering (SLE)")
 @(define CSF "Computer Security Foundations Symposium (CSF)")
 @(define ASE "International Conference on Automated Software Engineering (ASE)")
+@(define ICST "International Conference on Software Testing, Verification and Validation (ICST)")
 
 @(define publications
    (list
+    (publication "Deploying and Evaluating LLMs to Program Service Mobile Robots"
+                 "Zichao Hu, Francesca Lucchetti, Claire Schlesinger, Yash Saxena, Anders Freeman, Sadanand Modak, Arjun Guha, and Joydeep Biswas"
+                 "Robotics and Automation Letters"
+                 2024
+                 "https://arxiv.org/abs/2311.11183")
+    (publication "Effectful Software Contracts"
+                 "Cameron Moy, Christos Dimoulas, and Matthias Felleisen"
+                 POPL
+                 2024
+                 "https://www.khoury.northeastern.edu/~camoy/pub/effectful-contract.pdf")
+    (publication "Gradually Typed Languages Should Be Vigilant!"
+                 "Olek Gierczak, Lucy Menon, Christos Dimoulas, and Amal Ahmed"
+                 OOPSLA
+                 2024
+                 "https://olekg.pl/papers/vigilance.pdf")
+    (publication "An Empirical Evaluation of Using Large Language Models for Automated Unit Test Generation"
+                 "Max Schaefer, Sarah Nadi, Aryaz Eghbali, and Frank Tip"
+                 TSE
+                 2024
+                 "https://www.franktip.org/pubs/testpilot2024.pdf")
+    (publication "230,439 Test Failures Later: An Empirical Evaluation of Flaky Failure Classifiers"
+                 "Abdulrahman Alshammari, Paul Ammann, Michael Hilton, and Jonathan Bell"
+                 ICST
+                 2024
+                 "https://www.jonbell.net/preprint/icst24-flaky-messages.pdf")
+    (publication "Automatically Reproducing Timing-Dependent Flaky-Test Failures"
+                 "Shanto Rahman, Aaron Massey, Wing Lam, August Shi, and Jonathan Bell"
+                 ICST
+                 2024
+                 "https://www.jonbell.net/preprint/icst24-flakerake.pdf")
+    (publication "Crossover in Parametric Fuzzing"
+                 "Katherine Hough and Jonathan Bell"
+                 ICSE
+                 2024
+                 "https://www.jonbell.net/preprint/icse24-zeugma.pdf")
+    (publication "Thirty-Three Years of Mathematicians and Software Engineers: A Case Study of Domain Expertise and Participation in Proof Assistant Ecosystems"
+                 "Gwenyth Lincroft, Minsung Cho, Katherine Hough, Mahsa Bazzaz, and Jonathan Bell"
+                 MSR
+                 2024
+                 "https://www.jonbell.net/preprint/msr24-proof-assistants.pdf")
+    (publication "How to Evaluate Blame for Gradual Types, Part 2"
+                 "Lukas Lazarek, Ben Greenman, Matthias Felleisen, and Christos Dimoulas"
+                 ICFP
+                 2023
+                 "https://doi.org/10.1145/3607836")
+    (publication "Increasing the Responsiveness of Web Applications by Introducing Lazy Loading"
+                 "Alexi Turcotte, Satyajit Gokhale, and Frank Tip"
+                 ASE
+                 2023
+                 "https://www.franktip.org/pubs/ase2023.pdf")
+    (publication "Code Coverage Criteria for Asynchronous Programs"
+                 "Mohammad Ganji, Saba Alimadadi, and Frank Tip"
+                 ESECFSE
+                 2023
+                 "https://www.franktip.org/pubs/fse2023.pdf")
+    (publication "How Profilers Can Help Navigate Type Migration"
+                 "Ben Greenman, Matthias Felleisen, and Christos Dimoulas"
+                 OOPSLA
+                 2023
+                 "https://doi.org/10.1145/3622817")
+    (publication "Reusing Just-in-Time Compiled Code"
+                 "Meetesh Kalpesh Mehta, Sebastián Krynski, Hugo Musso Gualandi, Manas Thakur, and Jan Vitek"
+                 OOPSLA
+                 2023
+                 "https://doi.org/10.1145/3622839")
+    (publication "Continuing WebAssembly with Effect Handlers"
+                 "Luna Phipps-Costin, Andreas Rossberg, Arjun Guha, Daan Leijen, Daniel Hillerström, KC Sivaramakrishnan, Matija Pretnar, and Sam Lindle"
+                 OOPSLA
+                 2023
+                 "https://doi.org/10.1145/3622814")
+    (publication "Semantic Encapsulation using Linking Types"
+                 "Daniel Patterson, Andrew Wagner, Amal Ahmed"
+                 "International Workshop on Type-Driven Development (TyDE)"
+                 2023
+                 "https://dbp.io/pubs/2023/lt.pdf")
+    (publication "Probabilistic Logic Programming Semantics For Procedural Content Generation"
+                 "Abdelrahman Madkour, Chris Martens, Steven Holtzen, Casper Harteveld, and Stacy Marsella"
+                 "Conference on Artificial Intelligence and Interactive Digital Entertainment (AIIDE)"
+                 2023
+                 "https://doi.org/10.1609/aiide.v19i1.27525")
+    (publication "Approximating Type Stability In The Julia Jit (Work In Progress)"
+                 "Artem Pelenitsyn"
+                 "International Workshop on Virtual Machines and Intermediate Languages (VMIL)"
+                 2023
+                 "https://doi.org/10.1145/3623507.3623556")
     (publication "Typed–Untyped Interactions: A Comparative Analysis"
                  "Ben Greenman, Christos Dimoulas, and Matthias Felleisen"
                  TOPLAS
