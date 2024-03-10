@@ -138,7 +138,7 @@
                  2023
                  "https://doi.org/10.1145/3622814")
     (publication "Semantic Encapsulation using Linking Types"
-                 "Daniel Patterson, Andrew Wagner, Amal Ahmed"
+                 "Daniel Patterson, Andrew Wagner, and Amal Ahmed"
                  "International Workshop on Type-Driven Development (TyDE)"
                  2023
                  "https://dbp.io/pubs/2023/lt.pdf")
