@@ -67,6 +67,16 @@
 
 @(define publications
    (list
+    (publication "Knuth-Morris-Pratt Illustrated"
+                 "Cameron Moy"
+                 JFP
+                 2024
+                 "https://ccs.neu.edu/~camoy/pub/knuth-morris-pratt.pdf")
+    (publication "Trace Contracts"
+                 "Cameron Moy and Matthias Felleisen"
+                 JFP
+                 2024
+                 "https://ccs.neu.edu/~camoy/pub/trace-contract.pdf")
     (publication "Deploying and Evaluating LLMs to Program Service Mobile Robots"
                  "Zichao Hu, Francesca Lucchetti, Claire Schlesinger, Yash Saxena, Anders Freeman, Sadanand Modak, Arjun Guha, and Joydeep Biswas"
                  "Robotics and Automation Letters"
