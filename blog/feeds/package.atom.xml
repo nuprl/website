@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'package'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/package.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/package.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-package-html</id>
+ <updated>2017-03-03T08:54:20Z</updated>
+ <entry>
+  <title type="text">PLT Redex: mf-apply</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/03/03/plt-redex-mf-apply/?utm_source=package&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-03-03-plt-redex-mf-apply</id>
+  <published>2017-03-03T08:54:20Z</published>
+  <updated>2017-03-03T08:54:20Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The &lt;code&gt;mf-apply&lt;/code&gt; keyword is for checked metafunction application in PLT Redex. In other words, &lt;code&gt;(mf-apply f x)&lt;/code&gt; is just like &lt;code&gt;(f x)&lt;/code&gt;, but errors if &lt;code&gt;f&lt;/code&gt; is  not a previously-defined metafunction.&lt;/p&gt;
+
+&lt;p&gt;Also, consider applying to attend &lt;em&gt;The Racket School of Semantics and Languages&lt;/em&gt; in Salt Lake City this summer: &lt;a href="http://summer-school.racket-lang.org/2017/"&gt;http://summer-school.racket-lang.org/2017/&lt;/a&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="metafunctions-vs-list-patterns"&gt;Metafunctions vs. List Patterns&lt;/h2&gt;
+
+&lt;p&gt;Have you used PLT Redex? Good! Maybe this has happened to you:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;
+&lt;span class="normal"&gt;23&lt;/span&gt;
+&lt;span class="normal"&gt;24&lt;/span&gt;
+&lt;span class="normal"&gt;25&lt;/span&gt;
+&lt;span class="normal"&gt;26&lt;/span&gt;
+&lt;span class="normal"&gt;27&lt;/span&gt;
+&lt;span class="normal"&gt;28&lt;/span&gt;
+&lt;span class="normal"&gt;29&lt;/span&gt;
+&lt;span class="normal"&gt;30&lt;/span&gt;
+&lt;span class="normal"&gt;31&lt;/span&gt;
+&lt;span class="normal"&gt;32&lt;/span&gt;
+&lt;span class="normal"&gt;33&lt;/span&gt;
+&lt;span class="normal"&gt;34&lt;/span&gt;
+&lt;span class="normal"&gt;35&lt;/span&gt;
+&lt;span class="normal"&gt;36&lt;/span&gt;
+&lt;span class="normal"&gt;37&lt;/span&gt;
+&lt;span class="normal"&gt;38&lt;/span&gt;
+&lt;span class="normal"&gt;39&lt;/span&gt;
+&lt;span class="normal"&gt;40&lt;/span&gt;
+&lt;span class="normal"&gt;41&lt;/span&gt;
+&lt;span class="normal"&gt;42&lt;/span&gt;
+&lt;span class="normal"&gt;43&lt;/span&gt;
+&lt;span class="normal"&gt;44&lt;/span&gt;
+&lt;span class="normal"&gt;45&lt;/span&gt;
+&lt;span class="normal"&gt;46&lt;/span&gt;
+&lt;span class="normal"&gt;47&lt;/span&gt;
+&lt;span class="normal"&gt;48&lt;/span&gt;
+&lt;span class="normal"&gt;49&lt;/span&gt;
+&lt;span class="normal"&gt;50&lt;/span&gt;
+&lt;span class="normal"&gt;51&lt;/span&gt;
+&lt;span class="normal"&gt;52&lt;/span&gt;
+&lt;span class="normal"&gt;53&lt;/span&gt;
+&lt;span class="normal"&gt;54&lt;/span&gt;
+&lt;span class="normal"&gt;55&lt;/span&gt;
+&lt;span class="normal"&gt;56&lt;/span&gt;
+&lt;span class="normal"&gt;57&lt;/span&gt;
+&lt;span class="normal"&gt;58&lt;/span&gt;
+&lt;span class="normal"&gt;59&lt;/span&gt;
+&lt;span class="normal"&gt;60&lt;/span&gt;
+&lt;span class="normal"&gt;61&lt;/span&gt;
+&lt;span class="normal"&gt;62&lt;/span&gt;
+&lt;span class="normal"&gt;63&lt;/span&gt;
+&lt;span class="normal"&gt;64&lt;/span&gt;
+&lt;span class="normal"&gt;65&lt;/span&gt;
+&lt;span class="normal"&gt;66&lt;/span&gt;
+&lt;span class="normal"&gt;67&lt;/span&gt;
+&lt;span class="normal"&gt;68&lt;/span&gt;
+&lt;span class="normal"&gt;69&lt;/span&gt;
+&lt;span class="normal"&gt;70&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 1. You define a language&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-language&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;V&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;integer&lt;/span&gt; &lt;span class="n"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;V&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;τ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;Int&lt;/span&gt; &lt;span class="n"&gt;Bool&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;τ&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types-extra..rkt)._~e2~86~92))" style="color: inherit"&gt;→&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ρ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;V&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Γ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;variable-not-otherwise-mentioned&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="kd"&gt;#:binding-forms&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="kd"&gt;#:refers-to&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 2. You define a few metafunctions&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-metafunction&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/function-contracts.html#(form._((lib._racket/contract/base..rkt)._-~3e))" style="color: inherit"&gt;-&amp;gt;&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt;
+  &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;Λ&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-metafunction&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="n"&gt;closure-&amp;gt;env&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/function-contracts.html#(form._((lib._racket/contract/base..rkt)._-~3e))" style="color: inherit"&gt;-&amp;gt;&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;
+  &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;env&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 3. You try defining a judgment form . . .&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-judgment-form&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="kd"&gt;#:mode&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="n"&gt;O&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="kd"&gt;#:contract&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Var&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M_0&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M_1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-App&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;M_0&lt;/span&gt; &lt;span class="n"&gt;M_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/sets.html#(def._((lib._racket/set..rkt)._set-remove))" style="color: inherit"&gt;set-remove&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="n"&gt;x_0&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Λ&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Integer&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;integer_0&lt;/span&gt; &lt;span class="p"&gt;())]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Boolean&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;boolean_0&lt;/span&gt; &lt;span class="p"&gt;())]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/sets.html#(def._((lib._racket/set..rkt)._set-subtract))" style="color: inherit"&gt;set-subtract&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Closure&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))])&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 4. You test the judgment, and it mysteriously fails&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;judgment-holds&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;Int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;())&lt;/span&gt;
+                  &lt;span class="p"&gt;()))&lt;/span&gt;
+&lt;span class="c1"&gt;;; ==&amp;gt; #f&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;WHAT HAPPENED??!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem is this line in the &lt;code&gt;FVS-Closure&lt;/code&gt; rule:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which checks that the list &lt;code&gt;(closure-env C)&lt;/code&gt; (whose first element is the  symbol &lt;code&gt;closure-env&lt;/code&gt; and second element is the symbol &lt;code&gt;C&lt;/code&gt;) matches the pattern  &lt;code&gt;((x_1 τ_1) ...)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Right.&lt;/p&gt;
+
+&lt;p&gt;Of course you meant to apply the metafunction &lt;code&gt;closure-&amp;gt;env&lt;/code&gt; but made a typo. And since the syntax for metafunction application is the same as the syntax  for building a list, Redex doesn&amp;rsquo;t report an error.&lt;/p&gt;
+
+&lt;p&gt;We can fix this code with the new &lt;a href="https://www.cs.utah.edu/plt/snapshots/current/doc/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._mf-apply%29%29"&gt;&lt;code&gt;mf-apply&lt;/code&gt;&lt;/a&gt; keyword (available on &lt;a href="https://github.com/racket/racket"&gt;GitHub&lt;/a&gt; or in a &lt;a href="https://www.cs.utah.edu/plt/snapshots/"&gt;snapshot build&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Running &lt;code&gt;raco make&lt;/code&gt; now gives a compile-time error.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  term: expected a previously defined metafunction
+    at: closure-env
+    in: (mf-apply closure-env C)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="but-i-still-need-to-type-mf-apply-correctly"&gt;But I still need to type &lt;code&gt;mf-apply&lt;/code&gt; correctly!&lt;/h3&gt;
+
+&lt;p&gt;Leif Andersen says:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;I should point out that this has the issue of you still need to type &lt;code&gt;mf-apply&lt;/code&gt; correctly. ;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;That is, if you accidentally write:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-applu&lt;/span&gt; &lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then the code compiles, thinking you intend to match a list of three elements  against the pattern.&lt;/p&gt;
+
+&lt;p&gt;Never fear, there are at least two solutions.&lt;/p&gt;
+
+&lt;h4 id="solution-1-rename-mf-apply"&gt;Solution 1: rename &lt;code&gt;mf-apply&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;A simple fix is to rename the &lt;code&gt;mf-apply&lt;/code&gt; keyword to something shorter (and harder to mis-type):&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;
+         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._rename-in))" style="color: inherit"&gt;rename-in&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;
+           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;MF&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4 id="solution-2-the-mf-apply-lang-extension"&gt;Solution 2: the &lt;code&gt;mf-apply&lt;/code&gt; lang extension&lt;/h4&gt;
+
+&lt;p&gt;A fancier solution is to install the &lt;code&gt;mf-apply&lt;/code&gt; meta-language.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $ raco pkg install mf-apply&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This language updates the &lt;a href="http://docs.racket-lang.org/reference/readtables.html#%28tech._readtable%29"&gt;&lt;em&gt;readtable&lt;/em&gt;&lt;/a&gt;  to interpret S-expressions that begin with &lt;code&gt;#{&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;f&lt;/span&gt; &lt;span class="ss"&gt;x&lt;/span&gt; &lt;span class="ss"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;as a metafunction application:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You the programmer only needs to write the &lt;code&gt;#{....}&lt;/code&gt; syntax.&lt;/p&gt;
+
+&lt;p&gt;Source code is on GitHub:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/bennn/mf-apply"&gt;https://github.com/bennn/mf-apply&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;(It&amp;rsquo;s the simplest lang-extension I know of)&lt;/p&gt;
+
+&lt;h2 id="what-is-plt-redex"&gt;What is PLT Redex?&lt;/h2&gt;
+
+&lt;p&gt;PLT Redex is a library for semantics engineering. One of my favorite Redex features is it implements capture-avoiding substitution  and α-equivalence for any language with a &lt;code&gt;#:binding-forms&lt;/code&gt; specification  (such as STLC, above).&lt;/p&gt;
+
+&lt;p&gt;You can read more:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;in the &amp;ldquo;Amb&amp;rdquo; tutorial: &lt;a href="http://docs.racket-lang.org/redex/tutorial.html"&gt;http://docs.racket-lang.org/redex/tutorial.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;in the &amp;ldquo;Long Tutorial&amp;rdquo;: &lt;a href="http://docs.racket-lang.org/redex/redex2015.html"&gt;http://docs.racket-lang.org/redex/redex2015.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;in the Redex reference manual: &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html"&gt;http://docs.racket-lang.org/redex/The_Redex_Reference.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;on the PLT Redex website: &lt;a href="https://redex.racket-lang.org/"&gt;https://redex.racket-lang.org/&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;on GitHub: &lt;a href="https://github.com/racket/redex"&gt;https://github.com/racket/redex&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;And if you act now, you can become a &lt;em&gt;Redexan&lt;/em&gt; between July 10 and July 14  at the summer school in Salt Lake City, Utah:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://summer-school.racket-lang.org/2017/"&gt;http://summer-school.racket-lang.org/2017/&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry></feed>

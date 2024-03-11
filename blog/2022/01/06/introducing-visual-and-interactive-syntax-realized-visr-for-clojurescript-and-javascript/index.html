@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)</title>
+    <meta name="description" content="Visual and interactive-syntax is a type of language-oriented programming that allows developers to use, view, and edit portions of a textual program with graphics. Using interactive-syntax provides the benefits of a graphical programming language, while k...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="visr, clojure, clojurescript, interactive syntax, Author: Leif Andersen">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/">
+    <link rel="next" href="/blog/2020/12/23/deep-and-shallow-types/">
+    <link rel="prev" href="/blog/2022/02/16/-r%CC%8C-overview-i-cross-post-https-www-o1o-ch-lab-entry-1309rkp8krzaq1catz4by5gyt719ejoi4qpiabpnmzsx64fke3g4huga3b0qqinc-html/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)</h1>
+    <p class='date-and-tags'>
+<time datetime="2022-01-06" pubdate="true">2022-01-06</time> :: <span class="tags"><a href="/blog/tags/visr.html">visr</a>, <a href="/blog/tags/clojure.html">clojure</a>, <a href="/blog/tags/clojurescript.html">clojurescript</a>, <a href="/blog/tags/interactive-syntax.html">interactive syntax</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Leif-Andersen.html">Leif Andersen</a></span></p>
+  </header>
+
+<p>
+ <style>.caption {  display: none; }</style></p>
+
+<p>Visual and interactive-syntax is a type of language-oriented programming that allows developers to use, view, and edit portions of a textual program with graphics. Using interactive-syntax provides the benefits of a graphical programming language, while keeping all of the benefits of a purely textual language. For example, the following is an example of a small network embedded in a program:</p>
+
+<div class="figure"><img src="/img/intro-visr/visr-and-text.png" alt="Graphical network embedded in text" />
+ <p class="caption">Graphical network embedded in text</p></div>
+
+<p>Interactive-syntax is backed by human readable code; the visual components exists purely when writing and editing code. This backing means all of the tools involved in software development work with interactive-syntax extensions. For example:</p>
+
+<ul>
+ <li>version control, such as git, works with interactive-syntax;</li>
+ <li>programs using interactive-syntax can be written and edited with your favorite  text editor or IDE;</li>
+ <li>cut/copy/paste works with interactive-syntax using your operating system&rsquo;s  native clipboard;</li>
+ <li>code analysis tools, like diff and refactor, still work with  interactive-syntax; and</li>
+ <li>you can use interactive-syntax in any language or environment that supports  language-oriented programming.</li></ul>
+
+<p>To learn more about interactive-syntax, watch <a href="https://www.youtube.com/watch?v=8htgAxJuK5c">this video</a> or read <a href="https://dl.acm.org/doi/10.1145/3428290">the accompanying paper</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8htgAxJuK5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
+
+<p><a href="https://visr.pl">VISr (Visual and Interactive-Syntax realized) for ClojureScript</a> is a practical implementation of interactive-syntax in web browsers. The VISr environment is a full-featured IDE that supports interactive-syntax components called VISrs. Additionally, the VISr environment comes with a package manager that supports <a href="https://www.npmjs.com/">NPM packages</a>.</p>
+
+<p>This article is a brief introduction to both the VISr environment and the components that make up a VISrs. It discusses how to insert a VISr into code, how to manipulate a VISr, and how to create a new types of VISr. Future articles will discuss more advanced uses such as integrating NPM packages and using VISrs in other languages.</p>
+<!-- more-->
+
+<h1 id="getting-started-with-visr">Getting started with VISr</h1>
+
+<p>Start by going to <a href="https://visr.pl">visr.pl</a>, which is a web-based IDE that directly supports VISrs. Once in the IDE, press <code>Insert VISr</code> to place a VISr at the current cursor position. This VISr contains two buttons:</p>
+
+<ul>
+ <li>clicking the first displays the VISr&rsquo;s visual representation, and</li>
+ <li>clicking the second shows its textual representation.</li></ul>
+
+<div class="figure"><img src="/img/intro-visr/visr.png" alt="VISr" />
+ <p class="caption">VISr</p></div>
+
+<p>Opening the code shows that the new VISr is an instance of <code>visr.core/empty-visr</code>, a default VISr provided by the IDE. This VISr expects a map with the key <code>:message</code> to display in the visual view. Changing the value associated with <code>:message</code> changes what is displayed, in this case &ldquo;Endless Possibility&rdquo;:</p>
+
+<div class="figure"><img src="/img/intro-visr/visr-open.png" alt="Open Visr" />
+ <p class="caption">Open Visr</p></div>
+
+<p>Remember that, although this VISr is displayed graphically, it still exists as human-readable text. One way to see this text is by copying and pasting the VISr. A copy of the same VISr will appear when it is placed back into the IDE. However, pasting it into other text editors that do not natively support VISrs yields the following human readable, and editable, text:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="o">^</span><span class="p">{</span><span class="ss">:editor</span> <span class="nv">visr.core/empty-visr</span><span class="p">}(</span><span class="nf">visr.core/empty-visr+elaborate</span> 
+                                 <span class="p">{</span><span class="ss">:message</span> <span class="s">"Endless Possibility"</span><span class="p">})</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>This operation works in reverse too. Writing out similar text and pasting it into <a href="https://visr.pl">visr.pl</a> yields its visual representation.</p>
+
+<h1 id="making-a-new-visr">Making a new VISr</h1>
+
+<p>The <code>defvisr</code> form creates a VISr type. This form expects two methods:</p>
+
+<ol>
+ <li>a <code>render</code> method that provides visualization and interaction when code is  edited, and</li>
+ <li>an <code>elaborate</code>/<code>elaborate-fn</code> method that gives the VISr compile-time and  run-time semantics.</li></ol>
+
+<p>The following is the signature for a simple VISr type:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="kd">ns </span><span class="nv">example.core</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">defvisr</span> <span class="nv">Counter</span>
+  <span class="p">(</span><span class="nf">elaborate-fn</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span> <span class="s">"TODO-elaborate"</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">render</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span> <span class="s">"TODO-render"</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>This example uses <code>elaborate-fn</code>, a simplified version of <code>elaborate</code> that gives the <code>VISr</code> the same semantics as a function application. It also allows the <code>defvisr</code> form to work in the same file as the VISr itself.</p>
+
+<div class="figure"><img src="/img/intro-visr/sig.png" alt="Example of elaborate-fn semantics" />
+ <p class="caption">Example of elaborate-fn semantics</p></div>
+
+<h1 id="the-render-method-for-edit-time-semantics">The Render Method for Edit-Time Semantics</h1>
+
+<p>The <code>render</code> method is given the VISr state <a href="https://clojure.org/reference/atoms">as an atom</a>; updating this atom also updates the code to reflect the new state. The return value for <code>render</code> must be a <a href="https://reagent-project.github.io/">Reagent form</a> that is the visual view for the VISr. A render method for a counter VISr might look as follows:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="nf">render</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span>
+  <span class="p">[</span><span class="ss">:button</span> <span class="p">{</span><span class="ss">:on-click</span> <span class="o">#</span><span class="p">(</span><span class="nf">swap!</span> <span class="nv">this</span> <span class="nv">inc</span><span class="p">)}</span> <span class="o">@</span><span class="nv">this</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>And in action:</p>
+
+<div class="figure"><img src="/img/intro-visr/simpl-count.png" alt="Simple Count Example" />
+ <p class="caption">Simple Count Example</p></div>
+
+<p>This VISr doesn&rsquo;t match the theme of the page; it also requires the state to be a single number. Using <a href="https://react-bootstrap.github.io/">React Bootstrap</a> and Reagent cursors fixes both of these issues:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="kd">ns </span><span class="nv">example.core</span>
+  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">reagent.core</span> <span class="ss">:refer</span> <span class="p">[</span><span class="nv">cursor</span><span class="p">]]</span>
+            <span class="p">[</span><span class="nv">react-bootstrap</span> <span class="ss">:refer</span> <span class="p">[</span><span class="nv">Button</span><span class="p">]]))</span>
+
+<span class="p">(</span><span class="nf">defvisr</span> <span class="nv">Counter</span>
+  <span class="p">(</span><span class="nf">elaborate-fn</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span> <span class="s">"TODO-elaborate"</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">render</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nb">count </span><span class="p">(</span><span class="nf">cursor</span> <span class="nv">this</span> <span class="p">[</span><span class="ss">:count</span><span class="p">])]</span>
+      <span class="p">(</span><span class="nb">when-not </span><span class="o">@</span><span class="nb">count </span><span class="p">(</span><span class="nf">reset!</span> <span class="nb">count </span><span class="mi">0</span><span class="p">))</span>
+      <span class="p">[</span><span class="ss">:&gt;</span> <span class="nv">Button</span> <span class="p">{</span><span class="ss">:on-click</span> <span class="o">#</span><span class="p">(</span><span class="nf">swap!</span> <span class="nb">count </span><span class="nv">inc</span><span class="p">)}</span> <span class="o">@</span><span class="nv">count</span><span class="p">])))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h1 id="elaboration-and-run-time-semantics">Elaboration and Run-Time Semantics</h1>
+
+<p>The elaborate method takes the VISr state, and is expected to provide a compile-time or run-time semantics. In the simplified case of <code>elaborate-fn</code>, the VISr semantics takes the form of a function application:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="nf">elaborate-fn</span> <span class="p">[{</span><span class="ss">:keys</span> <span class="p">[</span><span class="nv">count</span><span class="p">]}]</span> <span class="nv">count</span><span class="p">)</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>This <code>elaborate</code> method expects a dictionary with the key <code>:count</code> and returns the value associated with that key. It makes use of <a href="https://clojure.org/guides/destructuring">ClojureScript&rsquo;s Destructuring</a> for brevity. The following code is equivalent:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="nf">elaborate-fn</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span> <span class="p">(</span><span class="nb">get </span><span class="nv">this</span> <span class="ss">:count</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h1 id="putting-it-all-together">Putting it all together</h1>
+
+<p>The final result is:</p>
+
+<div class="brush: clojurescript">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="kd">ns </span><span class="nv">test.core</span>
+  <span class="p">(</span><span class="ss">:require</span> <span class="p">[</span><span class="nv">reagent.core</span> <span class="ss">:refer</span> <span class="p">[</span><span class="nv">cursor</span><span class="p">]]</span>
+            <span class="p">[</span><span class="nv">react-bootstrap</span> <span class="ss">:refer</span> <span class="p">[</span><span class="nv">Button</span><span class="p">]]))</span>
+
+<span class="p">(</span><span class="nf">defvisr</span> <span class="nv">Counter</span>
+  <span class="p">(</span><span class="nf">elaborate-fn</span> <span class="p">[{</span><span class="ss">:keys</span> <span class="p">[</span><span class="nv">count</span><span class="p">]}]</span> <span class="nv">count</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">render</span> <span class="p">[</span><span class="nv">this</span><span class="p">]</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nb">count </span><span class="p">(</span><span class="nf">cursor</span> <span class="nv">this</span> <span class="p">[</span><span class="ss">:count</span><span class="p">])]</span>
+      <span class="p">(</span><span class="nb">when-not </span><span class="o">@</span><span class="nb">count </span><span class="p">(</span><span class="nf">reset!</span> <span class="nb">count </span><span class="mi">0</span><span class="p">))</span>
+      <span class="p">[</span><span class="ss">:&gt;</span> <span class="nv">Button</span> <span class="p">{</span><span class="ss">:on-click</span> <span class="o">#</span><span class="p">(</span><span class="nf">swap!</span> <span class="nb">count </span><span class="nv">inc</span><span class="p">)}</span> <span class="o">@</span><span class="nv">count</span><span class="p">])))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Here is the VISr in action:</p>
+
+<div class="figure"><img src="/img/intro-visr/full-count.png" alt="Full Count Example" />
+ <p class="caption">Full Count Example</p></div>
+
+<p>That&rsquo;s all there is to it. From here, you can go to <a href="https://visr.pl">visr.pl</a> to make your own programs using VISr. You can also <a href="https://study.visr.pl">take this survey</a>, which contains more advanced example uses for VISr. If you find any bugs or want to contribute, you can also head to <a href="https://github.com/LeifAndersen/interactive-syntax-clojure">the visr project page</a>.</p>
+
+<p>Thanks for reading, happy coding!</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2022/02/16/-r%CC%8C-overview-i-cross-post-https-www-o1o-ch-lab-entry-1309rkp8krzaq1catz4by5gyt719ejoi4qpiabpnmzsx64fke3g4huga3b0qqinc-html/">&larr; <em><a href="https://www.o1o.ch/lab/entry/1309rkp8krzaq1catz4by5gyt719ejoi4qpiabpnmzsx64fke3g4huga3b0qqinc.html">Ř Overview I (cross-post)</a></em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2020/12/23/deep-and-shallow-types/"><em>Deep and Shallow Types</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

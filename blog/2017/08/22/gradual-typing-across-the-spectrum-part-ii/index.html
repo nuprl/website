@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Gradual Typing Across the Spectrum, part II</title>
+    <meta name="description" content="Last week, Northeastern hosted a PI meeting for the Gradual Typing Across the  Spectrum NSF grant. The meeting was made of 20+ researchers from four institutions,  and 12 technical talks. Schedule:  http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html  A common ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="gradual typing, PI meeting, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/">
+    <link rel="next" href="/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/">
+    <link rel="prev" href="/blog/2017/08/28/closure-conversion-as-coyoneda/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Gradual Typing Across the Spectrum, part II</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-08-22" pubdate="true">2017-08-22</time> :: <span class="tags"><a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/PI-meeting.html">PI meeting</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Last week, Northeastern hosted a PI meeting for the <a href="http://prl.ccs.neu.edu/gtp/">Gradual Typing Across the  Spectrum</a> NSF grant. The meeting was made of 20+ researchers from four institutions,  and 12 technical talks. Schedule:</p>
+
+<p><a href="http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html">http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html</a></p>
+
+<p>A common thread among the talks was the question:  <em>how to convert a research idea into a tool for software developers?</em></p>
+<!-- more-->
+
+<p>In my mind, gradual typing <em>is</em> an answer to one instance of this question. The research idea is strong static type systems, and the software developers  are the millions using dynamically typed languages. I know that static typing can make programs easier to write and maintain. The developers know that dynamic typing has benefits; moreover they know better  than to migrate their code from one language to another on a whim. Gradual typing is a linguistic solution to the problem of <em>adding</em> the benefits  of static typing to a dynamically typed language.</p>
+
+<p>Enough opinions, let&rsquo;s talk about the talks.</p>
+
+<p>The morning session consisted of four talks:</p>
+
+<ul>
+ <li>
+  <p><a href="https://www.cs.umd.edu/people/milod">Milod Kazerounian</a> (<a href="https://www.cs.umd.edu/">UMD</a>)  spoke about upgrading the <a href="https://github.com/plum-umd/rdl">RDL</a> type checker  for Ruby with support for refinement types.  The idea is to compile Ruby code and types to <a href="https://emina.github.io/rosette/">Rosette</a>,  and profit from <a href="http://yices.csl.sri.com/papers/cav2007.pdf">SMT</a>-assisted type checking.</p></li>
+ <li>
+  <p><a href="http://ambrosebs.com/">Ambrose Bonnaire-Sergeant</a> (<a href="https://www.cs.indiana.edu/">IU</a>, <a href="http://ambrosebs.com/talks/squash-work-boston-pi-2017.pdf">slides</a>)  has been inferring <em>useful</em> <a href="http://typedclojure.org/">Typed Clojure</a> types through dynamic analysis of  Clojure programs. His tool observes how values flow through a program at run-time,  then lifts these observations into possibly-recursive, possibly-incorrect type  annotations. The surprising result is that the tool quickly (1&ndash;2 seconds per  unit test, I think) infers types that can help a developer start annotating a program.</p></li>
+ <li>
+  <p><a href="http://ccs.neu.edu/~types/">Ben Greenman</a> (<a href="http://www.ccis.northeastern.edu/">NEU</a>, <a href="http://homedirs.ccs.neu.edu/types/resources/talks/preservation-types.pdf">slides</a>)  explained why he is implementing a semantics for <a href="https://github.com/racket/typed-racket">Typed Racket</a>  inspired by Michael Vitousek&rsquo;s work on <a href="http://homes.soic.indiana.edu/mvitouse/papers/popl17.pdf">Reticulated Python</a>.  The &ldquo;why&rdquo; is &ldquo;performance&rdquo;. The Reticulated semantics will enforce a  notion of tag soundness in kind of <a href="https://en.wikipedia.org/wiki/Deal_with_the_Devil">devils contract</a>  to improve performance.</p></li>
+ <li>
+  <p><a href="https://cs.brown.edu/~ptunnell/">Preston Tunnell-Wilson</a> (<a href="http://cs.brown.edu/">Brown</a>, <a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tpk-crowdsource-lang-design/">ONWARD 2017</a>)  recently sent questions about programming language design to  <a href="https://www.mturk.com/mturk/welcome">Mechanical Turk</a> workers.  Survey says, developers have extremely diverse opinions about what they <em>expect</em>  and what they <em>want</em> regarding scope, inheritance, and infix operators.</p></li></ul>
+
+<p>In the early afternoon, we had two talks on similar themes as the morning session:</p>
+
+<ul>
+ <li>
+  <p><a href="https://github.com/akuhlens">Andre Kuhlenschmidt</a> (<a href="https://www.cs.indiana.edu/">IU</a>)  is exploring the design space of efficient implementations for run-time type checks.  The main challenge is how to <em>monitor</em> higher-order data in a way that efficiently  performs type checks and can help the programmer debug any failed checks.  This talk presented data comparing two approaches to the program; I believe  the latter, improved approach is based on <a href="http://homepages.inf.ed.ac.uk/wadler/papers/coercions/coercions.pdf">coercions</a>.</p></li>
+ <li>
+  <p><a href="https://zeinamigeed.com/">Zeina Migeed</a> (<a href="http://www.ccis.northeastern.edu/">NEU</a>)  explained that there are many ways to adapt type soundness to a gradually  typed language, and presented some data comparing Typed Racket&rsquo;s <em>generalized soudness</em>  to Reticulated Python&rsquo;s <em>tag soundness</em>. The data suggests that tag soundness  never adds an order-of-magnitude slowdown.</p></li></ul>
+
+<p>Next on the schedule were two talks about implementing advanced type systems  in Racket&rsquo;s macro expander (think: meta-level linguistic re-use, capture-avoiding  substitution for free!)</p>
+
+<ul>
+ <li>
+  <p><a href="https://github.com/iitalics">Milo Turner</a> (<a href="http://www.ccis.northeastern.edu/">NEU</a>)  first showed how to implement <a href="https://gankro.github.io/blah/linear-rust/#definitions-and-the-state-of-rust">linear and affine</a>  type systems using <a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html">syntax-parse</a>,  and second presented a simpler implementation using the <a href="http://docs.racket-lang.org/turnstile/index.html">Turnstile</a> library.</p></li>
+ <li>
+  <p><a href="http://www.davidchristiansen.dk/">David Christiansen</a> (<a href="https://www.cs.indiana.edu/">IU</a>)  is building <a href="https://github.com/david-christiansen/pudding">a proof assistant</a>  in Racket. This talk focused on the design and implementation of proof  tactics.</p></li></ul>
+
+<p>After a short break, we heard about something completely different:</p>
+
+<ul>
+ <li><a href="http://justinpombrio.net/">Justin Pombrio</a> (<a href="http://cs.brown.edu/">Brown</a>, <a href="http://cs.brown.edu/research/plt/dl/icfp2017/">ICFP 2017</a>)  taught us to interpet the scoping rules of a &ldquo;core&rdquo; language as a preorder.  Using the preorder, he then showed how to <em>infer</em> the scoping rules of  any &ldquo;surface&rdquo; language based on its translation to the &ldquo;core&rdquo;.</li></ul>
+
+<p>Last summer and fall, Jeremy Siek hosted two REUs (<a href="https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=5517&amp;from=fund">research experience for undergraduates</a>) at Indiana University. The two students gave the next talks:</p>
+
+<ul>
+ <li>
+  <p>Di Zhong (<a href="https://www.cs.indiana.edu/">IU</a>)  talked about implementing interpreters in Racket, Python, and Haskell.  As I understand, this was a hands-on experience through <a href="https://www.cis.upenn.edu/~bcpierce/tapl/">TAPL</a>  and <a href="https://redex.racket-lang.org/">the Redex book</a>.</p></li>
+ <li>
+  <p><a href="https://zeinamigeed.com/">Zeina Migeed</a> (<a href="https://www.cs.indiana.edu/">IU</a>)  demonstrated her implementation of <a href="http://theory.stanford.edu/~aiken/publications/papers/popl94.pdf">conditional types</a>  for <a href="https://github.com/mvitousek/reticulated">Reticulated</a>.</p></li></ul>
+
+<p>Finally,</p>
+
+<ul>
+ <li><a href="https://nikivazou.github.io/">Niki Vazou</a> (<a href="https://www.cs.umd.edu/">UMD</a>)  presented a theory of gradual refinement types.  Any &ldquo;holes&rdquo; in the refinements introduce a search problem; type checking  attempts to solve the problem by finding a predicate that unifies a function  definition and its callers.</li></ul>
+
+<p>This meeting was a great opportunity to reflect on the recent past and  share opinions on what&rsquo;s worth pursuing in the future. Many thanks to the participants, and to the NSF for the support!</p>
+
+<blockquote>
+ <p>If you want to know about the future, you need to ask the young people who will create it. Young people don&rsquo;t know what can&rsquo;t be done, and so they go ahead and do it. &mdash; <a href="https://www.youtube.com/watch?v=sM1bNR4DmhU">Ivan Sutherland</a></p></blockquote>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/08/28/closure-conversion-as-coyoneda/">&larr; <em>Closure Conversion as CoYoneda</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/"><em>Reviews and author responses: we should stop asking for 500-word responses</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

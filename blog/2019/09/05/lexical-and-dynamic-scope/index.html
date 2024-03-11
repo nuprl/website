@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Lexical and Dynamic Scope</title>
+    <meta name="description" content="This all started with a simple question about the R programming language: _is R lexically or dynamically scoped?_  To answer that question, we need to understand what _scope_ is, along with _lexical scope_ and _dynamic scope_....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="scope, definitions, history, Author: Ming-Ho Yee">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2019/09/05/lexical-and-dynamic-scope/">
+    <link rel="next" href="/blog/2019/05/11/-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency/">
+    <link rel="prev" href="/blog/2019/09/10/scoping-in-r/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Lexical and Dynamic Scope</h1>
+    <p class='date-and-tags'>
+<time datetime="2019-09-05" pubdate="true">2019-09-05</time> :: <span class="tags"><a href="/blog/tags/scope.html">scope</a>, <a href="/blog/tags/definitions.html">definitions</a>, <a href="/blog/tags/history.html">history</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ming-Ho-Yee.html">Ming-Ho Yee</a></span></p>
+  </header>
+
+<p>This all started with a simple question about the R programming language: <em>is R lexically or dynamically scoped?</em></p>
+
+<p>To answer that question, we need to understand what <em>scope</em> is, along with <em>lexical scope</em> and <em>dynamic scope</em>.</p>
+<!-- more-->
+
+<p>In this blog post, I&rsquo;d like to explain the differences between lexical scope and dynamic scope, and also explore some of the history behind those ideas. In a <a href="/blog/2019/09/10/scoping-in-r/">subsequent post</a>, I&rsquo;ll discuss scoping in R and why it can be confusing.</p>
+
+<h2 id="what-is-scope">What is scope?</h2>
+
+<p><em>Scope</em> refers to the places in a program where a variable is visible and can be referenced.</p>
+
+<p>An interesting situation is when a function has free variables. Consider the example below:</p>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span> <span class="o">+</span> <span class="n">a</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># what does this return?</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>On line 1, we create a mapping for <code>x</code> with value <code>1</code>. On line 2, we define a function <code>f</code> whose body uses the parameter <code>a</code>, but also the free variable <code>x</code>. On line 3, we define a function <code>g</code>, whose body creates a new mapping for <code>x</code> with value <code>2</code>, and then calls <code>f(0)</code>. (Note that line 4 does not update the mapping created on line 1.) Finally, on line 7, we call <code>g()</code>.</p>
+
+<p>What value does <code>g</code> return when it is called? What mapping does the free variable <code>x</code> on line 2 refer to? Does it refer to the mapping on line 1 that was visible when <code>f</code> was defined? Or does it refer to the mapping on line 4 that was created just before <code>f</code> was called?</p>
+
+<h3 id="lexical-scoping">Lexical scoping</h3>
+
+<p>Under <em>lexical scoping</em> (also known as <em>static scoping</em>), the scope of a variable is determined by the lexical (<em>i.e.</em>, textual) structure of a program.</p>
+
+<p>In the example above, the definition of <code>x</code> on line 1 creates a scope that starts after its definition and extends <em>into</em> the bodies of <code>f</code> and <code>g</code>. However, the second definition of <code>x</code> on line 4 creates a new scope that (1) shadows the previous definition of <code>x</code>, and (2) does not extend into the call <code>f(0)</code> on line 5. Looking at this from another direction, the use of <code>x</code> on line 2 is within the scope created by the definition on line 1, and thus refers to that definition.</p>
+
+<p>Therefore, under lexical scoping, the example program returns <code>1</code>.</p>
+
+<p>Most programming languages we use today are lexically scoped. Intuitively, a human (or compiler) can determine the scope of a variable by just examining the source code of a program. In other words, a compiler can determine which <em>definition</em> each variable refers to&mdash;but it may not be able to determine the <em>values</em> of each variable.</p>
+
+<h3 id="dynamic-scoping">Dynamic scoping</h3>
+
+<p>Under <em>dynamic scoping</em>, a variable is bound to the most recent value assigned to that variable, <em>i.e.</em>, the most recent assignment <em>during the program&rsquo;s execution</em>.</p>
+
+<p>In the example above, the free variable <code>x</code> in the body of <code>f</code> is evaluated when <code>f(0)</code> is called on line 5. At that point (during program execution), the most recent assignment was on line 4.</p>
+
+<p>Therefore, under dynamic scoping, the example program returns <code>2</code>.</p>
+
+<p>Dynamically scoped programming languages include bash, LaTeX, and the original version of Lisp. Emacs Lisp is dynamically scoped, but allows the programmer to select lexical scoping. Conversely, Perl and Common Lisp are lexically scoped by default, but allow the programmer to select dynamic scoping.</p>
+
+<p>(<strong>Edited 2020/08/13:</strong> As of <a href="https://www.gnu.org/savannah-checkouts/gnu/emacs/news/NEWS.27.1">Emacs 27.1</a>, &ldquo;lexical binding is now used by default when evaluating interactive Elisp.&rdquo; Thanks to Artem Pelenitsyn for bringing this to my attention.)</p>
+
+<h2 id="now-for-a-digression">Now for a digression</h2>
+
+<p>These are the definitions I learned from my classes and textbooks, and should be similar to other definitions and explanations you might find online.</p>
+
+<p>However, it took me many drafts and attempts before arriving at the current version. I had difficulty writing an explanation that I was satisfied with&mdash;a definition that was not circular, did not appeal to some intuition or familiarity, and did not conflate terms. Even some of the resources I consulted had these issues.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-1-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-1-return">1</a></sup></p>
+
+<p>I am much happier with my current version, but it still bothers me slightly. If lexical scope and dynamic scope are related concepts, then why are the definitions so different? Why does the definition for <em>dynamic scope</em> not mention scope at all? If <em>scope</em> is about &ldquo;where a variable is visible,&rdquo; and that definition is with respect to a <em>variable definition</em>, then why do so many explanations and examples define lexical and dynamic scope in terms of <em>variable use</em>?</p>
+
+<h2 id="scope-and-extent">Scope and Extent</h2>
+
+<p>I found some answers in Guy Steele&rsquo;s <em>Common Lisp the Language, 2nd Edition</em>,<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-2-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-2-return">2</a></sup> which Matthias Felleisen recommended to me.</p>
+
+<p>In chapter 3, Steele introduces the concepts of <em>scope</em> and <em>extent</em>:</p>
+
+<blockquote>
+ <p><em>Scope</em> refers to the spatial or textual region of the program within which references may occur. <em>Extent</em> refers to the interval of time during which references may occur.</p></blockquote>
+
+<p>In addition, there are four interesting cases of scope and extent, with respect to Common Lisp:</p>
+
+<ul>
+ <li>
+  <p><em>Lexical scope</em>: a reference can only occur within certain textual regions  of the program, which are determined by the establishing construct, <em>e.g.</em>,  the body of a variable definition.</p></li>
+ <li>
+  <p><em>Indefinite scope</em>: a reference can occur anywhere in the program.</p></li>
+ <li>
+  <p><em>Dynamic extent</em>: a reference can occur during the time between an entity&rsquo;s  creation and its explicit destruction, <em>e.g.</em>, when a local variable is  created upon entering a function and destroyed when returning from that  function.</p></li>
+ <li>
+  <p><em>Indefinite extent</em>: an entity may exist as long as it is possible to be  referenced. (Note that this is the idea behind garbage collection: an  entity can be destroyed once references to it are impossible.)</p></li></ul>
+
+<p>Steele points out that <em>dynamic scope</em> is a misnomer, even though it is both a traditional and useful concept. It can be defined as <em>indefinite scope and dynamic extent</em>. In other words, references to a variable may occur anywhere in a program, as long as that variable has been initialized and has not yet been explicitly destroyed. Furthermore, a later initialization hides an earlier one.</p>
+
+<h3 id="discussion">Discussion</h3>
+
+<p>I found this approach very informative, because it explicitly distinguishes between space (scope) and time (extent), which further implies a separation between compile time and run time. This explains my unease with the definition of &ldquo;dynamic scope&rdquo;&mdash;it is nominally about textual regions in a program, but also requires consideration of run-time behaviour. Dynamic scope is a misnomer!</p>
+
+<p>The above definitions are specifically for Common Lisp, but I believe we can learn from them and adapt them for other programming languages.</p>
+
+<h2 id="a-brief-and-incomplete-history-of-lexical-scope">A brief and incomplete history of lexical scope</h2>
+
+<p>During my research of different definitions of lexical scope, I began to wonder if there was an &ldquo;original&rdquo; definition of lexical scope. I did not find one, but I was able to trace some of the connections between Lisp, Scheme, and ALGOL 60. This history is certainly incomplete, but I hope it is somewhat useful and interesting.</p>
+
+<ul>
+ <li>
+  <p><strong>1960</strong>. John McCarthy publishes the original paper on Lisp.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-3-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-3-return">3</a></sup> In  <em>History of Lisp</em>,<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-4-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-4-return">4</a></sup> McCarthy writes that he borrowed the λ-notation from  Alonzo Church&rsquo;s lambda calculus, but none of the other ideas. He also  recounts an incident where a programmer desired lexical scoping, but Lisp  used dynamic scoping. McCarthy considered this to be a bug, which Steve  Russell later fixed by developing the &ldquo;FUNARG device.&rdquo;</p></li>
+ <li>
+  <p><strong>1963</strong>. After a few years of work, the <em>Revised Report on Algorithm  Language ALGOL 60</em> is published.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-5-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-5-return">5</a></sup> While &ldquo;lexical scope&rdquo; is not explicitly  mentioned, it is recognizable in the specification.</p></li>
+ <li>
+  <p><strong>1964</strong>. Peter Landin shows how expressions in programming languages can  be modelled in Church&rsquo;s λ-notation.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-6-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-6-return">6</a></sup> He also introduces the concept of a  <em>closure</em>, which pairs a lambda expression with the environment it was  evaluated in.</p></li>
+ <li>
+  <p><strong>1970</strong>. Joel Moses describes the problem of free variables in  functions.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-7-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-7-return">7</a></sup> He considers both the &ldquo;downward&rdquo; case (where a function is  passed to another function) and the &ldquo;upward&rdquo; case (where a function returns  a function), and remarks on the correspondence between Lisp&rsquo;s FUNARG device  and Landin&rsquo;s closures.</p></li>
+ <li>
+  <p><strong>1975</strong>. Gerald Sussman and Guy Steele publish the first Scheme paper.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-8-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-8-return">8</a></sup>  They describe their goal of a Lisp-like language that is based on the  lambda calculus. As a consequence, they implement lexical scoping with  closures, to preserve the substitution semantics of the lambda calculus.  They compare this scoping discipline to ALGOL&rsquo;s.</p></li>
+ <li>
+  <p><strong>1978</strong>. Steele and Sussman describe various programming language design  choices, by developing an interpreter for each programming language  variation.<sup><a href="#2019-09-05-lexical-and-dynamic-scope-footnote-9-definition" name="2019-09-05-lexical-and-dynamic-scope-footnote-9-return">9</a></sup> In particular, they provide a detailed discussion on  lexical and dynamic scoping.</p></li></ul>
+
+<h2 id="next-stop-r">Next stop, R</h2>
+
+<p>Now that we have examined the definitions of lexical and dynamic scope, and also explored some history, we are ready to return to the original question. <em>Is R lexically or dynamically scoped?</em></p>
+
+<p>In the <a href="/blog/2019/09/10/scoping-in-r/">next blog post</a>, we&rsquo;ll answer that question, and also see how R can be very confusing.</p>
+
+<p><em>I would like to thank Sam Caldwell, Ben Greenman, and Artem Pelenitsyn for their comments and feedback on this blog post.</em></p>
+
+<hr />
+
+<div class="footnotes">
+ <ol>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-1-definition" class="footnote-definition">
+   <p>For example, at one point I defined lexical/dynamic scoping in terms of a &ldquo;lexical environment&rdquo; and a &ldquo;dynamic environment.&rdquo; But (1) that&rsquo;s a circular definition, (2) it assumes the reader has some intuition of how a &ldquo;lexical environment&rdquo; is different from a &ldquo;dynamic environment,&rdquo; and (3) it conflates two different kinds of &ldquo;environment.&rdquo;&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-1-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-2-definition" class="footnote-definition">
+   <p>G. Steele. &ldquo;Scope and Extent,&rdquo; in <em>Common Lisp the Language</em>, 2nd ed. 1990. [<a href="https://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node43.html#SECTION00700000000000000000">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-2-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-3-definition" class="footnote-definition">
+   <p>J. McCarthy. &ldquo;Recursive Functions of Symbolic Expressions and Their Computation by Machine, Part I,&rdquo; <em>Communications of the ACM</em>, vol. 3, no. 4, April 1960. [<a href="https://doi.org/10.1145/367177.367199">DOI</a>][<a href="http://jmc.stanford.edu/articles/recursive/recursive.pdf">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-3-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-4-definition" class="footnote-definition">
+   <p>J. McCarthy. &ldquo;History of LISP,&rdquo; in <em>History of Programming Languages</em>, 1978. [<a href="https://doi.org/10.1145/800025.1198360">DOI</a>][<a href="http://jmc.stanford.edu/articles/lisp/lisp.pdf">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-4-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-5-definition" class="footnote-definition">
+   <p>P. Naur (ed.). &ldquo;Revised Report on Algorithmic Language ALGOL 60,&rdquo; <em>Communications of the ACM</em>, vol. 6, no. 1, January 1963. [<a href="http://dx.doi.org/10.1145/366193.366201">DOI</a>][<a href="https://www.masswerk.at/algol60/report.htm">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-5-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-6-definition" class="footnote-definition">
+   <p>P. Landin. &ldquo;The mechanical evaluation of expressions,&rdquo; <em>The Computer Journal</em>, vol. 6, no. 4, January 1964. [<a href="https://doi.org/10.1093/comjnl/6.4.308">DOI</a>][<a href="https://www.cs.cmu.edu/~crary/819-f09/Landin64.pdf">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-6-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-7-definition" class="footnote-definition">
+   <p>J. Moses. &ldquo;The Function of FUNCTION in LISP or Why the FUNARG Problem Should be Called the Environment Problem,&rdquo; <em>SIGSAM Bulletin 15</em>, July 1970. [<a href="https://doi.org/10.1145/1093410.1093411">DOI</a>][<a href="https://dspace.mit.edu/handle/1721.1/5854">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-7-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-8-definition" class="footnote-definition">
+   <p>G. Sussman and G. Steele. &ldquo;SCHEME: An Interpreter for Extended Lambda Calculus.&rdquo; 1975. [<a href="https://dspace.mit.edu/handle/1721.1/5794">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-8-return">↩</a></p></li>
+  <li id="2019-09-05-lexical-and-dynamic-scope-footnote-9-definition" class="footnote-definition">
+   <p>G. Steele and G. Sussman. &ldquo;The Art of the Interpreter or, The Modularity Complex (Parts Zero, One, and Two).&rdquo; 1978. [<a href="https://dspace.mit.edu/handle/1721.1/6094">Available online</a>]&nbsp;<a href="#2019-09-05-lexical-and-dynamic-scope-footnote-9-return">↩</a></p></li></ol></div>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2019/09/05/lexical-and-dynamic-scope/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2019/09/10/scoping-in-r/">&larr; <em>Scoping in R</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2019/05/11/-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency/"><em><a href="https://eighty-twenty.org/2018/01/24/conversational-concurrency">Conversational Concurrency (cross-post)</a></em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

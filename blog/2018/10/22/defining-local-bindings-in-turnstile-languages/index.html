@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Defining Local Bindings in Turnstile Languages</title>
+    <meta name="description" content="In Racket, programmers can create powerful abstractions by bundling together a family of values, functions, and syntax extensions in the form of a new language. These languages, however, are typically untyped. Turnstile is a new Racket {library,language} ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="turnstile, tutorial, language, dsl, Author: Sam Caldwell">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/">
+    <link rel="next" href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/">
+    <link rel="prev" href="/blog/2018/11/24/disappearing-code/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Defining Local Bindings in Turnstile Languages</h1>
+    <p class='date-and-tags'>
+<time datetime="2018-10-22" pubdate="true">2018-10-22</time> :: <span class="tags"><a href="/blog/tags/turnstile.html">turnstile</a>, <a href="/blog/tags/tutorial.html">tutorial</a>, <a href="/blog/tags/language.html">language</a>, <a href="/blog/tags/dsl.html">dsl</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Sam-Caldwell.html">Sam Caldwell</a></span></p>
+  </header>
+
+<p>In <a href="http://racket-lang.org/">Racket</a>, programmers can create powerful abstractions by bundling together a family of values, functions, and syntax extensions in the form of a new language. These languages, however, are typically untyped. <a href="http://docs.racket-lang.org/turnstile/The_Turnstile_Guide.html">Turnstile</a> is a new Racket {library,language} for creating typed languages by integrating type checking with Racket&rsquo;s existing tools for describing languages. The technique is described by fellow PRL&rsquo;ers in the paper <a href="http://www.ccs.neu.edu/home/stchang/pubs/ckg-popl2017.pdf"><em>Type Systems as Macros</em></a>.</p>
+
+<p>Racket encourages language developers to take full advantage of <a href="https://scholarship.rice.edu/handle/1911/17993">linguistic reuse</a> by defining new language forms in terms of existing constructs. Unsurprisingly, language extensions often retain some of the Racket-y flavor from the underlying constructs. Implementors save time and energy while users of the language benefit from the familiarity they already have with the Racket ecosystem.</p>
+
+<p>Unfortunately, Turnstile does not lend itself to expressing one of Racket&rsquo;s most ubiquitous idioms: naming local bindings with <code>define</code>. Early experience reports from Turnstile, including my own, suggest that language implementors very much desire to include <code>define</code>-like binding forms in their languages.</p>
+
+<p>This blog post provides a brief overview of what Turnstile is and how it works, an introduction to defining typed language forms, and how to equip these languages with a <code>define</code> binding form.</p>
+<!-- more-->
+
+<p>The code for this blog post can be found <a href="https://gist.github.com/howell/e2d4501e24db503e4cd9aa368172a502">in this gist</a>. To run it, you will need the Turnstile package, which can be installed with <code>raco pkg install
+turnstile</code>.</p>
+
+<h2 id="turnstile-typechecking-intertwined-with-elaboration">Turnstile: Typechecking Intertwined with Elaboration</h2>
+
+<p>Turnstile provides a convenient way of defining syntax transformations that also perform typechecking. Since processing the syntax of a form typically involves some amount of analysis, such as for error checking, it is a natural place to put the logic for typechecking. With forms defined as such, macro expanding a program determines both a type and an elaborated term in the target language.</p>
+
+<p>While macro expansion proceeds outside-in, type information typically flows up from the leaves of the AST during checking. To reconcile the two directions, Turnstile language forms invoke the macro expander on subexpressions when their types are needed for the current rule. This expansion yields both the elaboration of the term and its type, or fails with an error. Turnstile abstracts over the process of invoking the expander on subterms, allowing implementors to describe the language in terms of high-level type checking and elaboration specifications.</p>
+
+<h2 id="type--elaboration-rules">Type &amp; Elaboration Rules</h2>
+
+<p>To get a feel for defining language forms in Turnstile, this section walks through the core of a simply-typed functional language.</p>
+
+<h3 id="functions">Functions</h3>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-type-constructor</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types-extra..rkt)._~e2~86~92))" style="color: inherit">→</a></span> <span class="kd">#:arity</span> <span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e~3d))" style="color: inherit">&gt;=</a></span> <span class="mi">1</span><span class="p">)</span>
+<span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit">λ</a></span> <span class="p">([</span><span class="n">x:id</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._~7edatum))" style="color: inherit">~datum</a></span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span><span class="p">)</span> <span class="n">τ_in:type</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e</span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[[</span><span class="n">x</span> <span class="n">≫</span> <span class="n">x-</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">τ_in.norm</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">⊢</span> <span class="n">e</span> <span class="n">≫</span> <span class="n">e-</span> <span class="n">⇒</span> <span class="n">τ_out</span><span class="p">]</span>
+  <span class="n">-------------------------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">#%plain-lambda-</span> <span class="p">(</span><span class="n">x-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e-</span><span class="p">)</span> <span class="n">⇒</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types-extra..rkt)._~e2~86~92))" style="color: inherit">→</a></span> <span class="n">τ_in.norm</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">τ_out</span><span class="p">)])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Looking at this item by item, we see:</p>
+
+<ol>
+ <li><code>define-type-constructor</code> creates a new type. Here, we say the <code>→</code> requires  at least one parameter.</li>
+ <li><code>define-typed-syntax</code> is the primary way to define a language form in terms  of its syntactic shape, how it is type checked, the target language term it  expands to, and its type.</li>
+ <li>The next part is a <a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html">syntax-pattern</a> describing the the shape of  the syntax this rule applies to. In this case, we&rsquo;re defining <code>λ</code> as a macro  that expects a parenthesized sequence of identifier-colon-type triples,  describing the formal arguments to the procedure, followed by the body <code>e</code>. The  <code>type</code> <a href="http://docs.racket-lang.org/syntax/stxparse-specifying.html">syntax class</a> is provided by Turnstile, and describes the surface  syntax of types (such as those created with <code>define-type-constructor</code>);  internal operations over types use the expanded version of the type, which is  accessed via the <code>norm</code> attribute.</li>
+ <li>The chevron <code>≫</code> on the first line signifies that there is only one case in  this type rule. Some rules, which we will see later, use multiple  cases to check different kinds of uses.</li>
+ <li>The body of the rule is a sequence of premises, that usually check and  analyze the types of sub-expressions, followed by a dashed line, and  then the conclusion, describing the output syntax and its type.</li>
+ <li>Here, the single premise describes how to check the body of the function. The  context, which associates variables with types, goes to the left of the  turnstile (<code>⊢</code>). For each formal <code>x</code>, this lets us know what type <code>x</code> has  when we find a reference to it in <code>e</code>. In this rule, we are saying &ldquo;while  checking the right-hand-side, assume <code>x</code>&mdash;which elaborates to  <code>x-</code>&mdash;has type <code>τ_in</code>, for each triple in the input syntax (signified by the  ellipses <code>...</code>)&rdquo;. More on the &ldquo;elaborates to <code>x-</code>&rdquo; below.</li>
+ <li>To the right of the turnstile, we write the expression we are checking, <code>e</code>,  and patterns <code>e-</code> and <code>τ_out</code> matching the elaboration of <code>e</code> and its type,  respectively.</li>
+ <li>After the dashes comes the conclusion, which begins with <code>⊢</code>. The next part  specifies the elaboration of the term. Here, the meaning of the typed <code>λ</code> is  given in terms of Racket&rsquo;s <a href="http://docs.racket-lang.org/reference/lambda.html?q=%23%25plain-lambda#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._~23~25plain-lambda%29%29"><code>#%plain-lambda</code></a>. Turnstile uses the  convention of a <code>-</code> suffix for forms in the untyped/target language to avoid  conflicting names and confusion. Suffixed names are usually bound using  <code>postfix-in</code>, such as in <code>(require (postfix-in - racket/base))</code> to bind  <code>#%plain-lambda-</code>.</li>
+ <li>Finally, we give the type of the term to the right of the <code>⇒</code>, referring to  pattern variables bound in the premises.</li></ol>
+
+<h4 id="renaming-typed-variables">Renaming Typed Variables</h4>
+
+<p>Turnstile lets the Racket expander take care of the details of variable scope, shadowing, etc. To associate identifier <code>x</code> with type <code>τ</code>, Turnstile binds <code>x</code> to a macro that knows <code>τ</code> when it expands. References to <code>x</code> now become references to that macro, and expanding them provides access to <code>τ</code>. Concretely, the underlying Racket code implementing this behavior looks roughly like this:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/let.html#(form._((lib._racket/private/letstx-scheme..rkt)._let))" style="color: inherit">let</a></span> <span class="p">([</span><span class="n">x-</span> <span class="p">(</span><span class="n">assign-type</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/reference/syntax-util.html#(def._((lib._racket/syntax..rkt)._generate-temporary))" style="color: inherit">generate-temporary</a></span> <span class="o">#'</span><span class="n">x</span><span class="p">)</span> <span class="o">#'</span><span class="n">τ</span><span class="p">)])</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/let.html#(form._((lib._racket/private/letstx-scheme..rkt)._let-syntax))" style="color: inherit">let-syntax</a></span> <span class="p">([</span><span class="n">x</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._make-rename-transformer))" style="color: inherit">make-rename-transformer</a></span> <span class="n">x-</span><span class="p">)])</span>
+    <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="nb"><a href="http://docs.racket-lang.org/reference/Expanding_Top-Level_Forms.html#(def._((quote._~23~25kernel)._expand))" style="color: inherit">expand</a></span> <span class="k"><a href="http://docs.racket-lang.org/reference/if.html#(form._((lib._racket/private/letstx-scheme..rkt)._and))" style="color: inherit">and</a></span> <span class="n">check</span> <span class="n">forms</span> <span class="n">that</span> <span class="n">may</span> <span class="n">reference</span> <span class="n">x</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The type <code>τ</code> is attached as <a href="http://docs.racket-lang.org/reference/stxprops.html">metadata</a> for a new identifier <code>x-</code>, which is what <code>x</code> will transform to at any reference site. In order for this to work, <code>x-</code> must be distinct from <code>x</code>&mdash;hence the <code>generate-temporary</code>&mdash;to avoid an infinite expansion loop.</p>
+
+<h3 id="application">Application</h3>
+
+<p>We can define a version of <code>#%app</code> that type checks function applications to  accompany our typed <code>λ</code>:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/application.html#(form._((lib._racket/private/base..rkt)._~23~25app))" style="color: inherit">#%app</a></span> <span class="n">e_fn</span> <span class="n">e_arg</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e_fn</span> <span class="n">≫</span> <span class="n">e_fn-</span> <span class="n">⇒</span> <span class="p">(</span><span class="n">~→</span> <span class="n">τ_in</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">τ_out</span><span class="p">)]</span>
+  <span class="kd">#:fail-unless</span> <span class="p">(</span><span class="n">stx-length=?</span> <span class="o">#'</span><span class="p">[</span><span class="n">τ_in</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">]</span> <span class="o">#'</span><span class="p">[</span><span class="n">e_arg</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">])</span>
+                <span class="p">(</span><span class="n">num-args-fail-msg</span> <span class="o">#'</span><span class="n">e_fn</span> <span class="o">#'</span><span class="p">[</span><span class="n">τ_in</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">]</span> <span class="o">#'</span><span class="p">[</span><span class="n">e_arg</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">])</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e_arg</span> <span class="n">≫</span> <span class="n">e_arg-</span> <span class="n">⇐</span> <span class="n">τ_in</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span>
+  <span class="n">--------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">#%plain-app-</span> <span class="n">e_fn-</span> <span class="n">e_arg-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">⇒</span> <span class="n">τ_out</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<ol>
+ <li>The syntax pattern on the first line describes the shape of applications.</li>
+ <li>On the second line, we pattern match the result of expanding and checking  <code>e_fn</code>, checking that it produces an arrow type. More specifically, when we defined the arrow  type <code>→</code> above, <code>define-type-constructor</code> also implicitly defined a <a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html?q=pattern%20expander#%28part._.Pattern_.Expanders%29">pattern  expander</a> <code>~→</code> (which uses the Racket <code>~</code> prefix convention for syntax patterns)  that matches instances of the type.</li>
+ <li>The next clause checks that the number of provided arguments matches the  arity of the function as specified by its type.</li>
+ <li>Line 5 checks that each argument expression has the required type. Turnstile  uses <a href="http://davidchristiansen.dk/tutorials/bidirectional.pdf">bidirectional typechecking rules</a>, which either infer the type of a  term or checks that a term satisfies a given type. We write <code>⇐ τ_in</code> in the  premise to switch to checking mode.</li>
+ <li>Finally, typed function application elaborates to Racket&rsquo;s function application,  <code>#%plain-app</code>, with the usual suffix, and produces type <code>τ_out</code> for the application</li></ol>
+
+<p>We can try out these new typed forms on a few examples:</p>
+
+<ul>
+ <li><code>((λ ([x : Int]) (+ x 1)) 2)</code> successfully typechecks and yields <code>3</code>.</li>
+ <li><code>((λ ([x : Int]) (+ x 1)))</code> raises an error based on the check on lines 3 and  4 in the rule: "#%app: (λ ((x : Int)) (+ x 1)): wrong number of arguments: expected  1, given 0."</li>
+ <li><code>((λ ([x : (→ Int Int)]) (x 1)) 2)</code> raises an error: "#%app: type mismatch:  expected (→ Int Int), given Int" as a consequence of using checking mode on  line 5 of the rule.</li></ul>
+
+<h2 id="extending-our-language-with-local-bindings">Extending Our Language with Local Bindings</h2>
+
+<p>When writing functional programs, we often want to name various sub-computations. One way to do that is with a <code>let</code> construct, which Turnstile allows us to easily create:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/let.html#(form._((lib._racket/private/letstx-scheme..rkt)._let))" style="color: inherit">let</a></span> <span class="p">([</span><span class="n">x:id</span> <span class="n">e-x</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e-body</span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e-x</span> <span class="n">≫</span> <span class="n">e-x-</span> <span class="n">⇒</span> <span class="n">τ-x</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span>
+  <span class="p">[[</span><span class="n">x</span> <span class="n">≫</span> <span class="n">x-</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">τ-x</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">⊢</span> <span class="n">e-body</span> <span class="n">≫</span> <span class="n">e-body-</span> <span class="n">⇒</span> <span class="n">τ-body</span><span class="p">]</span>
+  <span class="n">-------------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">let-</span> <span class="p">([</span><span class="n">x-</span> <span class="n">e-x-</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e-body-</span><span class="p">)</span> <span class="n">⇒</span> <span class="n">τ-body</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Unsurprisingly, this looks very similar to the definition of <code>λ</code> above. Now we can write functions with named intermediate results:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit">λ</a></span> <span class="p">([</span><span class="n">x</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">Int</span><span class="p">])</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/let.html#(form._((lib._racket/private/letstx-scheme..rkt)._let))" style="color: inherit">let</a></span> <span class="p">([</span><span class="n">almost-there</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">)])</span>
+    <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">almost-there</span> <span class="mi">1</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>However, in Racket it&rsquo;s common to name such intermediate results using <code>define</code> rather than <code>let</code>. In fact, it&rsquo;s <a href="https://docs.racket-lang.org/style/Choosing_the_Right_Construct.html#%28part._.Definitions%29">prescribed by the style guide</a>. Naturally, we would like to do so in our Racket language extension as well, which would allow us to write the above function as:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit">λ</a></span> <span class="p">([</span><span class="n">x</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">Int</span><span class="p">])</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">almost-there</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">almost-there</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Unfortunately, this is not nearly as easy to do in Turnstile as <code>let</code>.</p>
+
+<h2 id="sequences">Sequences</h2>
+
+<p>At first glance, the issue seems to be that the definition of <code>λ</code> above limits the body to be a single expression when what we want to put there is a sequence of definitions and expressions. To reach our goal, we need to change the definition of <code>λ</code> to allow its body to be a sequence.</p>
+
+<p>The first step is to create a typed form for sequences of definitions and expressions, which can then be used by rules like <code>λ</code>:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/begin.html#(form._((quote._~23~25kernel)._begin))" style="color: inherit">begin</a></span> <span class="n">e</span> <span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._......+))" style="color: inherit">...+</a></span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e</span> <span class="n">≫</span> <span class="n">e-</span> <span class="n">⇒</span> <span class="n">τ</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span>
+  <span class="kd">#:with</span> <span class="n">τ-final</span> <span class="p">(</span><span class="n">stx-last</span> <span class="o">#'</span><span class="p">(</span><span class="n">τ</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">))</span>
+  <span class="n">-----------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">begin-</span> <span class="n">e-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">⇒</span> <span class="n">τ-final</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>This directs type checking to:</p>
+
+<ol>
+ <li>Check each <code>e</code> in the sequence individually, obtaining an expanded <code>e-</code> and  inferred type <code>τ</code> for each.</li>
+ <li>Take the last type in the sequence and call it <code>τ-final</code>; Turnstile allows  using <code>syntax-parse</code> <a href="http://docs.racket-lang.org/syntax/stxparse-specifying.html?#%28tech._pattern._directive%29">directives</a> such as <code>#:with</code> as premises.</li>
+ <li>Expand to Racket&rsquo;s <code>begin</code> (with the usual <code>-</code> suffix) and give the whole  expression the type of the last term in the body.</li></ol>
+
+<p>Now, we can use <code>begin</code> in a revised definition of <code>λ</code>. The new rule takes a non-empty sequence of forms in the body and wraps them in our new <code>begin</code> form for typechecking.</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit">λ</a></span> <span class="p">([</span><span class="n">x:id</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._~7edatum))" style="color: inherit">~datum</a></span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span><span class="p">)</span> <span class="n">τ_in:type</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e</span> <span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._......+))" style="color: inherit">...+</a></span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[[</span><span class="n">x</span> <span class="n">≫</span> <span class="n">x-</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">τ_in.norm</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">⊢</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/begin.html#(form._((quote._~23~25kernel)._begin))" style="color: inherit">begin</a></span> <span class="n">e</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">≫</span> <span class="n">e-</span> <span class="n">⇒</span> <span class="n">τ_out</span><span class="p">]</span>
+  <span class="n">-------------------------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">#%plain-lambda-</span> <span class="p">(</span><span class="n">x-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e-</span><span class="p">)</span> <span class="n">⇒</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types-extra..rkt)._~e2~86~92))" style="color: inherit">→</a></span> <span class="n">τ_in.norm</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">τ_out</span><span class="p">)])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Now we need a way to include definitions in these sequences and we&rsquo;re set!</p>
+
+<h2 id="the-difficulty-with-define">The Difficulty With Define</h2>
+
+<p>If we think about how type information is communicated between a binder and its reference we can see why <code>define</code> is a different beast than <code>let</code></p>
+
+<pre><code>(let ([x 5]) (+ x 1))
+       ^        ^
+       |        |- TO HERE
+FROM HERE</code></pre>
+
+<p>When the rule for our <code>let</code> is invoked, it has access to both the binding sites and the place where references may occur. The situation lends itself to a straightforward implementation strategy: create an environment of identifier/type associations to use when analyzing the body. Turnstile directly accommodates this scenario in its language for creating type rules with the optional context appearing on the left of the <code>⊢</code>, as in our rules for <code>λ</code> and <code>let</code> above.</p>
+
+<p>Define is different.</p>
+
+<pre><code>(define x 5)
+        ^
+        |------ TO WHERE?
+FROM HERE</code></pre>
+
+<p>The problem is apparent: we can&rsquo;t see where the reference to <code>x</code> occurs! The information about the binding needs to escape from the <code>define</code> to the surrounding context. In other words, when we implement <code>define</code>, we don&rsquo;t have a body term available that contains all the possible references. Instead, we will have to find a way of communicating the existence of the <code>x</code> binding and its type to the surrounding context.</p>
+
+<p>Above, in the subsection on &ldquo;Renaming Typed Variables&rdquo;, we saw that the context in Turnstile type rules is implemented as syntax transformers with <code>let</code>-like scope (created with <code>let-syntax</code>). One idea would be to mimic this approach, but instead of using <code>let-syntax</code> to achieve <code>let</code>-like scope, use <code>define-syntax</code> to achieve <code>define</code>-like scope.</p>
+
+<p>Fortunately for us, someone has already tried their hand at writing a <code>define</code> form for Turnstile languages using a <code>define-syntax</code> rename, found in the <a href="https://github.com/stchang/macrotypes/blob/c5b663f7e663c564cb2baf0e0a352d5fde4d2bd7/turnstile/examples/ext-stlc.rkt#L55">Turnstile examples</a>. We can take that as our starting point:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-base-type</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types..rkt)._.Void))" style="color: inherit">Void</a></span><span class="p">)</span>
+<span class="p">(</span><span class="n">define-</span> <span class="n">a-deep-dark-void</span> <span class="p">(</span><span class="n">#%app-</span> <span class="n">void-</span><span class="p">))</span>
+<span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">x:id</span> <span class="n">e</span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e</span> <span class="n">≫</span> <span class="n">e-</span> <span class="n">⇒</span> <span class="n">τ</span><span class="p">]</span>
+  <span class="kd">#:with</span> <span class="n">x-</span> <span class="p">(</span><span class="n">assign-type</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/reference/syntax-util.html#(def._((lib._racket/syntax..rkt)._generate-temporary))" style="color: inherit">generate-temporary</a></span> <span class="o">#'</span><span class="n">x</span><span class="p">)</span> <span class="o">#'</span><span class="n">τ</span> <span class="kd">#:wrap?</span> <span class="no">#f</span><span class="p">)</span>
+  <span class="n">-----------------------------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">begin-</span>
+       <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="n">x</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/transformer-helpers.html#(def._((lib._syntax/transformer..rkt)._make-variable-like-transformer))" style="color: inherit">make-variable-like-transformer</a></span> <span class="o">#'</span><span class="n">x-</span><span class="p">))</span>
+       <span class="p">(</span><span class="n">define-</span> <span class="n">x-</span> <span class="n">e-</span><span class="p">)</span>
+       <span class="n">a-deep-dark-void</span><span class="p">)</span>
+     <span class="n">⇒</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types..rkt)._.Void))" style="color: inherit">Void</a></span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Let&rsquo;s break it down.</p>
+
+<ol>
+ <li>Create a new type, <code>Void</code>, to assign definitions.</li>
+ <li>Create a constant to serve as the canonical value of type <code>Void</code>.</li>
+ <li>Define a new typed form, <code>define</code>, used as in <code>(define x e)</code>.</li>
+ <li>Check the type of the expression <code>e</code>, getting its  expansion <code>e-</code> and type <code>τ</code>.</li>
+ <li>Create a new name, <code>x-</code>, and attach the type <code>τ</code> as metadata.</li>
+ <li>Expand to Racket&rsquo;s <code>begin</code>. Unlike <code>let</code>, <code>begin</code> does not create a new  scope; definitions inside a <code>begin</code> are also visible in the surrounding  context. That behavior is needed for scenarios like this one that expand to  multiple definitions.</li>
+ <li>Create a macro binding for <code>x</code> that rewrites to <code>x-</code>. By using a define-like  form, the macro has the same scoping rules as <code>define</code>, so it will apply to  references to <code>x</code> in the surrounding context&mdash;exactly what we want. (We are  using <code>make-variable-like-transformer</code> to avoid the special treatment the  expander gives to <code>rename-transformer</code>s. The specifics are beyond the scope  of this post.)</li>
+ <li>Define <code>x-</code> to refer to the supplied expression. Note that here <code>define-</code> is  Racket&rsquo;s <code>define</code>.</li>
+ <li>Keep the result of evaluating this form in line with the type by yielding a  value of type <code>Void</code>.</li></ol>
+
+<p>This implementation of <code>define</code> gets us pretty far. If we put definitions at the top-level of a module in our language, we can reference them within other terms in the module:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="c1">;; module top level</span>
+<span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">x</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">;;=&gt; 6</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Unfortunately, we encounter a problem if we try to create <em>local</em> definitions:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">add2</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit">λ</a></span> <span class="p">([</span><span class="n">x</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">Int</span><span class="p">])</span>
+     <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">almost</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">))</span>
+     <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">almost</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="c1">;;==&gt; almost: unbound identifier...</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Pointing to the reference on the final line. The problem is that our <code>define</code> and <code>begin</code> forms are not interacting in the way we might have hoped.</p>
+
+<p>When we expand the body of the function above, we associate <code>x</code> with type <code>Int</code> then start checking the body, wrapped in a <code>begin</code>:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/begin.html#(form._((quote._~23~25kernel)._begin))" style="color: inherit">begin</a></span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">almost</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">almost</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Consulting the definition of <code>begin</code>, we see that it checks/expands each sub-expression in seqence. First in the sequence is a use of <code>define</code>, yielding</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">begin-</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="n">almost</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+  <span class="p">(</span><span class="n">define-</span> <span class="n">almost-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+  <span class="n">a-deep-dark-void</span><span class="p">)</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Crucially, the expansion of our <code>define</code> form <strong>stops</strong> at this point, without examining the <code>begin-</code> form and its contained definitions. The interface through which Turnstile invokes the macro expander, <a href="http://docs.racket-lang.org/reference/stxtrans.html?q=local-expand#%28def._%28%28quote._~23~25kernel%29._local-expand%29%29"><code>local-expand</code></a>, takes a parameter referred to as the <em>stop list</em> for stopping expansion at certain points. The stop list contains identifiers which, when encountered by the expander, halt expansion.</p>
+
+<p>The syntax output from typed forms created using Turnstile are wrapped with a particular macro, named <code>erased</code>, that serves (only) to orchestrate stopping expansion. So, the output of our <code>define</code> form actually looks like</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">erased</span>
+  <span class="p">(</span><span class="n">begin-</span>
+    <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="n">almost</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+    <span class="p">(</span><span class="n">define-</span> <span class="n">almost-</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+    <span class="n">a-deep-dark-void</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>And since Turnstile includes <code>erased</code> in the stop list for <code>local-expand</code>, expansion stops before analyzing the rest of the output. The point of all this <code>erased</code> business, if you are wondering, is to improve the performance of Turnstile languages by avoiding unnecessary re-expansions.</p>
+
+<p>Control returns to the <code>begin</code> transformer, which turns to checking/expanding the subsequent <code>(+ almost 1)</code>, where it will encounter the identifier <code>almost</code> without a corresponding binding. Even though our <code>define</code> form produced a binding as part of its output, the expander hasn&rsquo;t actually analyzed it before reaching the reference in the next expression.</p>
+
+<p>The problem is a symptom of analyzing the sequence of forms using an ellipses, which corresponds to mapping the typechecking/expanding process over each individually. The mapping operation stipulates that checking each item is independent of checking the others. But when we add <code>define</code> to the language that is no longer the case. A definition form influences how we typecheck its neighbors by introducing a new name and its type. This information must be communicated to the following forms in order to properly check references. That is, instead of setting up binding information and then checking, analyzing bindings must be interleaved with type checking. Unfortunately, Turnstile doesn&rsquo;t provide a fold-like mechanism for threading binding information through the checking of a sequence of typed forms. We&rsquo;re going to need to implement our own solution, requiring us to dive underneath the abstractions provided by Turnstile and get intimate with Racket&rsquo;s syntax model.</p>
+
+<h2 id="internal-definition-contexts">Internal Definition Contexts</h2>
+
+<p>In order for the <code>(+ almost 1)</code> expression from above to successfully typecheck/expand, we need to be able to associate <code>almost</code> with a suitable type. Turnstile provides a way to set up such an association, but as we saw before, Turnstile&rsquo;s interface doesn&rsquo;t suit this scenario.</p>
+
+<p>Racket has the notion of an <a href="http://docs.racket-lang.org/reference/syntax-model.html?#%28tech._internal._definition._context%29">internal definition context</a> that allows definitions to be mixed with expressions. The syntax system exposes tools for creating and manipulating such contexts programmatically, allowing macro writers a great deal of power for manipulating the bindings in a program.</p>
+
+<p>When using <code>local-expand</code>, we can optionally pass in a definition context containing binding information. If we create a definition context for the body of the function and extend it with each definition, then <code>local-expand</code>-ing references such as the above one should work out. Normally, Turnstile calls <code>local-expand</code> internally in accordance with the type rules we write down, but in order to use our own definition context we&rsquo;re going to have to call it ourselves.</p>
+
+<p>We can create a definition context with <a href="http://docs.racket-lang.org/reference/stxtrans.html#%28def._%28%28quote._~23~25kernel%29._syntax-local-make-definition-context%29%29"><code>syntax-local-make-definition-context</code></a>, as in</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">def-ctx</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._syntax-local-make-definition-context))" style="color: inherit">syntax-local-make-definition-context</a></span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>And then (imperatively) add bindings to <code>def-ctx</code> with <a href="http://docs.racket-lang.org/reference/stxtrans.html#%28def._%28%28quote._~23~25kernel%29._syntax-local-bind-syntaxes%29%29"><code>syntax-local-bind-syntaxes</code></a>. The first argument is a list of identifiers to bind; we will only be binding one identifier at a time, consequently only passing singleton lists. The second argument dictates what the given identifier <em>means</em>. Passing <code>#f</code> corresponds to a run-time/phase 0 binding, such as that of a procedure argument, <code>let</code>, or <code>define</code>; alternatively, we can provide syntax that evaluates to a function, establishing a transformer binding invoked on references to the identifier. Using both alternatives, we can define a renaming macro and give a meaning to the new name:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-for-syntax))" style="color: inherit">define-for-syntax</a></span> <span class="p">(</span><span class="n">int-def-ctx-bind-type-rename!</span> <span class="n">x</span> <span class="n">x-</span> <span class="n">t</span> <span class="n">ctx</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._syntax-local-bind-syntaxes))" style="color: inherit">syntax-local-bind-syntaxes</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._list))" style="color: inherit">list</a></span> <span class="n">x</span><span class="p">)</span>
+                              <span class="o">#`</span><span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/transformer-helpers.html#(def._((lib._syntax/transformer..rkt)._make-variable-like-transformer))" style="color: inherit">make-variable-like-transformer</a></span>
+                                 <span class="p">(</span><span class="n">assign-type</span> <span class="o">#'#,</span><span class="n">x-</span> <span class="o">#'#,</span><span class="n">t</span> <span class="kd">#:wrap?</span> <span class="no">#f</span><span class="p">))</span>
+                              <span class="n">ctx</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._syntax-local-bind-syntaxes))" style="color: inherit">syntax-local-bind-syntaxes</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._list))" style="color: inherit">list</a></span> <span class="n">x-</span><span class="p">)</span> <span class="no">#f</span> <span class="n">ctx</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The first call binds <code>x</code> to a transformer that renames to <code>x-</code>; the second lets the expander know that we are taking care of making sure that <code>x-</code> will actually be bound to something.</p>
+
+<p>Our <code>define</code> form must communicate the information needed to call <code>int-def-ctx-bind-type-rename!</code> back out to the surrounding context. One way to do this is to add an intermediate step to the expansion of <code>define</code> that includes the necessary information as part of its syntax. Then, the surrounding context can analyze the expansion of each term, looking for that form.</p>
+
+<p>Concretely, <code>define</code> will expand to <code>define/intermediate</code>, which will in turn expand to what <code>define</code> originally expanded to:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">x:id</span> <span class="n">e</span><span class="p">)</span> <span class="n">≫</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="n">e</span> <span class="n">≫</span> <span class="n">e-</span> <span class="n">⇒</span> <span class="n">τ</span><span class="p">]</span>
+  <span class="kd">#:with</span> <span class="n">x-</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/reference/syntax-util.html#(def._((lib._racket/syntax..rkt)._generate-temporary))" style="color: inherit">generate-temporary</a></span> <span class="o">#'</span><span class="n">x</span><span class="p">)</span>
+  <span class="kd">#:with</span> <span class="n">x+</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._syntax-local-identifier-as-binding))" style="color: inherit">syntax-local-identifier-as-binding</a></span> <span class="o">#'</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">--------------------------------------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">define/intermediate</span> <span class="n">x+</span> <span class="n">x-</span> <span class="n">τ</span> <span class="n">e-</span><span class="p">)</span> <span class="n">⇒</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types..rkt)._.Void))" style="color: inherit">Void</a></span><span class="p">])</span>
+
+<span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="p">(</span><span class="n">define/intermediate</span> <span class="n">stx</span><span class="p">)</span>
+  <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html#(form._((lib._syntax/parse..rkt)._syntax-parse))" style="color: inherit">syntax-parse</a></span> <span class="n">stx</span>
+    <span class="p">[(</span><span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt).__))" style="color: inherit">_</a></span> <span class="n">x:id</span> <span class="n">x-:id</span> <span class="n">τ</span> <span class="n">e</span><span class="p">)</span>
+     <span class="kd">#:with</span> <span class="n">x-/τ</span> <span class="p">(</span><span class="n">assign-type</span> <span class="o">#'</span><span class="n">x-</span> <span class="o">#'</span><span class="n">τ</span> <span class="kd">#:wrap?</span> <span class="no">#f</span><span class="p">)</span>
+     <span class="o">#'</span><span class="p">(</span><span class="n">begin-</span>
+         <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="n">x</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/transformer-helpers.html#(def._((lib._syntax/transformer..rkt)._make-variable-like-transformer))" style="color: inherit">make-variable-like-transformer</a></span> <span class="o">#'</span><span class="n">x-/τ</span><span class="p">))</span>
+         <span class="p">(</span><span class="n">define-</span> <span class="n">x-</span> <span class="n">e</span><span class="p">)</span>
+         <span class="n">a-deep-dark-void</span><span class="p">)]))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>(The reason we create an <code>x+</code> using <a href="http://docs.racket-lang.org/reference/stxtrans.html#%28def._%28%28quote._~23~25kernel%29._syntax-local-identifier-as-binding%29%29"><code>syntax-local-identifier-as-binding</code></a> is <a href="https://github.com/racket/racket/pull/2237">due to a bug in the expander</a>. The explanation is rather involved and frankly I only barely understand what&rsquo;s going on myself (if at all), so let&rsquo;s just leave it at that and move on.)</p>
+
+<p>Then, for each form <code>e</code> in a sequence, we can call <code>local-expand</code> with <code>def-ctx</code> and then check the expansion, <code>e-</code>, for <code>define/intermediate</code>. In those cases, we can use <code>int-def-ctx-bind-type-rename!</code> to add it to the context. The procedure <code>add-bindings-to-ctx!</code> performs this check on an expanded form <code>e-</code> (remembering that Turnstile will wrap the output of <code>define</code> in an <code>erased</code> macro):</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-for-syntax))" style="color: inherit">define-for-syntax</a></span> <span class="p">(</span><span class="n">add-bindings-to-ctx!</span> <span class="n">e-</span> <span class="n">def-ctx</span><span class="p">)</span>
+  <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html#(form._((lib._syntax/parse..rkt)._syntax-parse))" style="color: inherit">syntax-parse</a></span> <span class="n">e-</span>
+        <span class="kd">#:literals</span> <span class="p">(</span><span class="n">erased</span><span class="p">)</span>
+        <span class="p">[(</span><span class="n">erased</span> <span class="p">(</span><span class="n">define/intermediate</span> <span class="n">x:id</span> <span class="n">x-:id</span> <span class="n">τ</span> <span class="n">e-</span><span class="p">))</span>
+         <span class="p">(</span><span class="n">int-def-ctx-bind-type-rename!</span> <span class="o">#'</span><span class="n">x</span> <span class="o">#'</span><span class="n">x-</span> <span class="o">#'</span><span class="n">τ</span> <span class="n">def-ctx</span><span class="p">)]</span>
+        <span class="p">[</span><span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt).__))" style="color: inherit">_</a></span>
+         <span class="c1">;; when e expands to something other than a definition there&#39;s nothing to bind</span>
+         <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/void.html#(def._((quote._~23~25kernel)._void))" style="color: inherit">void</a></span><span class="p">)]))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>We now have the key ingredients to define a procedure, <code>walk/bind</code>, that will serve as the primary vehicle to type check a sequence of forms, threading binding information through using a definition context. Processing sequences of defintions and expressions will iterate through them one at a time, and for each form <code>e</code>:</p>
+
+<ol>
+ <li><code>local-expand</code> using our internal definition context, resulting in an <code>e-</code>.</li>
+ <li>Retrieve the type of <code>e</code> from the metadata of <code>e-</code> using Turnstile&rsquo;s  <a href="http://docs.racket-lang.org/turnstile/The_Turnstile_Reference.html?q=typeof#%28def._%28%28lib._turnstile%2Fmain..rkt%29._typeof%29%29"><code>typeof</code></a> helper.</li>
+ <li>Check if <code>e</code> defined a binding, in which case add it to the context.</li></ol>
+
+<p>Aggregating the expanded syntax and type of each form as we go along, we get</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-for-syntax))" style="color: inherit">define-for-syntax</a></span> <span class="p">(</span><span class="n">walk/bind</span> <span class="n">e...</span><span class="p">)</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">def-ctx</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._syntax-local-make-definition-context))" style="color: inherit">syntax-local-make-definition-context</a></span><span class="p">))</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">unique</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/symbols.html#(def._((quote._~23~25kernel)._gensym))" style="color: inherit">gensym</a></span> <span class="o">'</span><span class="ss">walk/bind</span><span class="p">))</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((quote._~23~25kernel)._define-values))" style="color: inherit">define-values</a></span> <span class="p">(</span><span class="n">rev-e-...</span> <span class="n">rev-τ...</span><span class="p">)</span>
+    <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/for.html#(form._((lib._racket/private/base..rkt)._for/fold))" style="color: inherit">for/fold</a></span> <span class="p">([</span><span class="n">rev-e-...</span> <span class="o">'</span><span class="p">()]</span>
+               <span class="p">[</span><span class="n">rev-τ...</span> <span class="o">'</span><span class="p">()])</span>
+              <span class="p">([</span><span class="n">e</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/sequences.html#(def._((lib._racket/sequence..rkt)._in-syntax))" style="color: inherit">in-syntax</a></span> <span class="n">e...</span><span class="p">)])</span>
+      <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">e-</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/stxtrans.html#(def._((quote._~23~25kernel)._local-expand))" style="color: inherit">local-expand</a></span> <span class="n">e</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._list))" style="color: inherit">list</a></span> <span class="n">unique</span><span class="p">)</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._list))" style="color: inherit">list</a></span> <span class="o">#'</span><span class="n">erased</span><span class="p">)</span> <span class="n">def-ctx</span><span class="p">))</span>
+      <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">τ</span> <span class="p">(</span><span class="n">typeof</span> <span class="n">e-</span><span class="p">))</span>
+      <span class="p">(</span><span class="n">add-bindings-to-ctx!</span> <span class="n">e-</span> <span class="n">def-ctx</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/values.html#(def._((quote._~23~25kernel)._values))" style="color: inherit">values</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._cons))" style="color: inherit">cons</a></span> <span class="n">e-</span> <span class="n">rev-e-...</span><span class="p">)</span>
+              <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((quote._~23~25kernel)._cons))" style="color: inherit">cons</a></span> <span class="n">τ</span> <span class="n">rev-τ...</span><span class="p">))))</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/values.html#(def._((quote._~23~25kernel)._values))" style="color: inherit">values</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/private/list..rkt)._reverse))" style="color: inherit">reverse</a></span> <span class="n">rev-e-...</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/private/list..rkt)._reverse))" style="color: inherit">reverse</a></span> <span class="n">rev-τ...</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The value <code>unique</code> and its use as an argument is dictated by the documentation of <a href="http://docs.racket-lang.org/reference/stxtrans.html?q=local-expand#%28def._%28%28quote._~23~25kernel%29._local-expand%29%29"><code>local-expand</code></a>: &ldquo;For a particular internal-definition context, generate a unique value and put it into a list for context-v.&rdquo; By using <code>#'erased</code> in the stop list for <code>local-expand</code>, we stop expansion at the same points that Turnstile does.</p>
+
+<p>Now we can implement <code>begin</code> in terms of <code>walk/bind</code>:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="n">define-typed-syntax</span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/begin.html#(form._((quote._~23~25kernel)._begin))" style="color: inherit">begin</a></span> <span class="n">e</span> <span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._......+))" style="color: inherit">...+</a></span><span class="p">)</span> <span class="n">≫</span>
+  <span class="kd">#:do</span> <span class="p">[(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((quote._~23~25kernel)._define-values))" style="color: inherit">define-values</a></span> <span class="p">(</span><span class="n">e-...</span> <span class="n">τ...</span><span class="p">)</span> <span class="p">(</span><span class="n">walk/bind</span> <span class="o">#'</span><span class="p">(</span><span class="n">e</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)))]</span>
+  <span class="kd">#:with</span> <span class="n">τ-final</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._last))" style="color: inherit">last</a></span> <span class="n">τ...</span><span class="p">)</span>
+  <span class="n">--------------------</span>
+  <span class="p">[</span><span class="n">⊢</span> <span class="p">(</span><span class="n">begin-</span> <span class="o">#,@</span><span class="n">e-...</span><span class="p">)</span> <span class="n">⇒</span> <span class="n">τ-final</span><span class="p">])</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>and voilà!</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="p">(</span><span class="n">add2</span> <span class="p">[</span><span class="n">x</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">Int</span><span class="p">])</span>
+  <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">almost</span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">x</span> <span class="mi">1</span><span class="p">))</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._+))" style="color: inherit">+</a></span> <span class="n">almost</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="p">(</span><span class="n">add2</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1">;;=&gt; 5</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h1 id="but-wait-theres-more">But Wait, There&rsquo;s More</h1>
+
+<p>I believe this design is can be dropped in &lsquo;as-is&rsquo; and with a few extensions be useful for a wide variety of Turnstile languages. However, there are a few shortcomings (that I am aware of) that I will leave as exercises for the interested reader:</p>
+
+<ul>
+ <li>The <code>define</code> form here doesn&rsquo;t provide the useful shorthand for creating  functions, <code>(define (f x) e ...)</code>. Extending it to do so is relatively  straightforward.</li>
+ <li>Supporting <em>recursive</em> (and mutually recursive) function definitions is a bit  more complicated, but shouldn&rsquo;t require many changes to the above code.</li>
+ <li>There&rsquo;s an extensibility issue&mdash;macros that expand to multiple uses of  <code>define</code> inside a <code>begin</code> won&rsquo;t work (why not?), such as</li></ul>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define-syntax))" style="color: inherit">define-syntax</a></span> <span class="p">(</span><span class="n">define/memo</span> <span class="n">stx</span><span class="p">)</span>
+  <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html#(form._((lib._syntax/parse..rkt)._syntax-parse))" style="color: inherit">syntax-parse</a></span> <span class="n">stx</span>
+    <span class="p">[(</span><span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt).__))" style="color: inherit">_</a></span> <span class="p">(</span><span class="n">f</span> <span class="p">[</span><span class="n">x</span> <span class="p">(</span><span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._~7edatum))" style="color: inherit">~datum</a></span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span><span class="p">)</span> <span class="n">τ</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span> <span class="n">e</span> <span class="n"><a href="http://docs.racket-lang.org/syntax/stxparse-patterns.html#(form._((lib._syntax/parse..rkt)._......+))" style="color: inherit">...+</a></span><span class="p">)</span>
+     <span class="o">#'</span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/begin.html#(form._((quote._~23~25kernel)._begin))" style="color: inherit">begin</a></span>
+         <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="n">memo</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">memo</span> <span class="n">table</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+         <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="p">(</span><span class="n">f</span> <span class="p">[</span><span class="n">x</span> <span class="n"><a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit">:</a></span> <span class="n">τ</span><span class="p">]</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">)</span>
+           <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span> <span class="n">check</span> <span class="n">memo</span> <span class="n">table</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span>
+           <span class="n">e</span> <span class="k"><a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit">...</a></span><span class="p">))]))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Finally, there&rsquo;s some question as to how to lift these ideas to an abstraction at the Turnstile level, so that future language authors don&rsquo;t have to muck around with <code>syntax-local-bind-syntaxes</code> and friends. If you have any ideas on this front, feel free to reach out.</p>
+<!-- References-->
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2018/11/24/disappearing-code/">&larr; <em>Disappearing Code</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/"><em>A Spectrum of Type Soundness and Performance</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

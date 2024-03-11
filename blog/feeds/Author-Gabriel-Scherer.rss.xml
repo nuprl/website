@@ -1,0 +1,1211 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Author: Gabriel Scherer'</title>
+  <description>PRL Blog: Posts tagged 'Author: Gabriel Scherer'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Author-Gabriel-Scherer.html</link>
+  <lastBuildDate>Sun, 13 Aug 2017 14:29:41 UT</lastBuildDate>
+  <pubDate>Sun, 13 Aug 2017 14:29:41 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Reviews and author responses: we should stop asking for 500-word responses</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-08-13-reviews-and-author-responses-we-should-stop-asking-for-500-word-responses</guid>
+   <pubDate>Sun, 13 Aug 2017 14:29:41 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;This year I reviewed many ICFP submissions, and got to be on the receiving end of equally many author responses (also sometimes called, somewhat combatively, rebuttals). I found that there was a large difference between the official written advice on author responses and what I, as a reviewer reading the responses, found effective. In particular, I now believe that limiting yourself to 500 words should strongly be avoided &amp;mdash; we should even stop giving that advice.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;This year, I had the honor (and accompanying load of work) of being a Program Committee (PC) member at the ICFP conference. It was my first time being a PC member at a conference, and I found it extremely pleasant and interesting, thanks to the authors who sent us articles to review, my fellow PC members, and the ever-smiling careful balancing work of our PC chair, Mark Jones. It was also a lot of work, starting with 18 reviews to do over a month and a half, an intense PC meeting, and the new &amp;ldquo;second phase&amp;rdquo; process with the opportunity for authors and reviewers to exchange feedback on changes requested by the program committee.&lt;/p&gt;
+
+&lt;p&gt;There is little guidance on how to write author responses, although this &lt;a href="http://www.pl-enthusiast.net/2014/09/17/advice-writing-author-response/"&gt;blog post&lt;/a&gt; by Michael Hicks on pl-enthusiast is quite good. One thing that is obvious as a reviewer and is only slightly brushed in this post, however, is that author responses should &lt;em&gt;not&lt;/em&gt; aim to fit a 500 words limit, and in fact I believe that it is a bad idea to do so.&lt;/p&gt;
+
+&lt;p&gt;As for most conference, the ICFP review system recommends (in writing) to authors to keep their response to 500 words (some systems also highlight words after those in red to make the point clear). Don&amp;rsquo;t do this! The least convincing responses I have seen are those that followed this recommendation.&lt;/p&gt;
+
+&lt;p&gt;(I have also seen at least 18*2 other reviewers read the same responses I read, most of them well over 500 words, and &lt;em&gt;none&lt;/em&gt; of them made any comment on the length of the author responses.)&lt;/p&gt;
+
+&lt;p&gt;We have a frustrating situation where the explicit rule is different from the thing people do in practice. This is bad for newcomers that do not know the norms and cannot tell if ignoring the rule may hurt them. This is the point of this blog post:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you are an author, please know that disrespecting the 500-words  limit is the &lt;em&gt;right thing&lt;/em&gt; to do. You should also know, of course,  that people have limited time, so keep the main body of your  response reasonably long. (I spent a day and a half on your paper  already, I am willing to spend 10 additional minutes reading the  response.)&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you are a program committee chair or a Magical HotCRP Wizard,  please remove this silly recommendation to keep responses to 500  words. (See an alternative proposal at the end of this post.)&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="my-personal-response-format"&gt;My personal response format&lt;/h2&gt;
+
+&lt;p&gt;My author responses start with general comments that elaborate on the main point I want to tell all reviewers. Then, a second part contains per-reviewer comments (one section per reviewer); it is clearly marked as skippable. Here is the skeleton of the last response I wrote:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;We thank the reviewers for their work on our article and their detailed feedback. We start with a general discussion that responds to the salient points raised by reviewers. In a second part, we provide detailed responses to the questions/remarks of each reviewer.&lt;/p&gt;
+ &lt;h3 id="general-discussion"&gt;General discussion&lt;/h3&gt;
+ &lt;p&gt;[..]&lt;/p&gt;
+ &lt;h3 id="specific-questionscomments-review-a"&gt;Specific questions/comments: review #A&lt;/h3&gt;
+ &lt;p&gt;[..]&lt;/p&gt;
+ &lt;h3 id="specific-questionscomments-review-b"&gt;Specific questions/comments: review #B&lt;/h3&gt;
+ &lt;p&gt;[..]&lt;/p&gt;
+ &lt;h3 id="specific-questionscomments-review-c"&gt;Specific questions/comments: review #C&lt;/h3&gt;
+ &lt;p&gt;[&amp;hellip;]&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For this particular response, the &amp;ldquo;General discussion&amp;rdquo; section used 1296 words according to &lt;code&gt;wc -w&lt;/code&gt; (M-x shell-command-on-region). In the following sections, I quote the reviews to answer specific points, email-style (following the Markdown syntax that HotCRP renders properly).&lt;/p&gt;
+
+&lt;h2 id="suggested-wording-for-pc-chairs"&gt;Suggested wording for PC chairs&lt;/h2&gt;
+
+&lt;p&gt;If you are a PC chair, you should remove the suggestion of respecting a 500 words limit for your conference. Here would be a suggested alternative wording:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Please remember, in writing your author response, that reviewers may stop reading the response at any point. We suggest having a reasonably-sized main section where you make your most important high-level comments, and clearly marked sections where you answer individual reviewer&amp;rsquo;s questions. It is not useful nor productive to answer every point of each review, you should focus on the comments that you believe the reviewers are most interested in.&lt;/p&gt;&lt;/blockquote&gt;</description></item>
+  <item>
+   <title>Syntactic parametricity strikes again</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/06/05/syntactic-parametricity-strikes-again/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-06-05-syntactic-parametricity-strikes-again</guid>
+   <pubDate>Mon, 05 Jun 2017 14:27:44 UT</pubDate>
+   <author>Gabriel Scherer, Li-Yao Xia</author>
+   <description>
+&lt;p&gt;In this blog post, reporting on a collaboration with &lt;a href="https://poisson.chat/"&gt;Li-Yao Xia&lt;/a&gt;, I will show an example of how some results that we traditionally think of as arising from free theorems / parametricity can be established in a purely &amp;ldquo;syntactic&amp;rdquo; way, by looking at the structure of canonical derivations. More precisely, I prove that \(
+\newcommand{\List}[1]{\mathsf{List}~#1}
+\newcommand{\Fin}[1]{\mathsf{Fin}~#1}
+\newcommand{\Nat}[1]{\mathbb{N}}
+\newcommand{\rule}[2]{\frac{\displaystyle \array{#1}}{\displaystyle #2}}
+\newcommand{\judge}[2]{{#1} \vdash {#2}}
+\newcommand{\emptyrule}[1]{\begin{array}{c}\\[-1em] #1 \end{array}}
+  ∀α. \List α → \List \alpha
+\) is isomorphic to \(
+    Π(n:\Nat{}). \List{(\Fin{n})}
+\) where \(\Fin{n}\) is the type of integers smaller than \(n\), corresponding to the set \(\{0, 1, \dots, n-1\}\).&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Context: Last week I had the pleasure of visiting UPenn, where I had many interesting discussions with various people. It was also an occasion to temporarily resume a discussion/collaboration I have with Li-Yao Xia, who is currently an intern there, and Jean-Philippe Bernardy, about testing polymorphic programs and its relation to canonical representations for System F.&lt;/p&gt;
+
+&lt;p&gt;During one of our blackboard discussion, Li-Yao and I did a manual proof of a cool result: we proved a parametricity theorem for \(∀α. \List α → \List α\) using syntactic methods, namely proof search among canonical proofs. (This is an idea that I have been playing with since the last year of my &lt;a href="http://www.ccs.neu.edu/home/gasche/phd_thesis/"&gt;PhD thesis&lt;/a&gt;, where I unsuccessfully tried to extend my work on canonical forms for the simply-typed lambda-calculus to polymorphism. It is here worked out on an specific example, but my end goal is to turn the manual reasoning into an algorithm.)&lt;/p&gt;
+
+&lt;p&gt;You may wonder, first, why the isomorphism holds. The idea is that a polymorphic function of type \(\List α → \List α\) cannot inspect the elements of the input list; it can only use them in the resulting list, possibly duplicating, reordering or dropping some elements. On any input list of size \(n\), the behavior of the function can be described by a list of indices in \([0; n-1]\). For example, if the input \([x, y, z]\) (for some values of \(x, y, z\)) gives the output \([y, y, x]\), then this relation will hold on &lt;em&gt;any&lt;/em&gt; value of \(x, y, z\), as the function cannot inspect their value or even test them for equality. The behavior of this function on lists of size 3 can be fully described by the list of indices \([1, 1, 0]\). Its whole behavior is then uniquely determined by one such list for each possible size:&lt;/p&gt;
+
+&lt;p&gt;\[
+    ∀α. \List α → \List α  \quad≃\quad  Π(n:\Nat{}). \List{(\Fin n)}
+\]&lt;/p&gt;
+
+&lt;p&gt;The idea behind the &amp;ldquo;syntactic&amp;rdquo; (proof-theoretic?) proof method is the following: the set of closed values at a type \(A\) is isomorphic to the &lt;em&gt;search space&lt;/em&gt; for canonical/normal derivations of \(\judge{}{A}\). We have tools (in particular the notion of &lt;em&gt;invertible&lt;/em&gt; inference rules) to reason on those – in this post I will only present the reasoning informally, but it can easily be made formally precise.&lt;/p&gt;
+
+&lt;p&gt;We start by looking at the shape of the search space for&lt;/p&gt;
+
+&lt;p&gt;\[
+    \judge{}{∀α. \List α → \List α}
+\] or, said otherwise, of the judgment \[
+    \judge{}{\List α → \List α}
+\]&lt;/p&gt;
+
+&lt;p&gt;with a fresh/abstract type variable \(α\). (I will not be keeping opened type variables in context to avoid confusing them with hypotheses.)&lt;/p&gt;
+
+&lt;p&gt;Any derivation of a function type, without loss of generality (w.l.o.g), is equivalent to a derivation starting with a function introduction. This is the η-expansion rule for functions: any proof term \(e\) is equivalent to \(λx.~(e~x)\), a proof that starts with a \(λ\). So any proof can be taken to start as follows: \[
+\rule{
+\judge{\List \alpha}{\List \alpha}
+}{
+\judge{}{\List \alpha \to \List \alpha}
+}
+\] we can, w.l.o.g, unfold the recursive type in the context (\(\List α = 1 + (α × \List α)\)): \[
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}
+\]&lt;/p&gt;
+
+&lt;p&gt;A derivation with a sum type as hypothesis can, w.l.o.g, be assumed to start by splitting on this pair (this is the η-expansion rule for sums): \[
+\rule{
+\judge{1}{\List α}
+\quad
+\judge{α × \List α}{\List α}
+}{
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}}
+\]&lt;/p&gt;
+
+&lt;p&gt;In the right subgoal, we can always, w.l.o.g, split a hypothesis of product type: \[
+\rule{
+\emptyrule{\judge{1}{\List α}}
+\quad
+\rule{
+\judge{α, \List α}{\List α}
+}{
+\judge{α × \List α}{\List α}
+}}{
+\rule{
+\judge{1 + (α × \List α)}{\List α}
+}{
+\rule{
+\judge{\List α}{\List α}
+}{
+\judge{}{\List α → \List α}
+}}}
+\]&lt;/p&gt;
+
+&lt;p&gt;Now, an interesting pattern emerges. In the process of trying to prove \(\judge{\List α}{\List α}\), we have to prove the (right) subgoal \(\judge{α,\List α}{α}\). We can generalize this derivation by assuming that we start with some number \(n\) of variables of type \(α\) in the context (we write \(α^n\) for this): \[
+\rule{
+\rule{
+\judge{\alpha^n}{\List \alpha}
+}{
+\judge{\alpha^n, 1}{\List \alpha}
+}
+\quad
+\rule{
+\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}
+}{
+\judge{\alpha^n, \alpha \times \List \alpha}{\List \alpha}
+}}{
+\rule{
+\judge{\alpha^n, 1 + (\alpha \times \List \alpha)}{\List \alpha}
+}{
+\judge{\alpha^n, \List \alpha}{\List \alpha}
+}}
+\]&lt;/p&gt;
+
+&lt;p&gt;\[
+\newcommand{\llbracket}{〚}
+\newcommand{\rrbracket}{〛}
+\newcommand{\sem}[1]{\llbracket{} #1 \rrbracket{}}
+\]&lt;/p&gt;
+
+&lt;p&gt;Let us write \(\sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}\) for the search space corresponding to all possible derivations of the judgment \(\judge{\alpha^n, \List \alpha}{\List \alpha}\). All the proof steps above have been done &amp;ldquo;without loss of generality&amp;rdquo; (in terms of focusing, we only used invertible rules), so they appear in any such derivation. Similarly, let us write \(\sem{\judge{\alpha^n}{\List \alpha}}\) for the space of all possible derivations of \(\judge{\alpha^n}{\List \alpha}\), then above we have proven that \[
+\sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}
+\quad=\quad
+\sem{\judge{\alpha^n}{\List \alpha}}
+\times
+\sem{\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}}
+\]&lt;/p&gt;
+
+&lt;p&gt;This equality can be unfolded at will \[
+\begin{align}
+&amp;amp; \sem{\judge{\alpha^n, \List \alpha}{\List \alpha}} \\
+= &amp;amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}, \List \alpha}{\List \alpha}} \\
+= &amp;amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+2}, \List \alpha}{\List \alpha}} \\
+= &amp;amp; \sem{\judge{\alpha^n}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+1}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+2}}{\List \alpha}}
+    \times
+    \sem{\judge{\alpha^{n+3}, \List \alpha}{\List \alpha}} \\
+= &amp;amp; \dots \\
+\end{align}
+\]&lt;/p&gt;
+
+&lt;p&gt;or written as an infinite product \[
+    \sem{\judge{\alpha^n, \List \alpha}{\List \alpha}}
+    \quad=\quad
+    \prod_{k \in \Nat{}}{\sem{\judge{\alpha^{n+k}}{\List \alpha}}}
+\] and, in particular, \[
+\begin{align}
+&amp;amp; \sem{\judge{}{\List \alpha \to \List \alpha}} \\
+= &amp;amp; \sem{\judge{\alpha^0, \List \alpha}{\List \alpha}} \\
+= &amp;amp; \prod_{n \in \Nat{}}{\sem{\judge{\alpha^n}{\List \alpha}}} \\
+\end{align}
+\]&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s look at the structure of the derivations of \(\judge{\alpha^n}{\List \alpha}\). A proof of this judgment cannot start with a &amp;ldquo;left rule&amp;rdquo;, inspecting the value of one of the \(n\) variables of type \(α\), given that the structure of \(α\) is unknown/abstract. It must start by choosing to either build the empty list or a cons cell. We write this as follows (after unfolding the type):&lt;/p&gt;
+
+&lt;p&gt;\[
+\rule{
+\rule{
+\judge{\alpha^n}{1}
+\quad\oplus\quad
+\judge{\alpha^n}{\alpha \times \List \alpha}
+}{
+\judge{\alpha^n}{1 + (\alpha \times \List \alpha)}
+}}{
+\judge{\alpha^n}{\List \alpha}
+}
+\]&lt;/p&gt;
+
+&lt;p&gt;The \(\oplus\) notation between two judgments is non-standard; it means that they are not two requirements of the same proof, but two alternatives for possible proofs. All valid proofs fit that structure, and they either have a \(\judge{\alpha^n}{1}\) premise or a \(\judge{\alpha^n}{\alpha \times \List \alpha}\) premise. With this syntax, we are describing a set of possible derivations, rather than a single (partial) derivation.&lt;/p&gt;
+
+&lt;p&gt;Proofs of \(\judge{\Gamma}{1}\) are trivial, and a proof of a product is always, w.l.o.g, a product of proofs (in intuitionistic logic / the λ-calculus they reuse the same context), so we can decompose further: \[
+\rule{
+\rule{
+\rule{
+}{
+\judge{\alpha^n}{1}
+}
+\quad\oplus\quad
+\rule
+{
+\judge{\alpha^n}{\alpha}
+\quad
+\judge{\alpha^n}{\List \alpha}
+}{
+\judge{\alpha^n}{\alpha \times \List \alpha}
+}
+}{
+\judge{\alpha^n}{1 + (\alpha \times \List \alpha)}
+}}{
+\judge{\alpha^n}{\List \alpha}
+}
+\]&lt;/p&gt;
+
+&lt;p&gt;There is exactly one possible proof of \(\judge{\alpha^n}{1}\), so its search space is \(1\), the unit set (with a single element). There are exactly \(n\) possible proofs of \(\judge{\alpha^n}{\alpha}\), so the search space is just \(n\), seen as a set, or, in type-theoretic notation, \(\Fin{n}\). We thus have the recursive equation: \[
+\sem{\judge{\alpha^n}{\List \alpha}}
+\quad=\quad
+1 + (\Fin n \times \sem{\judge{\alpha^n}{\List \alpha}})
+\]&lt;/p&gt;
+
+&lt;p&gt;This type is either \(1\), or a \(\Fin{n}\) and itself, recursively. This is exactly a list: \[
+\sem{\judge{\alpha^n}{\List \alpha}}
+\quad=\quad
+\List{(\Fin{n})}
+\]&lt;/p&gt;
+
+&lt;p&gt;so, plugging everything together: \[
+\begin{align}
+&amp;amp; \sem{\forall \alpha. \List \alpha \to \List \alpha} \\
+= &amp;amp; \prod_{n \in \Nat{}}{\sem{\judge{\alpha^n}{\List \alpha}}} \\
+= &amp;amp; \prod_{n \in \Nat{}}{\List{(\Fin{n})}} \\
+\end{align}
+\]&lt;/p&gt;
+
+&lt;h3 id="post-scriptum"&gt;Post Scriptum&lt;/h3&gt;
+
+&lt;p&gt;Some of reasoning steps above can be formulated in a way that is less clear but more familiar, as a sequence of type isomorphisms. For example, the first part on \(\sem{\judge{\alpha^n, \List
+\alpha}{\List \alpha}}\) can written as:&lt;/p&gt;
+
+&lt;p&gt;\[
+\begin{align}
+&amp;amp;
+∀α. αⁿ × \List α → \List α
+\\ &amp;amp;
+= \text{(unfold List)}
+\\ &amp;amp;
+    ∀α. αⁿ × (1 + α × \List α) → \List α
+\\ &amp;amp;
+    = \text{(distribute × over +)}
+\\ &amp;amp;
+    ∀α. ((αⁿ × 1) + (αⁿ⁺¹ × \List α)) → \List α
+\\ &amp;amp;
+    = \text{(A × 1 ≃ A)}
+\\ &amp;amp;
+    ∀α. (αⁿ + (αⁿ⁺¹ × \List α)) → \List α
+\\ &amp;amp;
+    = \text{(A+B) → C ≃ (A→C)×(B→C)}
+\\ &amp;amp;
+    ∀α. (αⁿ → \List α) × (αⁿ⁺¹ × \List α → \List α)
+\\ &amp;amp;
+    = \text{(distribute ∀α below product)}
+\\ &amp;amp;
+    (∀α. αⁿ → \List α) × (∀α. αⁿ⁺¹ × \List α → \List α)
+\\
+\end{align}
+\]&lt;/p&gt;
+
+&lt;p&gt;Reading this equational sequence, it may look like we had to make the right choice at each step; but the proof-search perspective reveals that there were in fact no choices, as each time we apply invertible rules (&amp;ldquo;w.l.o.g. rules&amp;rdquo;).&lt;/p&gt;
+
+&lt;p&gt;Furthermore, some parts cannot be derived in this style; in the latter part of the proof, the isomorphism between \(∀\alpha. \alpha^n → \alpha\) and \(\Fin{n}\), which is immediate from a proof search perspective, cannot be justified in this way. (In particular, \(A×B → C\) is &lt;em&gt;not&lt;/em&gt; isomorphic to \((A→C)+(B→C)\).)&lt;/p&gt;
+
+&lt;h3 id="going-further"&gt;Going further&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;It is an unfortunately-little-known obvious fact that many things we  associate to &amp;ldquo;free theorems&amp;rdquo; can be recovered by proof search. For  example, it is much simpler to prove that the only inhabitant of  \(\forall \alpha. \alpha \to \alpha\) is the identity using proof  search than parametricity. I briefly discussed the idea in the  section 1.3 of my 2015 article, &lt;a href="http://gallium.inria.fr/~scherer/research/unique_inhabitants/unique_stlc_sums-long.pdf"&gt;Which simple types have a unique  inhabitant?&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you are unfamiliar with proof search (or the LF community) and  curious about what I mean by &amp;ldquo;canonical forms&amp;rdquo; and why I think this  is an important idea, see my non-technical 2017 article &lt;a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf"&gt;Search for  Program  Structure&lt;/a&gt;. The  problem of extending the notion of canonical forms to arbitrary  polymorphic types is briefly discussed in the section 14.5 of my  2016 &lt;a href="http://www.ccs.neu.edu/home/gasche/phd_thesis/scherer-thesis.pdf"&gt;phd  manuscript&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If you haven&amp;rsquo;t heard of it yet, you would probably be interested in  the 2010 article &lt;a href="http://publications.lib.chalmers.se/records/fulltext/local_99387.pdf"&gt;Testing Polymorphic  Properties&lt;/a&gt;  by Jean-Philippe Bernardy, Patrik Jansson and Koen Claessen. Li-Yao  has a 2016 implementation called  &lt;a href="https://github.com/Lysxia/metamorph"&gt;Metamorph&lt;/a&gt; that got us talking  together. The problems of understanding canonical forms and testing  are quite related, but yet not exactly the same&amp;hellip;&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="you-might-also-like"&gt;You might also like&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/"&gt;Categorical Semantics for Dynamically Typed Programming  Languages&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://williamjbowman.com/blog/2017/01/03/toward-type-preserving-compilation-of-coq-at-popl17-src/"&gt;Toward Type-Preserving Compilation of Coq, at POPL17 SRC&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/11/16/understanding-constructive-galois-connections/"&gt;Understanding Constructive Galois  Connections&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description></item>
+  <item>
+   <title>PRL at SNAPL'17</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/04/25/prl-at-snapl-17/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-04-25-prl-at-snapl-17</guid>
+   <pubDate>Tue, 25 Apr 2017 16:46:54 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;PRL recently produced three papers for the &lt;a href="http://snapl.org/2017/index.html"&gt;SNAPL&lt;/a&gt; conference.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://dbp.io/pubs/2017/linking-types-snapl.pdf"&gt;Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too&lt;/a&gt;, by Daniel  Patterson and Amal Ahmed.&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf"&gt;Search for Program Structure&lt;/a&gt;,  by Gabriel Scherer&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf"&gt;Migratory Typing: Ten Years  Later&lt;/a&gt;, by Sam  Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew  Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen  Strickland and Asumu Takikawa&lt;/li&gt;&lt;/ul&gt;
+&lt;!-- more--&gt;
+
+&lt;h3 id="httpsdbpiopubs2017linking-types-snaplpdflinking-types-for-multi-language-software-have-your-cake-and-eat--it-too"&gt;&lt;a href="https://dbp.io/pubs/2017/linking-types-snapl.pdf"&gt;Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Daniel Patterson and Amal Ahmed, 2017&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Software developers compose systems from components written in many different languages. A business-logic component may be written in Java or OCaml, a resource-intensive component in C or Rust, and a high-assurance component in Coq. In this multi-language world, program execution sends values from one linguistic context to another. This boundary-crossing exposes values to contexts with unforeseen behavior—that is, behavior that could not arise in the source language of the value. For example, a Rust function may end up being applied in an ML context that violates the memory usage policy enforced by Rust’s type system. This leads to the question of how developers ought to reason about code in such a multi-language world where behavior inexpressible in one language is easily realized in another.&lt;/p&gt;
+ &lt;p&gt;This paper proposes the novel idea of linking types to address the problem of reasoning about single-language components in a multi-lingual setting. Specifically, linking types allow programmers to annotate where in a program they can link with components inexpressible in their unadulterated language. This enables developers to reason about (behavioral) equality using only their own language and the annotations, even though their code may be linked with code written in a language with more expressive power.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="httpwwwccsneueduhomegascheresearchcanonical-formssnaplpdfsearch-for-program-structure"&gt;&lt;a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf"&gt;Search for Program Structure&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Gabriel Scherer, 2017.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The community of programming language research loves the Curry-Howard correspondence between proofs and programs. Cut-elimination as computation, theorems for free, &amp;lsquo;call/cc&amp;rsquo; as excluded middle, dependently typed languages as proof assistants, etc.&lt;/p&gt;
+ &lt;p&gt;Yet we have, for all these years, missed an obvious observation: &amp;ldquo;the structure of &lt;em&gt;programs&lt;/em&gt; corresponds to the structure of proof &lt;em&gt;search&lt;/em&gt;&amp;rdquo;. For pure programs and intuitionistic logic, more is known about the latter than the former. We think we know what programs are, but logicians know better!&lt;/p&gt;
+ &lt;p&gt;To motivate the study of proof search for program structure, we retrace recent research on applying the logical technique of focusing to study the canonical structure of simply-typed λ-terms. We then motivate the open problem of extending canonical forms to support richer type systems, such as polymorphism, by discussing a few enticing applications of more canonical program representations.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="httpwwwccsneueduracketpubstyped-racketpdfmigratory-typing-ten-years-later"&gt;&lt;a href="http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf"&gt;Migratory Typing: Ten Years Later&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Sam Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen Strickland and Asumu Takikawa, 2017.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;In this day and age, many developers work on large, untyped code repositories. Even if they are the creators of the code, they notice that they have to figure out the equivalent of method signatures every time they work on old code. This step is time consuming and error prone.&lt;/p&gt;
+ &lt;p&gt;Ten years ago, the two lead authors outlined a linguistic solution to this problem. Specifically they proposed the creation of typed twins for untyped programming languages so that developers could migrate scripts from the untyped world to a typed one in an incremental manner. Their programmatic paper also spelled out three guiding design principles concerning the acceptance of grown idioms, the soundness of mixed-typed programs, and the units of migration.&lt;/p&gt;
+ &lt;p&gt;This paper revisits this idea of a migratory type system as implemented for Racket. It explains how the design principles have been used to produce the Typed Racket twin and presents an assessment of the project’s status, highlighting successes and failures.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;.&lt;/p&gt;
+
+&lt;p&gt;SNAPL is not dissimilar to the (french-speaking) &lt;a href="http://jfla.inria.fr/"&gt;JFLA&lt;/a&gt; that I am more familiar with &amp;mdash; with an added irritating call for paper and unreasonable registration price. It has an interesting diversity of topics of presentation: see also the complete &lt;a href="http://snapl.org/2017/papers.html"&gt;list of accepted papers&lt;/a&gt; this year, and the &lt;a href="http://snapl.org/2015/papers.html"&gt;list of the previous edition&lt;/a&gt;.&lt;/p&gt;</description></item>
+  <item>
+   <title>Bullets are good for your Coq proofs</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-02-21-bullets-are-good-for-your-coq-proofs</guid>
+   <pubDate>Tue, 21 Feb 2017 19:04:28 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;I believe that bullets are one of the most impactful features of recent versions of Coq, among those that non-super-expert users can enjoy. They had a big impact on the maintainability of my proofs. Unfortunately, they are not very well-known, due to the fact that some introductory documents have not been updated to use them.&lt;/p&gt;
+
+&lt;p&gt;Bullets are a very general construction and there are several possible ways to use them; I have iterated through different styles. In this post I will give the general rules, and explain my current usage style.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="why-bullets"&gt;Why bullets&lt;/h2&gt;
+
+&lt;p&gt;While you are doing a proof, Coq shows a list of subgoals that have to be proved before the whole proof is complete. Most proof steps will operate on the current active subgoal, changing the hypotheses or the goal to prove, but some proof steps will split it into several subgoals (growing the total list of goals), or may terminate the proof of the current subgoal and show you the next active subgoal.&lt;/p&gt;
+
+&lt;p&gt;Before bullets, a typical proof script would contain the proofs of each subgoal, one after another.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
+
+proof of first subgoal.
+
+proof of second subgoal.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are many ways to structure this to make the structure more apparent: people would typically have a comment on each subgoal, or make disciplined use of indentation and blank lines. But, in my experience, a major problem with this style was maintainability in the face of changes to the definitions or parts of automation. It could be very hard of what was happening when a proof suddenly broke after a change before in the file:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;If a proof step now proves &lt;em&gt;less&lt;/em&gt; things, then what used to be the  end of a subgoal may not be anymore. Coq would then start reading  the proof of the next subgoal and try to apply it to the unfinished  previous goals, generating very confusing errors (you believe you  are in the second subgoal, but the context talks about a leaf case  of the first goal).&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If a proof step now proves &lt;em&gt;more&lt;/em&gt; things, it is also very bad! The  next proof steps, meant for the first subgoal (for example), would  then apply to the beginning of the second subgoal, and you get very  confusing errors again.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;What we need for robustness is a way to indicate our &lt;em&gt;intent&lt;/em&gt; to Coq, when we think that a subgoal is finished and that a new subgoal starts, so that Coq can fail loudly at the moment where it notices that this intent does not match reality, instead of at an arbitrary later time.&lt;/p&gt;
+
+&lt;p&gt;(The &lt;code&gt;S*Case&lt;/code&gt; tactics used in (older versions of) Software Foundations can solve this problem if used in a carefully, systematic way, and additionally provides naming. Alexandre Pilkiewicz implemented an even more powerful &lt;a href="https://github.com/pilki/cases"&gt;cases&lt;/a&gt; plugin. Bullets are available in standard Coq since 8.4 (released in 2012), and can be used with no effort.)&lt;/p&gt;
+
+&lt;p&gt;There is not much discussion of bullets around; see the &lt;a href="https://coq.inria.fr/distrib/8.6/refman/Reference-Manual009.html#sec326"&gt;documentation&lt;/a&gt; in the Coq manual. I learned a lot from Arthur Azevedo de Amorim&amp;rsquo;s &lt;a href="https://github.com/arthuraa/poleiro/blob/master/theories/Bullets.v"&gt;Bullets.v&lt;/a&gt; file.&lt;/p&gt;
+
+&lt;p&gt;Finally, some people don&amp;rsquo;t use bullets, because they systematically use so much automation that they never see subgoals &amp;mdash; each lemma has a one-line proof. This is also a valid style. (I have been going to Adam Chlipala&amp;rsquo;s &lt;a href="https://frap.csail.mit.edu/main"&gt;Formal Reasoning about Programs&lt;/a&gt; 2017 class, where Adam ignores bullets because that is his usual style.) Because I am not crushy enough to do this from the start, my proofs tend to start with cases and subgoals, and then I refine them to add more automation for robustness. I found bullets very useful for the first step, and during the refinement process.&lt;/p&gt;
+
+&lt;h2 id="bullets"&gt;Bullets&lt;/h2&gt;
+
+&lt;p&gt;Bullets are actually a combination of two features, braces &lt;code&gt;{ ... }&lt;/code&gt; and actual list bullets &amp;mdash; &lt;code&gt;-&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;*&lt;/code&gt;, or homogeneous repetitions of those, for example &lt;code&gt;--&lt;/code&gt; or &lt;code&gt;***&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id="braces"&gt;Braces&lt;/h3&gt;
+
+&lt;p&gt;The opening brace &lt;code&gt;{&lt;/code&gt; focuses the proof on the current subgoal. If you finish the proof of the subgoal, the following subgoal will not become accessible automatically; you have to use the closing brace &lt;code&gt;}&lt;/code&gt; first. (If you finish the goal earlier than you think, you get an error.) Conversely, &lt;code&gt;}&lt;/code&gt; fails if the subgoal is not complete. (If you fail to finish, you get an error.)&lt;/p&gt;
+
+&lt;p&gt;The previous example can thus be written as follows, and will be more robust:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
+{
+  proof of first subgoal.
+}
+{
+  proof of second subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you also want to make sure that an error occurs if the number of subgoals changes (for example if new constructors are added to the inductive type of &lt;code&gt;foo&lt;/code&gt;), you can use an outer layer of braces:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo. (* this creates many subgoal *)
+  {
+    proof of first subgoal.
+  }
+  {
+    proof of second subgoal.
+  }
+} (* would fail if a new subgoal appeared *)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="list-bullets"&gt;List bullets&lt;/h3&gt;
+
+&lt;p&gt;A bullet, for example &lt;code&gt;--&lt;/code&gt;, also focuses on the next subgoal. The difference is that when the subgoal is finished, you do not have a closing construction, you must use the same bullet to move to the next subgoal. (Again, this fails if the first proof step changes to prove too much or too little.) With bullets you would write&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
++ proof of first subgoal.
++ proof of second subgoal.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Bullets can be nested, but you must use different bullets for the different nesting levels. For example, if this proof is only one subgoal of a larger proof, you can use:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- induction foo. (* this creates many subgoal *)
+  + proof of first subgoal.
+  + proof of second subgoal.
+- (* would fail if a new subgoal appeared *)
+  rest of the proof&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The natural ordering of bullets, I think, is by increasing number of lines: &lt;code&gt;-&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt; then &lt;code&gt;*&lt;/code&gt; (and then multi-character bullets, I guess). You can also mix bullets with braces: the opening brace resets the bullet scope, any bullet can be used again with the subgoal.&lt;/p&gt;
+
+&lt;p&gt;This gives a large space of freedom in how you want to use these features. You can use only braces, only bullets, braces and only one level of bullets, etc. My own style evolved with experience using the feature, and I will present the current status below.&lt;/p&gt;
+
+&lt;h2 id="my-current-bullet-style"&gt;My current bullet style&lt;/h2&gt;
+
+&lt;p&gt;When deciding how to use bullets, one distinguishes the commands that preserve the number of subgoals and those that may create new subgoals. I use some additional distinctions.&lt;/p&gt;
+
+&lt;p&gt;Some tactics, for example &lt;code&gt;assert&lt;/code&gt;, create a number of subgoals that is &lt;em&gt;statically&lt;/em&gt; known, always the same for the tactic. I then use braces around each sub-proof, except the last one, which I think of as the &amp;ldquo;rest&amp;rdquo; of the current proof.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assert foo as H.
+{ proof of foo. }
+rest of the proof using H:foo.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(If the proof of &lt;code&gt;foo&lt;/code&gt; takes several lines, I two-indent them, with the braces alone on their lines.)&lt;/p&gt;
+
+&lt;p&gt;Most tactics create a &lt;em&gt;dynamic&lt;/em&gt; number of subgoals, that depends on the specifics of the objects being operated on; this is the case of &lt;code&gt;case&lt;/code&gt;, &lt;code&gt;destruct&lt;/code&gt;, &lt;code&gt;induction&lt;/code&gt; for example. In this case, I open a brace before the tactic, and use a bullet for each subgoal.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo; simpl; auto.
+- proof of first remaining subgoal.
+- proof of second remaining subgoal.
+  rest of the proof of the second subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Notice that the subgoal-creating step is vertically aligned with the proof steps: I use both braces and bullets, but take only one indentation level each time.)&lt;/p&gt;
+
+&lt;p&gt;As an exception, I may omit the braces if we are at the toplevel of the proof (&lt;code&gt;Proof .. Qed&lt;/code&gt; serve as braces).&lt;/p&gt;
+
+&lt;p&gt;Note that omitting the braces here and using different bullets when you nest is also just fine. In my experience it gives proofs that are a bit more pleasant to read but also a bit more cumbersome to edit and move around.&lt;/p&gt;
+
+&lt;p&gt;Finally, a not-uncommon mode of use of &amp;ldquo;dynamic&amp;rdquo; tactics in the sense above is to expect all the cases, except one, to be discharged by direct automation (for example they are all absurd except one). When it is my intent that all cases but one be discharged (and not a coincidence), I express it by not using braces (this command preserves the number of subgoals), but marking the remaining subgoal with a new bullet &lt;em&gt;without&lt;/em&gt; increasing the indentation level.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo.
+- first subgoal.
+- second subgoal.
+  case blah; discharge all sub-subgoals but one.
++ remaining sub-subgoal of the second subgoal.
+  finish the sub-subgoal.
+- third subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(This is the only time where I use several bullet levels.)&lt;/p&gt;
+
+&lt;p&gt;If you are the kind of programmer that is passionate about indentation style, I should now have tricked you to use bullets to propose a different variant. Otherwise, please consider using bullets anyway, for example by following the style above, it will make your life easier in the face of changing developments.&lt;/p&gt;</description></item>
+  <item>
+   <title>Measuring the submission/review balance</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/12/17/measuring-the-submission-review-balance/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-12-17-measuring-the-submission-review-balance</guid>
+   <pubDate>Sat, 17 Dec 2016 16:33:10 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;How do researchers know whether they are doing &amp;ldquo;enough&amp;rdquo; or &amp;ldquo;too many&amp;rdquo; reviews? A measurable goal is to be review-neutral: to have demanded, through our submissions, as many reviews as we have produced as reviewers.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h3 id="reviewing-is-good"&gt;Reviewing is good&lt;/h3&gt;
+
+&lt;p&gt;I like to review academic papers. It is a very rewarding activity in many different ways. One gets to serve the academic community, helping it function smoothly. One gets a chance at acquiring a much better understanding of someone else&amp;rsquo;s work than idle paper-skimming allows. One gets to send feedback to our colleagues and help them improve their work and its presentation &amp;mdash; it is also an essential way in which we can participate to the formation of student researchers all over the world. Finally, doing reviews helped me develop the skill the judge someone else&amp;rsquo;s work and of forcing oneself to come up with a decisive opinion &amp;mdash; it is surprisingly difficult and only comes with training.&lt;/p&gt;
+
+&lt;p&gt;Doing reviews is also fairly time-consuming. I noticed that the time I spend on each review is generally stable (excursions into previous or related work excluded): around one day and a half for conference reviews, and at least twice more for journal reviews &amp;mdash; I&amp;rsquo;m sure other people have wildly different figures, but I would expect it to be a noticeable time commitment in any case. (Workshop reviews are much easier, at least for the formats I have seen of 2-page extended abstracts, I&amp;rsquo;d say one hour per review.)&lt;/p&gt;
+
+&lt;h3 id="how-many-reviews"&gt;How many reviews?&lt;/h3&gt;
+
+&lt;p&gt;Because it is so time-consuming, deciding whether to say &amp;ldquo;yes&amp;rdquo; or &amp;ldquo;no&amp;rdquo; to invitations to review a new paper is not easy: in general I want to say &amp;ldquo;yes&amp;rdquo; (unless I can tell that I will not enjoy reading the paper at all), but it is not reasonable to say &amp;ldquo;yes&amp;rdquo; all the time, because I also need to spend time on other things. When should I say &amp;ldquo;no&amp;rdquo; because I have done &amp;ldquo;too many&amp;rdquo; reviews already?&lt;/p&gt;
+
+&lt;p&gt;We can count the number of reviews that we have done, and we can also estimate the number of reviews that we have demanded of others through our submissions. A natural goal for researchers is to produce at least as many reviews as they demand; if everyone reached this goal, the peer-review system would be at equilibrium without imposing too much of a workload on anyone.&lt;/p&gt;
+
+&lt;p&gt;To estimate the number of reviews a researcher demanded from their peers, you can sum, for each of their submissions to a peer-reviewed venue, the number of reviews that they received, divided by the total number of authors of the submissions.&lt;/p&gt;
+
+&lt;p&gt;\[ \sum_{p \in \mathtt{Submissions}} \frac{\mathtt{reviews}(p)}{\mathtt{authors}(p)} \]&lt;/p&gt;
+
+&lt;p&gt;Out of curiosity, I just measured this balance for myself: over my years doing research I have &amp;ldquo;demanded&amp;rdquo; 10 workshop reviews and 28.5 conference reviews, and &amp;ldquo;produced&amp;rdquo; 6 workshop reviews and 17 conference reviews. If you think that an article would interest me, you shouldn&amp;rsquo;t feel bad about asking me to review it, for now. (On the other hand, my balance &lt;em&gt;this year&lt;/em&gt; is positive, so I wouldn&amp;rsquo;t feel to bad about refusing if I had to.)&lt;/p&gt;
+
+&lt;p&gt;Of course, a researcher&amp;rsquo;s balance is highly dependent on where they are in their academic career &amp;mdash; maybe more so that on their personal choices. Students are supposed to submit articles, but are offered few opportunities for doing reviews. When they are invited to do reviews, it is often as sub-reviewer, one review at a time. More established researchers participate in program committees, where they have to do a fair amount of reviews at once &amp;mdash; ten to twenty can be typical in Programming Languages conferences. This means that one naturally starts with a deficit of reviews, and that the opportunity to become balanced or positive only comes over the years.&lt;/p&gt;
+
+&lt;p&gt;(There is much more that could be said about the dynamics of the submission/review balance. I think the idea that a single person should be neutral should not be taken too seriously, because the dynamics are so complex. For example, some people stop doing reviews with a negative balance (students going to the industry for example), so long-time researchers necessarily have a &lt;em&gt;very positive&lt;/em&gt; balance that may make short-time researchers balance considerations mostly irrelevant. Another thing is that there is no point doing more reviews than required by the submission flow, and that doing more reviews would build up more reviewing debt under this neutrality criterion &amp;mdash; you can never have everyone positive.)&lt;/p&gt;
+
+&lt;h3 id="quality"&gt;Quality&lt;/h3&gt;
+
+&lt;p&gt;This is only a comment on the quantitative aspects of reviewing. Much more important is the qualitative part: are the reviews you receive and produce good reviews? (There is no objective definition of what a good review is; I like reviews that are constructive, help improve the work and its presentation, and catch mistakes.) For a given paper, one or a few very good reviews is more helpful than many bad reviews, so one should not compromise on the quality of one&amp;rsquo;s reviews in order to reach a quantitative goal.&lt;/p&gt;
+
+&lt;h3 id="advice-for-students"&gt;Advice for students?&lt;/h3&gt;
+
+&lt;p&gt;While proof-reading this post (thanks!), Ben asked some questions that may be of interest to others &amp;mdash; mostly students, I suppose.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;If I want to be review-neutral, but I have to accumulate a &amp;ldquo;review debt&amp;rdquo; before I can start reviewing, does this mean I should accept my first opportunity to review and every one that follows (until I&amp;rsquo;m neutral)?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The answer is of course &amp;ldquo;no&amp;rdquo;: one should never feel forced to accept reviews. On the other hand, I do think that it is worthwhile for PhD students to take advantage of the reviews they are offered, so &amp;ldquo;saying yes most of the time&amp;rdquo; sounds like a reasonable strategy to me &amp;mdash; this is just a personal opinion. Some reasons:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Reviewing is hard and takes training, I think it is good to start  practicing early. Students are in a good situation to exercise their  reviewing skills at a fairly calm peace (you won&amp;rsquo;t get many  reviews anyway), and with more time than more senior people.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Student reviews are often done as sub-reviewer: someone does  a review, but also asks for your opinion and includes your  sub-review in their review. It is a low-pressure way to do your  first reviews, and the ability to exchange opinions with the other  reviewer and discuss both reviews is really helpful. Students can  also ask for feedback on their reviews to their advisor, which is  also very helpful.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Reviewing teaches a few useful things about writing papers as  well &amp;mdash; it&amp;rsquo;s always easier to recognize the flaws in others&amp;rsquo; work.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;On the other hand, I think you should not accept reviews at times when you cannot invest enough work in the review, or when doing so would be detrimental to you &amp;mdash; whether you are on a deadline, or under too much pressure, or have conflicting commitments, etc. This is more important than anything about a submission/review balance.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Do you have any ideas for how young researchers / new researchers can reduce their &amp;ldquo;review footprint&amp;rdquo;? For example, is it possible to volunteer for reviews?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Yes, you can volunteer for reviews by telling the colleagues in your lab that you would be interested in doing reviews and that they should consider giving you some.&lt;/p&gt;
+
+&lt;p&gt;(With the increased use of double-blind submission processes, it is becoming more difficult to pass conference reviews to external researchers. This means that students are relatively unlikely to receive review offers from outside their close colleagues.)&lt;/p&gt;
+
+&lt;p&gt;Besides doing more reviews, the two other factors one could in theory play with are: submitting less papers, and having more co-authors. I think there is something to be said for the first one: one reason to not submit unfinished, buggy or topically-inappropriate articles is that it has a review cost. The second factor should not be considered, I think: &amp;ldquo;did this person contribute to the work?&amp;rdquo; should weight infinitely more for co-authorship decisions.&lt;/p&gt;
+
+&lt;p&gt;Note: Another thing you can ask for is &lt;em&gt;reading reviews other people received&lt;/em&gt;. I think that reading reviews is also very helpful for research beginners &amp;mdash; whether reviews of one&amp;rsquo;s own work or someone else&amp;rsquo;s. In particular, I wouldn&amp;rsquo;t know how to write reviews if I hadn&amp;rsquo;t had the opportunity to read reviews before that. If someone you are close to receives reviews, you should consider asking them whether you could have a look.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Is being a student volunteer at a conference equal to &amp;ldquo;one review&amp;rdquo;?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I think it is a distinct form of academic service. I don&amp;rsquo;t know how to measure the &amp;ldquo;conference organization cost&amp;rdquo; we impose to our academic colleagues. (If there are around 500 attendants to a typical Programming Languages conference, it means that for every 500 conferences you attend you should organize one all by yourself.)&lt;/p&gt;</description></item>
+  <item>
+   <title>SRC-submissions</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/11/17/src-submissions/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-11-17-src-submissions</guid>
+   <pubDate>Thu, 17 Nov 2016 13:52:52 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;Max New, Daniel Patterson and Ben Greenman recently wrote three two-page abstracts on what they are working on right now. Come have a look &amp;mdash; and any feedback is welcome!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="gradual-type-precision-as-retraction"&gt;Gradual Type Precision as Retraction&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="http://maxsnew.github.io/docs/precision-as-retraction.pdf"&gt;Gradual Type Precision as Retraction&lt;/a&gt;
+ &lt;br /&gt;Max New
+ &lt;br /&gt;2016&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Gradually typed programming languages allow for a mix of precision of static type information, allowing advanced type features to be added to existing languages, while still supporting interoperability with legacy code. The advantages of gradual typing are enticing to researchers and practitioners alike, but a general theory of gradually typed languages is only beginning to emerge after a decade of research.&lt;/p&gt;
+ &lt;p&gt;It has long been noted that there is much similarity between work on contracts and gradual typing, and the use of retracts in domain theory which were used to relate models of untyped and typed lambda calculus in &lt;a href="https://pdfs.semanticscholar.org/359e/ca57fe42d97cbb67f0b5591869abe5eb5421.pdf"&gt;Scott(1976)&lt;/a&gt; and &lt;a href="http://andrewkish-name.s3.amazonaws.com/scott80.pdf"&gt;Scott(1980)&lt;/a&gt;. Here we take this connection seriously and consider how judgments in modern gradually typed languages can be framed in terms of retractions. While retractions in programming languages were originally studied in terms of denotational semantics in domains, our presentation will use only the most basic elements of category theory: composition, identity and equality of terms, so our formulation is equally applicable to axiomatic or operational semantics.&lt;/p&gt;
+ &lt;p&gt;In particular we propose a semantic criterion for the notion of precision of gradual types, a common judgment in gradually typed languages (sometimes called naive subtyping for historical reasons). We relate it to a previous definition from &lt;a href="https://www.eecs.northwestern.edu/%7Erobby/pubs/papers/esop2009-wf.pdf"&gt;Wadler and Findler(2009)&lt;/a&gt; that defines type precision in terms of blame. We show that our definition decomposes in a similar way into “positive” and “negative” type precision, but without depending on a specific notion of blame in the language.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="linking-types-specifying-safe-interoperability-and-equivalences"&gt;Linking Types: Specifying Safe Interoperability and Equivalences&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="https://dbp.io/pubs/2016/linking-types-poplsrc2017-proposal.pdf"&gt;Linking Types: Specifying Safe Interoperability and Equivalences&lt;/a&gt;
+ &lt;br /&gt;Daniel Patterson
+ &lt;br /&gt;2016&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;All programs written in high-level languages link with libraries written in lower-level languages, often to expose constructs, like threads, random numbers, or automatic serialization, that aren’t possible in the high-level language. This linking usually takes place after compiling both languages to a common language, possibly assembly. In this sense, reasoning about crosslanguage linking means reasoning about compilation.&lt;/p&gt;
+ &lt;p&gt;While most languages include cross-language linking (FFI) mechanisms, they are ad-hoc and can easily break the semantic equivalences of the source language, making it hard for source programmers to reason about correctness of their programs and hard for compiler writers to reason about correctness of their optimizations.&lt;/p&gt;
+ &lt;p&gt;In this work, I design and motivate linking types, a language-based mechanism for formally specifying safe linking with libraries utilizing features inexpressible in the source. Linking types allows programmers to reason about their programs in the presence of behavior inexpressible in their language, without dealing with the intricacies of either the compiler or the particular language they are linking with.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="pruning-contracts-with-rosette"&gt;Pruning Contracts with Rosette&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="http://www.ccs.neu.edu/home/types/resources/popl2017-src.pdf"&gt;Pruning Contracts with Rosette&lt;/a&gt;
+ &lt;br /&gt;Ben Greenman
+ &lt;br /&gt;2016&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;a href="http://www.ccs.neu.edu/racket/pubs/icfp16-dnff.pdf"&gt;Contracts&lt;/a&gt; are a pragmatic tool for managing software systems, but programs using contracts suffer runtime overhead. If this overhead becomes a performance bottleneck, programmers must manually edit or remove their contracts. This is no good. Rather, the contracts should identify their own inefficiencies and remove unnecessary dynamic checks. Implementing contracts with &lt;a href="https://emina.github.io/rosette/"&gt;Rosette&lt;/a&gt; is a promising way to build such self-aware contracts.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="while-were-at-it-lets-rant-on-srcs"&gt;While we&amp;rsquo;re at it let&amp;rsquo;s rant on SRCs&lt;/h2&gt;
+
+&lt;p&gt;These abstracts are submitted at POPL&amp;rsquo;s &amp;ldquo;Student Research Competition&amp;rdquo;. You submit an abstract, and if you get accepted to that thing, you get a bit of travel support money, and you have to prepare a poster and present it at the conference.&lt;/p&gt;
+
+&lt;p&gt;I have a firm dislike for the &lt;em&gt;Competition&lt;/em&gt; part of that concept: I think that people think of research too competitively already, and that we should have less of that, not more. (Having some is unfortunately unavoidable in scarce-resource situations.) I think that the process of awarding prizes to students with the &amp;ldquo;best poster&amp;rdquo; is dumb &amp;mdash; and borderline ridiculous.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, my experience seeing them writing these extended abstracts is that it&amp;rsquo;s a useful exercise for them, and produces nice result &amp;mdash; short, readable introductions to their ideas. And Jennifer Paykin &lt;a href="https://github.com/gasche/icfp2016-blog/blob/master/SVs/jennifer_paykin.md"&gt;convincingly argues&lt;/a&gt; that although writing a poster is rather painful, actually presenting it during the conference is interesting and useful. In her words, &amp;ldquo;it&amp;rsquo;s worth it to get the experience of authentic and fruitful discussions&amp;rdquo;. Plus having posters in the corridors of one&amp;rsquo;s lab is very nice.&lt;/p&gt;
+
+&lt;p&gt;I think we could have &amp;ldquo;Student Research Sessions&amp;rdquo; or &amp;ldquo;Student Poster Sessions&amp;rdquo;, where students are encouraged to present their work, would write those nice extended abstracts and posters, interact with researchers at the conference, and get travel money, without the ranking and prize stuff. (I would still encourage students to participate to SRC today, it seems to be worth it.)&lt;/p&gt;</description></item>
+  <item>
+   <title>Emacs daemon for fast editor startup</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/10/17/emacs-daemon-for-fast-editor-startup/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-10-17-emacs-daemon-for-fast-editor-startup</guid>
+   <pubDate>Mon, 17 Oct 2016 21:48:25 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;In the early days of the famous Emacs/Vim debates, Emacs was often ridiculed for its bulkiness (Eight Megabytes-of-RAM And Constantly Swapping, etc.). The computational power of our computer has grown much faster than Emacs&amp;rsquo; bloat: it takes exactly one second to load on my machine. However, our workflows have also changed, and my workflow implies frequently starting new text editors &amp;mdash; on each git commit for example, or when I use a &lt;a href="https://addons.mozilla.org/en-US/firefox/addon/its-all-text/"&gt;Firefox extension&lt;/a&gt; to edit a textarea content in a proper editor.&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I describe how to use &lt;code&gt;emacsclient&lt;/code&gt; to reuse an existing Emacs process when creating a new editor window, which reduces editor startup times from 1s to 0.150s on my machine.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Emacs has long supported a client/server mode: a daemon emacs instance is loaded in the background, and whenever you request a new emacs window you can creates a new frame (~ window) using the same instance. This means that the startup time is dramatically reduced after the daemon is launched, as for example the execution of your personal configuration code does not have to be repeated.&lt;/p&gt;
+
+&lt;p&gt;To use it, I have this code as &lt;code&gt;/usr/bin/editor&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class="brush: sh"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+emacsclient -a &lt;span class="s2"&gt;""&lt;/span&gt; -c &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The empty &lt;code&gt;-a&lt;/code&gt; parameter means that if no daemon exists, it should start one in the background and retry. The &lt;code&gt;-c&lt;/code&gt; option means that a new frame (window) should be created instead of reusing an existing one. &lt;code&gt;"$@"&lt;/code&gt;means that when the script is invoked with a path as command-line parameter (&lt;code&gt;editor /tmp/foo.txt&lt;/code&gt;), the corresponding file will be opened.&lt;/p&gt;
+
+&lt;p&gt;Finally, my &lt;code&gt;.bash_profile&lt;/code&gt; sets the &lt;code&gt;EDITOR&lt;/code&gt; variable to &lt;code&gt;editor&lt;/code&gt; (&lt;code&gt;export EDITOR=/usr/bin/editor&lt;/code&gt;); this environment variable is what most tools (git included) will use to invoke a text editor.&lt;/p&gt;
+
+&lt;p&gt;On my machine, starting the daemon takes 1.4s. Creating a client windows takes around 0.150s.&lt;/p&gt;
+
+&lt;p&gt;If you want to control the environment in which the daemon process is started, you can launch it explicitly by running &lt;code&gt;emacs --daemon&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Cool kids use &lt;a href="http://spacemacs.org/"&gt;Spacemacs&lt;/a&gt; these days, which comes with all sort of convenient settings built in, and I&amp;rsquo;m told that it does daemonization out of the box. I haven&amp;rsquo;t taken the time to give Spacemacs a try yet.&lt;/p&gt;
+
+&lt;p&gt;Finally, sometimes having all editor windows share the same process is not the right thing, because I do stuff which makes Emacs a bit unstable. (It&amp;rsquo;s not very good at asynchronous communication with the rest of the world, so for example accessing a file through SSH from Emacs can hang the process when network goes bad.). I&amp;rsquo;ve been bitten a few times by a crash of all editor windows at the same time, and since then, when I know I&amp;rsquo;m going to do &amp;ldquo;heavy stuff&amp;rdquo;, I launch a separate process for it (just &lt;code&gt;emacs&lt;/code&gt; instead of &lt;code&gt;editor&lt;/code&gt; or &lt;code&gt;emacsclient&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;P.S.: To precisely measure the startup time, ask Emacs to evaluate a Lisp expression on startup, to kill it immediately.:&lt;/p&gt;
+
+&lt;div class="brush: sh"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;time&lt;/span&gt; emacs --eval &lt;span class="s2"&gt;"(save-buffers-kill-terminal)"&lt;/span&gt;
+$ &lt;span class="nb"&gt;time&lt;/span&gt; emacsclient -a &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; -c -e &lt;span class="s2"&gt;"(save-buffers-kill-terminal)"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;</description></item>
+  <item>
+   <title>Does anyone still care about printed proceedings? (Grab some at NEU this week!)</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-06-13-does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week</guid>
+   <pubDate>Mon, 13 Jun 2016 10:50:14 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;Are you interested in printed conference Proceedings? We have a good stack of them left away at Northeastern University (Boston, MA) and it seems that nobody wants them!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;If you are in the area and are interested, feel free to send me an email and come grab them. We have ASPLOS from XIII to XX, PLDI from 2005 to 2015 (but not 2014), and OOPSLA from 2002 to 2015. When I saw the stack, I grabbed the POPL ones from 2002 to 2015, but in fact I have no idea what to do with them and I&amp;rsquo;m a bit skeptical they would be of use to me; if you know you would use them, I would be glad to let you have them.&lt;/p&gt;
+
+&lt;p&gt;If you were to buy those proceedings at conference-subscription rates today, it would cost you a small fortune. Yet nobody seems to want them. An odd disconnect, that I found amusing and maybe worthy of a blog post.&lt;/p&gt;
+
+&lt;p&gt;But don&amp;rsquo;t get me wrong, the future of printed proceedings is not an important question. We should rather be asking ourselves: why are the products of the work of our communities not easily accessible in an Open Access long-term archive? Are you submitting your articles to arXiv, or another archive? Why not?&lt;/p&gt;
+
+&lt;p&gt;Not caring about printed proceedings is perfectly fine; but please care about people outside institutions that want to access your work &amp;mdash; for example, master student myself.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;Update (August 2017):&lt;/em&gt; Gabriel returned to France and left the POPL proceedings  at his desk. The proceedings are sitting in the hallway at NEU, in case anyone  cares.&lt;/p&gt;</description></item>
+  <item>
+   <title>ICFP 2016: looking for student volunteers</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/06/07/icfp-2016-looking-for-student-volunteers/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-06-07-icfp-2016-looking-for-student-volunteers</guid>
+   <pubDate>Tue, 07 Jun 2016 11:53:47 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;If you are a student, you should consider &lt;a href="http://goo.gl/forms/fKg3vpjNryBlGWB32"&gt;applying&lt;/a&gt; to become an ICFP 2016 student volunteer! The deadline for application is July 31st, 2016.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;&lt;a href="http://conf.researchr.org/attending/icfp-2016/Student+Volunteers"&gt;ICFP 2016&lt;/a&gt;, the Internal Conference on Functional Programming, is happening in Nara, Japan. If you are a student, you may be interest in being a Student Volunteer: you help run the conference, and in exchange do not pay registration fees &amp;mdash; but you still have to find funding for the travel, hosting, and dinners. Quoting the &lt;a href="http://conf.researchr.org/attending/icfp-2016/Student+Volunteers"&gt;Student Volunteer&lt;/a&gt; webpage:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;ICFP is pleased to offer a number of opportunities for student volunteers, who are vital to the efficient operation and continued success of the conference each year. The student volunteer program is a chance for students from around the world to participate in the conferences whilst assisting us in preparing and running the event.&lt;/p&gt;
+ &lt;p&gt;Job assignments for student volunteers include assisting with technical sessions, workshops, tutorials and panels, helping the registration desk, operating the information desk, helping with traffic flow, and general assistance to keep the conferences running smoothly.&lt;/p&gt;
+ &lt;p&gt;The Student Volunteer Program helps more students attend the ICFP conference by covering conference fees (but not travel or lodging expenses) in exchange for a fixed number of work hours (usually from 8 to 12) helping with the conference organization (registration and information desks, assistance during talk sessions, etc.).&lt;/p&gt;
+ &lt;p&gt;The Student Volunteer registration covers:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;Access to all workshops and the main conference,&lt;/li&gt;
+  &lt;li&gt;Daily lunches and coffee breaks,&lt;/li&gt;
+  &lt;li&gt;Access to social events, including the banquet.&lt;/li&gt;&lt;/ul&gt;
+ &lt;p&gt;To apply, please fill the &lt;a href="http://goo.gl/forms/fKg3vpjNryBlGWB32"&gt;following form&lt;/a&gt;.&lt;/p&gt;
+ &lt;p&gt;The application deadline is July 31st, 2016. Applications after this date may be considered pending availability.&lt;/p&gt;
+ &lt;p&gt;You can send questions about student volunteering to  &lt;code&gt;icfp-SV at researchr dot org&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I was &amp;ldquo;student volunteer captain&amp;rdquo; at ICFP last year in Vancouver, and I will do it again this year. My entirely personal take on the thing is that being a Student Volunteer is worth it, but that being a Captain is too much work.&lt;/p&gt;
+
+&lt;p&gt;The main downside of being a volunteer is some of the shifts are at the registration desk, and they may imply missing some of the talks &amp;mdash; and also you may have to get up early for your duties. The upsides are many. You get belong to a small group of nice people. You have interactions with many people without much effort; you will enjoy the sparks of gratitude in the eyes of the &amp;ldquo;Where is Workshop Room B2?&amp;rdquo; crowd. You have a small peek into the kind of work involved in running a conference; most people actually working on the organization (we SVs are hobbyists) are pouring surprising amount of work. Also, you learn to fold tee-shirts very well, if you&amp;rsquo;re on &amp;ldquo;bag stuffing&amp;rdquo; duty.&lt;/p&gt;
+
+&lt;p&gt;Being a student volunteer can be combined with other forms of travel support, such as SIGPLAN PAC funding; see the &lt;a href="http://conf.researchr.org/attending/icfp-2016/student-travel-support"&gt;travel support page&lt;/a&gt; for more details.&lt;/p&gt;
+
+&lt;p&gt;Another thing you should think about is applying to &lt;a href="http://conf.researchr.org/track/icfp-2016/PLMW-ICFP-2016"&gt;PLMW&lt;/a&gt;, the Programming Languages Mentoring Workshop that happens at ICFP, POPL, and PLDI. PLMW funding covers the whole conference cost (travel, housing, registration, dinners), so if you get PLMW funding you have no financial motivation to be a student volunteer. This year, PLMW focuses on early career graduate students.&lt;/p&gt;</description></item>
+  <item>
+   <title>Measuring GC latencies in Haskell, OCaml, Racket</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-05-24-measuring-gc-latencies-in-haskell-ocaml-racket</guid>
+   <pubDate>Tue, 24 May 2016 10:51:34 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;James Fisher has a blog post on a case where GHC&amp;rsquo;s runtime system imposed unpleasant latencies on their Haskell program:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/"&gt;Low latency, large working set, and GHC&amp;rsquo;s garbage collector: pick two of three&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The blog post proposes a very simple, synthetic benchmark that exhibits the issue &amp;mdash; basically, latencies incurred by copy time &amp;mdash; with latencies of 50ms that are considered excessive. I thought it would be amusing to reproduce the synthetic benchmark in OCaml and Racket, to see how other GCs handle this.&lt;/p&gt;
+
+&lt;p&gt;Without further ado, the main take-away are as follows: the OCaml GC has no issue with large objects in its old generation, as it uses a mark&amp;amp;sweep instead of copying collection, and exhibits less than 3ms worst-case pauses on this benchmark.&lt;/p&gt;
+
+&lt;p&gt;The Racket GC also does not copy the old generation, but its incremental GC is still in infancy (compared to the throughput-oriented settings which works well) so the results are less good. It currently suffer from a &amp;ldquo;ramp-up&amp;rdquo; effect that I will describe, that causes large pauses at the beginning of the benchmark (up to 120ms latency), but in its steady state the longest pause are around 22ms.&lt;/p&gt;
+
+&lt;p&gt;Please keep in mind that the original benchmark is designed to exercise a very specific workflow that exercises worst-case behavior for GHC&amp;rsquo;s garbage collector. This does not mean that GHC&amp;rsquo;s latencies are bad in general, or that the other tested languages have smaller latencies in general.&lt;/p&gt;
+
+&lt;p&gt;The implementations I use, with a Makefile encapsulating the logic for running and analyzing them, are available in a Gitlab repository:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;git: &lt;a href="https://gitlab.com/gasche/gc-latency-experiment.git"&gt;https://gitlab.com/gasche/gc-latency-experiment.git&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;files: &lt;a href="https://gitlab.com/gasche/gc-latency-experiment/tree/master"&gt;https://gitlab.com/gasche/gc-latency-experiment/tree/master&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="the-haskell-benchmark"&gt;The Haskell benchmark&lt;/h2&gt;
+
+&lt;p&gt;James Fisher&amp;rsquo;s Haskell benchmark is very simple: it creates an association table in which medium-size strings are inserted repeatedly &amp;mdash; a million times. When the channel reaches 200_000 messages, a string is deleted each time a string is created, to keep the total working size constant.&lt;/p&gt;
+
+&lt;div class="brush: haskell"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Control.Exception&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Exception&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Control.Monad&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Monad&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Data.ByteString&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Data.Map.Strict&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kr"&gt;data&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replicate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fromIntegral&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgContent&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="kt"&gt;Exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;evaluate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgContent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;then&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;deleteMin&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;()&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Monad&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;foldM_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To compile and run the program (&lt;code&gt;make run-haskell&lt;/code&gt; also works in my repository):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ghc -O2 -optc-O3 Main.hs  # compile the program
+./Main +RTS -s            # run the program (with GC instrumentation enabled)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On my machine, running the program takes around 1.5s. We are not interested in the total running time (the &lt;em&gt;throughput&lt;/em&gt; of the algorithm), but in the pause times induced by the GC: the worst pause time is 51ms (milliseconds), which is the same as the one reported by the blog post &amp;mdash; and there it is considered excessive, with an expected worst-case latency of at most &amp;ldquo;a few milliseconds&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;(I did my testing with GHC 7.8, Fischer reports results with 7.10, they are essentially the same.)&lt;/p&gt;
+
+&lt;p&gt;This Haskell code makes two assumption about the &lt;code&gt;Map&lt;/code&gt; data structure (immutable associative maps) that make the benchmark more cumbersome to port to other languages. It assumes that the element count is pre-cached in the data structure and thus &lt;code&gt;Map.size&lt;/code&gt; is constant-time &amp;mdash; for both OCaml and Racket it is linear. It also uses a key ordering that makes it easy to remove the smallest key &amp;mdash; OCaml does this as well, but Racket uses hashes instead.&lt;/p&gt;
+
+&lt;p&gt;I initially worked around this by storing count and minimum-key information in the ported versions, but in fact it&amp;rsquo;s much nicer to write a variant of the benchmark, with the same behavior, that does not require these specific features:&lt;/p&gt;
+
+&lt;div class="brush: haskell"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;windowSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;msgCount&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replicate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fromIntegral&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="kt"&gt;Exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;evaluate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;windowSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;then&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;()&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Monad&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;foldM_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;msgCount&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This variant has the same running times and worst-case pause, 50ms, as the original program.&lt;/p&gt;
+
+&lt;h3 id="explaining-haskell-results"&gt;Explaining Haskell results&lt;/h3&gt;
+
+&lt;p&gt;James Fischer explains that the reason why the latencies are this high (50ms is considered high) is that while GHC&amp;rsquo;s garbage collector is generational, its older generation still uses a stop-and-copy scheme. This means that when it contains lots of large objects, a lot of time is spent copying them.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/"&gt;original blog post&lt;/a&gt; contains a more detailed description of the problem and of various optimizations that may be attempted. Unfortunately, it seems that it is currently impossible to optimize that kind of workloads by tuning the code or GC parameters: the copying behavior of the old heap cannot really be worked-around currently.&lt;/p&gt;
+
+&lt;p&gt;As a meta-comment, one possible explanation for why this design choice was made might be that a lot of effort was invested in the Haskell&amp;rsquo;s GC to support concurrent mutators (a multi-core runtime). The additional complexity imposed by this extremely challenging and useful requirement may have encouraged runtime authors to keep the general GC architecture as simple as reasonably possible, which could explain this choice of using the same collection strategy in all generational spaces.&lt;/p&gt;
+
+&lt;h2 id="ocaml-version"&gt;OCaml version&lt;/h2&gt;
+
+&lt;p&gt;The code can easily be ported into OCaml, for example as follows:&lt;/p&gt;
+
+&lt;div class="brush: ocaml"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;open&lt;/span&gt; &lt;span class="nc"&gt;Batteries&lt;/span&gt;
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nc"&gt;IMap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;Make&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nc"&gt;Int&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;String&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="mi"&gt;1024&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nn"&gt;Char&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chr&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="ow"&gt;mod&lt;/span&gt; &lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;200_000&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;msg_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1_000_000&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="nn"&gt;Seq&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;init&lt;/span&gt; &lt;span class="n"&gt;msg_count&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fun&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="nn"&gt;Seq&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fold_left&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt; &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ignore&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Evaluating throughput is not the point, and the balanced maps used by the Haskell and OCaml are certainly implemented in slightly different ways that would explain any performance difference, but I was still amused to see the total runtime be essentially the same: 1.5s.&lt;/p&gt;
+
+&lt;p&gt;To measure the maximal pause time, there are two options:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;use the new instrumented runtime contributed by Damien Doligez in  OCaml 4.03; this works but, being a relatively new feature with not  much usability effort put into it, it&amp;rsquo;s far from being as convenient  as GHC&amp;rsquo;s &lt;code&gt;+RTS -s&lt;/code&gt; parameter.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Simply measure the time spend in each iteration (pushing a message),  and using this as an upper bound on the pause time: clearly any GC  pause cannot pause for more time than the iteration takes. (With my Makefile,  &lt;code&gt;make run-ocaml&lt;/code&gt;)&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;To use the new instrumented runtime, you need to have an OCaml compiler, version 4.03.0, compiled with the &lt;code&gt;--with-instrumented-runtime&lt;/code&gt; configure-time switch. Then, you can use the &lt;code&gt;i&lt;/code&gt;-variant (&lt;code&gt;i&lt;/code&gt; for &amp;ldquo;instrumented&amp;rdquo;) of the runtime that is compiled with instrumentation enabled. (My makefile rule &lt;code&gt;make
+run-ocaml-instrumented&lt;/code&gt; does this for you, but you still need a switch compiled with the instrumented runtime.)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ocamlbuild -tag "runtime_variant(i)" main.native
+OCAML_INSTR_LOG=ocaml.log ./main.native&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The log file &lt;code&gt;ocaml.log&lt;/code&gt; will then contain a low-level log of all GC-related runtime calls, with nanosecond time, in a format made for machine rather than human consumption. The tools &lt;code&gt;ocaml-instr-report&lt;/code&gt; and &lt;code&gt;ocaml-instr-graph&lt;/code&gt; of the OCaml source distribution (not installed by default, you need a source checkout), will parse them and display tables or graph. The entry point of interest for worst-case latency is &lt;code&gt;dispatch&lt;/code&gt;, which contains the time spent in all GC activity. The relevant section of &lt;code&gt;ocaml-instr-report&lt;/code&gt;&amp;rsquo;s output shows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;==== dispatch: 2506
+470ns..1.0us:  1     (768ns)                       0.04%
+1.0us..2.2us: # 2                                  0.12%
+2.2us..4.7us: ### 8                                0.44%
+4.7us..10us : #### 10                              0.84%
+ 10us..22us :  1     (14us)                        0.88%
+ 22us..47us :                                      0.88%
+ 47us..100us:                                      0.88%
+100us..220us: ## 3                                 1.00%
+220us..470us: ########## 668                      27.65%
+470us..1.0ms: ########### 1795                    99.28%
+1.0ms..2.2ms: ##### 17                            99.96%
+2.2ms..4.7ms:  1     (2.7ms)                     100.00%&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, most pauses are between 220µs and 1ms, with the longest pause being 2.7ms.&lt;/p&gt;
+
+&lt;p&gt;The other approach to measure latency for this program, which works on older OCaml versions without an instrumented runtime, is just to insert explicit timing calls and compute the worst-case time of an iteration &amp;mdash; as an over-approximation over the max pause time, assuming that the actual insertion/deletion time is small.&lt;/p&gt;
+
+&lt;div class="brush: ocaml"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ref&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;before&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Unix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gettimeofday&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Unix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gettimeofday&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;max&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="o"&gt;-.&lt;/span&gt; &lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;result&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;@@&lt;/span&gt; &lt;span class="k"&gt;fun&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+
+&lt;span class="c"&gt;(* ..main loop.. *)&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Printf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;printf&lt;/span&gt; &lt;span class="s2"&gt;"Worst pause: %.2E&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;worst&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Running this version reports a worst-case latency of 2ms seconds on my machine (I use the &lt;code&gt;%E&lt;/code&gt; formatter for scientific notation, so it gets printed as &lt;code&gt;2.03E-03&lt;/code&gt;), which is in line with the instrumented runtime &amp;mdash; actually slightly lower, as the instrumentation may add some overhead.&lt;/p&gt;
+
+&lt;p&gt;A downside of this poor man worst-latency computation approach is that we only get the worst time, not any kind of timing distribution.&lt;/p&gt;
+
+&lt;h3 id="explaining-ocaml-results"&gt;Explaining OCaml results&lt;/h3&gt;
+
+&lt;p&gt;The OCaml GC has had reliable incremental phases implemented by default for a long time, and does not use a copying strategy for its old generation. It is mark&amp;amp;sweep, executed well, so it was predictable from the start that this specific benchmark would not be a worst-case for OCaml.&lt;/p&gt;
+
+&lt;p&gt;The latest released OCaml version, OCaml 4.03.0, has seen work by Damien Doligez to improve the worst-case latency in some situations, motivated by the industrial use-cases of Jane Street. In particular, the latency &lt;em&gt;instrumentation&lt;/em&gt; tools that I&amp;rsquo;m using above were developed by Damien on this occasion. I checked with the second measurement strategy that the latency is just as good on previous OCaml versions: this particular use-case was not in need of improvement before 4.03.&lt;/p&gt;
+
+&lt;h2 id="racket-version"&gt;Racket version&lt;/h2&gt;
+
+&lt;p&gt;Max New wrote a first version of Racket port of this benchmark &amp;mdash; he had to explicitly keep track of the map count and minimum key to match the original GHC version. I adapted his code to my simplified variant, and it looks rather similar to the other implementations.&lt;/p&gt;
+
+&lt;div class="brush: scheme"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;lang&lt;/span&gt; &lt;span class="nv"&gt;racket/base&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;require&lt;/span&gt; &lt;span class="nv"&gt;racket/match&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;window-size&lt;/span&gt; &lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;msg-count&lt;/span&gt;  &lt;span class="mi"&gt;2000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;message&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;make-bytes&lt;/span&gt; &lt;span class="mi"&gt;1024&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;modulo &lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;push-msg&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;id-low&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;id-high&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;-&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;window-size&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;inserted&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;hash-set&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;message&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;id-low&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;inserted&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;hash-remove&lt;/span&gt; &lt;span class="nv"&gt;inserted&lt;/span&gt; &lt;span class="nv"&gt;id-low&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;_&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;for/fold&lt;/span&gt;
+     &lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;make-immutable-hash&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+     &lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;in-range&lt;/span&gt; &lt;span class="nv"&gt;msg-count&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;push-msg&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I initially used the poor man approach of explicit timing calls to measure latency, but then switched to two better methods:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Sam Tobin-Hochstadt&amp;rsquo;s &lt;a href="https://github.com/samth/gcstats"&gt;gcstats&lt;/a&gt;  package makes Racket programs produce a summary of their runtime  behavior in the same format as GHC&amp;rsquo;s &lt;code&gt;+RTS -s&lt;/code&gt; output, with in  particular the worst-case pause time. It is also very easy to use:&lt;/p&gt;
+  &lt;pre&gt;&lt;code&gt;racket -l gcstats -t main.rkt&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;By setting the environment variable &lt;code&gt;PLTSTDERR=debug@GC&lt;/code&gt;, the racket  runtime will log GC events on the standard error output. One can  then grep for minor or major collections, or produce a histogram of  running times through the following scripting soup I cooked myself:&lt;/p&gt;
+  &lt;pre&gt;&lt;code&gt;cat racket.log | grep -v total | cut -d' ' -f7 | sort -n | uniq --count&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Racket has an incremental GC that is currently experimental (it is not enabled by default as it can degrade throughput) and is enabled by setting the environment variable &lt;code&gt;PLT_INCREMENTAL_GC=1&lt;/code&gt;. I compared with and without the incremental GC, and generally it shifts the latency histogram towards smaller latencies, but it turns out not to help so much for the worst-case latency without further tuning, for a reason I will explain. All results reported below use the incremental GC.&lt;/p&gt;
+
+&lt;p&gt;On my machine, using the latest release Racket 6.5, the maximal pause time reported by &lt;code&gt;gcstats&lt;/code&gt; is around 150ms, which is rather bad &amp;mdash; the excessive pause of GHC was 50ms.&lt;/p&gt;
+
+&lt;h3 id="investigating-the-racket-results"&gt;Investigating the Racket results&lt;/h3&gt;
+
+&lt;p&gt;I sent &lt;a href="https://groups.google.com/forum/#!topic/racket-dev/AH6c-HGgzJ0"&gt;an email&lt;/a&gt; to the racket-dev mailing list, hoping to get explanations and advice on how to improve the code to decrease GC latencies. (Remember that one problematic aspect of the GHC benchmark is that there is no real way for users to tweak the code to get better latencies for the same workflow. So we are evaluating default latencies but also tweakability.) It worked out quite well.&lt;/p&gt;
+
+&lt;p&gt;First, Matthew Flatt immediately sent a few commits on the Racket codebase to improve some behaviors that were problematic on the benchmark. Using the development version of Racket instead of 6.5, the worst-case latency drops from 150ms to 120ms on my machine. All remaining times are reported using the development version.&lt;/p&gt;
+
+&lt;p&gt;Matthew Flatt also analyzed the result and noticed that the worst-case latency systematically happens at the beginning of the benchmark, just after the channel reaches its maximal side of 200,000 messages. This is hard to see with the default benchmark parameters, where the &amp;ldquo;ramp-up&amp;rdquo; period of filling the channel takes one fifth of the total iterations. To see this clearly, I increased the iteration count from 1,000,000 to 10,000,000, then ran &lt;code&gt;make
+run-racket-instrumented&lt;/code&gt;. I can look at the pause time of major collections by doing &lt;code&gt;grep MAJ racket.log&lt;/code&gt;, and on my machine I have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GC: 0:MAJ @ 50,634K(+37,221K)[+1,560K]; free 5,075K(-5,075K) 12ms @ 373
+GC: 0:MAJ @ 101,983K(+35,024K)[+1,560K]; free 10,880K(-5,168K) 38ms @ 521
+GC: 0:MAJ @ 192,491K(+38,404K)[+1,560K]; free 8,174K(-24,030K) 56ms @ 810
+GC: 0:MAJ @ 377,716K(+49,259K)[+1,560K]; free 10,832K(-9,536K) 92ms @ 1571
+GC: 0:MAJ @ 742,630K(+59,881K)[+1,560K]; free 140,354K(-156,738K) 138ms @ 3321
+GC: 0:MAJ @ 1,214,486K(+112,313K)[+1,560K]; free 361,371K(-377,755K) 60ms @ 6046
+GC: 0:MAJ @ 1,417,749K(+138,410K)[+1,560K]; free 600,291K(-600,291K) 23ms @ 8553
+GC: 0:MAJ @ 1,400,780K(+155,379K)[+1,560K]; free 564,923K(-564,923K) 21ms @ 11048
+GC: 0:MAJ @ 1,408,812K(+147,347K)[+1,560K]; free 583,454K(-583,454K) 21ms @ 13506
+GC: 0:MAJ @ 1,404,757K(+151,402K)[+1,560K]; free 572,350K(-572,350K) 20ms @ 15983
+GC: 0:MAJ @ 1,407,842K(+148,317K)[+1,560K]; free 579,079K(-579,079K) 22ms @ 18438
+GC: 0:MAJ @ 1,405,641K(+150,518K)[+1,560K]; free 575,624K(-575,624K) 21ms @ 20907
+GC: 0:MAJ @ 1,405,833K(+150,326K)[+1,560K]; free 577,191K(-577,191K) 21ms @ 23362
+GC: 0:MAJ @ 1,405,763K(+150,396K)[+1,560K]; free 575,779K(-575,779K) 20ms @ 25897
+GC: 0:MAJ @ 1,406,444K(+149,715K)[+1,560K]; free 577,553K(-577,553K) 20ms @ 28348
+GC: 0:MAJ @ 1,406,409K(+149,750K)[+1,560K]; free 576,323K(-576,323K) 21ms @ 30827
+GC: 0:MAJ @ 1,407,054K(+149,105K)[+1,560K]; free 577,961K(-577,961K) 21ms @ 33290
+GC: 0:MAJ @ 1,404,903K(+151,256K)[+1,560K]; free 576,241K(-576,241K) 20ms @ 35774
+GC: 0:MAJ @ 1,406,551K(+149,608K)[+1,560K]; free 575,352K(-575,352K) 22ms @ 38251
+GC: 0:MAJ @ 1,405,775K(+150,384K)[+1,560K]; free 577,401K(-577,401K) 21ms @ 40730
+GC: 0:MAJ @ 1,406,015K(+150,144K)[+1,560K]; free 575,563K(-575,563K) 20ms @ 43254
+GC: 0:MAJ @ 1,406,129K(+150,030K)[+1,560K]; free 577,760K(-577,760K) 21ms @ 45730
+GC: 0:MAJ @ 1,406,157K(+150,002K)[+1,560K]; free 575,394K(-575,394K) 22ms @ 48220
+GC: 0:MAJ @ 1,406,514K(+149,645K)[+1,560K]; free 577,765K(-577,765K) 21ms @ 50697&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Look at the evolution of major collection pause times: there is an early peek at &lt;code&gt;140ms&lt;/code&gt;, but then pause times decrease and the steady state has sensibly shorter pauses of around &lt;code&gt;22ms&lt;/code&gt;. By looking at the amount of memory freed during each collection, one can see that the peak corresponds to the first major collection that frees a lot of memory; it is the first major collection after the channel has reached its maximal size, and starts removing a lot of messages.&lt;/p&gt;
+
+&lt;p&gt;My understanding of this behavior is that the incremental GC keeps some runtime parameter that observe the memory allocation patterns of the program, and try to predict when the next collection should be or how much work it should do. Matthew Flatt explains that this monitoring logic currently fails to adapt gracefully to the change of regime in our program, and incurs a large peak pause at this point.&lt;/p&gt;
+
+&lt;p&gt;This is good news for our benchmark: sure, there is a very bad pause at the beginning of the program, but it&amp;rsquo;s a one-time thing. It does not really affect the last decile of latency that is discussed in James Fischer&amp;rsquo;s post, and would not be a problem during the steady state of an actual message-passing application.&lt;/p&gt;
+
+&lt;h3 id="tuning-the-racket-version"&gt;Tuning the Racket version&lt;/h3&gt;
+
+&lt;p&gt;Matthew Flatt also remarked that by inserting explicit calls to the GC, one can get collection performed more often than Racket&amp;rsquo;s heuristics demand and partly avoid the large peak pause. However, too frequent explicit collections hurt the program throughput.&lt;/p&gt;
+
+&lt;p&gt;I experimented a bit and found that the peak pause issue could be partly mitigated by inserting explicit GC calls around the change of regime &amp;mdash; around the iteration count that corresponds to the maximal channel size. I defined a function doing just that&lt;/p&gt;
+
+&lt;div class="brush: scheme"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;maybe-gc&lt;/span&gt; &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;when&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;and &lt;/span&gt;&lt;span class="nv"&gt;gc-during-rampup&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;i&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;window-size&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;/&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;i&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;window-size&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;*&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zero? &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;modulo &lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;collect-garbage&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;incremental&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;collect-garbage&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;minor&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which is controlled by a &lt;code&gt;gc-during-rampup&lt;/code&gt; parameter that you can explicitly set to &lt;code&gt;#t&lt;/code&gt; to experiment &amp;mdash; explicit GC calls are disabled by default in my benchmark code. Then I just inserted a &lt;code&gt;(maybe-gc i)&lt;/code&gt; call in the main loop.&lt;/p&gt;
+
+&lt;p&gt;Because the extra GC calls happen only during rampup, the performance of the steady state are unchanged and the global cost on throughput is moderate (20% in my experiment with iteration count 2,000,000). This seems effective at mitigating the peak pause issue: the worst-case time on my machine is now only 38ms &amp;mdash; the pauses during the steady state are unchanged, around 22ms.&lt;/p&gt;
+
+&lt;p&gt;This is, of course, a hack; the long-term solution is to wait for Racket developers to devise better dynamic control strategies to avoid the ramp-up problem. Apparently, the incremental GC was previously tested on games that had simpler allocation profiles, such as short-lived memory allocations during each game tick, with no such a long ramp-up phase. But I was still interested in the fact that expert users can tweak the code to noticeably decrease the worst-case pause time.&lt;/p&gt;
+
+&lt;p&gt;To summarize, Racket&amp;rsquo;s incremental GC exhibits a decent-but-not-excellent steady state behavior, with maximal latencies of around 22ms, but currently suffers from a GC control issues that cause much larger pauses during the benchmark ramp-up period. Explicit GC calls can partly mitigate them.&lt;/p&gt;</description></item>
+  <item>
+   <title>NEPLS on May 31st at UMass, Amherst</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/?utm_source=Author-Gabriel-Scherer&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-05-03-nepls-on-may-31st-at-umass-amherst</guid>
+   <pubDate>Tue, 03 May 2016 08:21:07 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;It is my pleasure to relay the following announcement for the next edition of the New England Programming Language Seminer (NEPLS), to be held on Tuesday May 31st at UMass, Amherst, organized by Arjun Guha. Venez nombreux!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The next New England Programming Languages and Systems Symposium will take place on Tuesday, May 31st 2016 at University of Massachusetts, Amherst. Please mark it in your calendars!&lt;/p&gt;
+ &lt;p&gt;The speaker selection committee solicits talks for this meeting. To propose yourself or someone else, send a title, list of authors, and a brief description. You may provide UP TO ONE PAGE of description, but you can keep it as short as a paragraph. We particularly invite talks by researchers from outside the area who are visiting on the date of the NEPLS meeting.&lt;/p&gt;
+ &lt;p&gt;Talks can vary in length. Though 30-minute conference-style slots are traditional, speakers may request slots of as little as 5 minutes; we encourage the shorter formats. This variety permits the presentation of smaller results, preliminary work, progress reports on ongoing projects (such as language standards and compiler toolkits), and updates to past presentations. In general, NEPLS talks need not sound like conference presentations.&lt;/p&gt;
+ &lt;p&gt;The submission deadline is Tuesday, May 17th. Send your proposal to talks@nepls.org.&lt;/p&gt;
+ &lt;p&gt;More details about NEPLS are available on the NEPLS webpage:&lt;/p&gt;
+ &lt;p&gt; http://www.nepls.org/&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I&amp;rsquo;m personally fond of such regional events, which is a great time to learn about the research around us in a less formal and exhausting setting than a 200-attendees conference.&lt;/p&gt;
+
+&lt;p&gt;If you are in the area, please consider applying to talk about your work. If one of your colleague is working on something you find exciting, please invite them to apply!&lt;/p&gt;</description></item></channel></rss>

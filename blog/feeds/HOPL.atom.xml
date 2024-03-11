@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'HOPL'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/HOPL.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/HOPL.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-HOPL-html</id>
+ <updated>2017-05-09T14:04:31Z</updated>
+ <entry>
+  <title type="text">No Good Answers, Gradually Typed Object-Oriented Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/09/no-good-answers-gradually-typed-object-oriented-languages/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-09-no-good-answers-gradually-typed-object-oriented-languages</id>
+  <published>2017-05-09T14:04:31Z</published>
+  <updated>2017-05-09T14:04:31Z</updated>
+  <author>
+   <name>Ben Chung</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Untyped code remains a real problem in practice, as a result of reduced performance and hindered readability. One approach to solve this problem is gradual typing.&lt;/p&gt;
+
+&lt;p&gt;Gradual typing puts the onus on the developer to add type annotations, statically checks whatever type annotations have been written, and dynamically ensures that untyped code does not violate those annotations. A number of approaches have been put forward to try to achieve these objectives while retaining efficiency, semantic meaning, and the ability to actually type untyped code.&lt;/p&gt;
+
+&lt;p&gt;I discussed three systems, all of which achieve the objective of typing untyped code in different ways, and all of which have different tradeoffs.&lt;/p&gt;
+
+&lt;p&gt;Unofficial Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Code Examples:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL"&gt;https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Categorical Semantics for Dynamically Typed Programming Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-01-categorical-semantics-for-dynamically-typed-programming-languages</id>
+  <published>2017-05-01T12:25:17Z</published>
+  <updated>2017-05-01T12:25:17Z</updated>
+  <author>
+   <name>Max New</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;In 1969, Dana Scott wrote an &lt;a href="/blog/static/scott-69-93-type-theoretical-alternative.pdf"&gt;unpublished manuscript&lt;/a&gt; in which he said untyped lambda calculus had no mathematical meaning, 11 years later he wrote &lt;a href="/blog/static/scott-80-relating-theories.pdf"&gt;a paper&lt;/a&gt; that organized many of the different semantics he and others had since found using the language of category theory.&lt;/p&gt;
+
+&lt;p&gt;This latter paper is really the first deserving of the title &amp;ldquo;categorical semantics of dynamic typing&amp;rdquo;, and so I&amp;rsquo;m going to present some of the theorems and &amp;ldquo;theorems&amp;rdquo; presented in that paper, but mingled with the history of the idea and the preceding papers that led to them.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/blog/static/dyn-cats.pdf"&gt;My Full Notes&lt;/a&gt; continue the story, and you might also be interested in the &lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-07.md"&gt;discussion during the lecture&lt;/a&gt;.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">What is Soft Typing?</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/28/what-is-soft-typing/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-28-what-is-soft-typing</id>
+  <published>2017-04-28T12:25:17Z</published>
+  <updated>2017-04-28T12:25:17Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;A soft type system rewrites programs and meets a few &lt;em&gt;design criteria&lt;/em&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="what-are-the-design-criteria"&gt;What are the Design Criteria?&lt;/h2&gt;
+
+&lt;p&gt;According to Mike Fagan&amp;rsquo;s 1991 &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers"&gt;dissertation&lt;/a&gt;,  a soft type system must:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;accept all &lt;em&gt;syntactically correct&lt;/em&gt; programs as input;&lt;/li&gt;
+ &lt;li&gt;produce equivalent, &lt;em&gt;memory-safe&lt;/em&gt; programs as output; and&lt;/li&gt;
+ &lt;li&gt;be &lt;em&gt;unobtrusive&lt;/em&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="important-details"&gt;Important details:&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;In this context, &lt;em&gt;memory safe&lt;/em&gt; basically means &amp;ldquo;no segfaults&amp;rdquo;.  Programs output by a soft type system should be as safe as statically-typed  Java programs or dynamically-typed Python programs.&lt;/li&gt;
+ &lt;li&gt;Fagan characterizes &lt;em&gt;unobtrusive&lt;/em&gt; with two general principles:&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;minimal text principle&lt;/em&gt; : the type checker should work without any programmer-supplied annotations&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;minimal failure principle&lt;/em&gt; : the type checker should assign &lt;em&gt;useful&lt;/em&gt; types to &lt;em&gt;idiomatic&lt;/em&gt; programs  (basically, don&amp;rsquo;t just say that every expression has &amp;ldquo;unknown&amp;rdquo; or &amp;ldquo;top&amp;rdquo; type)&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="why-would-i-want-to-use-a-soft-type-system"&gt;Why would I want to use a soft type system?&lt;/h2&gt;
+
+&lt;p&gt;If you:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;like dynamic typing&lt;/li&gt;
+ &lt;li&gt;want some &lt;em&gt;benefits&lt;/em&gt; of static typing&lt;/li&gt;
+ &lt;li&gt;refuse to (or &lt;em&gt;cannot&lt;/em&gt;!) change your code to satisfy a type checker&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;then Soft Typing is a perfect fit. You just need to find/build a soft type checker.&lt;/p&gt;
+
+&lt;h3 id="clarification"&gt;Clarification&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;benefits&lt;/em&gt; of static typing that a soft type system can give are:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;early detection of typos and simple logical errors&lt;/li&gt;
+ &lt;li&gt;documentation, through (inferred) type signatures&lt;/li&gt;
+ &lt;li&gt;speed, when the types can justify removing a runtime safety check&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;See Andrew Wright&amp;rsquo;s 1994 &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers"&gt;dissertation&lt;/a&gt; for proof.&lt;/p&gt;
+
+&lt;h2 id="can-i-use-andrew-wrights-soft-type-system"&gt;Can I use Andrew Wright&amp;rsquo;s soft type system?&lt;/h2&gt;
+
+&lt;p&gt;Not sure, but you may download the code for it:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/softscheme"&gt;https://github.com/nuprl/softscheme&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="please-explain-fagans--wrights-soft-types"&gt;Please explain Fagan&amp;rsquo;s / Wright&amp;rsquo;s soft types&lt;/h2&gt;
+
+&lt;p&gt;Types &lt;code&gt;t&lt;/code&gt; are made of constructors &lt;code&gt;k&lt;/code&gt;, flags &lt;code&gt;f&lt;/code&gt;, and type variables &lt;code&gt;a&lt;/code&gt;. The grammar for types is basically:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  t ::= a | (k f t ...) U t
+  k ::= Int | Pair | -&amp;gt;
+  f ::= ++ | -- | b
+  a ::= a0 | a1 | a2 | a3 | ....
+  b ::= b0 | b1 | b2 | b3 | ....&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;where:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;code&gt;U&lt;/code&gt; is just a symbol, represents &amp;ldquo;union&amp;rdquo;&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;a&lt;/code&gt; is a type variable; there are infinitely many type variables&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;b&lt;/code&gt; is a flag variable; the set of flag variables is also infinte&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;There are also some rules for types to be well-formed.&lt;/p&gt;
+
+&lt;p&gt;Here are two well-formed types:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(Int ++) U a0
+
+(-&amp;gt; ++ ((Int b0) U a1)
+       ((Int ++) U a2)) U a3&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here are two types that match the grammar, but are &lt;strong&gt;NOT&lt;/strong&gt; well-formed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(Int ++ a0) U a1
+
+(-&amp;gt; --) U a2&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally, some intuition:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;A constructor &lt;code&gt;k&lt;/code&gt; is like a behavior,&lt;/li&gt;
+ &lt;li&gt;a type &lt;em&gt;describes&lt;/em&gt; the behaviors a value can have.&lt;/li&gt;
+ &lt;li&gt;The description is like a bitvector of &amp;ldquo;yes&amp;rdquo;, &amp;ldquo;no&amp;rdquo;, or &amp;ldquo;maybe&amp;rdquo; for each possible behavior.&lt;/li&gt;
+ &lt;li&gt;A flag variable is the way to say &amp;ldquo;maybe&amp;rdquo;.&lt;/li&gt;
+ &lt;li&gt;Every type ends with a type variable because every typed expression might  flow to a context that expects a more general type.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The type and flag variables let Fagan and Wright encode subtyping using  polymorphism. It&amp;rsquo;s a very cool idea, introduced in Didier Remy&amp;rsquo;s  &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers"&gt;POPL 1989 paper&lt;/a&gt;. But it adds a learning curve, and has some drawbacks for type inference.&lt;/p&gt;
+
+&lt;h2 id="stream-of-consciousness-notes-from-the-hopl-lecture"&gt;Stream-of-consciousness notes from the HOPL lecture&lt;/h2&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/soft-typing.pdf"&gt;Local copy&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing"&gt;Source of Truth&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Refinement Types</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/20/refinement-types/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-20-refinement-types</id>
+  <published>2017-04-20T23:38:23Z</published>
+  <updated>2017-04-20T23:38:23Z</updated>
+  <author>
+   <name>Kevin Clancy</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Roughly, a refinement type system is an extra layer of precision, enforced through subtyping, added onto an existing type system. A base type is decomposed into a set of &lt;em&gt;base refinements&lt;/em&gt;, each of which denotes a subset of the values belonging to the base type. A subtyping relation respecting set inclusion can then be defined among the refinements of the base type. These subtyping relations can be lifted onto a subtyping relation for compound types using a standard arrow subtyping rule.&lt;/p&gt;
+
+&lt;p&gt;Extra type-checking precision sounds great, but what in practical terms does this precision look like? Freeman and Pfenning&amp;rsquo;s &amp;rsquo;92 paper &lt;em&gt;Refinement Types for ML&lt;/em&gt; proposes extending ML&amp;rsquo;s type definition language with constructs for decomposing a discriminated union type into a lattice of subtypes. For example, it allows the decomposition of a list type into a lattice including base refinements for empty lists, non-empty lists, and singletons. Those with experience in functional programming will realize this alleviates the dreaded and inescapable “non-exhaustive pattern match” warning, which tends to crop up in situations where the programmer understands that an exhaustive pattern match is not necessary.&lt;/p&gt;
+
+&lt;p&gt;In the late 90&amp;rsquo;s Xi and Pfenning advanced the state of refinement types by introducing a dependent refinement type system, implemented as a tool called Dependent ML. Their approach identifies a base refinement using a tuple of terms drawn from some computationally tractable constraint language called an &lt;em&gt;index language&lt;/em&gt;. A list datatype can then be refined with a term of the &lt;em&gt;linear integer arithmetic&lt;/em&gt; index language, denoting the subset of all lists having a specific length. One list refinement is then considered a subtype of another when a constraint solver can prove their index terms equal. Vazou et. al.&amp;rsquo;s recent project Liquid Haskell is another dependent refinement type system which decides subtyping among base types by invoking an SMT solver under a context-dependent set of constraints. It differs significantly from Dependent ML in that it refines base types with certain well-behaved program terms rather than indices.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Resources:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/refinement_types_lecture.pdf"&gt;Full Notes&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/blog/static/refinement_types_bib.pdf"&gt;Annotated Bibliography&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/refinement-types"&gt;GitHub&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Type-Directed Compilation, Parts I and II</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/17/type-directed-compilation-parts-i-and-ii/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-17-type-directed-compilation-parts-i-and-ii</id>
+  <published>2017-04-17T12:00:17Z</published>
+  <updated>2017-04-17T12:00:17Z</updated>
+  <author>Leif Andersen</author>
+  <author>William J. Bowman</author>
+  <author>
+   <name>Leif Andersen, William J. Bowman</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;h3 id="part-i-type-directed-compilation-by-leif-andersen"&gt;Part I: &lt;em&gt;Type-Directed Compilation&lt;/em&gt;, by Leif Andersen.&lt;/h3&gt;
+
+&lt;p&gt;In this talk we discuss the history of type directed compilation. We start with Xavier Leroy&amp;rsquo;s seminal paper: &lt;a href="http://gallium.inria.fr/~xleroy/publi/unboxed-polymorphism.pdf"&gt;&lt;em&gt;Unboxed Objects and Polymorphic Typing&lt;/em&gt;&lt;/a&gt;, continue to &lt;a href="https://www.cs.cmu.edu/~rwh/papers/til/pldi96.pdf"&gt;TIL&lt;/a&gt; (Typed Intermediate Language), and finish up with &lt;a href="https://dash.harvard.edu/handle/1/2797451"&gt;TAL&lt;/a&gt; (Typed Assembly Language). We talk about what it means for a compiler to be typed preserving, and give examples of optimizations that are enabled by types.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-24.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;24.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="part-ii-dependent-type-directed-compilation-by-william-j-bowman"&gt;Part II: &lt;em&gt;Dependent Type-Directed Compilation&lt;/em&gt;, by William J. Bowman&lt;/h3&gt;
+
+&lt;p&gt;A certifying compiler is not verified, but it produces a proof of correctness for each binary. This proof can be independently checked to show that the binary was compiled correctly, removing the compiler from the trusted code base. Certifying compilation has its roots in preserving type-preserving compilation, and in particular in preserving dependent types. We start the history of dependent-type-preserving compilation with a compiler from C to Assembly. We&amp;rsquo;ll see a result showing that preserving dependent types isn&amp;rsquo;t possible, and then we&amp;rsquo;ll do it anyway.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-28.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;28.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Notes (to appear here, eventually):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation"&gt;https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Top Five Results of the Past 50 Years of Programming Languages Research</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/04/top-five-results-of-the-past-50-years-of-programming-languages-research/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-04-top-five-results-of-the-past-50-years-of-programming-languages-research</id>
+  <published>2017-04-04T10:21:36Z</published>
+  <updated>2017-04-04T10:21:36Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;Over the past 50 years, which result from programming languages research has had the greatest impact on working programmers?&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;The center of the universe for a working programmer is the language (or languages) they use. Fundamental results in programming languages (PL) research can re-shape this universe.&lt;/p&gt;
+
+&lt;p&gt;In &lt;a href="http://www.ccs.neu.edu/home/matthias/7480-s17/index.html"&gt;HOPL&lt;/a&gt; two weeks ago, Matthias claimed that &lt;em&gt;type soundness&lt;/em&gt; is the most useful and influential result to flow from PL research to PL practice in the last 50 years.&lt;/p&gt;
+
+&lt;p&gt;But 50 years is a long time, and there are many serious contenders for the title of &lt;em&gt;greatest PL result&lt;/em&gt;. Here are my (alphabetized) picks for the top five:&lt;/p&gt;
+
+&lt;h3 id="abstraction"&gt;Abstraction&lt;/h3&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;My goal in library design is this; I want to have a precise, elegant, re-usable abstraction &amp;mdash;Conal Eliott, &lt;a href="https://www.youtube.com/watch?v=zzCrZEil9iI"&gt;BayHac 2014 (00:01:55)&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;By &lt;em&gt;abstraction&lt;/em&gt;, I mean anything whose interface is not just &amp;ldquo;read the implementation&amp;rdquo;. Could be a tuple, module, object, structure, semaphore, macro, etc. Even the memory hierarchy pyramid in your operating systems textbook is an abstraction. They are everywhere, and they are what separates computer science (it&amp;rsquo;s about &lt;em&gt;ideas&lt;/em&gt;) from electrical engineering (it&amp;rsquo;s about &lt;em&gt;transistors&lt;/em&gt;). Thank you &lt;a href="/img/l-plp-1965.pdf"&gt;Peter Landin&lt;/a&gt; and &lt;a href="/img/m-thesis-1969.pdf"&gt;J.H. Morris&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="generational-garbage-collection"&gt;Generational Garbage Collection&lt;/h3&gt;
+
+&lt;p&gt;I don&amp;rsquo;t know much about garbage collection. I do know that I want it, and I&amp;rsquo;m pretty sure that I wouldn&amp;rsquo;t have it (outside of research languages) without generational garbage collection. Thank you &lt;a href="/img/u-sde-1984.pdf"&gt;David Ungar&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="generic-programming"&gt;Generic Programming&lt;/h3&gt;
+
+&lt;p&gt;&lt;em&gt;a.k.a. the mainstream interpretations of parametric polymorphism&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The thought of programming in Java 1.4 is terrifying. Thank you &lt;a href="/img/g-thesis-1972.pdf"&gt;Jean-Yves Girard&lt;/a&gt; and &lt;a href="/img/r-cp-1974.pdf"&gt;John C. Reynolds&lt;/a&gt; and &lt;a href="http://homepages.inf.ed.ac.uk/wadler/gj/"&gt;Gilad Bracha and Martin Odersky and David Stoutamire and Philip Wadler&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="modularization"&gt;Modularization&lt;/h3&gt;
+
+&lt;p&gt;How can humans understand large software systems? By organizing the systems into smaller components (modules, objects) with well-defined interfaces. It&amp;rsquo;s hard to imagine, but once upon a time the question of &lt;em&gt;how&lt;/em&gt; to divide a system into modules was a new research problem. Thank you &lt;a href="/img/p-tr-1971.pdf"&gt;D.L. Parnas&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="type-soundness"&gt;Type Soundness&lt;/h3&gt;
+
+&lt;p&gt;Let me make two modest claims:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Soundness (with respect to a dynamic semantics) is a desirable property for a static type system.&lt;/li&gt;
+ &lt;li&gt;A large number (at least, thousands) of working programmers agree that programming in a language with a sound, static type system is &amp;ldquo;a good thing&amp;rdquo;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Neither of these claims were true 50 years ago. They are definitely true today. And the slogan &amp;ldquo;well typed programs do not go wrong (up to a well-defined set of runtime errors)&amp;rdquo; has become the catchphrase of PL research. Thank you &lt;a href="/img/m-jcss-1978.pdf"&gt;Robin Milner&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="honorable-mentions"&gt;Honorable Mentions&lt;/h2&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://www.paulgraham.com/thist.html"&gt;lexical scope&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/img/d-thesis-1984.pdf"&gt;type inference&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://www.quora.com/Why-does-Kent-Beck-refer-to-the-rediscovery-of-test-driven-development"&gt;test-driven development&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Simula"&gt;object-oriented programming&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/img/ss-tr-1975.pdf"&gt;continuation passing style&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/img/kffd-tr-1986.pdf"&gt;hygienic macros&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;If you liked this post, you may also be interested in:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/"&gt;Gradual Typing Across the Spectrum&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://jschuster.org/blog/2016/11/29/getting-started-in-programming-languages/"&gt;Getting Started in Programming Languages&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://williamjbowman.com/blog/2017/03/24/what-even-is-compiler-correctness/"&gt;What even is compiler correctness?&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Tracing JITs for Dynamic Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/03/15/tracing-jits-for-dynamic-languages/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-03-15-tracing-jits-for-dynamic-languages</id>
+  <published>2017-03-15T10:54:39Z</published>
+  <updated>2017-03-15T10:54:39Z</updated>
+  <author>
+   <name>Ming-Ho Yee</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Traditional JIT (just-in-time) compilers are method-based: they compile &amp;ldquo;hot&amp;rdquo; (i.e. frequently executed) methods to native code. An alternative is trace-based or tracing JITs, where the compilation unit is a (hot) sequence of instructions. Typically, such sequences of instructions correspond to loops, where programs spend most of their execution time.&lt;/p&gt;
+
+&lt;p&gt;Where did the idea of tracing come from? What was appealing about it? How was tracing adapted for JITs and dynamic languages? What happened to Mozilla&amp;rsquo;s TraceMonkey, which used to be part of Firefox? Do any JITs today use tracing?&lt;/p&gt;
+
+&lt;p&gt;In this talk, I trace tracing JITs from their origins to some of their recent developments. I cover five papers: the original tracing paper, an implementation of a tracing JIT for Java, the TraceMonkey JIT for JavaScript, PyPy&amp;rsquo;s &amp;ldquo;meta-level&amp;rdquo; tracing, and a specific class of optimizations for tracing JITs.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;(The idea of using the phrase &amp;ldquo;trace tracing JITs&amp;rdquo; is from Matthias Felleisen.)&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;All materials can be found in the &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/tracing-jit"&gt;course repository&lt;/a&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/tracing-jit/notes.pdf"&gt;Full notes&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/tracing-jit/annotated.txt"&gt;Annotated bibliography&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;If you liked this post, you may also be interested in &lt;a href="http://prl.ccs.neu.edu/blog/2019/01/28/on-stack-replacement/"&gt;on-stack replacement&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Type Inference in Stack-Based Programming Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/03/10/type-inference-in-stack-based-programming-languages/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-03-10-type-inference-in-stack-based-programming-languages</id>
+  <published>2017-03-10T16:23:30Z</published>
+  <updated>2017-03-10T16:23:30Z</updated>
+  <author>
+   <name>Rob Kleffner</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Stack-based languages occupy a niche in today&amp;rsquo;s programming language environment. The predominant stack-based language in use by programmers is Forth, and is found mostly on embedded devices. These languages also find use as compile targets for more popular languages: the CIL and JVM are both stack-based. Less popular but highly interesting languages to mention include &lt;a href="http://www.kevinalbrecht.com/code/joy-mirror/joy.html"&gt;Joy&lt;/a&gt; and &lt;a href="http://factorcode.org/"&gt;Factor&lt;/a&gt;, known for their emphasis on higher-order stack-based programming.&lt;/p&gt;
+
+&lt;p&gt;The majority of stack-based languages are not statically typed, and it would be a stretch to call Forth even dynamically typed. As such, developing large projects in Forth or Factor can require great discipline on the part of the programmer to avoid type errors.&lt;/p&gt;
+
+&lt;p&gt;In this talk, I presented the development of type inference for stack-based languages as a linear sequence, divided into two overarching segments:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;An algebraic system known as &lt;em&gt;stack effects&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Systems that can be encoded as &lt;em&gt;nested pairs&lt;/em&gt; in standard functional  programming languages&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The thread of research on stack effects began with Jaanus Pöial in the early 1990&amp;rsquo;s, and is a formalization of a commenting style well-known in the Forth community. The nested tuple systems were first examined by Okasaki in 1993 in the context of Haskell, and were later applied to higher-order stack-based languages. At the end, I give some avenues for extending the research on these systems, and list some pitfalls to be avoided in further research.&lt;/p&gt;
+
+&lt;p&gt;Full notes (as PDF documents) &amp;mdash; see the &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/type-inference-for-stack-languages"&gt;git repository&lt;/a&gt; for more documents:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/stack-languages-talk-notes.pdf"&gt;Talk notes&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/blog/static/stack-languages-annotated-bib.pdf"&gt;Annotated bibliography&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Linear Types for Low-level Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/28/linear-types-for-low-level-languages/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-28-linear-types-for-low-level-languages</id>
+  <published>2017-02-28T09:51:55Z</published>
+  <updated>2017-02-28T09:51:55Z</updated>
+  <author>
+   <name>Daniel Patterson</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;In this talk, we covered early papers (primarily, by Girard, Lafont, and Abramsky) on linear logic and its reflections into computation. The goal was to understand why linearity is often turned to as a principled way to control resource usage, as shows up in a language like Rust. From the very beginning, researchers realized the implications for &amp;ldquo;low-level&amp;rdquo; languages - that linear resources would eliminate the need for garbage collection, allow in-place mutation, and enable safe parallel computation. However, pure implementations of linearity incur lots of copying, doing away with any efficiency gained, and we covered a survey of papers that attempted to reconcile this contradiction by weakening linearity in controlled ways.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-02-14.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;02&amp;ndash;14.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Just after the talk, over lunch, we had a lab discussion about the phrase &amp;ldquo;low level&amp;rdquo;. Here are some thoughts:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the phrase is relative, both over time and depending on the programming  task at hand&lt;/li&gt;
+ &lt;li&gt;a &amp;ldquo;low level&amp;rdquo; task is &amp;ldquo;one that you shouldn&amp;rsquo;t need to worry about&amp;rdquo; while  solving your current task&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;And here are some example &amp;ldquo;low-level&amp;rdquo; tasks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Time and space management is &amp;ldquo;low level&amp;rdquo; when designing a new algorithm  (the first question is correctness)&lt;/li&gt;
+ &lt;li&gt;Calling conventions and endian-ness (facets of the damn machine running  the programs) are almost always low-level&lt;/li&gt;
+ &lt;li&gt;Whether a given value is serializable is usually low-level&lt;/li&gt;
+ &lt;li&gt;Possible side effects, thrown exceptions, and optional arguments can all  be considered &amp;ldquo;low level&amp;rdquo; aspects of library functions. This is low-level  in the sense that &amp;ldquo;I&amp;rsquo;d rather use a simpler type to think about this library&amp;rdquo;&lt;/li&gt;
+ &lt;li&gt;Managing type annotations is a low-level detail in ML programs&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Datalog for Static Analysis</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/21/datalog-for-static-analysis/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-21-datalog-for-static-analysis</id>
+  <published>2017-02-21T12:58:27Z</published>
+  <updated>2017-02-21T12:58:27Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Datalog is an old DSL that frequently appears in work on static analysis. This edition of &lt;a href="/blog/2017/02/15/introducing-hopl-2017/"&gt;HOPL 2017&lt;/a&gt; explores the origins of Datalog in general, its early use in program analysis, and why Datalog remains a useful tool.&lt;/p&gt;
+
+&lt;p&gt;Full notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/datalog-for-static-analysis.pdf"&gt;Local Copy&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/datalog-for-static-analysis"&gt;Source of Truth&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Datalog as a language was introduced by 1978 (its semantic foundations date back to 1976). It is &lt;em&gt;predicate logic&lt;/em&gt; as a database query language. The traditional view of a Datalog program is a &lt;em&gt;time invariant&lt;/em&gt; transformation over the &lt;em&gt;time varying&lt;/em&gt; data stored in an external database.&lt;/p&gt;
+
+&lt;p&gt;In the early 1990&amp;rsquo;s, Uwe Aβmann designed a graph rewriting systems (EARS) that could:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Uniformly express various problems in static analysis&lt;/li&gt;
+ &lt;li&gt;Systematically derive efficient solutions to such problems.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;(Prior work had derived the same solutions with ad-hoc methods.) Aβmann&amp;rsquo;s system is equivalent to Datalog.&lt;/p&gt;
+
+&lt;p&gt;In 1993, Reps used the 
+ &lt;tt&gt;CORAL&lt;/tt&gt; deductive database (an implementation of Datalog) to derive an on-demand (read: lazy) implementation of program slicing from a &lt;em&gt;specification&lt;/em&gt; of the slicing problem.&lt;/p&gt;
+
+&lt;p&gt;Both Aβmann&amp;rsquo;s and Reps work appeared in 1994. This was the first time Datalog had been used to implement a static analysis.&lt;/p&gt;
+
+&lt;p&gt;Researchers continue to use Datalog because:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;predicate logic (specifically: Horn clauses without function symbols or negation)  is useful for expressing recursive relations &amp;hellip; and static analyses are all about recursive relations&lt;/li&gt;
+ &lt;li&gt;the language separates &lt;em&gt;specifications&lt;/em&gt; from their &lt;em&gt;implementation&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;there are many techniques for efficiently serving a Datalog query&lt;/li&gt;
+ &lt;li&gt;these techniques have been implemented in &lt;a href="https://developer.logicblox.com/wp-content/uploads/2016/01/logicblox-sigmod15.pdf"&gt;at least one&lt;/a&gt;  commercial Datalog engine&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;For an excellent description of how Datalog can benefit static analysis, see the introduction to &lt;a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.648.1834&amp;amp;rep=rep1&amp;amp;type=pdf"&gt;Rep&amp;rsquo;s paper&lt;/a&gt;.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Conversational Context and Concurrency</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/15/conversational-context-and-concurrency/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-15-conversational-context-and-concurrency</id>
+  <published>2017-02-15T01:21:55Z</published>
+  <updated>2017-02-15T01:21:55Z</updated>
+  <author>
+   <name>Tony Garnock-Jones</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;When programs are written with concurrency in mind, the programmer reasons about the interactions between concurrent components or agents in the program. This includes exchange of information, as well as management of resources, handling of partial failure, collective decision-making and so on.&lt;/p&gt;
+
+&lt;p&gt;These components might be objects, or threads, or processes, or actors, or some more nebulous and loosely-defined concept; a group of callbacks, perhaps. The programmer has the notion of an agent in their mind, which translates into some representation of that agent in the program.&lt;/p&gt;
+
+&lt;p&gt;We think about the contexts (because there can be more than one) in which agents exist in two different ways. From each agent&amp;rsquo;s perspective, the important thing to think about is the boundary between the agent and everything else in the system. But from the system perspective, we often think about &lt;em&gt;conversations&lt;/em&gt; between agents, whether it&amp;rsquo;s just two having an exchange, or a whole group collaborating on some task. Agents in a conversation play different roles, join and leave the group, and build shared conversational state.&lt;/p&gt;
+
+&lt;p&gt;In this talk, I used the idea of these &lt;em&gt;conversational contexts&lt;/em&gt; as a lens through which to view the development of various metaphors and mechanisms of communication and coordination. I presented four &lt;em&gt;computational models&lt;/em&gt; for concurrent interaction:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;monitors, and shared memory concurrency generally&lt;/li&gt;
+ &lt;li&gt;the actor model&lt;/li&gt;
+ &lt;li&gt;channel-based communication&lt;/li&gt;
+ &lt;li&gt;tuplespaces&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;These aren&amp;rsquo;t full programming languages, but there are many &lt;em&gt;programming models&lt;/em&gt; that build upon them. In some cases, development of these ideas has progressed all the way up to &lt;em&gt;system models&lt;/em&gt; including user interaction and so forth.&lt;/p&gt;
+
+&lt;p&gt;The linked lecture notes include informal sketches of reduction semantics for each of the four models, plus a handful of small examples to give a feel for them.&lt;/p&gt;
+
+&lt;p&gt;Lecture Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/conversational-context-and-concurrency/index.md"&gt;https://github.com/nuprl/hopl-s2017/tree/master/conversational-context-and-concurrency/index.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-01-31.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;01&amp;ndash;31.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Introducing HOPL 2017</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/15/introducing-hopl-2017/?utm_source=HOPL&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-15-introducing-hopl-2017</id>
+  <published>2017-02-15T01:21:37Z</published>
+  <updated>2017-02-15T01:21:37Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;This semester at Northeastern, Matthias Felleisen is organizing the &lt;a href="http://www.ccs.neu.edu/home/matthias/7480-s17/index.html"&gt;History of Programming Languages&lt;/a&gt; seminar. Look for posts tagged &lt;code&gt;HOPL&lt;/code&gt; for updates from the lectures.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Once every 6 to 8 years (i.e., once every batch of Ph.D. students?), &lt;a href="http://www.ccs.neu.edu/home/matthias"&gt;Matthias Felleisen&lt;/a&gt; teaches History of Programming Languages. Nominally, the course is a seminar. But unlike a typical seminar course, weekly topics are not the technical details from a handful of papers. Rather:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The primary goal is to understand (some of) the discipline as it exists today and how some of its major themes evolved.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The secondary goal is to develop basic skills for understanding and describing research themes. Every student will learn to study a theme via a series of papers, prepare an annotated bibliography, and present the key steps in the evolution of the theme.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Themes&lt;/strong&gt; is the operative word. To set the tone, this semester started with &amp;ldquo;themes that NUPRL faculty members have developed over the many decades of their careers.&amp;rdquo;&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Matthias, &lt;em&gt;Full Abstraction: From PCF to SPCF&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Jan Vitek, &lt;em&gt;From Encapsulation to Ownership&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Will Clinger, &lt;em&gt;Garbage Collection vs. Manual Allocation&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Olin Shivers, &lt;em&gt;Higher-order Flow Analysis&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Amal Ahmed, &lt;em&gt;Logical Relations: Stepping Beyond Toy Languages&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Matthias, &lt;em&gt;Programming Languages and Calculi&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Jan-Willem van de Meent, &lt;em&gt;Rescoring Strategies for Probabilistic Programs&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;(upcoming) Mitch Wand, &lt;em&gt;Analysis-Based Program Transformation&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;(upcoming) Frank Tip, &lt;em&gt;Refactoring&lt;/em&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;At this point in the course, we are just starting with the student presentations. As these presentations happen, we plan to push updates to this blog. All presentation materials are in the course repository:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017"&gt;https://github.com/nuprl/hopl-s2017&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Speakers&amp;rsquo; notes and annotated bibliographies are in top-level folders in the repo. Discussion summaries and &amp;ldquo;unofficial&amp;rdquo; notes are in the top-level &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/lecture_notes"&gt;&lt;code&gt;lecture_notes/&lt;/code&gt;&lt;/a&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;The list of upcoming presentations is online (along with &lt;a href="http://www.ccs.neu.edu/home/matthias/7480-s17/Summary___Materials.html"&gt;the papers&lt;/a&gt; each presentation is based on):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://www.ccs.neu.edu/home/matthias/7480-s17/lectures.html"&gt;http://www.ccs.neu.edu/home/matthias/7480-s17/lectures.html&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Blogs posts for each talk should appear 2 weeks after the talk happens.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Links to past editions of HOPL:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://www.ccs.neu.edu/home/matthias/369-s10/index.html"&gt;Spring 2010&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://www.ccs.neu.edu/home/matthias/369-s04/index.html"&gt;Spring 2004&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry></feed>
