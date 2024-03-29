@@ -225,6 +225,21 @@
             My research focuses on programming languages and artificial intelligence. In particular, my goal is to use programming languages and program analysis techniques as a foundation for specifying and reasoning about probabilistic models. Towards this end I am interested in the design, implementation, and applications of probabilistic programming languages; foundations of probabilistic inference and tractable probabilistic modeling; automated reasoning; and probabilistic verification.
           }
 
+          @person[#:name "Chris Martens"
+                  #:title "Associate Professor"
+                  #:e-mail "c.martens@northeastern.edu"
+                  #:website "https://www.khoury.northeastern.edu/~cmartens/"
+                  #:history @list[
+
+                  "Joined Northeastern, 2022"
+                  "PhD, Carnegie Mellon University, 2015"
+                  "BS, Carnegie Mellon University, 2008"
+
+                  ]
+                  #:img "chris-martens.png"]{
+            My work focuses on connections between logic and computer science, such as (dependent) type systems, logic programming, logical frameworks, and proof assistants. I use the lens of logic to understand fundamental principles of computation, motivated by supporting elegant abstractions for practitioners of creative endeavors such as mathematics, art, and game design.
+          }
+
           @person[#:name "Daniel Patterson"
                   #:title "Assistant Teaching Professor"
                   #:e-mail "dbp@dbpmail.net"
@@ -423,7 +438,7 @@
                       "BS, Carnegie Mellon University"]
                   #:img "minsung_cho.jpg"
                   #:website "https://cho.minsung.pl"]{
-            I'm a pure math ex-pat using logic and algebra to make probabilistic programming better.
+            I'm interested in combining expressive abstractions, such as effect handlers, with languages for scalable inference and database querying.
           }
 
           @person[#:name "Gwenyth Lincroft"
