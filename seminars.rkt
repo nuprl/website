@@ -80,7 +80,21 @@
     ;;  "WVH 366"
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
-    
+    (seminar
+      "fallin-wasm"
+      "wevaling the wasms: AOT JS Compilation (or: Stuffing a Dynamic Language onto a Very Static Platform)"
+      "Chris Fallin"
+      "https://cfallin.org/"
+      "Fastly"
+      (datetime 2024 05 16 12 00)
+      "WVH 366"
+      @list{
+            @p{WebAssembly (Wasm) is a simple, formally specified, low-level bytecode format that is designed to be a good compilation target for statically-typed languages such as C, C++, and Rust (among others). It has excellent sandboxing properties, and has thus seen adoption in applications where untrusted user code must run. Unfortunately, the story for dynamically-typed (and otherwise highly dynamic) languages such as JavaScript running on Wasm-based platforms is less well-developed: the state of the art is to embed an interpreter within a Wasm module and package it with bytecode.}
+            @p{In this talk, I walk through (i) background on Wasm-based platforms and why they are attractive; (ii) difficulties that Wasm, as a highly static environment, presents to languages traditionally accelerated by a JIT compiler; and (iii) outline one path to achieve ahead-of-time compilation of such languages to Wasm modules without JIT.}
+            @p{The key insight of this work is that WebAssembly provides a novel opportunity to apply partial evaluation to get a compiler "for free" out of an interpreter. I will outline how we first developed and upstreamed a new high-performance interpreter tier in the SpiderMonkey JS engine, then developed a partial evaluator called "weval" for Wasm that, together with the upstreamed interpreter with minimal changes, produces fully ahead-of-time-compiled code from JS source, encapsulating all remaining dynamism in the inline-cache mechanism. This results in a ~2x speedup overall, with ~4x on some microbenchmarks and potential for higher.}}
+      @list{
+            @p{Chris is a software engineer at Fastly, where he works on WebAssembly-related technology involving Cranelift. Previously, he was at Mozilla, where he worked on Firefox's SpiderMonkey JS just-in-time compiler and Cranelift. Before joining Mozilla, he earned a PhD at Carnegie Mellon University, where he studied compilers, static and dynamic analysis, and before that, CPU microarchitecture.}})
+
     (seminar
     	"hsu-probsep"
 	"Separation Logics for Probabilistic Programs"
@@ -159,25 +173,25 @@ poorly, if at all.}
 	(datetime 2022 11 18 12 00)
 	"WVF 118 and Zoom"
 	@list{
-	  @p{Noninterference guarantees that an attacker cannot infer secrets by interacting with a program.  
-	  An information flow control (IFC) type system asserts noninterference by tracking the level of information learned and 
-	  disallowing leakage to parties of lesser or unrelated level.  In this talk, I explore session types as an enabler for 
-	  tracking the flow of information. Session types stipulate according to which protocol messages must be exchanged along 
-	  channels connecting concurrently executing processes (or threads).  I develop an IFC type system for linear session-typed process 
-	  calculus that employs possible worlds from hybrid logic to reason about security levels.  To prove that well-typed programs in the 
-	  resulting language ensure noninterference, I develop a logical relation.  I survey what the main challenges in the development 
-	  are --- non-termination (because of general recursive types) and non-determinism (because of concurrency) --- and explain how to 
-	  address them.  Distinguishing features of the resulting logical relation are its interactive nature (the program interacts with its context) 
+	  @p{Noninterference guarantees that an attacker cannot infer secrets by interacting with a program.
+	  An information flow control (IFC) type system asserts noninterference by tracking the level of information learned and
+	  disallowing leakage to parties of lesser or unrelated level.  In this talk, I explore session types as an enabler for
+	  tracking the flow of information. Session types stipulate according to which protocol messages must be exchanged along
+	  channels connecting concurrently executing processes (or threads).  I develop an IFC type system for linear session-typed process
+	  calculus that employs possible worlds from hybrid logic to reason about security levels.  To prove that well-typed programs in the
+	  resulting language ensure noninterference, I develop a logical relation.  I survey what the main challenges in the development
+	  are --- non-termination (because of general recursive types) and non-determinism (because of concurrency) --- and explain how to
+	  address them.  Distinguishing features of the resulting logical relation are its interactive nature (the program interacts with its context)
 	  and the use of an observation index (as opposed to a step index or later modality).  The latter ensures compositionality despite concurrency.}
 	}
 	@list{
-	  @p{Stephanie Balzer is an Assistant Research Professor in the Principles of Programming group at CMU.  
-	  Her research is concerned with compositional verification of concurrent programs, using logic and type 
+	  @p{Stephanie Balzer is an Assistant Research Professor in the Principles of Programming group at CMU.
+	  Her research is concerned with compositional verification of concurrent programs, using logic and type
 	  systems, logical relations, and verification logics.}
 	  })
 
 
-    (seminar 
+    (seminar
       "cogumbreiro-tbd"
       "Checking Data-Race Freedom of GPU Kernels, Compositionally"
       "Tiago Cogumbreiro"
@@ -186,7 +200,7 @@ poorly, if at all.}
       (datetime 2022 11 4 12 00)
       "WVF 118 and Zoom"
       @list{
-      	@p{GPUs offer parallelism as a commodity, but they are difficult to programcorrectly. Static analyzers that guarantee data-race freedom 
+      	@p{GPUs offer parallelism as a commodity, but they are difficult to programcorrectly. Static analyzers that guarantee data-race freedom
 	(DRF) areessential to help programmers establish the correctness of theirprograms (kernels). However, existing approaches produce too
 many false alarms and struggle to handle larger programs. To address
 these limitations we formalize a novel compositional analysis for DRF,
@@ -206,7 +220,7 @@ Tiago was a postdoctoral researcher at the Georgia Institute of Technology and
 Rice University, supervised by Professor Vivek Sarkar, and a research assistant
 at Imperial College London, supervised by Professor Nobuko Yoshida. Tiago
 obtained a PhD from the University of Lisbon, Portugal.}})
-    (seminar 
+    (seminar
       "dracordon-val"
       "Val Programming Language"
       "Dimitri Racordon"
@@ -214,7 +228,7 @@ obtained a PhD from the University of Lisbon, Portugal.}})
       "Northeastern University"
       (datetime 2022 10 21 12 00)
       "WVF 118 and Zoom"
-      @list{ 
+      @list{
       	@p{Val is a zero-cost abstraction language based on two of the best ideas behind C++: generic programming and first-class value semantics. Unlike C++, however, Val achieves memory safety without resorting to defensive copying.}
 	@p{In this talk, I will explain how Val codifies best practices from modern C++ into a type system that guarantees type and memory safety while being able to express 99% of the low-level bit pushing one can write in C++ with the same predictable efficiency. I will also attempt to convince you that you don't need neither pointers, references, nor sophisticated lifetime annotations to get there.}
       }
@@ -1740,7 +1754,7 @@ a Dr. sc. ETH in 2012.
               and on @a[href: "https://northeastern.zoom.us/j/98598689387?pwd=Z0tyT2FFdFVsZGFKbDltMjRhS095Zz09"]{Zoom}
               on Fridays from 11:00am-12:00pm (ET).
               The @a[href: "http://lists.ccs.neu.edu/pipermail/pl-seminar"]{mailing list} is public.
-              A calendar 
+              A calendar
 	      (@a[href: "https://calendar.google.com/calendar/embed?src=k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com&ctz=America%2FNew_York"]{HTML}
 		| @a[href: "https://calendar.google.com/calendar/ical/k4cg1vgb3l2n8r2ph4t01dmtpc%40group.calendar.google.com/public/basic.ics"]{iCal})
               is available for your convenience. (Note: We temporarily switched to a new calendar at the start of Fall 2021, but we reverted that change. This link is current!)}}}
