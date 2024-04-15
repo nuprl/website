@@ -86,7 +86,7 @@
       "Chris Fallin"
       "https://cfallin.org/"
       "Fastly"
-      (datetime 2024 05 16 12 00)
+      (datetime 2024 04 16 12 00)
       "WVH 366"
       @list{
             @p{WebAssembly (Wasm) is a simple, formally specified, low-level bytecode format that is designed to be a good compilation target for statically-typed languages such as C, C++, and Rust (among others). It has excellent sandboxing properties, and has thus seen adoption in applications where untrusted user code must run. Unfortunately, the story for dynamically-typed (and otherwise highly dynamic) languages such as JavaScript running on Wasm-based platforms is less well-developed: the state of the art is to embed an interpreter within a Wasm module and package it with bytecode.}
