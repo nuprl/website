@@ -81,6 +81,33 @@
     ;;  @list{@p{ABSTRACT}}
     ;;  @list{@p{BIO}})
     (seminar
+      "jin-python"
+      "Making CPython Faster: It's interpreters all the way down!"
+      "Ken Jin"
+      ""
+      "National University of Singapore"
+      (datetime 2024 05 21 12 00)
+      "WVH 366"
+      @list{
+            @p{Python is a popular programming language used worldwide. CPython is its reference implementation, written in C. There has been a multi-year effort to speed up CPython, starting from version 3.11. In this talk, I'll cover what we've done. Specifically, this talk will cover specializing/quickening interpreters, inline caching, JIT compilers, abstract interpretation, and DSLs (domain-specific languages). The key takeaway from this talk is how CPython uses DSLs and abstract interpretation all the way down to reduce maintenance burden and developer error.}}
+      @list{
+            @p{Ken Jin is a Python/CPython core developer and a student at the National University of Singapore. He is also a part-time software engineer at Quansight Labs. He recently wrote CPython's Tier 2 optimizer (JIT optimizer) in CPython 3.13. At Quansight Labs, he previously worked for a brief period of time on TorchDynamo, PyTorch 2.0's JIT compiler, and is now working on CPython performance work in multi-threaded environments.}})
+
+    (seminar
+      "yuan-quantum"
+      "Building the Tools to Program a Quantum Computer"
+      "Charles Yuan"
+      "https://people.csail.mit.edu/chenhuiy/"
+      "MIT"
+      (datetime 2024 05 14 12 00)
+      "WVH 366"
+      @list{
+            @p{Bringing the promise of quantum computation into reality requires not only building a quantum computer but also correctly programming it to run a quantum algorithm. To obtain asymptotic advantage over classical algorithms, quantum algorithms rely on the ability of data in quantum superposition to exhibit phenomena such as interference and entanglement. In turn, an implementation of the algorithm as a program must correctly orchestrate these phenomena in the states of qubits. Otherwise, the algorithm would yield incorrect outputs or lose its computational advantage.}
+            @p{Given a quantum algorithm, what are the challenges and costs to realizing it as an executable program? In this talk, I answer this question by showing how basic programming abstractions – such as data structures and control flow – upon which many quantum algorithms rely can fail to work correctly or efficiently on a quantum computer. I then show how we can leverage insights from programming languages to re-invent these abstractions to meet the demands of quantum algorithms. This approach holds out a promise of expressive and efficient tools for programming a quantum computer.}}
+      @list{
+            @p{Charles Yuan is a Ph.D. student at MIT CSAIL working with Prof. Michael Carbin. His current research examines the challenges of programming quantum computers and other emerging models of computation. His work has appeared in the ACM SIGPLAN POPL, OOPSLA, and PLDI conferences and has been recognized with the SIGPLAN Distinguished Artifact Award and the CQE-LPS Doc Bedard Fellowship.}})
+
+    (seminar
       "fallin-wasm"
       "wevaling the wasms: AOT JS Compilation (or: Stuffing a Dynamic Language onto a Very Static Platform)"
       "Chris Fallin"
