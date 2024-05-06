@@ -270,15 +270,6 @@
 
         @div[class: "container"]{
 
-          @person[#:name "Ming-Ho Yee"
-                  #:title "Advisor: Arjun Guha"
-                  #:e-mail "mhyee@ccs.neu.edu"
-                  #:website "http://mhyee.com/"
-                  #:history @list["Joined Northeastern, 2016"]
-                  #:img "yee-crop.jpg"]{
-            I'm interested in programming language design and implementation, as well as static program analysis.
-          }
-
           @person[#:name "Michael Ballantyne"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "michael.ballantyne@gmail.com"
@@ -709,6 +700,10 @@
                         #:personal-site "https://a.pelenitsyn.top"
                         #:extra "(Purdue University)"
                         #:dissertation "https://a.pelenitsyn.top/Papers/2023-dissertation.pdf")
+              @(alumnus "Ming-Ho Yee" #:year 2024
+                        #:dissertation "https://hdl.handle.net/2047/D20653005"
+                        #:personal-site "https://mhyee.com/"
+                        #:extra "(Meta)")
 
               ]}}
 
