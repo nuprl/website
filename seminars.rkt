@@ -91,7 +91,7 @@
       @list{
             @p{Python is a popular programming language used worldwide. CPython is its reference implementation, written in C. There has been a multi-year effort to speed up CPython, starting from version 3.11. In this talk, I'll cover what we've done. Specifically, this talk will cover specializing/quickening interpreters, inline caching, JIT compilers, abstract interpretation, and DSLs (domain-specific languages). The key takeaway from this talk is how CPython uses DSLs and abstract interpretation all the way down to reduce maintenance burden and developer error.}}
       @list{
-            @p{Ken Jin is a Python/CPython core developer and a student at the National University of Singapore. He is also a part-time software engineer at Quansight Labs. He recently wrote CPython's Tier 2 optimizer (JIT optimizer) in CPython 3.13. At Quansight Labs, he previously worked for a brief period of time on TorchDynamo, PyTorch 2.0's JIT compiler, and is now working on CPython performance work in multi-threaded environments.}})
+            @p{Ken Jin is a Python/CPython core developer and a student at the National University of Singapore. He is also a part-time software engineer at Quansight Labs. He recently wrote CPython's Tier 2 optimizer (JIT optimizer) in CPython 3.13. At Quansight Labs, he previously worked for a brief period of time on TorchDynamo, PyTorch 2's JIT compiler, and is now working on CPython performance work in multi-threaded environments.}})
 
     (seminar
       "yuan-quantum"
