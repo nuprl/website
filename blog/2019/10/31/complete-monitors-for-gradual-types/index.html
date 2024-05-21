@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Complete Monitors for Gradual Types</title>
+    <meta name="description" content="Syntactic type soundness is too weak to tell apart different ways of running  a program that mixes typed and untyped code. Complete monitoring is a stronger property that captures a meaningful  distinction -- a language satisfies complete monitoring iff i...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="migratory typing, gradual typing, complete monitoring, extended abstract, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/">
+    <link rel="next" href="/blog/2019/09/10/four-kinds-of-scoping-in-r/">
+    <link rel="prev" href="/blog/2019/12/12/prl-offsite-2019-retrospective/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Complete Monitors for Gradual Types</h1>
+    <p class='date-and-tags'>
+<time datetime="2019-10-31" pubdate="true">2019-10-31</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/complete-monitoring.html">complete monitoring</a>, <a href="/blog/tags/extended-abstract.html">extended abstract</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Syntactic type soundness is too weak to tell apart different ways of running  a program that mixes typed and untyped code. Complete monitoring is a stronger property that captures a meaningful  distinction &mdash; a language satisfies complete monitoring iff it checks  all interactions between typed and untyped code.</p>
+<!-- more-->
+
+<blockquote>
+ <p>Note: this post is an extended abstract for the paper <em>Complete Monitors for Gradual Types</em> by Ben Greenman, Matthias Felleisen, and Christos Dimoulas. For the full paper, proofs, and slides, <a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gfd-oopsla-2019">click here</a>.</p></blockquote>
+
+<h3 id="example-clickable-plot">Example: Clickable Plot</h3>
+
+<p>The program below has a subtle bug. Can you find it?</p>
+
+<p><img src="/img/complete-monitoring-0.png" alt="Untyped client code, a typed API, and untyped library code." /></p>
+
+<p>First of all, this pseudocode program combines three chunks of code:</p>
+
+<ul>
+ <li>
+  <p>On the left, an <strong>untyped</strong> client script defines a function <code>h</code> that expects  a pair of numbers and returns an image. The client uses this function to  create a <code>ClickPlot</code> object, and then displays the plot &mdash; ideally in a new  GUI window.</p></li>
+ <li>
+  <p>In the center, a <strong>typed</strong> API file describes a <code>ClickPlot</code> object as  something with one constructor and two methods. The constructor expects  a function; according to the type, such functions can expect a pair of  numbers and must compute an image. The <code>mouseHandler</code> method expects  a <code>MouseEvt</code> object and returns nothing. The <code>show</code> method expects no arguments  and returns nothing. (Presumably, these methods have side effects.)</p></li>
+ <li>
+  <p>On the right, an <strong>untyped</strong> library module implements a <code>ClickPlot</code> object.  Most of the code is omitted (<code>...</code>), but the <code>mouseHandler</code> method sends  its input directly to the <code>onClick</code> callback.</p></li></ul>
+
+<p>The <strong>bug</strong> is in the API &mdash; in the type <code>([N, N]) =&gt; Image</code>. This type promises that a given function can expect a pair of numbers,  and indeed the client function <code>h</code> expects a pair. But the library code on the right sends a <code>MouseEvt</code> object.</p>
+
+<p>What happens when we run this program in a type-sound mixed-typed language? Does <code>h</code> receive the invalid input?</p>
+
+<p>As it turns out, type soundness cannot say. A type sound language may choose to enforce or ignore the fact that the  API promises a pair of numbers to the client.</p>
+
+<h3 id="type-soundness-is-not-enough">Type Soundness is Not Enough</h3>
+
+<p>Sound types are statements about the behavior of a program. A normal type soundness theorem for a typed language says that a well-typed  program can either compute a value of the same type, compute forever (diverge),  or stop with an acceptable error (perhaps division by zero). No other behaviors are possible.</p>
+
+<blockquote>
+ <p><strong>Classic Type Soundness</strong></p>
+ <p>If <code>e : T</code> then one of the following holds:</p>
+ <ul>
+  <li><code>e --&gt;* v</code> and <code>v : T</code></li>
+  <li><code>e</code> diverges</li>
+  <li><code>e --&gt;* OkError</code></li></ul></blockquote>
+
+<p>A mixed-typed language needs two &ldquo;type soundness&rdquo; theorems:  one for typed code and one for untyped code. The <strong>typed</strong> soundness theorem can resemble a classic theorem. The <strong>untyped</strong> soundness theorem is necessarily a weaker statement due to  the lack of types:</p>
+
+<blockquote>
+ <p><strong>Mixed-Typed Soundness</strong></p>
+ <p>If <code>e : T</code> then one of the following holds:</p>
+ <ul>
+  <li><code>e --&gt;* v</code> and <code>v : T</code></li>
+  <li><code>e</code> diverges</li>
+  <li><code>e --&gt;* OkError</code></li></ul>
+ <p>And if <code>e</code> is untyped then one of the following holds:</p>
+ <ul>
+  <li><code>e --&gt;* v</code> and <code>v</code> is an untyped value</li>
+  <li><code>e</code> diverges</li>
+  <li><code>e --&gt;* OkError</code></li></ul></blockquote>
+
+<p>Now we can see why mixed-typed soundness is not strong enough to guarantee that  the callback <code>h</code> in the code above receives a pair value. We have an <strong>untyped</strong> function called from an <strong>untyped</strong> context &mdash; since  there are no types sitting right there, type soundness has nothing to say  except that the untyped code can expect an untyped value!</p>
+
+<p><img height="200px" src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client." /></p>
+
+<p>Nevertheless, this channel of communication between the library and client  arose through the typed API. One might expect the type <code>[N, N]</code> to restrict the values that can flow across  the channel; indeed, if types really are statements about the behavior of a program,  then the channel needs to be protected.</p>
+
+<p>The question is: what formal property separates languages thet check  all typed/untyped channels of communication (whether direct or derived)? One answer is complete monitoring.</p>
+
+<h3 id="complete-monitoring">Complete Monitoring</h3>
+
+<p>A mixed-typed language satisfies complete monitoring iff evaluation never  lets a value flow un-checked across a type boundary. To make this idea precise, we need to enrich the syntax of the language  with a specification of <em>ownership</em> to say what parts of the program are  responsible for different values, and to say how evalution changes  responsibilities. Relative to a specification, complete monitoring states that every expression  that arises during evaluation is made up of parts that each have a single  owner.</p>
+
+<blockquote>
+ <p><em>Complete Monitoring</em></p>
+ <p>For all well-formed <code>e</code> and all <code>e'</code>, if <code>e --&gt;* e'</code> then every subexpression of <code>e'</code> has a unique owner.</p></blockquote>
+
+<p>This property separates our two behaviors for the Clickable Plot code. A language that satisfies complete monitoring enforces the API types with  a runtime check. A language that merely satisfies type soundness may skip these checks.</p>
+
+<h3 id="an-aid-to-debugging">An Aid to Debugging</h3>
+
+<p>The question raised by the Clickable Plot example is whether a language can  <strong>detect</strong> one mismatch between a type and a value. A language that satisfies complete monitoring detects all such mis-matches. But we can say more. If a mismatch occurs, then programmer knows exactly where to start debugging  &mdash; either the type is an incorrect specification, or the given value is  flawed. In other words, complete monitoring implies a concise 2-party explanation  for every type mismatch.</p>
+
+<p>The paper generalizes this goal of explaining a mismatch for languages  that fail to satisfy complete monitoring. There may be 2N parties to blame thanks to un-checked channels of communication,  and we want to be certain to report all these parties and no false positives.</p>
+
+<p>Also in the paper, you can find:</p>
+
+<ul>
+ <li>a model of ownership, clear <em>laws</em> for how ownership changes during evaluation;</li>
+ <li>examples of how to systematically add ownership to an operational semantics  to attempt a proof of complete monitoring;</li>
+ <li>definitions for <strong>blame soundness</strong> and <strong>blame completeness</strong>;</li>
+ <li>an analysis of three semantics, which correspond to <a href="https://docs.racket-lang.org/ts-reference/index.html">Typed Racket</a>,  <a href="http://hdl.handle.net/2022/23172">Transient Reticulated</a>, and a compromise;</li>
+ <li>and discussion of an alternative, heap-based model of ownership.</li></ul>
+
+<p>Paper: <a href="https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf">https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf</a></p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2019/12/12/prl-offsite-2019-retrospective/">&larr; <em>PRL Offsite 2019 Retrospective</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/"><em>Four Kinds of Scoping in R</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

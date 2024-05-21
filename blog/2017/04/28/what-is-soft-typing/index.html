@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>What is Soft Typing?</title>
+    <meta name="description" content="...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="HOPL, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/04/28/what-is-soft-typing/">
+    <link rel="next" href="/blog/2017/04/25/prl-at-snapl-17/">
+    <link rel="prev" href="/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>What is Soft Typing?</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-04-28" pubdate="true">2017-04-28</time> :: <span class="tags"><a href="/blog/tags/HOPL.html">HOPL</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+  <!-- more-->
+
+<p>A soft type system rewrites programs and meets a few <em>design criteria</em>.</p>
+
+<hr />
+
+<h2 id="what-are-the-design-criteria">What are the Design Criteria?</h2>
+
+<p>According to Mike Fagan&rsquo;s 1991 <a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers">dissertation</a>,  a soft type system must:</p>
+
+<ul>
+ <li>accept all <em>syntactically correct</em> programs as input;</li>
+ <li>produce equivalent, <em>memory-safe</em> programs as output; and</li>
+ <li>be <em>unobtrusive</em></li></ul>
+
+<h3 id="important-details">Important details:</h3>
+
+<ul>
+ <li>In this context, <em>memory safe</em> basically means &ldquo;no segfaults&rdquo;.  Programs output by a soft type system should be as safe as statically-typed  Java programs or dynamically-typed Python programs.</li>
+ <li>Fagan characterizes <em>unobtrusive</em> with two general principles:</li>
+ <li><em>minimal text principle</em> : the type checker should work without any programmer-supplied annotations</li>
+ <li><em>minimal failure principle</em> : the type checker should assign <em>useful</em> types to <em>idiomatic</em> programs  (basically, don&rsquo;t just say that every expression has &ldquo;unknown&rdquo; or &ldquo;top&rdquo; type)</li></ul>
+
+<h2 id="why-would-i-want-to-use-a-soft-type-system">Why would I want to use a soft type system?</h2>
+
+<p>If you:</p>
+
+<ul>
+ <li>like dynamic typing</li>
+ <li>want some <em>benefits</em> of static typing</li>
+ <li>refuse to (or <em>cannot</em>!) change your code to satisfy a type checker</li></ul>
+
+<p>then Soft Typing is a perfect fit. You just need to find/build a soft type checker.</p>
+
+<h3 id="clarification">Clarification</h3>
+
+<p>The <em>benefits</em> of static typing that a soft type system can give are:</p>
+
+<ul>
+ <li>early detection of typos and simple logical errors</li>
+ <li>documentation, through (inferred) type signatures</li>
+ <li>speed, when the types can justify removing a runtime safety check</li></ul>
+
+<p>See Andrew Wright&rsquo;s 1994 <a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers">dissertation</a> for proof.</p>
+
+<h2 id="can-i-use-andrew-wrights-soft-type-system">Can I use Andrew Wright&rsquo;s soft type system?</h2>
+
+<p>Not sure, but you may download the code for it:</p>
+
+<ul>
+ <li><a href="https://github.com/nuprl/softscheme">https://github.com/nuprl/softscheme</a></li></ul>
+
+<h2 id="please-explain-fagans--wrights-soft-types">Please explain Fagan&rsquo;s / Wright&rsquo;s soft types</h2>
+
+<p>Types <code>t</code> are made of constructors <code>k</code>, flags <code>f</code>, and type variables <code>a</code>. The grammar for types is basically:</p>
+
+<pre><code>  t ::= a | (k f t ...) U t
+  k ::= Int | Pair | -&gt;
+  f ::= ++ | -- | b
+  a ::= a0 | a1 | a2 | a3 | ....
+  b ::= b0 | b1 | b2 | b3 | ....</code></pre>
+
+<p>where:</p>
+
+<ul>
+ <li><code>U</code> is just a symbol, represents &ldquo;union&rdquo;</li>
+ <li><code>a</code> is a type variable; there are infinitely many type variables</li>
+ <li><code>b</code> is a flag variable; the set of flag variables is also infinte</li></ul>
+
+<p>There are also some rules for types to be well-formed.</p>
+
+<p>Here are two well-formed types:</p>
+
+<pre><code>(Int ++) U a0
+
+(-&gt; ++ ((Int b0) U a1)
+       ((Int ++) U a2)) U a3</code></pre>
+
+<p>Here are two types that match the grammar, but are <strong>NOT</strong> well-formed:</p>
+
+<pre><code>(Int ++ a0) U a1
+
+(-&gt; --) U a2</code></pre>
+
+<p>Finally, some intuition:</p>
+
+<ul>
+ <li>A constructor <code>k</code> is like a behavior,</li>
+ <li>a type <em>describes</em> the behaviors a value can have.</li>
+ <li>The description is like a bitvector of &ldquo;yes&rdquo;, &ldquo;no&rdquo;, or &ldquo;maybe&rdquo; for each possible behavior.</li>
+ <li>A flag variable is the way to say &ldquo;maybe&rdquo;.</li>
+ <li>Every type ends with a type variable because every typed expression might  flow to a context that expects a more general type.</li></ul>
+
+<p>The type and flag variables let Fagan and Wright encode subtyping using  polymorphism. It&rsquo;s a very cool idea, introduced in Didier Remy&rsquo;s  <a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing/papers">POPL 1989 paper</a>. But it adds a learning curve, and has some drawbacks for type inference.</p>
+
+<h2 id="stream-of-consciousness-notes-from-the-hopl-lecture">Stream-of-consciousness notes from the HOPL lecture</h2>
+
+<ul>
+ <li><a href="/blog/static/soft-typing.pdf">Local copy</a></li>
+ <li><a href="https://github.com/nuprl/hopl-s2017/tree/master/soft-typing">Source of Truth</a></li></ul>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/04/28/what-is-soft-typing/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/">&larr; <em>Categorical Semantics for Dynamically Typed Programming Languages</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/04/25/prl-at-snapl-17/"><em>PRL at SNAPL&rsquo;17</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

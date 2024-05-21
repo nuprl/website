@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Java and Migratory Typing</title>
+    <meta name="description" content="The _transient_ approach to migratory typing (circa 2014)  is similar to type erasure in Java (circa 2004)  in a few interesting ways....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="migratory typing, java, transient, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2018/12/02/java-and-migratory-typing/">
+    <link rel="next" href="/blog/2018/11/30/turnstile-mailing-list/">
+    <link rel="prev" href="/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Java and Migratory Typing</h1>
+    <p class='date-and-tags'>
+<time datetime="2018-12-02" pubdate="true">2018-12-02</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/java.html">java</a>, <a href="/blog/tags/transient.html">transient</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>The <em>transient</em> approach to migratory typing (circa <a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf">2014</a>)  is similar to type erasure in Java (circa <a href="https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html">2004</a>)  in a few interesting ways.</p>
+<!-- more-->
+
+<h2 id="migratory-typing">Migratory typing</h2>
+
+<p>The goal of <em>migratory typing</em> is to enrich the type system of a language  without breaking backwards compatibility. Ideally, code that uses the enriched types:</p>
+
+<ul>
+ <li>(G1) benefits from new ahead-of-time checks,</li>
+ <li>(G2) benefits from stronger run-time guarantees, and</li>
+ <li>(G3) may interact with all kinds of existing code.</li></ul>
+
+<p>There are tradeoffs involved in the implementation of a migratory typing  system, however, and (as we will see) different implementations may focus on  different goals than the three above.</p>
+
+<p>A typical migratory typing system adds a static type checker to a dynamically  typed language (<a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/index.html">examples</a>),  but one could also extend the type system of a statically-typed language;  for example, by <a href="https://hal.inria.fr/hal-01629909v2">adding dependent types</a>. In this sense, Java 1.5.0 is a migratory typing system for pre-generics Java. The addition of generic types enabled new ahead-of-time checks and maintained backwards  compatibility with existing Java code.</p>
+
+<p>Java&rsquo;s implementation of migratory typing has some interesting things in common  with the <em>transient</em> implementation strategy recently proposed by  Michael Vitousek and collaborators (<a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf">DLS&rsquo;14</a>, <a href="https://mail.google.com/mail/u/0/h/1atrn21qlyrrh/?&amp;">POPL&rsquo;17</a>). The goal of this post is to demonstrate the connections.</p>
+
+<h2 id="erasure-migratory-typing">Erasure migratory typing</h2>
+
+<p>Before we compare Java 1.5.0 to transient, let&rsquo;s review a simpler strategy:  the <em>erasure</em> approach to migratory typing.</p>
+
+<p><a href="https://www.typescriptlang.org/">TypeScript</a> is a great (modern) example of the erasure approach. TypeScript is a migratory typing system for JavaScript. A TypeScript module gets validated by an ahead-of-time type checker and  compiles to JavaScript. After compilation, any JavaScript program may import bindings  from the generated code. Conversely, a TypeScript module may import bindings from a JavaScript module  by declaring a static type for each binding.</p>
+
+<blockquote>
+ <p>The <a href="http://definitelytyped.org/">DefinitelyTyped</a> repository provides TypeScript type definitions for many JavaScript libraries.</p></blockquote>
+
+<p>The TypeScript compiler erases types;  every type <code>T</code> in the source code translates to the universal &ldquo;JavaScript type&rdquo;. For instance, a TypeScript function declaration compiles to an untyped  JavaScript function:</p>
+
+<pre><code>(function (n0 : number, n1 : number) { return n0 + n1; })
+
+// ==(compiles to)==&gt;
+
+(function (n0, n1) { return n0 + n1; })</code></pre>
+
+<p>TypeScript satisfies goals <strong>G1</strong> and <strong>G3</strong> for a migratory typing system  because its type checker adds ahead-of-time checks and its  compiler outputs JavaScript. TypeScript does not satisfy goal <strong>G2</strong> because the compiler erases types. In terms of the example above, the compiled function may be invoked with any  pair of JavaScript values; the variable <code>n0</code> is not guaranteed to point  to a <code>number</code> at run-time. On one hand, this means the type annotations have no effect on the behavior  of a program &mdash; and in particular, cannot be trusted for debugging. On the other hand, it means that an experienced JavaScript programmer can  re-use their knowledge to predict the behavior of a TypeScript program.</p>
+
+<p>In an ordinary program, the run-time guarantees of TypeScript are simply  the run-time guarantees of JavaScript:</p>
+
+<ul>
+ <li>if a TypeScript expression <code>e</code> has the static type <code>T</code> and evaluates to  a value <code>v</code>,  then the only guarantee is that <code>v</code> is a valid JavaScript value  (e.g., <code>T</code> could be <code>number</code> and <code>v</code> could be an incompatible object).</li></ul>
+
+<h2 id="transient-migratory-typing">Transient migratory typing</h2>
+
+<p><a href="https://github.com/mvitousek/reticulated">Reticulated</a> is a migratory typing  system for Python that follows a <em>transient</em> implementation strategy. A Reticulated module gets type-checked and compiles to a Python module that  defends itself from certain type-invalid inputs through the use of  assertions that run in near-constant time. The type-checking addresses goal <strong>G1</strong>,  the compilation to Python provides interoperability (goal <strong>G3</strong>),  and the assertions partially meet goal <strong>G2</strong>.</p>
+
+<blockquote>
+ <p>These <em>certain</em> inputs are the ones that would cause a standard typed operational semantics to reach an undefined state. For a discussion of <em>near-constant</em>, see <a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"><em>On the Cost of Type-Tag Soundness</em>, section 2</a>.</p></blockquote>
+
+<p>For example, here is a Reticulated function  that computes the average of a list of numbers:</p>
+
+<pre><code># Reticulated (commit e478343)
+def average(nums : List(Float)) -&gt; Float:
+  if ns:
+    return sum(ns) / len(ns)
+  else:
+    raise ValueError("average: expected non-empty list")</code></pre>
+
+<p>and here is the Python code it compiles to:</p>
+
+<pre><code>from retic.runtime import *
+from retic.transient import *
+from retic.typing import *
+
+def average(nums):
+    check_type_list(nums)
+    if ns:
+        return check_type_float((check_type_function(sum)(ns) / check_type_function(len)(ns)))
+    else:
+        raise check_type_function(ValueError)('average: expected non-empty list')</code></pre>
+
+<blockquote>
+ <p>Note: the Reticulated syntax for type annotations is similar to the one proposed in <a href="https://www.python.org/dev/peps/pep-0484/">PEP 484</a>, but not identical. For example, Reticulated does not require forward references to be embedded in strings.</p></blockquote>
+
+<p>The Reticulated compiler removes all type annotations and inserts <code>check_type</code>  assertions throughout the code. In <code>average</code>, these assertions check that: (1) the input is a list,  (2) the output is a <code>float</code>, (3) and the names <code>sum</code> <code>len</code> and  <code>ValueError</code> point to callable values. That&rsquo;s all. The assertions <strong>do not check</strong> that <code>nums</code> contains only floating-point  numbers.</p>
+
+<blockquote>
+ <p>The assertions also do not check that the function bound to <code>sum</code> is defined for a single argument, which is arguably a bug. Scaling a model to an implementation is always challenging.</p></blockquote>
+
+<p>If <code>nums</code> contains something other than floating point numbers, then the  call to <code>average</code> may cause <code>sum</code> to raise an exception or it may silently  compute a nonsense result. The behavior depends on the implementation of <code>sum</code> in the same way that  the behavior of a TypeScript function depends on any JavaScript functions  that it invokes.</p>
+
+<p>Reticulated does not erase types, nor does it fully enforce types. Every type in a Reticulated module translates to its  top-level type constructor <code>C(T)</code>, e.g.:</p>
+
+<pre><code>  C(Float)                = Float
+  C(List(Float))          = List
+  C(List(Float) -&gt; Float) = -&gt;</code></pre>
+
+<p>Consequently, Reticulated has a slightly stronger run-time guarantee than Python:</p>
+
+<ul>
+ <li>if <code>e</code> is an expression with static type <code>T</code> that evaluates to a value <code>v</code>,  then <code>v</code> is guaranteed to have a top-level shape that matches the <code>C(T)</code>  constructor.</li></ul>
+
+<h2 id="java-migratory-typing">Java migratory typing</h2>
+
+<p>Java 1.5.0 added <a href="https://www.jcp.org/en/jsr/detail?id=14">generic types</a>  to the Java 1.4.0 type system. The benefit of generics is that a programmer can:  write one class definition,  use the definition in a few different contexts,  and receive specific feedback from the type checker in each context.</p>
+
+<h3 id="review-generic-types">Review: generic types</h3>
+
+<p>Suppose we want to write a <code>Box</code> class that holds some kind of value;  the value could be an <code>Integer</code> or a <code>String</code> or anything else. Here is a pre-generics definition:</p>
+
+<pre><code>class Box {
+  private Object val;
+
+  public Box(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}</code></pre>
+
+<p>With this definition is it possible to make boxes that hold different types  of values:</p>
+
+<pre><code>// good!
+Box iBox = new Box(new Integer(4));
+Box sBox = new Box(new String("X"));</code></pre>
+
+<p>but it is also possible to &ldquo;change the type&rdquo; of the contents of a <code>Box</code>:</p>
+
+<pre><code>// maybe bad!
+iBox.set(new String("not a number"));</code></pre>
+
+<p>and some calls to <code>get</code> must be followed by a type cast:</p>
+
+<pre><code>// annoying!
+((String) sBox.get()).charAt(0);</code></pre>
+
+<hr />
+
+<p>With generics, we can give a name (e.g. <code>ValType</code>) to &ldquo;the type of the value inside a box&rdquo;:</p>
+
+<pre><code>class GBox&lt;ValType&gt; {
+  private ValType val;
+
+  public GBox(ValType val) { this.set(val); }
+
+  public void set(ValType val) { this.val = val; }
+
+  public ValType get() { return this.val; }
+}</code></pre>
+
+<p>and now we can tell the type checker to check different boxes differently (satisfying goal <strong>G1</strong>):</p>
+
+<pre><code>GBox&lt;Integer&gt; iBox = new GBox&lt;Integer&gt;(new Integer(0));
+GBox&lt;String&gt; sBox = new GBox&lt;String&gt;(new String("A"));
+
+// iBox.set(new String("not a number")); // Type Error, good!
+
+sBox.get().charAt(0); // no cast, good!</code></pre>
+
+<h3 id="backwards-compatibility--danger">Backwards compatibility &amp; danger</h3>
+
+<p>Java generics are backwards-compatible with older code (goal <strong>G3</strong>). This means that pre-generics code can interact with instances of a generic  class. Vice-versa, generic code can interact with pre-generics classes. Since pre-generics code is not aware of type parameters, these interactions  are potentially unsafe. For example, a pre-generics method can change the type of a <code>GBox</code>:</p>
+
+<pre><code>// Java 1.4.0 method
+public static void evil(GBox b) { b.set(666); }
+
+// Java 1.5.0 method
+public static void test() {
+  GBox&lt;String&gt; sBox = new GBox&lt;String&gt;(new String("A"));
+  evil(sBox); // OK, but generates unchecked warning
+  sBox.get().charAt(0);
+}</code></pre>
+
+<p>The code above passes the type checker (with a warning about the <code>evil</code> method),  and so it <em>seems</em> as though running the code will run the nonsense  method call <code>666.charAt(0)</code> and lead to evil behavior. The actual result, however, is a cast error immediately after the call  <code>sBox.get()</code> returns.</p>
+
+<p>Based on the cast error, we can tell that  the compiler does not trust the type <code>GBox&lt;String&gt;</code> and  inserts a run-time check that the result of the <code>.get()</code> is a string object.</p>
+
+<blockquote>
+ <p>&ldquo;Calling legacy code from generic code is inherently dangerous; once you mix generic code with non-generic legacy code, all the safety guarantees that the generic type system usually provides are void.&rdquo; <a href="https://www.oracle.com/technetwork/java/javase/generics-tutorial-159168.pdf">Generics in the Java Programming Language, Section 6.1</a></p></blockquote>
+
+<h3 id="java-type-erasure">Java Type Erasure</h3>
+
+<p>In order to support pre-generics and post-generics code on the same  <a href="https://docs.oracle.com/javase/specs/jvms/se11/html/index.html">virtual machine</a>,  the Java compiler <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.6">erases</a>  generic type parameters after type-checking. Everywhere that the compiled code depends on an erased type, such as the  <code>String</code> in <code>GBox&lt;String&gt;</code> above, Java adds a cast to prove to the Java Virtual Machine (JVM)  that the erased bytecode is type-safe. (A smarter JVM type system might be able to prove that some casts are  unnecessary via <a href="https://www2.ccs.neu.edu/racket/pubs/icfp10-thf.pdf">occurrence typing</a>.)</p>
+
+<p>After erasure, the <code>GBox&lt;ValType&gt;</code> class declaration loses its parameter:</p>
+
+<pre><code>// Erase `ValType`, replace with `Object`
+class GBox {
+  private Object val;
+
+  public GBox(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}</code></pre>
+
+<p>and the client code gains a cast:</p>
+
+<pre><code>GBox sBox = new GBox(new String("A"));
+
+((String) sBox.get()).charAt(0);</code></pre>
+
+<p>So far, so good. But it&rsquo;s worth noting that erasure can cause problems with Java arrays. An array needs to know the run-time type of its elements, so the following &ldquo;natural&rdquo; definition of an <code>ArrayList</code> is not permitted:</p>
+
+<pre><code>class ArrayList&lt;T&gt; {
+  private T[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new T[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    // TODO bounds check
+    return data[ix]
+  }
+
+  // ....
+}</code></pre>
+
+<p>The trouble is that <code>T</code> does not say anything about the data that a new array needs to handle:</p>
+
+<pre><code>ArrayList.java:6: error: generic array creation
+    data = new T[capacity];</code></pre>
+
+<p>The only work-arounds require an array of objects and unchecked casts. One solution is to unsafely cast the array to the generic type:</p>
+
+<pre><code>  // possibly dangerous, if `data` is aliased to an `Object[]`
+  public ArrayList(int capacity) {
+    data = (T[]) new Object[capacity];
+    size = 0;
+  }</code></pre>
+
+<p>The other is to unsafely cast array elements in the <code>get</code> method, and elsewhere:</p>
+
+<pre><code>class ArrayList&lt;T&gt; {
+  private Object[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new Object[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    boundsCheck(ix);
+    return (T) data[ix];
+  }
+
+  // ....
+}</code></pre>
+
+<p>Both may potentially lead to <a href="http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ050">heap pollution</a>.</p>
+
+<blockquote>
+ <p>"The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.</p>
+ <p>"Ultimately, the most important motivation for this decision is compatibility with existing code." <a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7">Java Language Specification, section 4.7</a></p></blockquote>
+
+<h3 id="run-time-guarantees">Run-time guarantees</h3>
+
+<p>By contrast to Reticulated&rsquo;s <code>C(T)</code> transformation, the following <code>G(T)</code>  transformation describes generic-type erasure,  where <code>T&lt;T1&gt;</code> describes a type <code>T</code> with parameter <code>T1</code>  and <code>A[T1, T2]</code> describes a type variable <code>A</code> with lower bound <code>T1</code> and upper bound <code>T2</code>:</p>
+
+<pre><code>  G(T&lt;T1&gt;)     = G(T)
+  G(A[T1, T2]) = G(T1)
+  G(T)         = T      otherwise</code></pre>
+
+<p>If generic-type erasure results in a type mismatch (e.g., in <code>sBox.get().charAt(0)</code> above),  the compiler inserts a cast. The inserted casts led to the run-time error in the previous example, and  provide the following run-time guarantee:</p>
+
+<ul>
+ <li>if <code>e</code> is an expression with static type <code>T</code> that evaluates to a value <code>v</code>,  then <code>v</code> is guaranteed to match the (bytecode) type <code>G(T)</code></li></ul>
+
+<h2 id="discussion">Discussion</h2>
+
+<p>TypeScript, Reticulated Python, and Java 1.5.0 each improved the type system  of an existing language, but maintained backwards compatibility with existing  code. The name <a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/">migratory typing</a>  describes this kind of language extension.</p>
+
+<blockquote>
+ <p><a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/">Gradual typing</a> is a similar; a gradual type system starts with a statically-typed language and adds dynamic typing in a principled way (<a href="https://pleiad.cl/papers/2016/garciaAl-popl2016.pdf">example</a>).</p></blockquote>
+
+<p>The TypeScript team had a choice between erasing types and enforcing types. They chose to erase types and run all code (typed or untyped) at the level  of JavaScript. (Some TypeScript <a href="https://lorefnon.tech/2018/03/25/typescript-and-validations-at-runtime-boundaries/">libraries</a>, however, can enforce some types.)</p>
+
+<blockquote>
+ <p>TypeScript is not the only erasure language, nor is it the first. The oldest (I think) is <a href="http://www.softwarepreservation.org/projects/LISP/maclisp_family/">MACLISP</a>. For an erasure manifesto, see <a href="http://bracha.org/pluggableTypesPosition.pdf">Pluggable Type Systems</a>.</p></blockquote>
+
+<p>The Reticulated team faced an analogous choice, and chose to enforce the top-level  shape of values in typed code (<a href="http://homes.sice.indiana.edu/mvitouse/papers/popl17.pdf">POPL 2017</a>). It will be interesting to see if this guarantee helps developers maintain programs,  or if it is too shallow to be much use. The <a href="https://www.pyret.org/index.html">Pyret</a> language has been successful with  comparable shallow checks.</p>
+
+<blockquote>
+ <p>Note: the POPL 2017 paper advertises an &ldquo;open-world soundness&rdquo;, but I do not see how this idea is different from the older idea of soundness in a multi-language system (<a href="https://www.eecs.northwestern.edu/~robby/pubs/papers/toplas09-mf.pdf">TOPLAS 2009</a>, <a href="https://www2.ccs.neu.edu/racket/pubs/dls06-tf.pdf">DLS 2006</a>).</p></blockquote>
+
+<p>Similarly, the Java team chose to erase generic types in Java 1.5.0 and use shallow casts in the JVM. The casts around type-erased generics provide a minimal level of safety &mdash;  enough to prevent the use of a generic object from corrupting the state of a  VM instance.</p>
+
+<p>Alternatively, Java could enforce full generic types at run-time. Over the years there have been a few proposals to do so (<a href="http://gafter.blogspot.com/2006/11/reified-generics-for-java.html">example 1</a>,  <a href="https://wiki.openjdk.java.net/display/valhalla/Main">example 2</a>). The C# language has a similar type system and enforces  generics at run-time (sources:  <a href="https://mattwarren.org/2018/03/02/How-generics-were-added-to-.NET/">blog post</a>,  <a href="https://www.microsoft.com/en-us/research/publication/design-and-implementation-of-generics-for-the-net-common-language-runtime/">PLDI 2001 paper</a>,  <a href="https://dl.acm.org/citation.cfm?doid=378795.378797">backup link to paper</a>)</p>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>Thank you to <a href="https://github.com/rmculpepper">Ryan Culpepper</a> and <a href="http://users.eecs.northwestern.edu/~jesse/">Jesse Tov</a> for noticing the similarity between  Java&rsquo;s generic-type erasure and transient migratory typing. Jesse commented on an early version of this post, supplied new Java example code, and explained the trouble with generics and arrays.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2018/12/02/java-and-migratory-typing/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/">&larr; <em>The Behavior of Gradual Types: A User Study</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2018/11/30/turnstile-mailing-list/"><em>Turnstile Mailing List</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

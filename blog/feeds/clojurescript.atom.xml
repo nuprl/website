@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'clojurescript'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/clojurescript.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/clojurescript.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-clojurescript-html</id>
+ <updated>2022-01-06T17:56:08Z</updated>
+ <entry>
+  <title type="text">Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/?utm_source=clojurescript&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2022-01-06-introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript</id>
+  <published>2022-01-06T17:56:08Z</published>
+  <updated>2022-01-06T17:56:08Z</updated>
+  <author>
+   <name>Leif Andersen</name></author>
+  <content type="html">
+&lt;p&gt;
+ &lt;style&gt;.caption {  display: none; }&lt;/style&gt;&lt;/p&gt;
+
+&lt;p&gt;Visual and interactive-syntax is a type of language-oriented programming that allows developers to use, view, and edit portions of a textual program with graphics. Using interactive-syntax provides the benefits of a graphical programming language, while keeping all of the benefits of a purely textual language. For example, the following is an example of a small network embedded in a program:&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/visr-and-text.png" alt="Graphical network embedded in text" /&gt;
+ &lt;p class="caption"&gt;Graphical network embedded in text&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;Interactive-syntax is backed by human readable code; the visual components exists purely when writing and editing code. This backing means all of the tools involved in software development work with interactive-syntax extensions. For example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;version control, such as git, works with interactive-syntax;&lt;/li&gt;
+ &lt;li&gt;programs using interactive-syntax can be written and edited with your favorite  text editor or IDE;&lt;/li&gt;
+ &lt;li&gt;cut/copy/paste works with interactive-syntax using your operating system&amp;rsquo;s  native clipboard;&lt;/li&gt;
+ &lt;li&gt;code analysis tools, like diff and refactor, still work with  interactive-syntax; and&lt;/li&gt;
+ &lt;li&gt;you can use interactive-syntax in any language or environment that supports  language-oriented programming.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;To learn more about interactive-syntax, watch &lt;a href="https://www.youtube.com/watch?v=8htgAxJuK5c"&gt;this video&lt;/a&gt; or read &lt;a href="https://dl.acm.org/doi/10.1145/3428290"&gt;the accompanying paper&lt;/a&gt;.&lt;/p&gt;
+
+&lt;iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8htgAxJuK5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href="https://visr.pl"&gt;VISr (Visual and Interactive-Syntax realized) for ClojureScript&lt;/a&gt; is a practical implementation of interactive-syntax in web browsers. The VISr environment is a full-featured IDE that supports interactive-syntax components called VISrs. Additionally, the VISr environment comes with a package manager that supports &lt;a href="https://www.npmjs.com/"&gt;NPM packages&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;This article is a brief introduction to both the VISr environment and the components that make up a VISrs. It discusses how to insert a VISr into code, how to manipulate a VISr, and how to create a new types of VISr. Future articles will discuss more advanced uses such as integrating NPM packages and using VISrs in other languages.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h1 id="getting-started-with-visr"&gt;Getting started with VISr&lt;/h1&gt;
+
+&lt;p&gt;Start by going to &lt;a href="https://visr.pl"&gt;visr.pl&lt;/a&gt;, which is a web-based IDE that directly supports VISrs. Once in the IDE, press &lt;code&gt;Insert VISr&lt;/code&gt; to place a VISr at the current cursor position. This VISr contains two buttons:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;clicking the first displays the VISr&amp;rsquo;s visual representation, and&lt;/li&gt;
+ &lt;li&gt;clicking the second shows its textual representation.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/visr.png" alt="VISr" /&gt;
+ &lt;p class="caption"&gt;VISr&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;Opening the code shows that the new VISr is an instance of &lt;code&gt;visr.core/empty-visr&lt;/code&gt;, a default VISr provided by the IDE. This VISr expects a map with the key &lt;code&gt;:message&lt;/code&gt; to display in the visual view. Changing the value associated with &lt;code&gt;:message&lt;/code&gt; changes what is displayed, in this case &amp;ldquo;Endless Possibility&amp;rdquo;:&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/visr-open.png" alt="Open Visr" /&gt;
+ &lt;p class="caption"&gt;Open Visr&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember that, although this VISr is displayed graphically, it still exists as human-readable text. One way to see this text is by copying and pasting the VISr. A copy of the same VISr will appear when it is placed back into the IDE. However, pasting it into other text editors that do not natively support VISrs yields the following human readable, and editable, text:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:editor&lt;/span&gt; &lt;span class="nv"&gt;visr.core/empty-visr&lt;/span&gt;&lt;span class="p"&gt;}(&lt;/span&gt;&lt;span class="nf"&gt;visr.core/empty-visr+elaborate&lt;/span&gt; 
+                                 &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:message&lt;/span&gt; &lt;span class="s"&gt;"Endless Possibility"&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This operation works in reverse too. Writing out similar text and pasting it into &lt;a href="https://visr.pl"&gt;visr.pl&lt;/a&gt; yields its visual representation.&lt;/p&gt;
+
+&lt;h1 id="making-a-new-visr"&gt;Making a new VISr&lt;/h1&gt;
+
+&lt;p&gt;The &lt;code&gt;defvisr&lt;/code&gt; form creates a VISr type. This form expects two methods:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;a &lt;code&gt;render&lt;/code&gt; method that provides visualization and interaction when code is  edited, and&lt;/li&gt;
+ &lt;li&gt;an &lt;code&gt;elaborate&lt;/code&gt;/&lt;code&gt;elaborate-fn&lt;/code&gt; method that gives the VISr compile-time and  run-time semantics.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;The following is the signature for a simple VISr type:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;ns &lt;/span&gt;&lt;span class="nv"&gt;example.core&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;defvisr&lt;/span&gt; &lt;span class="nv"&gt;Counter&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;elaborate-fn&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="s"&gt;"TODO-elaborate"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="s"&gt;"TODO-render"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This example uses &lt;code&gt;elaborate-fn&lt;/code&gt;, a simplified version of &lt;code&gt;elaborate&lt;/code&gt; that gives the &lt;code&gt;VISr&lt;/code&gt; the same semantics as a function application. It also allows the &lt;code&gt;defvisr&lt;/code&gt; form to work in the same file as the VISr itself.&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/sig.png" alt="Example of elaborate-fn semantics" /&gt;
+ &lt;p class="caption"&gt;Example of elaborate-fn semantics&lt;/p&gt;&lt;/div&gt;
+
+&lt;h1 id="the-render-method-for-edit-time-semantics"&gt;The Render Method for Edit-Time Semantics&lt;/h1&gt;
+
+&lt;p&gt;The &lt;code&gt;render&lt;/code&gt; method is given the VISr state &lt;a href="https://clojure.org/reference/atoms"&gt;as an atom&lt;/a&gt;; updating this atom also updates the code to reflect the new state. The return value for &lt;code&gt;render&lt;/code&gt; must be a &lt;a href="https://reagent-project.github.io/"&gt;Reagent form&lt;/a&gt; that is the visual view for the VISr. A render method for a counter VISr might look as follows:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:button&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:on-click&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;swap!&lt;/span&gt; &lt;span class="nv"&gt;this&lt;/span&gt; &lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And in action:&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/simpl-count.png" alt="Simple Count Example" /&gt;
+ &lt;p class="caption"&gt;Simple Count Example&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;This VISr doesn&amp;rsquo;t match the theme of the page; it also requires the state to be a single number. Using &lt;a href="https://react-bootstrap.github.io/"&gt;React Bootstrap&lt;/a&gt; and Reagent cursors fixes both of these issues:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;ns &lt;/span&gt;&lt;span class="nv"&gt;example.core&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:require&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;reagent.core&lt;/span&gt; &lt;span class="ss"&gt;:refer&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+            &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;react-bootstrap&lt;/span&gt; &lt;span class="ss"&gt;:refer&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;Button&lt;/span&gt;&lt;span class="p"&gt;]]))&lt;/span&gt;
+            
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;defvisr&lt;/span&gt; &lt;span class="nv"&gt;Counter&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;elaborate-fn&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="s"&gt;"TODO-elaborate"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;cursor&lt;/span&gt; &lt;span class="nv"&gt;this&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:count&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;when-not &lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;reset!&lt;/span&gt; &lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+      &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;Button&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:on-click&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;swap!&lt;/span&gt; &lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h1 id="elaboration-and-run-time-semantics"&gt;Elaboration and Run-Time Semantics&lt;/h1&gt;
+
+&lt;p&gt;The elaborate method takes the VISr state, and is expected to provide a compile-time or run-time semantics. In the simplified case of &lt;code&gt;elaborate-fn&lt;/code&gt;, the VISr semantics takes the form of a function application:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;elaborate-fn&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="ss"&gt;:keys&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;]}]&lt;/span&gt; &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This &lt;code&gt;elaborate&lt;/code&gt; method expects a dictionary with the key &lt;code&gt;:count&lt;/code&gt; and returns the value associated with that key. It makes use of &lt;a href="https://clojure.org/guides/destructuring"&gt;ClojureScript&amp;rsquo;s Destructuring&lt;/a&gt; for brevity. The following code is equivalent:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;elaborate-fn&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;get &lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt; &lt;span class="ss"&gt;:count&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h1 id="putting-it-all-together"&gt;Putting it all together&lt;/h1&gt;
+
+&lt;p&gt;The final result is:&lt;/p&gt;
+
+&lt;div class="brush: clojurescript"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;ns &lt;/span&gt;&lt;span class="nv"&gt;test.core&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:require&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;reagent.core&lt;/span&gt; &lt;span class="ss"&gt;:refer&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;cursor&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+            &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;react-bootstrap&lt;/span&gt; &lt;span class="ss"&gt;:refer&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;Button&lt;/span&gt;&lt;span class="p"&gt;]]))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;defvisr&lt;/span&gt; &lt;span class="nv"&gt;Counter&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;elaborate-fn&lt;/span&gt; &lt;span class="p"&gt;[{&lt;/span&gt;&lt;span class="ss"&gt;:keys&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;]}]&lt;/span&gt; &lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;render&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;this&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;let &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;cursor&lt;/span&gt; &lt;span class="nv"&gt;this&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:count&lt;/span&gt;&lt;span class="p"&gt;])]&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;when-not &lt;/span&gt;&lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;reset!&lt;/span&gt; &lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+      &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;Button&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;:on-click&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;swap!&lt;/span&gt; &lt;span class="nb"&gt;count &lt;/span&gt;&lt;span class="nv"&gt;inc&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt; &lt;span class="o"&gt;@&lt;/span&gt;&lt;span class="nv"&gt;count&lt;/span&gt;&lt;span class="p"&gt;])))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Here is the VISr in action:&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/intro-visr/full-count.png" alt="Full Count Example" /&gt;
+ &lt;p class="caption"&gt;Full Count Example&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;That&amp;rsquo;s all there is to it. From here, you can go to &lt;a href="https://visr.pl"&gt;visr.pl&lt;/a&gt; to make your own programs using VISr. You can also &lt;a href="https://study.visr.pl"&gt;take this survey&lt;/a&gt;, which contains more advanced example uses for VISr. If you find any bugs or want to contribute, you can also head to &lt;a href="https://github.com/LeifAndersen/interactive-syntax-clojure"&gt;the visr project page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Thanks for reading, happy coding!&lt;/p&gt;</content></entry></feed>
