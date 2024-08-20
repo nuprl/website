@@ -67,6 +67,16 @@
 
 @(define publications
    (list
+    (publication "StudentEval: A Benchmark of Student-Written Prompts for Large Language Models of Code"
+                 "Hannah McLean Babe, Sydney Nguyen, Yangtian Zi, Arjun Guha, Molly Q Feldman, and Carolyn Jane Anderson"
+                 "Findings of the Association for Computational Linguistics (ACL Findings)"
+                 2024
+                 "https://aclanthology.org/2024.findings-acl.501.pdf")
+    (publication "How Beginning Programmers and Code LLMs (Mis)read Each Other"
+                 "Hannah McLean Babe, Sydney Nguyen, Yangtian Zi, Arjun Guha, Carolyn Jane Anderson, and Molly Q Feldman"
+                 "ACM Conference on Human Factors in Computing Systems (CHI)"
+                 2024
+                 "https://dl.acm.org/doi/full/10.1145/3613904.3642706")
     (publication "Knuth-Morris-Pratt Illustrated"
                  "Cameron Moy"
                  JFP
@@ -117,6 +127,11 @@
                  MSR
                  2024
                  "https://www.jonbell.net/preprint/msr24-proof-assistants.pdf")
+    (publication "StarCoder: May the Source be With You!"
+                 "Raymond Li, Loubna Ben Allal, Yangtian Zi, Niklas Muennighoff, Denis Kocetkov, Chenghao Mou, Marc Marone, Christopher Akiki, Jia Li, Jenny Chim, Qian Liu, Evgenii Zheltonozhskii, Terry Yue Zhuo, Thomas Wang, Olivier Dehaene, Mishig Davaadorj, Joel Lamy-Poirier, João Monteiro, Oleh Shliazhko, Nicolas Gontier, Nicholas Meade, Armel Randy, Ming-Ho Yee, Logesh Kumar Umapathi, Jian Zhu, Benjamin Lipkin, Muhtasham Oblokulov, Zhiruo Wang, Rudra Murthy, Jason Stillerman, Siva Sankalp Patel, Dmitry Abulkhanov, Marco Zocca, Manan Dey, Zhihan Zhang, Nour Fahmy, Urvashi Bhattacharyya, Suriya Gunasekar, Wenhao Yu, Swayam Singh, Sasha Luccioni, Paulo Villegas, Maxim Kunakov, Fedor Zhdanov, Manuel Romero, Tony Lee, Nadav Timor, Jennifer Ding, Claire Schlesinger, Hailey Schoelkopf, Jan Ebert, Tri Dao, Mayank Mishra, Alex Gu, Jennifer Robinson, Carolyn Jane Anderson, Brendan Dolan-Gavitt, Danish Contractor, Siva Reddy, Daniel Fried, Dzmitry Bahdanau, Yacine Jernite, Carlos Muñoz Ferrandis, Sean Hughes, Thomas Wolf, Arjun Guha, Leandro von Werra, and Harm de Vries"
+                 "Transactions on Machine Learning Research (TMLR)"
+                 2023
+                 "https://openreview.net/forum?id=KoFOg41haE")
     (publication "How to Evaluate Blame for Gradual Types, Part 2"
                  "Lukas Lazarek, Ben Greenman, Matthias Felleisen, and Christos Dimoulas"
                  ICFP
