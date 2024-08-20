@@ -73,7 +73,7 @@
                  2024
                  "https://aclanthology.org/2024.findings-acl.501.pdf")
     (publication "How Beginning Programmers and Code LLMs (Mis)read Each Other"
-                 "Hannah McLean Babe, Sydney Nguyen, Yangtian Zi, Arjun Guha, Carolyn Jane Anderson, and Molly Q Feldman"
+                 "Sydney Nguyen, Hannah McLean Babe, Yangtian Zi, Arjun Guha, Carolyn Jane Anderson, and Molly Q Feldman"
                  "ACM Conference on Human Factors in Computing Systems (CHI)"
                  2024
                  "https://dl.acm.org/doi/full/10.1145/3613904.3642706")
