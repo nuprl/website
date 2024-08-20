@@ -254,6 +254,23 @@
             I'm interested in language and type system interoperability @|mdash| in particular, languages with very different type systems interacting easily and safely.
           }
 
+          @person[#:name "Joshua Gancher"
+                  #:title "Assistant Professor"
+                  #:e-mail "j.gancher@northeastern.edu"
+                  #:website "https://gancher.dev"
+                  #:history @list[
+                  "Joined Northeastern Faculty, 2024"
+                  "PhD, Cornell University, 2021"
+                  "B.A, Reed College, 2016"
+                  ]
+                  #:img "josh.jpg"]{
+            I use tools from the programming languages and verification
+literature to create systems with formally proven security guarantees. Among
+other things, I am interested in language-based approaches for giving
+state-of-the-art security guarantees to high-performance, cryptographic
+software.
+          }
+
           @person[#:name "Ryan Doenges"
                   #:title "Postdoc"
                   #:e-mail "r.doenges@northeastern.edu"
