@@ -132,6 +132,11 @@
                    @indent{} S 2012 Type Systems @a[href: "http://www.ccs.neu.edu/home/amal/course/7480-s12/" target: "_blank"]{link} @instructor{Amal Ahmed}
                  }
                  @li{
+                   @strong{7470} Seminar in Programming Languages
+                   @br{}
+                   @indent{} S 2024 @a[href: "https://www.khoury.northeastern.edu/~arjunguha/main/teaching/2024s-cs7470.pdf" target: "_blank"]{link} @instructor{Arjun Guha}
+                 }
+                 @li{
                    @strong{7400} Intensive Principles of Programming Languages
                    @br{}
                    @indent{} S 2020 @a[href: "http://www.ccs.neu.edu/home/amal/course/7400-s20/" target: "_blank"]{link} @instructor{Amal Ahmed} @br{}
@@ -289,9 +294,9 @@
                  }
                  @li{
                      @strong{2500} Fundamentals of Computer Science @br{}
-                     @indent{} F 2023 @instructor{Daniel Patterson, Arjun Guha} @br{}
+                     @indent{} F 2023 @a[href: "https://pages.github.khoury.northeastern.edu/2500/2023F/" target: "_blank"]{link} @instructor{Daniel Patterson, Arjun Guha} @br{}
                      @indent{} S 2023 @a[href: "https://course.ccs.neu.edu/cs2500/" target: "_blank"]{link} @instructor{Olin Shivers} @br{}
-                     @indent{} F 2022 accelerated @a[href: "https://arjunguha.github.io/nu-2022F-CS2500Accel/" target: "_blank"]{link} @instructor{Arjun Guha} @br{}
+                     @indent{} F 2022 accelerated @a[href: "https://pages.github.khoury.northeastern.edu/2500/2022Faccel/" target: "_blank"]{link} @instructor{Arjun Guha} @br{}
                      @indent{} F 2022 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Nate Derbinsky, John Park, Daniel Patterson, Leena Razzaq, Olin Shivers} @br{}
                      @indent{} F 2020 accelerated @a[href: "https://course.ccs.neu.edu/cs2500accelf20/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner} @br{}
                      @indent{} F 2020 @a[href: "http://www.ccs.neu.edu/course/cs2500/" target: "_blank"]{link} @instructor{Amal Ahmed, Ben Lerner, Arjun Guha, John Park, Ferdinand Vesely} @br{}
