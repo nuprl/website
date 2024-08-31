@@ -483,8 +483,8 @@ software.
                       "Joined Northeastern, 2023"
                       "B.S. University of Maryland"]
                   #:website "https://tybug.github.io/"
-                  #:img "Liam_DeVoe.jpg"]{
-            I'm interested in property based testing, open-source ecosystems, formal verification, and testing of all kinds.
+                  #:img "liam_devoe.jpg"]{
+            I'm interested in property based testing, fuzzing, and testing of all kinds.
           }
         }
 
