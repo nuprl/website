@@ -115,6 +115,12 @@
                  @li{
                    @strong{7480} Special Topics in Programming Languages
                    @br{}
+                   @indent{} F 2024 Formal Security for Cryptography @a[href:
+                                                                         "https://gancher.dev/CS7480_Fall2024/class.html"
+                                                                         target:
+                                                                         "_blank"]{link}
+@instructor{Joshua Gancher}
+                   @br{}
                    @indent{} S 2024 @instructor{Olin Shivers}
                    @br{}
                    @indent{} S 2021 History of Programming Languages @a[href: "https://felleisen.org/matthias/7480-s21/index.html" target: "_blank"]{link} @instructor{Matthias Fellsein}
