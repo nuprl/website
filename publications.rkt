@@ -67,6 +67,51 @@
 
 @(define publications
    (list
+    (publication "Realistic Realizability: Specifying ABIs You Can Count On"
+                 "Andrew Wagner, Zachary Eisbach, and Amal Ahmed"
+                 "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)"
+                 2024
+                 "https://doi.org/10.1145/3689755")
+    (publication "Decidable Subtyping Of Existential Types For Julia"
+                 "Julia Belyakova, Benjamin Chung, Ross Tate, and Jan Vitek"
+                 "Programming Language Design and Implementation (PLDI)"
+                 2024
+                 "https://doi.org/10.1145/3656421")
+    (publication "NL2Code-Reasoning And Planning With LLMs For Code Development"
+                 "Ye Xing, Jun Huan, Wee Hyong Tok, Cong Shen, Johannes Gehrke, Katherine Lin, Arjun Guha, Omer Tripp, and Murali Krishna Ramanathan"
+                 "Conference on Knowledge Discovery and Data Mining (KDD)"
+                 2024
+                 "https://doi.org/10.1145/3637528.3671505")
+    (publication "RichWasm: Bringing Safe, Fine-Grained, Shared-Memory Interoperability Down To Webassembly"
+                 "Michael Fitzgibbons, Zoe Paraskevopoulou, Noble Mushtak, Michelle Thalakottur, Jose Sulaiman Manzur, and Amal Ahmed"
+                 "Programming Language Design and Implementation (PLDI)"
+                 2024
+                 "https://doi.org/10.1145/3656444")
+    (publication "Bit Blasting Probabilistic Programs"
+                 "Poorva Garg, Steven Holtzen, Guy Van den Broeck, and Todd D. Millstein"
+                 "Programming Language Design and Implementation (PLDI)"
+                 2024
+                 "https://doi.org/10.1145/3656412")
+    (publication "Ahead-Of-Time Compilation For Diverse Samplers Of Constrained Design Spaces"
+                 "Abdelrahman Madkour, Ross Mawhorter, Stacy Marsella, Adam M. Smith, and Steven Holtzen"
+                 "International Conference on the Foundations of Digital Games (FDG)"
+                 2024
+                 "https://doi.org/10.1145/3649921.3656986")
+    (publication "Semantic Matching In GUI Test Reuse"
+                 "Farideh Khalili, Leonardo Mariani, Ali Mohebbi, Mauro Pezzè, and Valerio Terragni"
+                 "Empirical Software Engineering (ESE)"
+                 2024
+                 "https://doi.org/10.1007/s10664-023-10406-8")
+    (publication "Forge: A Tool And Language For Teaching Formal Methods"
+                 "Tim Nelson, Ben Greenman, Siddhartha Prasad, Tristan Dyer, Ethan Bove, Qianfan Chen, Charles Cutting, Thomas Del Vecchio, Sidney Levine, Julianne Rudner, Ben Ryjikov, Alexander Varga, Andrew Wagner, Luke West, and Shriram Krishnamurthi"
+                 "Object-Oriented Programming Systems, Languages, and Applications (OOPSLA)"
+                 2024
+                 "https://doi.org/10.1145/3649833")
+    (publication "A Nominal Approach To Probabilistic Separation Logic"
+                 "John M. Li, Jon Aytac, Philip Johnson-Freyd, Amal Ahmed, and Steven Holtzen"
+                 "Logic in Computer Science (LICS)"
+                 2024
+                 "https://doi.org/10.1145/3661814.3662135")
     (publication "StudentEval: A Benchmark of Student-Written Prompts for Large Language Models of Code"
                  "Hannah McLean Babe, Sydney Nguyen, Yangtian Zi, Arjun Guha, Molly Q Feldman, and Carolyn Jane Anderson"
                  "Findings of the Association for Computational Linguistics (ACL Findings)"
