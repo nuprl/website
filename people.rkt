@@ -500,6 +500,16 @@ software.
                   #:img "conrad_zimmerman.jpg"]{
             I'm interested in developing approaches that enable both computers and humans to more easily reason about complex applications.
           }
+          @person[#:name "Vadym Matviichuk"
+                  #:title "Advisor: Olin Shivers"
+                  #:e-mail "matviichuk.v@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                  ]
+                  #:img "vadym_matviichuk.jpg"]{
+            I primarily work on compilers, trying to make programs run fast, and I am also interested in adjacent fields like Programming Languages.
+Currently working on a compiler that produces parallel GPU code, so developers don't have to use C++ and think about hardware
+          }
         }
 
         @div[class: "pn-separator-img"]{
