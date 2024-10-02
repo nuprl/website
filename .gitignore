@@ -4,3 +4,4 @@ compiled/
 *.swp
 *.html
 .DS_STORE
+.frog

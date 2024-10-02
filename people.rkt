@@ -429,15 +429,6 @@ software.
             My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
           }
 
-          @person[#:name "Max Bernstein"
-                  #:title "Advisor: Frank Tip and Jan Vitek"
-                  #:e-mail "bernstein.ma@northeastern.edu"
-                  #:website "https://bernsteinbear.com"
-                  #:history @list[
-                    "Joined Northeastern, 2022"]
-                  #:img "max_bernstein.png"]{
-          }
-
           @person[#:name "Minsung Cho"
                   #:title "Advisor: Steven Holtzen"
                   #:e-mail "minsung@ccs.neu.edu"
@@ -721,7 +712,8 @@ software.
                         #:dissertation "https://hdl.handle.net/2047/D20653005"
                         #:personal-site "https://mhyee.com/"
                         #:extra "(Meta)")
-
+              @(alumnus "Max Bernstein" #:year 2024
+                        #:personal-site "https://bernsteinbear.com")
               ]}}
 
         @div[class: "container"]{
