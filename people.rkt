@@ -487,6 +487,19 @@ software.
                   #:img "shubh_agrawal.jpg"]{
             I'm interested in type systems, logic, dynamics, and abstract semantics for proving interesting properties about interesting programming languages.
           }
+
+          @person[#:name "Conrad Zimmerman"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "zimmerman.co@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "BS Brown University, 2024"
+                      "AS Harrisburg Area Community College, 2020"
+                  ]
+                  #:website "https://conradz.com"
+                  #:img "conrad_zimmerman.jpg"]{
+            I'm interested in developing approaches that enable both computers and humans to more easily reason about complex applications.
+          }
         }
 
         @div[class: "pn-separator-img"]{
