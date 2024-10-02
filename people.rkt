@@ -477,6 +477,16 @@ software.
                   #:img "liam_devoe.jpg"]{
             I'm interested in property based testing, fuzzing, and testing of all kinds.
           }
+
+          @person[#:name "Shubh Agrawal"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "agrawal.shub@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "BSE, University of Michigan"]
+                  #:img "shubh_agrawal.jpg"]{
+            I'm interested in type systems, logic, dynamics, and abstract semantics for proving interesting properties about interesting programming languages.
+          }
         }
 
         @div[class: "pn-separator-img"]{
