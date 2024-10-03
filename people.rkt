@@ -500,6 +500,16 @@ software.
                   #:img "conrad_zimmerman.jpg"]{
             I'm interested in developing approaches that enable both computers and humans to more easily reason about complex applications.
           }
+          @person[#:name "Harshit Garg"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "garg.hars@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "B.E., BITS Pilani"]
+                  #:website "https://harshitgarg.in"
+                  #:img "harshit_garg.jpg"]{
+            I like to work on programming languages, and software testing. I also enjoy thinking about specifications of distributed systems.
+          }
           @person[#:name "Vadym Matviichuk"
                   #:title "Advisor: Olin Shivers"
                   #:e-mail "matviichuk.v@northeastern.edu"
