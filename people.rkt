@@ -429,15 +429,6 @@ software.
             My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
           }
 
-          @person[#:name "Max Bernstein"
-                  #:title "Advisor: Frank Tip and Jan Vitek"
-                  #:e-mail "bernstein.ma@northeastern.edu"
-                  #:website "https://bernsteinbear.com"
-                  #:history @list[
-                    "Joined Northeastern, 2022"]
-                  #:img "max_bernstein.png"]{
-          }
-
           @person[#:name "Minsung Cho"
                   #:title "Advisor: Steven Holtzen"
                   #:e-mail "minsung@ccs.neu.edu"
@@ -485,6 +476,49 @@ software.
                   #:website "https://tybug.github.io/"
                   #:img "liam_devoe.jpg"]{
             I'm interested in property based testing, fuzzing, and testing of all kinds.
+          }
+
+          @person[#:name "Shubh Agrawal"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "agrawal.shub@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "BSE, University of Michigan"]
+                  #:img "shubh_agrawal.jpg"]{
+            I'm interested in type systems, logic, dynamics, and abstract semantics for proving interesting properties about interesting programming languages.
+          }
+
+          @person[#:name "Conrad Zimmerman"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "zimmerman.co@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "BS Brown University, 2024"
+                      "AS Harrisburg Area Community College, 2020"
+                  ]
+                  #:website "https://conradz.com"
+                  #:img "conrad_zimmerman.jpg"]{
+            I'm interested in developing approaches that enable both computers and humans to more easily reason about complex applications.
+          }
+          @person[#:name "Harshit Garg"
+                  #:title "Advisor: Frank Tip"
+                  #:e-mail "garg.hars@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                      "B.E., BITS Pilani"]
+                  #:website "https://harshitgarg.in"
+                  #:img "harshit_garg.jpg"]{
+            I like to work on programming languages, and software testing. I also enjoy thinking about specifications of distributed systems.
+          }
+          @person[#:name "Vadym Matviichuk"
+                  #:title "Advisor: Olin Shivers"
+                  #:e-mail "matviichuk.v@northeastern.edu"
+                  #:history @list[
+                      "Joined Northeastern, 2024"
+                  ]
+                  #:img "vadym_matviichuk.jpg"]{
+            I primarily work on compilers, trying to make programs run fast, and I am also interested in adjacent fields like Programming Languages.
+Currently working on a compiler that produces parallel GPU code, so developers don't have to use C++ and think about hardware
           }
         }
 
@@ -721,7 +755,8 @@ software.
                         #:dissertation "https://hdl.handle.net/2047/D20653005"
                         #:personal-site "https://mhyee.com/"
                         #:extra "(Meta)")
-
+              @(alumnus "Max Bernstein" #:year 2024
+                        #:personal-site "https://bernsteinbear.com")
               ]}}
 
         @div[class: "container"]{
