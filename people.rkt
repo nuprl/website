@@ -520,6 +520,17 @@ software.
             I primarily work on compilers, trying to make programs run fast, and I am also interested in adjacent fields like Programming Languages.
 Currently working on a compiler that produces parallel GPU code, so developers don't have to use C++ and think about hardware
           }
+           @person[#:name "Luis Garcia"
+                   #:title "Advisor: Chris Martens"
+                   #:e-mail "garcia.lui@northeastern.edu"
+                   #:history @list[
+                       "Joined Northeastern, 2022"
+                       ]
+                   #:website "https://himluis.com"
+                   #:img "luis_garcia.jpg"
+                   ]{
+             I study linear logic and its relationship to other formalisms like planning.
+           }
         }
 
         @div[class: "pn-separator-img"]{
