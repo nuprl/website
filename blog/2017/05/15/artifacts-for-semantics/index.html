@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Artifacts for Semantics</title>
+    <meta name="description" content="Gabriel Scherer and I recently wrote an artifact for a semantics paper on a typed assembly language interoperating with a high-level functional language....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Author: Daniel Patterson">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/05/15/artifacts-for-semantics/">
+    <link rel="next" href="/blog/2017/05/09/no-good-answers-gradually-typed-object-oriented-languages/">
+    <link rel="prev" href="/blog/2017/05/23/building-a-website-with-scribble/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Artifacts for Semantics</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-05-15" pubdate="true">2017-05-15</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Daniel-Patterson.html">Daniel Patterson</a></span></p>
+  </header>
+
+<p><a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</a> and I recently wrote an <a href="https://dbp.io/artifacts/funtal">artifact</a> for a semantics <a href="https://dbp.io/pubs/2017/funtal.pdf">paper</a> on a typed assembly language interoperating with a high-level functional language.</p>
+<!-- more-->
+
+<p>We wrote a interpreter, typechecker, and parser in OCaml, compiled it to Javascript using <a href="http://ocsigen.org/js_of_ocaml/">js_of_ocaml</a>, and then put it on a webpage (with an editor with syntax highlighting and error reporting) that allows people to step through examples from the paper or write their own. (Feel free to start by playing a bit with <a href="https://dbp.io/artifacts/funtal">our artifact</a>).</p>
+
+<p>This post will summarize the different parts to make it easier for others to repeat this process. We think it was a total success, and have gotten feedback that it makes understanding the (somewhat complex) language from the paper much easier. We argue that building such interpreters / typecheckers is easy enough that all papers should do this. Further, while our interpreter / typechecker is completely unverified, since we wrote it in OCaml, this approach should work equally well for semantics verified in Coq and then extracted to OCaml.</p>
+
+<hr />
+
+<p>The paper in question, <a href="https://dbp.io/pubs/2017/funtal.pdf">FunTAL: Reasonably Mixing a Functional Language with Assembly</a> (to appear in PLDI17), presents a multi-language that incorporates a typed assembly language (TAL) and a simple functional language where each can be embedded within the other. The paper then develops a logical relation that can be used to reason about the equivalence of such mixed programs. For example in the paper we show an imperative register-based factorial and a functional factorial equivalent.</p>
+
+<p>Both the static and dynamic semantics are relatively complex. The typed assembly has registers (which store word-sized values), a heap (which stores code-blocks and tuples), and a stack (not a call-stack, simply a place where word-sized values can be pushed and popped). Code-blocks have pre-conditions on the state of the registers and the stack, and allow the tail of the stack to be abstracted over polymorphically. This allows values to be protected on the stack before jumping to blocks that otherwise could change them. This is used, along with a novel notion of <strong>return markers</strong>, to ensure well-bracketing in the control flow of the typed assembly. The return markers indicate the location that points to the block that will eventually be returned to (assuming it doesn&rsquo;t loop infinitely). At the top level, the return marker <code>end</code> indicates that, assuming it does not loop, eventually the program will stop, rather than returning somewhere else.</p>
+
+<p>Understanding the dynamic semantics requires tracking how values flow through the registers, the heap, and the stack, and rather than a call-stack, the user has to track the control flow through the statically-enforced return markers. This allows a good deal of low-level control-flow while still ensuring that calls will eventually return to the right place. This well-bracketing is vital to be able to reason about &ldquo;components&rdquo; that eventually return a value of a particular type, a necessity when embedding these components in a typed high-level program! However, it does mean that understanding the static and dynamic semantics from a few rules alone is a tall order. Our functional language is more standard, though we use (iso)-recursive types to allow recursion, which can easily trip up people, especially when you don&rsquo;t have a type-checker to catch typos!</p>
+
+<p>For that reason, when working through examples for the paper I implemented a simple interpreter for the multi-language. I did this in OCaml, in the most straightforward way possible: by translating the definitions from the paper into type definitions (<a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L835">for F</a> and <a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1209">for TAL</a>), and the reduction relation into a <a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1155">&ldquo;step&rdquo; function</a> that (assuming it wasn&rsquo;t stuck or a value), did one step of evaluation. Later, I did the same thing for the type-checker, translating rules into a <a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L282">type-checking function</a>. The latter had to deviate from the rules in the paper in a few minor ways, as the typing rules we had in the paper were slightly not syntax directed.</p>
+
+<p>Having the interpreter and type-checker was very useful for me, as I could check that the examples from the paper did not contain typos, but it was much less useful as an artifact for a reader of the paper. To use it the reader would have to download the source, install OCaml, write out examples as OCaml data constructors in a test file, compile it, run it, and then interpret the (quite overwhelming) output of every step of evaluation. At each step, I printed the current registers, current stack, current heap, what the evaluation context was (as you might be evaluating TAL instructions that were embedded inside a functional program that, in turn, was embedded in further TAL instructions), and what the current reduction was.</p>
+
+<p>To get from that useful-for-the-authors artifact to a useful-to-readers artifact requires doing three things:</p>
+
+<ol>
+ <li>Allow reading/writing programs in a notation as close to the paper as  possible. In our paper we use superscripts, subscripts, and a few greek  letters, but ended up with a syntax otherwise very close to the paper &mdash; the biggest  differences were a few extra delimiters introduced to reduce ambiguity.</li>
+ <li>Present an interface that highlights type errors at the location they  occurred in, and allow a reader to step forward and backwards through the  evaluation. Printing console output traces is fine for authors, but adds too  much effort for readers.</li>
+ <li>Put it online! Don&rsquo;t require installing any software! Conveniently,  implementing 2 is also made easier once done online, as we could use existing  editor tooling to present the code, highlight errors, etc. By using OCaml, we  were able to easily use the  excellent <a href="http://ocsigen.org/js_of_ocaml/">js_of_ocaml</a>.</li></ol>
+
+<p>The first was done by Gabriel, who wrote a grammar using <a href="http://gallium.inria.fr/~fpottier/menhir/">Menhir</a>, and then equipped it with custom parsing error messages that provide much better feedback when there are typos in what people are trying. We also wrote a pretty-printer using the <a href="http://gallium.inria.fr/blog/first-release-of-pprint/">PPrint</a> library, so we could show intermediate program states through the UI. After writing this, we were able to convert our existing suite of test cases and examples to be written textually, which was a huge improvement for us as well! These and other tests were used to ensure that the parser/pretty-printer would round-trip properly.</p>
+
+<p>For the interface, I built a simple web page that had the <a href="https://codemirror.net/">CodeMirror</a> editor equipped with a very simple syntax highlighter (<a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L247">8 lines of code</a> to highlight keywords &amp; atoms, plus a CodeMirror extension to highlight matching brackets) and error highlighting (which is triggered by the OCaml code). I then made a simple &ldquo;machine state&rdquo; UI that showed, in pretty-printed format, the heap, stack, registers, context, and redex. On the OCaml side, when the &ldquo;run&rdquo; button is clicked, we parse and typecheck and, assuming no errors occur, store the current state as our &ldquo;history&rdquo;. As the user clicks forward or backwards, we run the step function and append to the history of states or pop states off of the history. In total, there are <a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L246">50 lines of Javascript</a> and about <a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/web.ml">150 lines of OCaml</a> that handle the logic for this interactive UI.</p>
+
+<p>Putting it online was very easy, based on the choice of tools used earlier. We compile the main file (<a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/web.ml">web.ml</a>) to Javascript using <a href="http://ocsigen.org/js_of_ocaml/">js_of_ocaml</a>, and it pulls in the parser, type-checker, interpreter, examples, etc. The rest of the artifact is a single html file, a CSS file, and a few javascript files for CodeMirror. It requires no server backend, is easy to archive and save, and will even run on smartphones!</p>
+
+<p>The total time spent implementing the artifact was a small fraction of the time spent on the paper (probably 15 days of person-time), and while it was not in any critical way essential for the success of the paper, it does make the paper much easier to read, and we would argue that all semantics papers would be better off with easy to use artifacts for experimentation. Also, while implementing the artifact we found a few mistakes in the typing judgments for the language. The most interesting one was for our <code>protect</code> TAL instruction, which exists to protect the tail of the stack in a fresh type variable. We had written this as a typing rule that type-checked the rest of the instruction sequence with the abstracted tail, but this never allowed the tail to be accessed again. By translating the typing judgments exactly into code, we realized that there was a problem, because examples that should have worked did not type-check! We were then able to fix the typing rule to conform to what we originally thought it achieved &mdash; locally abstracting, but not abstracting from outside the component. What is interesting is that this did not come up in our proofs because the typing rule was perfectly valid &mdash; it just did not allow non-trivial programs that used the <code>protect</code> instruction. It&rsquo;s quite possible we would have noticed this without implementing the artifact, but the artifact certainly made it easier!</p>
+
+<p>To see the artifact online, visit:</p>
+
+<p><a href="https://dbp.io/artifacts/funtal">https://dbp.io/artifacts/funtal</a></p>
+
+<p>The source code is at:</p>
+
+<p><a href="https://github.com/dbp/funtal/tree/032be70f33f77e80f4fab7e62016bfabf96476f3">https://github.com/dbp/funtal</a></p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/05/15/artifacts-for-semantics/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/05/23/building-a-website-with-scribble/">&larr; <em>Building a Website with Scribble</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/05/09/no-good-answers-gradually-typed-object-oriented-languages/"><em>No Good Answers, Gradually Typed Object-Oriented Languages</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

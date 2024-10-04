@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>The Typed Racket Optimizer vs. Transient</title>
+    <meta name="description" content="What type-directed optimizations does Typed Racket perform  and do any require full types?...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="typed racket, transient, offsite, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/">
+    <link rel="next" href="/blog/2019/12/12/prl-offsite-2019-retrospective/">
+    <link rel="prev" href="/blog/2020/10/15/transient-answers-old-questions/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>The Typed Racket Optimizer vs. Transient</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-01-15" pubdate="true">2020-01-15</time> :: <span class="tags"><a href="/blog/tags/typed-racket.html">typed racket</a>, <a href="/blog/tags/transient.html">transient</a>, <a href="/blog/tags/offsite.html">offsite</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>What type-directed optimizations does Typed Racket perform  and do any require full types?</p>
+<!-- more-->
+
+<blockquote>
+ <p>This post is based on a short talk. Slides from the talk are here: <a href="http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf">http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf</a></p></blockquote>
+
+<p>Standard Typed Racket guarantees full type soundness and uses higher-order  contracts to make sure that interactions between Typed Racket and untyped  Racket obey the types. These contracts can be very expensive [<a href="https://doi.org/10.1017/S0956796818000217">JFP 2019</a>]. And so, the standard types are very strong but (possibly) slow.</p>
+
+<p>Lately, I&rsquo;ve been working on a <a href="https://dl.acm.org/citation.cfm?id=3009849">transient</a>  back-end for Typed Racket. Transient Typed Racket provides a weaker guarantee &mdash; only that typed code  cannot get &ldquo;stuck&rdquo; &mdash; via simpler run-time checks. Early data shows that these simple checks are often faster   than the standard boundary checks [<a href="https://doi.org/10.1145/3236766">ICFP 2018</a>],  hence we want both options for Typed Racket programmers: slow/correct  and fast/wrong.</p>
+
+<p>The implementation of Transient needs to re-use some parts of Standard Typed  Racket and modify others. Typed Racket comes with three major components:</p>
+
+<ol>
+ <li>a static type checker,</li>
+ <li>a compiler from types to contracts, and</li>
+ <li>a type-driven optimizer [<a href="https://www2.ccs.neu.edu/racket/pubs/padl12-stff.pdf">PADL 2012</a>, <a href="https://doi.org/10.1145/2384616.2384629">OOPSLA 2012</a>].</li></ol>
+
+<p>Transient Typed Racket can re-use all of the type checker  and parts of the type-to-contract compiler. The question for this post is: can Transient re-use the optimizer?</p>
+
+<h2 id="q-can-transient-re-use-the-typed-racket-optimizer">Q. Can Transient re-use the Typed Racket optimizer?</h2>
+
+<p>The answer requires some thought because Standard Typed Racket and Transient  Typed Racket preserve different amounts of type information.</p>
+
+<ul>
+ <li>In Standard Typed Racket, if an expression <strong>e</strong> has type <strong>T</strong> and reduces  to a value <strong>v</strong> (for short, <strong>e : T &mdash;&gt;* v</strong>), then the result <strong>v</strong> definitely  matches the full type <strong>T</strong>.</li>
+ <li>In Transient Typed Racket, if <strong>e : T &mdash;&gt;* v</strong> then the result <strong>v</strong> matches  the toplevel &ldquo;shape&rdquo; of <strong>T</strong> but (maybe) nothing more.</li></ul>
+
+<p>The idea of a &ldquo;shape&rdquo; is that it corresponds to the outermost constructor of  a type. A shape check must be decidable, but otherwise finding the best shape for a type  is an engineering challenge. On one hand, deeper checks give stronger guarantees. On the other hand, shallower checks are quicker to validate.</p>
+
+<p>Here are a few shapes according to the current Transient prototype:</p>
+
+<pre><code>  Shape(Natural)                = Natural
+  Shape(Listof String)          = Listof Any
+  Shape(Symbol -&gt; Boolean)      = Any -&gt; Any
+  Shape(Vector Void Void)       = Vector Any Any
+  Shape(U Void (Listof Symbol)) = U Void (Listof Any)</code></pre>
+
+<p>For the current shapes, can we re-use the Typed Racket optimizer?</p>
+
+<h2 id="optimization-topics">Optimization Topics</h2>
+
+<p>Typed Racket implements 15 kinds of type-directed transformation. Below, each gets: a short description, an example, and a verdict of &ldquo;safe&rdquo;  or &ldquo;unsafe&rdquo; for Transient.</p>
+
+<p>To be clear: some optimization topics perform many kinds of transformations, but this post picks only one example transformation for each.</p>
+
+<hr />
+
+<h3 id="topic-1-apply">Topic 1: apply</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/apply.rkt">apply.rkt</a>  &ldquo;inlines&rdquo; expressions of the form <code>(apply f (map g xs))</code> to map and fold  in one pass over the list (<code>xs</code>). Currently, the pass only triggers when <code>f</code> is <code>+</code> or <code>*</code>.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: xs (Listof Integer))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (apply + (map abs xs))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let loop ((v 0)
+             (lst xs))
+    (if (null? lst)
+      v
+      (loop (+ v (abs (unsafe-car lst)))
+            (unsafe-cdr lst))))</code></pre>
+
+<p><strong>Verdict</strong>: safe, but risky.</p>
+
+<p>Technically, this transformation is unsound for Transient because of how it uses <code>unsafe-car</code>. The expansion of <code>(apply * (map g xs))</code> applies <code>(g (unsafe-car xs))</code> without  confirming that the first element of <code>xs</code> matches its expected type. This unsoundness is no problem, though, as long as <em>every</em> Transient-typed function  checks the shape of its input. (Typed functions that flow to untyped code already need to check inputs.)</p>
+
+<hr />
+
+<h3 id="topic-2-box">Topic 2: box</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/box.rkt">box.rkt</a>  safely applies unsafe box operations to expressions with <code>Box</code> type.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: b (Boxof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (unbox b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-unbox b)</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-3-dead-code">Topic 3: dead-code</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/dead-code.rkt">dead-code.rkt</a>  uses type information to identify code that cannot run. Once identified, the TR optimizer makes the dead code obvious for the Racket  bytecode compiler. The pass deals with <code>if</code> expressions, <code>lambda</code> expressions, and <code>case-lambda</code>;  the latter is the most interesting for Transient.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: f (-&gt; Symbol Symbol)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       (for/list ((_i (in-range i))) s))))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       ; dead code, replace with no-op
+       (void))))</code></pre>
+
+<p><strong>Verdict</strong>: unsafe, can change behavior</p>
+
+<p>The pass infers that some branches of a <code>case-lambda</code> can never run because  the type says they do not exist. In Standard Typed Racket, this inference is correct because a run-time contract  seals off the &ldquo;untyped&rdquo; branches. In Transient, though, there is no need to add a contract and therefore no  guarantee these branches are inaccessible. An application in untyped code can enter the dead branch;  if it does, then adding Transient types to part of a program can change  its result to <code>(void)</code> and thereby violate the graduality design goal [<a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/">SNAPL 2015</a>, <a href="https://doi.org/10.1145/3236768">ICFP 2018</a>]  &mdash; that is, that adding types should only change behavior by introducing runtime  type mismatches.</p>
+
+<hr />
+
+<h3 id="topic-4-extflonum">Topic 4: extflonum</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/extflonum.rkt">extflonum.rkt</a>  safely applies unsafe extflonum operations to expressions with <code>Extflonum</code> type.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: e Extflonum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (extflabs e)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-extflabs e)</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-5-fixnum">Topic 5: fixnum</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/fixnum.rkt">fixnum.rkt</a>  safely applies unsafe fixnum operations to expressions with <code>Fixnum</code> type.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: f Fixnum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (exact-&gt;inexact f)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-fx-&gt;fl f)</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-6-float-complex">Topic 6: float-complex</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float-complex.rkt">float-complex.rkt</a>  unboxes complex numbers (into one real-part variable and one imaginary-part variable)  and rewrites operations to handle the unboxed numbers.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: f (-&gt; Float-Complex Float-Complex Float-Complex))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define (f n0 n1)
+    (+ n0 n1))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define (f n0 n1)
+    (let* ((unboxed-real-0 (unsafe-flreal-part n0))
+           (unboxed-imag-0 (unsafe-flimag-part n0))
+           (unboxed-real-1 (unsafe-flreal-part n1))
+           (unboxed-imag-1 (unsafe-flimag-part n1))
+           (unboxed-real-2 (unsafe-fl+ (real-&gt;double-flonum unboxed-real-0)
+                                       unboxed-real-1))
+           (unboxed-imag-2 (unsafe-fl+ (real-&gt;double-flonum unboxed-imag-0)
+                                       unboxed-imag-1)))
+      (unsafe-make-flrectangular unboxed-real-2 unboxed-imag-2)))</code></pre>
+
+<p><strong>Verdict</strong>: safe, with caution</p>
+
+<p>The body of a Transient-typed function (that can flow to untyped code)  must first check that its inputs have the correct shape. Currently, the <strong>float-complex</strong> pass creates functions that apply <code>unsafe-flreal-part</code> before  anything else; to be safe, the pass needs to make sure that Transient checks  come first.</p>
+
+<hr />
+
+<h3 id="topic-7-float">Topic 7: float</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float.rkt">float.rkt</a>  safely applies unsafe flonum operations to expressions with <code>Flonum</code> type  and also transforms some <code>random</code> calls to use <code>unsafe-flrandom</code>.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; --------------------------------------------------
+  ;; Before Optimization
+  (random)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-flrandom (current-pseudo-random-generator))</code></pre>
+
+<p><strong>Verdict</strong>: safe, but a close call</p>
+
+<p>Accessing a parameter, as in <code>(current-pseudo-random-generator)</code>, is an  elimination form that may require a shape check. This particular parameter, however, is protected by a contract that enforces  the precondition of <code>unsafe-flrandom</code>.</p>
+
+<hr />
+
+<h3 id="topic-8-list">Topic 8: list</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/list.rkt">list.rkt</a>  safely applies unsafe list operations to list expressions.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: lst (List Symbol Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (list-ref lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-list-ref lst 0)</code></pre>
+
+<p><strong>Verdict</strong>: safe, with strong-enough shape checks</p>
+
+<p>The shape check for a <code>(Listof T)</code> must check for proper lists (via <code>list?</code>);  note that the cost of this check depends on the size of incoming values. The shape check for a <code>(List T ...)</code> type must validate the length of incoming  values.</p>
+
+<hr />
+
+<h3 id="topic-9-number">Topic 9: number</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/number.rkt">number.rkt</a>  performs simple transformations on <code>Real</code>-valued expressions.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: r Real)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (+ r)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  r</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-10-pair">Topic 10: pair</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/pair.rkt">pair.rkt</a>  safely applies pair-access operations to (possibly-nested) pairs.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: p (Pairof (Pairof Symbol Void) String))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (cdar p)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-cdr (unsafe-car p))</code></pre>
+
+<p><strong>Verdict</strong>: unsafe</p>
+
+<p>Transient guarantees the first level of a type, but nothing more. Concretely, <code>Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any</code>  and so the <code>unsafe-cdr</code> above is not safe.</p>
+
+<hr />
+
+<h3 id="topic-11-sequence">Topic 11: sequence</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/sequence.rkt">sequence.rkt</a>  safely applies unsafe sequence operations to expressions with <code>(Sequenceof T)</code> type.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: s String)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (for ((c s))
+    (void))
+
+  ;; --------------------------------------------------
+  ;; After Optimization (simplified)
+  (for ((c (in-string s)))
+    (void))</code></pre>
+
+<p><strong>Verdict</strong>: safe, with strong enough shape checks (see <strong>list</strong> and <strong>vector</strong>)</p>
+
+<hr />
+
+<h3 id="topic-12-string">Topic 12: string</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/string.rkt">string.rkt</a>  safely applies unsafe string operations to expressions with <code>String</code> type. (Note that <code>unsafe-string-ref</code> is only safe when the result is sure to be  a Latin&ndash;1 character.)</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: b Bytes)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (bytes-length b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-bytes-length b)</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-13-struct">Topic 13: struct</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/struct.rkt">struct.rkt</a>  safely applies unsafe struct operations to struct expressions, using  Typed Racket&rsquo;s <a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/types/struct-table.rkt">internal registry of struct info</a>.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (struct open-interval ([lo : Real] [hi : Real]))
+  (: ivl open-interval)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (open-interval-lo ivl)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-struct-ref ivl 0)</code></pre>
+
+<p><strong>Verdict</strong>: safe</p>
+
+<hr />
+
+<h3 id="topic-14-unboxed-let">Topic 14: unboxed-let</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/unboxed-let.rkt">unboxed-let.rkt</a>  cooperates with the <code>float-complex</code> pass by transforming the binding-site  of some complex numbers. This pass may change a <code>let</code>-expression into a <code>let-values</code> that expects  a real-part and imag-part, and may change a function to expect twice as many  arguments &mdash; provided the optimizer can find <em>all</em> calls to the function.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: k Float-Complex)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (let ((f (lambda ((n : Float-Complex)) (+ n n))))
+    (f k))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let ((f (lambda (real-part-n imag-part-n) ....)))
+    (f (unsafe-flreal-part k) (unsafe-flimag-part k)))</code></pre>
+
+<p><strong>Verdict</strong>: safe, thanks to the (conservative) escape analysis</p>
+
+<hr />
+
+<h3 id="topic-15-vector">Topic 15: vector</h3>
+
+<p><a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/vector.rkt">vector.rkt</a>  safely applies vector operations to vector expressions.</p>
+
+<h4 id="example">Example</h4>
+
+<pre><code>  ;; Type Assumptions
+  (: v (Vector (Listof Symbol) String))
+  (: lst (Listof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (vector-set! v lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-vector-set! v lst 0)</code></pre>
+
+<p><strong>Verdict</strong>: safe, with strong-enough shape checks</p>
+
+<p>The check for <code>(Vector T ...)</code> must check the length of incoming values.</p>
+
+<hr />
+
+<h2 id="summary">Summary</h2>
+
+<p>The Typed Racket optimizer implements 15 kinds of transformations. Two are definitely unsafe for Transient as-is (<strong>dead-code</strong>, <strong>pair</strong>). One must take care when rewriting a Transient function (<strong>float-complex</strong>). One may limit our ability to reduce the number of run-time checks in a program (<strong>apply</strong>). Two others require transient checks whose cost depends on the size of the input values (<strong>list</strong>, <strong>sequence</strong>).</p>
+
+<p>There may be other issues that I missed while reading the optimizer code. If so, I&rsquo;ll try to remember to update this post.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2020/10/15/transient-answers-old-questions/">&larr; <em>Transient Answers Old Questions</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2019/12/12/prl-offsite-2019-retrospective/"><em>PRL Offsite 2019 Retrospective</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

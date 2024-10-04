@@ -1,0 +1,1403 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'transient'</title>
+  <description>PRL Blog: Posts tagged 'transient'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/transient.html</link>
+  <lastBuildDate>Thu, 12 Nov 2020 10:15:16 UT</lastBuildDate>
+  <pubDate>Thu, 12 Nov 2020 10:15:16 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Transient for Optional and Keyword Functions</title>
+   <link>http://prl.ccs.neu.edu/blog/2020/11/12/transient-for-optional-and-keyword-functions/?utm_source=transient&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2020-11-12-transient-for-optional-and-keyword-functions</guid>
+   <pubDate>Thu, 12 Nov 2020 10:15:16 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;A short adventure into the depths of optional and/or keyword  functions in Racket.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Transient, or rather &lt;em&gt;the Transient semantics for a mixed-typed language&lt;/em&gt;,  is one way to let statically-typed code safely interact with untyped code. You can read all about it in  &lt;a href="http://hdl.handle.net/2022/23172"&gt;Michael Vitousek&amp;rsquo;s 2019 dissertation&lt;/a&gt;  or &lt;a href="https://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020"&gt;my 2020 dissertation&lt;/a&gt;,  and you can see how it compares to other mixed-typed semantics  &lt;a href="http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/"&gt;here&lt;/a&gt;. The idea is to give up on &lt;a href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/"&gt;behavioral type guarantees&lt;/a&gt;  and focus on a (weak) form of type soundness. To enforce soundness, Transient rewrites every expression in typed code  with assertions called &lt;em&gt;shape checks&lt;/em&gt;; for example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if a typed module imports an untyped library, then every value that crosses  the module boundary gets a shape check;&lt;/li&gt;
+ &lt;li&gt;if typed code reads from an array, then every element that comes out of the  array must satisfy a shape check; and&lt;/li&gt;
+ &lt;li&gt;if a typed function escapes to untyped code, then the function must use  a shape check to validate every input that it receives.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Our goal today is to understand the shape checks for functions. Suppose we know how to turn a type &lt;strong&gt;T&lt;/strong&gt; into a shape check, and we have a  function with type &lt;strong&gt;T&lt;/strong&gt; that needs to check its inputs. The question is how to actually do the check in Racket v7.9.&lt;/p&gt;
+
+&lt;p&gt;In your standard theory, rewriting is no problem. A (simplified, model) function takes exactly one argument and needs exactly one  shape check in the body; if &lt;strong&gt;T = (-&amp;gt; Symbol Boolean)&lt;/strong&gt; then we need  to check the shape &lt;strong&gt;symbol?&lt;/strong&gt; of the domain type &lt;strong&gt;Symbol&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;;; source code
+(: f (-&amp;gt; Symbol Boolean))
+(define (f sym)
+  (eq? sym 'hola))
+
+;; ===&amp;gt;
+
+;; imaginary (but realistic) rewritten code
+(define (f sym)
+  (assert sym symbol?)
+  (eq? sym 'hola))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A Typed Racket function can accept optional arguments, keyword arguments,  and optional keyword arguments. These are still fairly easy to handle in theory. Below, the function type &lt;strong&gt;T&lt;/strong&gt; accepts 1 to 3 inputs:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;;; source code
+(: g (-&amp;gt;* [#:a Boolean] [Symbol #:c Void] Symbol))
+(define (g #:a a [b 'b] #:c [c #f])
+  (if a b (if c 'left 'right)))
+
+;; ===&amp;gt;
+
+;; imaginary, unrealistic rewritten code
+(define (g #:a a [b 'b] #:c [c #f])
+  (assert a boolean?)
+  (assert b symbol?)
+  (assert c void?)
+  (if a b (if c 'left 'right)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Good &amp;mdash; we basically know what we want. If the Racket core language had optional and keyword functions, then we&amp;rsquo;d be  done.&lt;/p&gt;
+
+&lt;p&gt;But no, Racket expands these optional/keyword  functions into primitive &lt;a href="https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._lam))"&gt;&lt;strong&gt;lambda&lt;/strong&gt;&lt;/a&gt;  and &lt;a href="https://docs.racket-lang.org/raco/decompile.html#(def._((lib._compiler%2Fzo-structs..rkt)._case-lam))"&gt;&lt;strong&gt;case-lambda&lt;/strong&gt;&lt;/a&gt;  forms. Typed Racket type-checks this expanded code, thus Shallow Typed Racket  (the Transient version) must rewrite the expanded code.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s keep digging.&lt;/p&gt;
+
+&lt;p&gt;From now on, &amp;ldquo;Shallow&amp;rdquo; or &amp;ldquo;Shallow TR&amp;rdquo; refers to my implementation  of Transient for Typed Racket (TR). We&amp;rsquo;ll talk about Shallow instead of &amp;ldquo;Transient&amp;rdquo; in case future work reveals a  better way to implement the Transient idea.&lt;/p&gt;
+
+&lt;h2 id="false-start-follow-the-type"&gt;False Start: Follow the Type&lt;/h2&gt;
+
+&lt;p&gt;Beware &amp;mdash; Shallow TR cannot rely on type annotations to decide which shape  checks to insert. The example function &lt;strong&gt;g&lt;/strong&gt; above demonstrates that annotations are not  good enough. With our imagined rewrite, calls that leave out the optional  &lt;strong&gt;#:c&lt;/strong&gt; keyword lead to a shape-check failure because the variable &lt;strong&gt;c&lt;/strong&gt; gets  the default value &lt;strong&gt;#f&lt;/strong&gt; instead of a void value. Concretely, the third assert from above fails:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define (g #:a a [b 'b] #:c [c #f])
+  ....
+  (assert c void?) ;; fails if c is the #f default value
+  ....)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The problem arises from subtyping. According to the annotations, the function &lt;strong&gt;g&lt;/strong&gt; has an external type that is  less precise than the internal type that validates the function body:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;;; external type T
+(: g (-&amp;gt;* [#:a Boolean] [Symbol #:c Void] Symbol))
+
+;; internal type T2, subtype of external (T2 &amp;lt;: T), validates body
+(: g (-&amp;gt;* [#:a Boolean] [Symbol #:c (U #f Void)] Symbol))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Thanks to this external / internal distinction, the following easy  rewrite idea, &lt;em&gt;Solution 0&lt;/em&gt;, fails. Despite the failure, this first solution is a useful starting point for  a success.&lt;/p&gt;
+
+&lt;h4 id="solution-0-step-1-mimic-the-typechecker"&gt;Solution 0, Step 1: Mimic the Typechecker&lt;/h4&gt;
+
+&lt;p&gt;Shallow TR uses the same type checker as classic &lt;em&gt;Deep&lt;/em&gt; TR. If type checking succeeds, then Shallow must insert shape checks. Otherwise, compilation stops with a type error.&lt;/p&gt;
+
+&lt;p&gt;Thanks to its wholesale reuse of the type checker, Shallow TR can use  syntax patterns from the type checker to navigate expanded Racket code. For optional and keyword functions in particular, Shallow can get started  by looking at how the type checker recognizes these forms in expanded code.&lt;/p&gt;
+
+&lt;p&gt;Here are two syntax patterns for keyword functions and optional functions  in the Deep TR type checker (&lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/typecheck/tc-expr-unit.rkt#L274-L295"&gt;typecheck/tc-expr-unit.rkt&lt;/a&gt;). The omitted code (&lt;strong&gt;&amp;hellip;.&lt;/strong&gt;) does actual type checking:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define (tc-expr/check/internal form expected-type)
+  ....
+  (syntax-parse form
+    #:literal-sets (kernel-literals tc-expr-literals)
+    ....
+    [(~and (let-values ([(f) fun]) . body) kw:kw-lambda^)
+    ....]
+    [(~and (let-values ([(f) fun]) . body) opt:opt-lambda^)
+    ....]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Ok! Those two patterns say a lot about the expansion of optional and keyword  functions:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Both forms expand to a &lt;strong&gt;let-values&lt;/strong&gt; that binds one function &lt;strong&gt;fun&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;TR uses the syntax classes &lt;strong&gt;kw-lambda^&lt;/strong&gt; and &lt;strong&gt;opt-lambda^&lt;/strong&gt; to  tell these particular &lt;strong&gt;let-values&lt;/strong&gt; apart from others.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Shallow TR can use exactly these patterns to   recognize optional/keyword functions.&lt;/p&gt;
+
+&lt;h4 id="solution-0-step-2-parse-the-domain-type"&gt;Solution 0, Step 2: Parse the Domain Type&lt;/h4&gt;
+
+&lt;p&gt;Once the Shallow TR rewriter has found an optional/keyword function,  the next step is to find the function&amp;rsquo;s type and figure out the right  shape check. For an optional function, the rewriter has an expression that  matches the following pattern:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    [(~and (let-values ([(f) fun]) . body) opt:opt-lambda^)
+    ....]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;First, we need a type. The type checker decorates (almost) every expression with a type as a syntax  property. (Unreachable code may not have a type.) The &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/types/type-table.rkt#L80"&gt;&lt;strong&gt;type-of&lt;/strong&gt;&lt;/a&gt;  function gets the type decoration from an expression. A little experimentation shows that the function  part of our expression, &lt;strong&gt;fun&lt;/strong&gt;, has a type. Great.&lt;/p&gt;
+
+&lt;p&gt;Second, we need to parse the domain from the function type. This is easier said than done. Fortunately, our final solution does not need the parsing step so I will  list the challenges and move on:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;The type of &lt;strong&gt;fun&lt;/strong&gt; could be a straightforward &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L693"&gt;&lt;strong&gt;Fun type&lt;/strong&gt;&lt;/a&gt;,  but it could also be a: &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L701"&gt;&lt;strong&gt;DepFun type&lt;/strong&gt;&lt;/a&gt;,  or &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L521"&gt;&lt;strong&gt;Poly type&lt;/strong&gt;&lt;/a&gt;,  or &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L531"&gt;&lt;strong&gt;PolyDots type&lt;/strong&gt;&lt;/a&gt;,  or even a &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/rep/type-rep.rkt#L900"&gt;&lt;strong&gt;Union type&lt;/strong&gt;&lt;/a&gt;.&lt;/li&gt;
+ &lt;li&gt;Each part of the domain type corresponds to one parameter of the &lt;strong&gt;fun&lt;/strong&gt; expression.  Matching the parameter names to types is not straightforward; for example,  do the mandatory parameters come first in &lt;strong&gt;fun&lt;/strong&gt;, or the mandatory keywords?&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h4 id="solution-0-step-3-insert-a-shape-check"&gt;Solution 0, Step 3: Insert a Shape Check&lt;/h4&gt;
+
+&lt;p&gt;Once we have the target &lt;strong&gt;fun&lt;/strong&gt; expression and a map from parameter names  to types, the final step of our tentative solution is easy. First, convert the types to shape predicates. Second, parse &lt;strong&gt;fun&lt;/strong&gt; to separate the parameters from the body. Third, insert a block of shape checks to the top of the body. All together, rewriting &lt;strong&gt;fun&lt;/strong&gt; goes something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(syntax-parse fun
+  [(#%plain-lambda formals . body)
+   #:with (shape-check ...)
+          (make-shape-checks #'formals (type-of fun))
+   #'(#%plain-lambda formals (#%plain-app void shape-check ...) . body)])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The rewritten function executes shape checks immediately, and then proceeds  with the &lt;strong&gt;body&lt;/strong&gt; after validating each actual parameter.&lt;/p&gt;
+
+&lt;h2 id="on-the-trail-optkey-expansion"&gt;On the Trail: optkey Expansion&lt;/h2&gt;
+
+&lt;p&gt;Our &lt;em&gt;Solution 0&lt;/em&gt; fails because the type of the &lt;strong&gt;fun&lt;/strong&gt; expression  that it gets from the type-checked code is an external type. In terms of the &lt;strong&gt;g&lt;/strong&gt; function from above, &lt;em&gt;Solution 0&lt;/em&gt; uses the type  &lt;strong&gt;Void&lt;/strong&gt; instead of the internal type &lt;strong&gt;(U Void #f)&lt;/strong&gt; to check the &lt;strong&gt;c&lt;/strong&gt; parameter. To get internal types, we need to look closer at &lt;strong&gt;fun&lt;/strong&gt; and the rest of  the optional/keyword expansion.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s study three example functions and their expanded forms. The expansions reveal a common pattern that motivates a new Shallow TR strategy.&lt;/p&gt;
+
+&lt;p&gt;If you want to expand these examples yourself, hide them from the Racket  toplevel as follows. For each example function &lt;strong&gt;X&lt;/strong&gt; create a module &lt;strong&gt;test.rkt&lt;/strong&gt; like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang racket/base
+
+(define _ignore
+  (let ()
+    X
+    (void)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Invoke the expander with &lt;code&gt;raco expand test.rkt &amp;gt; test.rkt.txt&lt;/code&gt; and explore  the generated &lt;strong&gt;.txt&lt;/strong&gt; file.&lt;/p&gt;
+
+&lt;h3 id="example-1-mandatory-keyword"&gt;Example 1: mandatory keyword&lt;/h3&gt;
+
+&lt;p&gt;The source is a function with one mandatory positional argument and one optional positional argument.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(lambda (x [y 0])
+  (+ x y))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Expansion generates a &lt;strong&gt;case-lambda&lt;/strong&gt; that accepts one or two arguments. The one-argument case supplies a default value for the missing parameter. Both cases call a generated function &lt;strong&gt;F&lt;/strong&gt; that expects two arguments,  resolves defaults in a different way,  and executes the function body.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(let-values (((F)
+              (lambda (x2 y1)
+                (let-values (((x) x2))
+                  (let-values (((y) (if '#f '0 y1)))
+                    (let-values () (#%app + x y)))))))
+  (case-lambda
+   ((x) (#%app F x '0))
+   ((x y1) (#%app F x y1))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: the expression &lt;strong&gt;(if &amp;rsquo;#f &amp;rsquo;0 y1)&lt;/strong&gt; in the generated &lt;strong&gt;F&lt;/strong&gt; function  is equal to &lt;strong&gt;y1&lt;/strong&gt; alone. In general, the &lt;strong&gt;if&lt;/strong&gt; is for default expressions. (&lt;a href="https://pythonconquerstheuniverse.wordpress.com/2012/02/15/mutable-default-arguments/"&gt;Unlike Python&lt;/a&gt;,  Racket evaluates a mutable default once for each function call.) When the default is an immediate value, as this example illustrates,  the expander generates a &lt;strong&gt;#f&lt;/strong&gt; test. A general-purpose optimizer can remove this test before the code runs.&lt;/p&gt;
+
+&lt;h3 id="example-2"&gt;Example 2:&lt;/h3&gt;
+
+&lt;p&gt;The source is a function with one mandatory positional argument and one mandatory keyword argument:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(lambda (x #:y y)
+  (+ x y))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Expansion generates several functions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;strong&gt;F0&lt;/strong&gt; expects a plain list of arguments and executes the source function&amp;rsquo;s body&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;F1&lt;/strong&gt; expects a list of keywords, a list of arguments, and a final argument.  The purpose of &lt;strong&gt;F1&lt;/strong&gt; is to organize a call to &lt;strong&gt;F0&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;lifted/2&lt;/strong&gt; is the constructor for a generated struct type.  Other functions help the struct call &lt;strong&gt;F1&lt;/strong&gt;.  Nevermind the details; I don&amp;rsquo;t fully understand them either.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The important piece for Shallow TR is the &lt;strong&gt;F0&lt;/strong&gt; function  because the goal of rewriting is to protect the original  function body against untyped inputs.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(let-values (((F0)
+              (lambda (y1 x3)
+                (let-values (((x) x3))
+                  (let-values (((y) y1))
+                    (let-values () (#%app + x y)))))))
+  (let-values (((F1)
+                (lambda (given-kws given-args x3)
+                  (let-values (((y1) (#%app car given-args)))
+                    (#%app F0 y1 x3)))))
+    (#%app
+     lifted/2
+     (lambda (given-kws given-argc)
+       (if (#%app = given-argc '3)
+         (let-values (((l2571) given-kws))
+           (if (#%app pair? l2571)
+             (if (#%app eq? (#%app car l2571) '#:y)
+               (#%app null? (#%app cdr l2571))
+               '#f)
+             '#f))
+         '#f))
+     (case-lambda
+      ((given-kws given-args x)
+       (#%app F1 given-kws given-args x)))
+     '(#:y)
+     '(#:y))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="example-3"&gt;Example 3:&lt;/h3&gt;
+
+&lt;p&gt;The source is a function with one mandatory positional argument and one optional keyword argument:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(lambda (x #:y [y 0])
+  (+ x y))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Expansion again generates several functions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;strong&gt;F0&lt;/strong&gt; expects a plain list of arguments, resolves the optional default,  and executes the source function&amp;rsquo;s body&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;F1&lt;/strong&gt; calls &lt;strong&gt;F0&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;At the bottom, there are two &lt;strong&gt;case-lambda&lt;/strong&gt; functions that call  &lt;strong&gt;F1&lt;/strong&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Again, the &lt;strong&gt;F0&lt;/strong&gt; function is the focal point for Shallow TR rewriting.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(let-values (((F0)
+              (lambda (y1 x3)
+                (let-values (((x) x3))
+                  (let-values (((y) (if '#f '0 y1)))
+                    (let-values () (#%app + x y)))))))
+  (let-values (((F1)
+                (lambda (given-kws given-args x3)
+                  (let-values (((y2) (#%app pair? given-kws)))
+                    (let-values (((y1)
+                                  (if y2 (#%app car given-args) '0)))
+                      (#%app F0 y1 x3))))))
+    (#%app
+     make-optional-keyword-procedure
+     (lambda (given-kws given-argc)
+       (if (#%app = given-argc '3)
+         (let-values (((l1571) given-kws))
+           (let-values (((l1571)
+                         (if (#%app null? l1571)
+                           l1571
+                           (if (#%app eq? (#%app car l1571) '#:y)
+                             (#%app cdr l1571)
+                             l1571))))
+             (#%app null? l1571)))
+         '#f))
+     (case-lambda
+      ((given-kws given-args x)
+       (#%app F1 given-kws given-args x)))
+     null
+     '(#:y)
+     (case-lambda
+      ((x) (#%app F1 null null x))))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="solution-the-shallow-tr-rewrite-strategy"&gt;Solution: The Shallow TR Rewrite Strategy&lt;/h2&gt;
+
+&lt;p&gt;All three examples show a common pattern among the expansions of optional  and keyword functions. Each function expands to a &lt;strong&gt;let-values&lt;/strong&gt; form:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(let-values (((f) fun)) . body)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Furthermore, the generated &lt;strong&gt;fun&lt;/strong&gt; is a lambda that first resolves optional  arguments and then executes the body of the original function. Here is the &lt;strong&gt;fun&lt;/strong&gt; from &lt;em&gt;Example 3&lt;/em&gt; again;  it has formal parameters for the keyword arg. and the mandatory arg.,  and one &lt;strong&gt;let-values&lt;/strong&gt; to resolve each parameter:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  (lambda (y1 x3)
+    (let-values (((x) x3))
+      (let-values (((y) (if '#f '0 y1)))
+        (let-values () (#%app + x y)))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Another experiment with &lt;strong&gt;type-of&lt;/strong&gt; shows that the right-hand side of  each &lt;strong&gt;let-values&lt;/strong&gt; has an internal type annotation. Excellent! Both &lt;strong&gt;(type-of x3)&lt;/strong&gt;  and &lt;strong&gt;(type-of (if &amp;rsquo;#f &amp;rsquo;0 y1))&lt;/strong&gt; are the right types for shape checks. Shallow TR can:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;inspect the &lt;strong&gt;let-values&lt;/strong&gt; one-by-one;&lt;/li&gt;
+ &lt;li&gt;convert the type of each right-hand expression to a shape predicate; and&lt;/li&gt;
+ &lt;li&gt;rewrite each right-hand &lt;strong&gt;expr&lt;/strong&gt; into &lt;strong&gt;(assert expr shape?)&lt;/strong&gt;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;This should work! In fact, we can do slightly better:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;when the right-hand expression is a conditional &lt;strong&gt;(if test default-expr supplied-arg)&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;then Shallow only needs to check the supplied arg: &lt;strong&gt;(if test default-expr (assert supplied-arg shape?))&lt;/strong&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Note: Shallow needs to rewrite the default expression, but it can trust its  final shape because of (Transient) type soundness.&lt;/p&gt;
+
+&lt;h2 id="a-problem-with-methods-and-a-bugfix"&gt;A Problem with Methods and a Bugfix&lt;/h2&gt;
+
+&lt;p&gt;Currently, Shallow TR rewrites optional and keyword functions using  the &lt;strong&gt;let-values&lt;/strong&gt; plan described above. Each formal parameter has one &lt;strong&gt;let-values&lt;/strong&gt; binding,  and the type on each bound expression defines the shape check.&lt;/p&gt;
+
+&lt;p&gt;Last May, though, this rewriting caused new failures in methods  with optional arguments. The failure was due to a mismatch between Typed Racket  and the Racket class expander. Since then, we &lt;a href="https://github.com/racket/racket/pull/3182"&gt;fixed the class expander&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, here is a class with one method that runs correctly. The method &lt;strong&gt;f&lt;/strong&gt; accepts an optional positional argument &lt;strong&gt;x&lt;/strong&gt;; the default  value of &lt;strong&gt;x&lt;/strong&gt; is the current value of the field &lt;strong&gt;my-num&lt;/strong&gt; (fields are mutable):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define c0%
+  (class object%
+    (super-new)
+    (field (my-num 2))
+    (define/public (f [x my-num])
+      (+ x x))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Second, here is a similar method that fails. This time, the default is an immediate value &lt;strong&gt;2&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define c1%
+  (class object%
+    (super-new)
+    (define/public (f [x 2])
+      (+ x x))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Running a call &lt;strong&gt;(send o1 f)&lt;/strong&gt; used to raise a shape-check failure about  a strange value:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;shape error: Expected a real number, got &lt;code&gt;#&amp;lt;unsafe-undefined&amp;gt;&lt;/code&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;What is going on?&lt;/p&gt;
+
+&lt;p&gt;It turns out, the undefined value comes from the expander. Here is an optional function with a default expression:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(lambda (x [y z])
+  (+ x y))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Expansion generates a function &lt;strong&gt;F0&lt;/strong&gt; that checks for the undefined value,  and an outer &lt;strong&gt;case-lambda&lt;/strong&gt; that supplies undefined when the default  is needed:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(let-values (((F0)
+              (lambda (x2 y1)
+                (let-values (((x) x2))
+                  (let-values (((y)
+                                (if (#%app eq? y1 unsafe-undefined)
+                                  z
+                                  y1)))
+                    (let-values () (#%app + x y)))))))
+  (case-lambda
+   ((x) (#%app F0 x unsafe-undefined))
+   ((x y1) (#%app F0 x y1))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That&amp;rsquo;s the normal way that &lt;strong&gt;unsafe-undefined&lt;/strong&gt; shows up:  the &lt;a href="https://github.com/racket/racket/blob/c0ff11e27bd28e070c20b7a9b0f7365f8f2b665a/racket/collects/racket/private/kw.rkt"&gt;expander for optional/keyword functions&lt;/a&gt;  looks for default expressions  vs. default values and uses the undefined value for expressions.&lt;/p&gt;
+
+&lt;p&gt;Three other facts conspired to make the problem with optional methods:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Typed Racket also looks for default expressions vs. default values  (search for &lt;strong&gt;immediate-default&lt;/strong&gt; &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/base-env/annotate-classes.rkt"&gt;here&lt;/a&gt;).  When an optional parameter has a default expression, Typed Racket  widens its internal type to accept the &lt;strong&gt;unsafe-undefined&lt;/strong&gt; value  (search for &lt;strong&gt;-Unsafe-Undefined&lt;/strong&gt;  &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/types/kw-types.rkt"&gt;here (kw)&lt;/a&gt;  and  &lt;a href="https://github.com/racket/typed-racket/blob/325f621716966b95a68af700624bafa21ac66e14/typed-racket-lib/typed-racket/typecheck/tc-lambda-unit.rkt"&gt;here (opt)&lt;/a&gt;).&lt;/li&gt;
+ &lt;li&gt;The class expander does some pre-processing on optional methods and  inadvertantly turned every default value into a default expression.&lt;/li&gt;
+ &lt;li&gt;Shallow TR pushes default expression checks &lt;strong&gt;(if test default-expr supplied-arg)&lt;/strong&gt;  to the &lt;strong&gt;supplied-arg&lt;/strong&gt; instead of wrapping the whole &lt;strong&gt;if&lt;/strong&gt; form.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;In the end, Typed Racket saw a default value and inferred an overly-precise  type. The type would be correct but for the class expander. As-is, the type was unsound&amp;mdash;but harmless because the false assumption  was guarded by an &lt;strong&gt;if&lt;/strong&gt; test for &lt;strong&gt;unsafe-undefined&lt;/strong&gt;. Running Shallow TR revealed the unsoundness with its eager shape check.&lt;/p&gt;
+
+&lt;p&gt;Again, the resolution was to fix the class expander (&lt;a href="https://github.com/racket/racket/pull/3182"&gt;racket/racket #3182&lt;/a&gt;). Both Typed Racket and Shallow TR stayed the same. The change removes an unnecessary run-time check from expanded optional methods.&lt;/p&gt;
+
+&lt;h2 id="lessons"&gt;Lessons&lt;/h2&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Optional and keyword functions are not core forms in Racket.  They expand to a combination of simple functions.&lt;/li&gt;
+ &lt;li&gt;Digging into the expansion is sometimes necessary.  There are at least three places that do so&amp;mdash;the class expander, TR, and Shallow TR&amp;mdash;and unfortunately they all need to cooperate.&lt;/li&gt;
+ &lt;li&gt;The development of Shallow TR helped find several latent bugs in TR, Racket, and other libraries.  Figure 57 of &lt;a href="https://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020"&gt;my dissertation&lt;/a&gt;  lists them all.&lt;/li&gt;&lt;/ol&gt;</description></item>
+  <item>
+   <title>Transient Answers Old Questions</title>
+   <link>http://prl.ccs.neu.edu/blog/2020/10/15/transient-answers-old-questions/?utm_source=transient&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2020-10-15-transient-answers-old-questions</guid>
+   <pubDate>Thu, 15 Oct 2020 13:32:12 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;Several old questions from the Typed Racket mailing list have new and simple answers under a &amp;ldquo;transient&amp;rdquo; Typed Racket.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;For the past few months, I&amp;rsquo;ve been adding a transient semantics to Typed Racket. The project is called Shallow Typed Racket. Details are in the &lt;a href="https://github.com/racket/typed-racket/pull/952"&gt;RFC&lt;/a&gt;  and &lt;a href="https://github.com/racket/typed-racket/pull/948"&gt;pull request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The short story is that the new Shallow Racket does less to enforce types  when typed code interacts with untyped code. Typed code is still type-sound, but that&amp;rsquo;s about it. By contrast, types are much stronger in classic Typed Racket.&lt;/p&gt;
+
+&lt;p&gt;Shallow Racket&amp;rsquo;s weaker types allow more programs to run. While testing whether the new freedom is useful, I reviewed a few years of  Typed Racket questions on the &lt;a href="https://groups.google.com/g/racket-users"&gt;Racket mailing list&lt;/a&gt;. There were a surprising number of questions that went like this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Q.&lt;/strong&gt; Hey, I ran a program expecting &lt;em&gt;X&lt;/em&gt; to happen, but &lt;em&gt;Y&lt;/em&gt; happened instead. Is this a bug?&lt;/p&gt;
+ &lt;p&gt;&lt;strong&gt;A.&lt;/strong&gt; No, Typed Racket has to do &lt;em&gt;Y&lt;/em&gt; because of its strong types.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;&amp;hellip; but changing to shallow types gives the &lt;em&gt;X&lt;/em&gt; behavior! Here are their stories.&lt;/p&gt;
+
+&lt;p&gt;Going forward, &lt;strong&gt;Deep&lt;/strong&gt; refers to normal Typed Racket and &lt;strong&gt;Shallow&lt;/strong&gt; refers to Shallow Typed Racket.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="higher-order-value-as-any"&gt;Higher-Order Value as Any&lt;/h2&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ"&gt;groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20180416-mailoo-wrote"&gt;On 2018&amp;ndash;04&amp;ndash;16, &lt;em&gt;mailoo&lt;/em&gt; wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; I play a little with the &amp;ldquo;Any&amp;rdquo; type (due to &amp;lsquo;dynamic-require&amp;rsquo; which   return Any), and I&amp;rsquo;m not able to cast them back in a function.&lt;/p&gt;
+ &lt;p&gt; I (over) simplify my question with this little program :&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;(: p Any) 
+(define (p i) (displayln i)) 
+
+; Here I want to get back my function 
+(define proc (cast p (-&amp;gt; Integer Void))) 
+(proc 2) &lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; but I get this error when I try to execute the function :&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;; contract violation 
+; Attempted to use a higher-order value passed as `Any` in untyped code: #&amp;lt;procedure:p&amp;gt; &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Deep&lt;/strong&gt; raises an error because it must enforce the &lt;code&gt;Any&lt;/code&gt; type with a contract that  rejects all interactions. Things would go badly if an Any-typed function expected a String but got an  Integer.&lt;/p&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; prints 2 and returns void. No error. Same goes for dynamic-require.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="parametric-contract-affects-untyped-code"&gt;Parametric Contract Affects Untyped Code&lt;/h2&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ"&gt;groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20191215-john-clements-wrote"&gt;On 2019&amp;ndash;12&amp;ndash;15, John Clements wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; It looks like my quick attempt at importing index-of into TR is running into a problem. Here’s the program I ran:&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;  #lang typed/racket 
+
+  (require/typed racket/list 
+  [index-of (All (T) ((Listof T) T -&amp;gt; (U False Natural)))]) 
+
+  (index-of '(n s e w) 'n) ;; returns... #f? &lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; In typed/racket/no-check this returns 0, and also in racket (mutatis mutandis).&lt;/p&gt;
+ &lt;p&gt; I thought this might be some kind of parametricity issue, but even when I instantiate index-of at Symbol which should pretty much clear the way for arbitrary equality checking, I still get False.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Deep&lt;/strong&gt; enforces parametricity for &lt;code&gt;All&lt;/code&gt; types, and this throws off the equality  function that index-of uses internally.&lt;/p&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; returns 0.&lt;/p&gt;
+
+&lt;p&gt;ps John, thanks very much for working on &lt;a href="https://adventofcode.com"&gt;Advent of Code&lt;/a&gt; and mailing the list!&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="unable-to-protect-opaque-value-as-any"&gt;Unable to Protect Opaque Value as Any&lt;/h2&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ"&gt;groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20191211-marc-kaufmann-wrote"&gt;On 2019&amp;ndash;12&amp;ndash;11, Marc Kaufmann wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;I have one file called &lt;code&gt;type-test.rkt&lt;/code&gt; with the following&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang typed/racket
+
+(require (only-in typed/web-server/http response/xexpr response))
+
+(provide f2)
+
+(: f2 (-&amp;gt; (U response Any)))
+(define (f2)
+  (define x '(body (h1 "Try it")))
+  (: resp response)
+  (define resp (response/xexpr x))
+  resp)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Then I have another &lt;em&gt;untyped&lt;/em&gt; file for a servlet:&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang racket
+
+(require "type-test.rkt"
+         web-server/servlet
+         web-server/servlet-env)
+
+(define (start req)
+  (f2))
+
+(serve/servlet start
+               #:servlet-regexp #rx""
+               #:launch-browser? #false
+               #:port 8080)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Notice that I am telling [f2] that &lt;code&gt;resp&lt;/code&gt; is of type &lt;code&gt;response&lt;/code&gt;. Yet, when I run the server with &lt;code&gt;start&lt;/code&gt; [&amp;hellip;.] I get the following result:&lt;/p&gt;
+ &lt;p&gt;(f2): Error, see below.&lt;/p&gt;
+ &lt;p&gt;The error is:&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;f2: broke its own contract
+  any-wrap/c: Unable to protect opaque value passed as `Any`
+  value: #&amp;lt;response&amp;gt;
+  in: the range of
+      (-&amp;gt; Any)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Deep&lt;/strong&gt; tries to enforce the &lt;code&gt;Any&lt;/code&gt; type with a contract that rejects all  interactions, but needs to know what interactions are possible in order  to make a reject-all contract. For many values, Deep can ask questions like procedure? and struct-info  to learn enough. But this program sends an opaque response struct across a boundary and  Deep does not have the right inspector to learn about the struct fields.&lt;/p&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; does nothing to enforce the Any type. This program runs, and in general Shallow never complains about opaque values.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="type-inference-installs-a-precise-type"&gt;Type Inference Installs a Precise Type&lt;/h2&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ"&gt;groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20200214-john-clements-wrote"&gt;On 2020&amp;ndash;02&amp;ndash;14, John Clements wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;I think I may understand what’s going on here, but a student and I worked on this for quite a while today before I found the problem.&lt;/p&gt;
+ &lt;p&gt;Here’s a program:&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang typed/racket 
+
+(define-type Store (Mutable-HashTable Integer Value)) 
+(define-type Value (U Real Boolean String)) 
+
+(define top-store
+  (cast
+    (make-hash (list (cons -1 14) (cons 1 #t) (cons 2 #f)))
+    Store))
+
+(hash-set! top-store 5 1234)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;It fails with this error:&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;contract violation
+expected: (or/c (and/c byte? positive?) #t #f)
+given: 1234
+in: the values of
+the 3rd conjunct of
+(and/c hash?
+       hash-mutable?
+       (hash/c exact-integer?
+               (or/c (and/c byte? positive?) #t #f)
+               #:immutable #f))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;First off, &lt;strong&gt;Deep&lt;/strong&gt; runs fine after swapping &lt;code&gt;cast&lt;/code&gt; for &lt;code&gt;ann&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Second, Typed Racket does try to generalize inferred types for mutable data. If the only value in the hash is the byte 14 then Deep also runs.&lt;/p&gt;
+
+&lt;p&gt;The problem is that Typed Racket does not generalize the inferred value type  (U Byte Boolean) and that cast is a run-time tool for enforcing types. Casts create contracts to protect mutable data. In this program, there are two contracts:  one based on the Store type to protect code that uses the hash,  and one based on the inferred type to protect the hash against bad writes. That second contract raises the error message.&lt;/p&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; runs successfully. The cast looks for a hash, does not make a contract, and ignores the inferred  type going forward.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="same-arity-functions-in-a-case-lambda"&gt;Same-Arity Functions in a Case Lambda&lt;/h2&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ"&gt;groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20190705-ryan-kramer-wrote"&gt;On 2019&amp;ndash;07&amp;ndash;05, Ryan Kramer wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;In the code below, can &lt;code&gt;maybe-car&lt;/code&gt; have the given type [&amp;hellip;.]?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang typed/racket
+
+(module untyped racket
+  (provide maybe-car)
+  (define (maybe-car x)
+    (cond
+      [(pair? x) (car x)]
+      [else x])))
+
+(require/typed
+ 'untyped
+ [maybe-car (All (a b) (case-&amp;gt;
+                        (-&amp;gt; (Pairof a b) a)
+                        (-&amp;gt; a a)))])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;[Current error:]&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;Type Checker:
+ Type (All (a b) (case-&amp;gt; (-&amp;gt; (Pairof a b) a) (-&amp;gt; a a)))
+  could not be converted to a contract:
+   function type has two cases of arity 1&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Deep&lt;/strong&gt; tries to enforce the type with a Racket &lt;code&gt;or/c&lt;/code&gt; contract, but cannot. The problem is that or/c only has partial support for unions. If or/c ends up with two possible higher-order options at runtime, it halts. In this case, we end up with two function contracts that have the same arity  and don&amp;rsquo;t know which to apply to an incoming function.&lt;/p&gt;
+
+&lt;p&gt;Note, the &amp;ldquo;Type Checker&amp;rdquo; error message is much better than what or/c would  give on its own.&lt;/p&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; simply checks that maybe-car accepts both arities inside the  case-&amp;gt; type. The code runs fine. Later, when the function gets applied in typed code, Shallow spot-checks the  results.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="immutable-type-affects-untyped-code"&gt;Immutable Type Affects Untyped Code&lt;/h3&gt;
+
+&lt;p&gt;Original message : &lt;a href="https://groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ"&gt;groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="on-20200217-bertrand-augereau-wrote"&gt;On 2020&amp;ndash;02&amp;ndash;17, Bertrand Augereau wrote:&lt;/h4&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Hello everybody, I&amp;rsquo;m trying to gradually type my script to make it a proper app (yes I&amp;rsquo;m a static-ish guy) and I have an issue (Racket 7.6 CS).&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;pre&gt;&lt;code&gt;; racket_mod.rkt:
+#lang racket
+
+(provide (struct-out s))
+(provide list-of-s)
+(provide set-list-of-s!)
+
+(struct s (a))
+(define list-of-s '())
+(define (set-list-of-s! los)
+  (set! list-of-s los))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;; racket_mod_typed.rkt:
+#lang typed/racket
+
+(provide (struct-out s2))
+(provide list-of-s2)
+(provide set-list-of-s2!)
+
+(struct s2 ([a : Natural]))
+(define list-of-s2 '())
+(define (set-list-of-s2! [los : (Listof s2)])
+  (set! list-of-s2 los))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code&gt;; racket_main.rkt:
+#lang racket
+
+(require "racket_mod.rkt")
+(require "racket_mod_typed.rkt")
+
+(define los (list (s 1) (s 2)))
+(set-list-of-s! los)
+(displayln list-of-s)
+
+(define los2 (list (s2 1) (s2 2)))
+(set-list-of-s2! los2)
+(displayln list-of-s2)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;list-of-s2 is empty and list-of-s is not, the only difference seems to be the type annotations. Can someone help me ? :)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="whats-going-on"&gt;What&amp;rsquo;s going on?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Deep&lt;/strong&gt; enforces the type of &lt;code&gt;list-of-s2&lt;/code&gt; with a listof contract, which  ends up making a copy of the original (empty) list as it traverses and  validates it. The original value does change in typed code, but the main module only has  access to the empty copy.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a step-by-step breakdown:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;the typed module creates an empty list-of-s2&lt;/li&gt;
+ &lt;li&gt;the main module imports the list and receives a new copy&lt;/li&gt;
+ &lt;li&gt;the main module calls set-list-of-s2! and the typed module updates the original list-of-s2 variable&lt;/li&gt;
+ &lt;li&gt;the main module reads from its copy &amp;mdash; and it&amp;rsquo;s still empty&lt;/li&gt;&lt;/ol&gt;
+
+&lt;h3 id="hows-transient"&gt;How&amp;rsquo;s transient?&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Shallow&lt;/strong&gt; lets the original list travel to untyped code. There are no contracts in the way.&lt;/p&gt;
+
+&lt;h2 id="discussion"&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;Wow! It&amp;rsquo;s great to see that Shallow Racket works &amp;ldquo;as expected&amp;rdquo; on these examples. I hope the Shallow option makes types more accessible to more Racket programmers  in the future.&lt;/p&gt;
+
+&lt;p&gt;If you have a similar experience with a deep-types error, let me know.&lt;/p&gt;
+
+&lt;p&gt;Keep in mind, though, the freedoms of shallow types allow silent failures. A value can pass by a mis-matched type annotation without Shallow raising an  error &amp;mdash; and if that happens, the end result may be really, really confusing. Of course you can always switch back to Deep Typed Racket for debugging.&lt;/p&gt;
+
+&lt;p&gt;Shallow Typed Racket is coming soon. Follow the &lt;a href="https://github.com/racket/typed-racket/pull/948"&gt;pull request&lt;/a&gt;  or watch the Racket release notes for news.&lt;/p&gt;
+
+&lt;h3 id="links"&gt;Links&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/"&gt;Larger example&lt;/a&gt;  where Shallow misses an error that Deep catches&lt;/li&gt;
+ &lt;li&gt;Michael M. Vitousek &lt;a href="http://hdl.handle.net/2022/23172"&gt;invented&lt;/a&gt;  the Transient semantics and implemented it in  &lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated Python&lt;/a&gt;.&lt;/li&gt;
+ &lt;li&gt;My &lt;a href="https://ccs.neu.edu/home/types/publications/publications.html#g-thesis-2020"&gt;upcoming dissertation&lt;/a&gt;  has lots more to say about Shallow Typed Racket.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Thanks to Artem Pelenitsyn for reading and criticizing an early version of this post.&lt;/em&gt;&lt;/p&gt;</description></item>
+  <item>
+   <title>The Typed Racket Optimizer vs. Transient</title>
+   <link>http://prl.ccs.neu.edu/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/?utm_source=transient&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2020-01-15-the-typed-racket-optimizer-vs-transient</guid>
+   <pubDate>Wed, 15 Jan 2020 12:16:35 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;What type-directed optimizations does Typed Racket perform  and do any require full types?&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;This post is based on a short talk. Slides from the talk are here: &lt;a href="http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf"&gt;http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Standard Typed Racket guarantees full type soundness and uses higher-order  contracts to make sure that interactions between Typed Racket and untyped  Racket obey the types. These contracts can be very expensive [&lt;a href="https://doi.org/10.1017/S0956796818000217"&gt;JFP 2019&lt;/a&gt;]. And so, the standard types are very strong but (possibly) slow.&lt;/p&gt;
+
+&lt;p&gt;Lately, I&amp;rsquo;ve been working on a &lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;transient&lt;/a&gt;  back-end for Typed Racket. Transient Typed Racket provides a weaker guarantee &amp;mdash; only that typed code  cannot get &amp;ldquo;stuck&amp;rdquo; &amp;mdash; via simpler run-time checks. Early data shows that these simple checks are often faster   than the standard boundary checks [&lt;a href="https://doi.org/10.1145/3236766"&gt;ICFP 2018&lt;/a&gt;],  hence we want both options for Typed Racket programmers: slow/correct  and fast/wrong.&lt;/p&gt;
+
+&lt;p&gt;The implementation of Transient needs to re-use some parts of Standard Typed  Racket and modify others. Typed Racket comes with three major components:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;a static type checker,&lt;/li&gt;
+ &lt;li&gt;a compiler from types to contracts, and&lt;/li&gt;
+ &lt;li&gt;a type-driven optimizer [&lt;a href="https://www2.ccs.neu.edu/racket/pubs/padl12-stff.pdf"&gt;PADL 2012&lt;/a&gt;, &lt;a href="https://doi.org/10.1145/2384616.2384629"&gt;OOPSLA 2012&lt;/a&gt;].&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Transient Typed Racket can re-use all of the type checker  and parts of the type-to-contract compiler. The question for this post is: can Transient re-use the optimizer?&lt;/p&gt;
+
+&lt;h2 id="q-can-transient-re-use-the-typed-racket-optimizer"&gt;Q. Can Transient re-use the Typed Racket optimizer?&lt;/h2&gt;
+
+&lt;p&gt;The answer requires some thought because Standard Typed Racket and Transient  Typed Racket preserve different amounts of type information.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;In Standard Typed Racket, if an expression &lt;strong&gt;e&lt;/strong&gt; has type &lt;strong&gt;T&lt;/strong&gt; and reduces  to a value &lt;strong&gt;v&lt;/strong&gt; (for short, &lt;strong&gt;e : T &amp;mdash;&amp;gt;* v&lt;/strong&gt;), then the result &lt;strong&gt;v&lt;/strong&gt; definitely  matches the full type &lt;strong&gt;T&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;In Transient Typed Racket, if &lt;strong&gt;e : T &amp;mdash;&amp;gt;* v&lt;/strong&gt; then the result &lt;strong&gt;v&lt;/strong&gt; matches  the toplevel &amp;ldquo;shape&amp;rdquo; of &lt;strong&gt;T&lt;/strong&gt; but (maybe) nothing more.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The idea of a &amp;ldquo;shape&amp;rdquo; is that it corresponds to the outermost constructor of  a type. A shape check must be decidable, but otherwise finding the best shape for a type  is an engineering challenge. On one hand, deeper checks give stronger guarantees. On the other hand, shallower checks are quicker to validate.&lt;/p&gt;
+
+&lt;p&gt;Here are a few shapes according to the current Transient prototype:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Shape(Natural)                = Natural
+  Shape(Listof String)          = Listof Any
+  Shape(Symbol -&amp;gt; Boolean)      = Any -&amp;gt; Any
+  Shape(Vector Void Void)       = Vector Any Any
+  Shape(U Void (Listof Symbol)) = U Void (Listof Any)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the current shapes, can we re-use the Typed Racket optimizer?&lt;/p&gt;
+
+&lt;h2 id="optimization-topics"&gt;Optimization Topics&lt;/h2&gt;
+
+&lt;p&gt;Typed Racket implements 15 kinds of type-directed transformation. Below, each gets: a short description, an example, and a verdict of &amp;ldquo;safe&amp;rdquo;  or &amp;ldquo;unsafe&amp;rdquo; for Transient.&lt;/p&gt;
+
+&lt;p&gt;To be clear: some optimization topics perform many kinds of transformations, but this post picks only one example transformation for each.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-1-apply"&gt;Topic 1: apply&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/apply.rkt"&gt;apply.rkt&lt;/a&gt;  &amp;ldquo;inlines&amp;rdquo; expressions of the form &lt;code&gt;(apply f (map g xs))&lt;/code&gt; to map and fold  in one pass over the list (&lt;code&gt;xs&lt;/code&gt;). Currently, the pass only triggers when &lt;code&gt;f&lt;/code&gt; is &lt;code&gt;+&lt;/code&gt; or &lt;code&gt;*&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: xs (Listof Integer))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (apply + (map abs xs))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let loop ((v 0)
+             (lst xs))
+    (if (null? lst)
+      v
+      (loop (+ v (abs (unsafe-car lst)))
+            (unsafe-cdr lst))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, but risky.&lt;/p&gt;
+
+&lt;p&gt;Technically, this transformation is unsound for Transient because of how it uses &lt;code&gt;unsafe-car&lt;/code&gt;. The expansion of &lt;code&gt;(apply * (map g xs))&lt;/code&gt; applies &lt;code&gt;(g (unsafe-car xs))&lt;/code&gt; without  confirming that the first element of &lt;code&gt;xs&lt;/code&gt; matches its expected type. This unsoundness is no problem, though, as long as &lt;em&gt;every&lt;/em&gt; Transient-typed function  checks the shape of its input. (Typed functions that flow to untyped code already need to check inputs.)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-2-box"&gt;Topic 2: box&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/box.rkt"&gt;box.rkt&lt;/a&gt;  safely applies unsafe box operations to expressions with &lt;code&gt;Box&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: b (Boxof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (unbox b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-unbox b)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-3-dead-code"&gt;Topic 3: dead-code&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/dead-code.rkt"&gt;dead-code.rkt&lt;/a&gt;  uses type information to identify code that cannot run. Once identified, the TR optimizer makes the dead code obvious for the Racket  bytecode compiler. The pass deals with &lt;code&gt;if&lt;/code&gt; expressions, &lt;code&gt;lambda&lt;/code&gt; expressions, and &lt;code&gt;case-lambda&lt;/code&gt;;  the latter is the most interesting for Transient.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f (-&amp;gt; Symbol Symbol)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       (for/list ((_i (in-range i))) s))))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       ; dead code, replace with no-op
+       (void))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: unsafe, can change behavior&lt;/p&gt;
+
+&lt;p&gt;The pass infers that some branches of a &lt;code&gt;case-lambda&lt;/code&gt; can never run because  the type says they do not exist. In Standard Typed Racket, this inference is correct because a run-time contract  seals off the &amp;ldquo;untyped&amp;rdquo; branches. In Transient, though, there is no need to add a contract and therefore no  guarantee these branches are inaccessible. An application in untyped code can enter the dead branch;  if it does, then adding Transient types to part of a program can change  its result to &lt;code&gt;(void)&lt;/code&gt; and thereby violate the graduality design goal [&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;SNAPL 2015&lt;/a&gt;, &lt;a href="https://doi.org/10.1145/3236768"&gt;ICFP 2018&lt;/a&gt;]  &amp;mdash; that is, that adding types should only change behavior by introducing runtime  type mismatches.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-4-extflonum"&gt;Topic 4: extflonum&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/extflonum.rkt"&gt;extflonum.rkt&lt;/a&gt;  safely applies unsafe extflonum operations to expressions with &lt;code&gt;Extflonum&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: e Extflonum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (extflabs e)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-extflabs e)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-5-fixnum"&gt;Topic 5: fixnum&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/fixnum.rkt"&gt;fixnum.rkt&lt;/a&gt;  safely applies unsafe fixnum operations to expressions with &lt;code&gt;Fixnum&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f Fixnum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (exact-&amp;gt;inexact f)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-fx-&amp;gt;fl f)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-6-float-complex"&gt;Topic 6: float-complex&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float-complex.rkt"&gt;float-complex.rkt&lt;/a&gt;  unboxes complex numbers (into one real-part variable and one imaginary-part variable)  and rewrites operations to handle the unboxed numbers.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f (-&amp;gt; Float-Complex Float-Complex Float-Complex))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define (f n0 n1)
+    (+ n0 n1))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define (f n0 n1)
+    (let* ((unboxed-real-0 (unsafe-flreal-part n0))
+           (unboxed-imag-0 (unsafe-flimag-part n0))
+           (unboxed-real-1 (unsafe-flreal-part n1))
+           (unboxed-imag-1 (unsafe-flimag-part n1))
+           (unboxed-real-2 (unsafe-fl+ (real-&amp;gt;double-flonum unboxed-real-0)
+                                       unboxed-real-1))
+           (unboxed-imag-2 (unsafe-fl+ (real-&amp;gt;double-flonum unboxed-imag-0)
+                                       unboxed-imag-1)))
+      (unsafe-make-flrectangular unboxed-real-2 unboxed-imag-2)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with caution&lt;/p&gt;
+
+&lt;p&gt;The body of a Transient-typed function (that can flow to untyped code)  must first check that its inputs have the correct shape. Currently, the &lt;strong&gt;float-complex&lt;/strong&gt; pass creates functions that apply &lt;code&gt;unsafe-flreal-part&lt;/code&gt; before  anything else; to be safe, the pass needs to make sure that Transient checks  come first.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-7-float"&gt;Topic 7: float&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float.rkt"&gt;float.rkt&lt;/a&gt;  safely applies unsafe flonum operations to expressions with &lt;code&gt;Flonum&lt;/code&gt; type  and also transforms some &lt;code&gt;random&lt;/code&gt; calls to use &lt;code&gt;unsafe-flrandom&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; --------------------------------------------------
+  ;; Before Optimization
+  (random)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-flrandom (current-pseudo-random-generator))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, but a close call&lt;/p&gt;
+
+&lt;p&gt;Accessing a parameter, as in &lt;code&gt;(current-pseudo-random-generator)&lt;/code&gt;, is an  elimination form that may require a shape check. This particular parameter, however, is protected by a contract that enforces  the precondition of &lt;code&gt;unsafe-flrandom&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-8-list"&gt;Topic 8: list&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/list.rkt"&gt;list.rkt&lt;/a&gt;  safely applies unsafe list operations to list expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: lst (List Symbol Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (list-ref lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-list-ref lst 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong-enough shape checks&lt;/p&gt;
+
+&lt;p&gt;The shape check for a &lt;code&gt;(Listof T)&lt;/code&gt; must check for proper lists (via &lt;code&gt;list?&lt;/code&gt;);  note that the cost of this check depends on the size of incoming values. The shape check for a &lt;code&gt;(List T ...)&lt;/code&gt; type must validate the length of incoming  values.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-9-number"&gt;Topic 9: number&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/number.rkt"&gt;number.rkt&lt;/a&gt;  performs simple transformations on &lt;code&gt;Real&lt;/code&gt;-valued expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: r Real)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (+ r)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  r&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-10-pair"&gt;Topic 10: pair&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/pair.rkt"&gt;pair.rkt&lt;/a&gt;  safely applies pair-access operations to (possibly-nested) pairs.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: p (Pairof (Pairof Symbol Void) String))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (cdar p)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-cdr (unsafe-car p))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: unsafe&lt;/p&gt;
+
+&lt;p&gt;Transient guarantees the first level of a type, but nothing more. Concretely, &lt;code&gt;Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any&lt;/code&gt;  and so the &lt;code&gt;unsafe-cdr&lt;/code&gt; above is not safe.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-11-sequence"&gt;Topic 11: sequence&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/sequence.rkt"&gt;sequence.rkt&lt;/a&gt;  safely applies unsafe sequence operations to expressions with &lt;code&gt;(Sequenceof T)&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: s String)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (for ((c s))
+    (void))
+
+  ;; --------------------------------------------------
+  ;; After Optimization (simplified)
+  (for ((c (in-string s)))
+    (void))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong enough shape checks (see &lt;strong&gt;list&lt;/strong&gt; and &lt;strong&gt;vector&lt;/strong&gt;)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-12-string"&gt;Topic 12: string&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/string.rkt"&gt;string.rkt&lt;/a&gt;  safely applies unsafe string operations to expressions with &lt;code&gt;String&lt;/code&gt; type. (Note that &lt;code&gt;unsafe-string-ref&lt;/code&gt; is only safe when the result is sure to be  a Latin&amp;ndash;1 character.)&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: b Bytes)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (bytes-length b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-bytes-length b)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-13-struct"&gt;Topic 13: struct&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/struct.rkt"&gt;struct.rkt&lt;/a&gt;  safely applies unsafe struct operations to struct expressions, using  Typed Racket&amp;rsquo;s &lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/types/struct-table.rkt"&gt;internal registry of struct info&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (struct open-interval ([lo : Real] [hi : Real]))
+  (: ivl open-interval)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (open-interval-lo ivl)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-struct-ref ivl 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-14-unboxed-let"&gt;Topic 14: unboxed-let&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/unboxed-let.rkt"&gt;unboxed-let.rkt&lt;/a&gt;  cooperates with the &lt;code&gt;float-complex&lt;/code&gt; pass by transforming the binding-site  of some complex numbers. This pass may change a &lt;code&gt;let&lt;/code&gt;-expression into a &lt;code&gt;let-values&lt;/code&gt; that expects  a real-part and imag-part, and may change a function to expect twice as many  arguments &amp;mdash; provided the optimizer can find &lt;em&gt;all&lt;/em&gt; calls to the function.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: k Float-Complex)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (let ((f (lambda ((n : Float-Complex)) (+ n n))))
+    (f k))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let ((f (lambda (real-part-n imag-part-n) ....)))
+    (f (unsafe-flreal-part k) (unsafe-flimag-part k)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, thanks to the (conservative) escape analysis&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-15-vector"&gt;Topic 15: vector&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/vector.rkt"&gt;vector.rkt&lt;/a&gt;  safely applies vector operations to vector expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: v (Vector (Listof Symbol) String))
+  (: lst (Listof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (vector-set! v lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-vector-set! v lst 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong-enough shape checks&lt;/p&gt;
+
+&lt;p&gt;The check for &lt;code&gt;(Vector T ...)&lt;/code&gt; must check the length of incoming values.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;The Typed Racket optimizer implements 15 kinds of transformations. Two are definitely unsafe for Transient as-is (&lt;strong&gt;dead-code&lt;/strong&gt;, &lt;strong&gt;pair&lt;/strong&gt;). One must take care when rewriting a Transient function (&lt;strong&gt;float-complex&lt;/strong&gt;). One may limit our ability to reduce the number of run-time checks in a program (&lt;strong&gt;apply&lt;/strong&gt;). Two others require transient checks whose cost depends on the size of the input values (&lt;strong&gt;list&lt;/strong&gt;, &lt;strong&gt;sequence&lt;/strong&gt;).&lt;/p&gt;
+
+&lt;p&gt;There may be other issues that I missed while reading the optimizer code. If so, I&amp;rsquo;ll try to remember to update this post.&lt;/p&gt;</description></item>
+  <item>
+   <title>Java and Migratory Typing</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/12/02/java-and-migratory-typing/?utm_source=transient&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-12-02-java-and-migratory-typing</guid>
+   <pubDate>Sun, 02 Dec 2018 14:41:53 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;The &lt;em&gt;transient&lt;/em&gt; approach to migratory typing (circa &lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf"&gt;2014&lt;/a&gt;)  is similar to type erasure in Java (circa &lt;a href="https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html"&gt;2004&lt;/a&gt;)  in a few interesting ways.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="migratory-typing"&gt;Migratory typing&lt;/h2&gt;
+
+&lt;p&gt;The goal of &lt;em&gt;migratory typing&lt;/em&gt; is to enrich the type system of a language  without breaking backwards compatibility. Ideally, code that uses the enriched types:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;(G1) benefits from new ahead-of-time checks,&lt;/li&gt;
+ &lt;li&gt;(G2) benefits from stronger run-time guarantees, and&lt;/li&gt;
+ &lt;li&gt;(G3) may interact with all kinds of existing code.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;There are tradeoffs involved in the implementation of a migratory typing  system, however, and (as we will see) different implementations may focus on  different goals than the three above.&lt;/p&gt;
+
+&lt;p&gt;A typical migratory typing system adds a static type checker to a dynamically  typed language (&lt;a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/index.html"&gt;examples&lt;/a&gt;),  but one could also extend the type system of a statically-typed language;  for example, by &lt;a href="https://hal.inria.fr/hal-01629909v2"&gt;adding dependent types&lt;/a&gt;. In this sense, Java 1.5.0 is a migratory typing system for pre-generics Java. The addition of generic types enabled new ahead-of-time checks and maintained backwards  compatibility with existing Java code.&lt;/p&gt;
+
+&lt;p&gt;Java&amp;rsquo;s implementation of migratory typing has some interesting things in common  with the &lt;em&gt;transient&lt;/em&gt; implementation strategy recently proposed by  Michael Vitousek and collaborators (&lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf"&gt;DLS&amp;rsquo;14&lt;/a&gt;, &lt;a href="https://mail.google.com/mail/u/0/h/1atrn21qlyrrh/?&amp;amp;"&gt;POPL&amp;rsquo;17&lt;/a&gt;). The goal of this post is to demonstrate the connections.&lt;/p&gt;
+
+&lt;h2 id="erasure-migratory-typing"&gt;Erasure migratory typing&lt;/h2&gt;
+
+&lt;p&gt;Before we compare Java 1.5.0 to transient, let&amp;rsquo;s review a simpler strategy:  the &lt;em&gt;erasure&lt;/em&gt; approach to migratory typing.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://www.typescriptlang.org/"&gt;TypeScript&lt;/a&gt; is a great (modern) example of the erasure approach. TypeScript is a migratory typing system for JavaScript. A TypeScript module gets validated by an ahead-of-time type checker and  compiles to JavaScript. After compilation, any JavaScript program may import bindings  from the generated code. Conversely, a TypeScript module may import bindings from a JavaScript module  by declaring a static type for each binding.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The &lt;a href="http://definitelytyped.org/"&gt;DefinitelyTyped&lt;/a&gt; repository provides TypeScript type definitions for many JavaScript libraries.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The TypeScript compiler erases types;  every type &lt;code&gt;T&lt;/code&gt; in the source code translates to the universal &amp;ldquo;JavaScript type&amp;rdquo;. For instance, a TypeScript function declaration compiles to an untyped  JavaScript function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function (n0 : number, n1 : number) { return n0 + n1; })
+
+// ==(compiles to)==&amp;gt;
+
+(function (n0, n1) { return n0 + n1; })&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;TypeScript satisfies goals &lt;strong&gt;G1&lt;/strong&gt; and &lt;strong&gt;G3&lt;/strong&gt; for a migratory typing system  because its type checker adds ahead-of-time checks and its  compiler outputs JavaScript. TypeScript does not satisfy goal &lt;strong&gt;G2&lt;/strong&gt; because the compiler erases types. In terms of the example above, the compiled function may be invoked with any  pair of JavaScript values; the variable &lt;code&gt;n0&lt;/code&gt; is not guaranteed to point  to a &lt;code&gt;number&lt;/code&gt; at run-time. On one hand, this means the type annotations have no effect on the behavior  of a program &amp;mdash; and in particular, cannot be trusted for debugging. On the other hand, it means that an experienced JavaScript programmer can  re-use their knowledge to predict the behavior of a TypeScript program.&lt;/p&gt;
+
+&lt;p&gt;In an ordinary program, the run-time guarantees of TypeScript are simply  the run-time guarantees of JavaScript:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if a TypeScript expression &lt;code&gt;e&lt;/code&gt; has the static type &lt;code&gt;T&lt;/code&gt; and evaluates to  a value &lt;code&gt;v&lt;/code&gt;,  then the only guarantee is that &lt;code&gt;v&lt;/code&gt; is a valid JavaScript value  (e.g., &lt;code&gt;T&lt;/code&gt; could be &lt;code&gt;number&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt; could be an incompatible object).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="transient-migratory-typing"&gt;Transient migratory typing&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated&lt;/a&gt; is a migratory typing  system for Python that follows a &lt;em&gt;transient&lt;/em&gt; implementation strategy. A Reticulated module gets type-checked and compiles to a Python module that  defends itself from certain type-invalid inputs through the use of  assertions that run in near-constant time. The type-checking addresses goal &lt;strong&gt;G1&lt;/strong&gt;,  the compilation to Python provides interoperability (goal &lt;strong&gt;G3&lt;/strong&gt;),  and the assertions partially meet goal &lt;strong&gt;G2&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;These &lt;em&gt;certain&lt;/em&gt; inputs are the ones that would cause a standard typed operational semantics to reach an undefined state. For a discussion of &lt;em&gt;near-constant&lt;/em&gt;, see &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;, section 2&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For example, here is a Reticulated function  that computes the average of a list of numbers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Reticulated (commit e478343)
+def average(nums : List(Float)) -&amp;gt; Float:
+  if ns:
+    return sum(ns) / len(ns)
+  else:
+    raise ValueError("average: expected non-empty list")&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and here is the Python code it compiles to:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;from retic.runtime import *
+from retic.transient import *
+from retic.typing import *
+
+def average(nums):
+    check_type_list(nums)
+    if ns:
+        return check_type_float((check_type_function(sum)(ns) / check_type_function(len)(ns)))
+    else:
+        raise check_type_function(ValueError)('average: expected non-empty list')&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: the Reticulated syntax for type annotations is similar to the one proposed in &lt;a href="https://www.python.org/dev/peps/pep-0484/"&gt;PEP 484&lt;/a&gt;, but not identical. For example, Reticulated does not require forward references to be embedded in strings.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The Reticulated compiler removes all type annotations and inserts &lt;code&gt;check_type&lt;/code&gt;  assertions throughout the code. In &lt;code&gt;average&lt;/code&gt;, these assertions check that: (1) the input is a list,  (2) the output is a &lt;code&gt;float&lt;/code&gt;, (3) and the names &lt;code&gt;sum&lt;/code&gt; &lt;code&gt;len&lt;/code&gt; and  &lt;code&gt;ValueError&lt;/code&gt; point to callable values. That&amp;rsquo;s all. The assertions &lt;strong&gt;do not check&lt;/strong&gt; that &lt;code&gt;nums&lt;/code&gt; contains only floating-point  numbers.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The assertions also do not check that the function bound to &lt;code&gt;sum&lt;/code&gt; is defined for a single argument, which is arguably a bug. Scaling a model to an implementation is always challenging.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;If &lt;code&gt;nums&lt;/code&gt; contains something other than floating point numbers, then the  call to &lt;code&gt;average&lt;/code&gt; may cause &lt;code&gt;sum&lt;/code&gt; to raise an exception or it may silently  compute a nonsense result. The behavior depends on the implementation of &lt;code&gt;sum&lt;/code&gt; in the same way that  the behavior of a TypeScript function depends on any JavaScript functions  that it invokes.&lt;/p&gt;
+
+&lt;p&gt;Reticulated does not erase types, nor does it fully enforce types. Every type in a Reticulated module translates to its  top-level type constructor &lt;code&gt;C(T)&lt;/code&gt;, e.g.:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  C(Float)                = Float
+  C(List(Float))          = List
+  C(List(Float) -&amp;gt; Float) = -&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Consequently, Reticulated has a slightly stronger run-time guarantee than Python:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if &lt;code&gt;e&lt;/code&gt; is an expression with static type &lt;code&gt;T&lt;/code&gt; that evaluates to a value &lt;code&gt;v&lt;/code&gt;,  then &lt;code&gt;v&lt;/code&gt; is guaranteed to have a top-level shape that matches the &lt;code&gt;C(T)&lt;/code&gt;  constructor.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="java-migratory-typing"&gt;Java migratory typing&lt;/h2&gt;
+
+&lt;p&gt;Java 1.5.0 added &lt;a href="https://www.jcp.org/en/jsr/detail?id=14"&gt;generic types&lt;/a&gt;  to the Java 1.4.0 type system. The benefit of generics is that a programmer can:  write one class definition,  use the definition in a few different contexts,  and receive specific feedback from the type checker in each context.&lt;/p&gt;
+
+&lt;h3 id="review-generic-types"&gt;Review: generic types&lt;/h3&gt;
+
+&lt;p&gt;Suppose we want to write a &lt;code&gt;Box&lt;/code&gt; class that holds some kind of value;  the value could be an &lt;code&gt;Integer&lt;/code&gt; or a &lt;code&gt;String&lt;/code&gt; or anything else. Here is a pre-generics definition:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Box {
+  private Object val;
+
+  public Box(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this definition is it possible to make boxes that hold different types  of values:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// good!
+Box iBox = new Box(new Integer(4));
+Box sBox = new Box(new String("X"));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;but it is also possible to &amp;ldquo;change the type&amp;rdquo; of the contents of a &lt;code&gt;Box&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// maybe bad!
+iBox.set(new String("not a number"));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and some calls to &lt;code&gt;get&lt;/code&gt; must be followed by a type cast:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// annoying!
+((String) sBox.get()).charAt(0);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;With generics, we can give a name (e.g. &lt;code&gt;ValType&lt;/code&gt;) to &amp;ldquo;the type of the value inside a box&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class GBox&amp;lt;ValType&amp;gt; {
+  private ValType val;
+
+  public GBox(ValType val) { this.set(val); }
+
+  public void set(ValType val) { this.val = val; }
+
+  public ValType get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and now we can tell the type checker to check different boxes differently (satisfying goal &lt;strong&gt;G1&lt;/strong&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GBox&amp;lt;Integer&amp;gt; iBox = new GBox&amp;lt;Integer&amp;gt;(new Integer(0));
+GBox&amp;lt;String&amp;gt; sBox = new GBox&amp;lt;String&amp;gt;(new String("A"));
+
+// iBox.set(new String("not a number")); // Type Error, good!
+
+sBox.get().charAt(0); // no cast, good!&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="backwards-compatibility--danger"&gt;Backwards compatibility &amp;amp; danger&lt;/h3&gt;
+
+&lt;p&gt;Java generics are backwards-compatible with older code (goal &lt;strong&gt;G3&lt;/strong&gt;). This means that pre-generics code can interact with instances of a generic  class. Vice-versa, generic code can interact with pre-generics classes. Since pre-generics code is not aware of type parameters, these interactions  are potentially unsafe. For example, a pre-generics method can change the type of a &lt;code&gt;GBox&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Java 1.4.0 method
+public static void evil(GBox b) { b.set(666); }
+
+// Java 1.5.0 method
+public static void test() {
+  GBox&amp;lt;String&amp;gt; sBox = new GBox&amp;lt;String&amp;gt;(new String("A"));
+  evil(sBox); // OK, but generates unchecked warning
+  sBox.get().charAt(0);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The code above passes the type checker (with a warning about the &lt;code&gt;evil&lt;/code&gt; method),  and so it &lt;em&gt;seems&lt;/em&gt; as though running the code will run the nonsense  method call &lt;code&gt;666.charAt(0)&lt;/code&gt; and lead to evil behavior. The actual result, however, is a cast error immediately after the call  &lt;code&gt;sBox.get()&lt;/code&gt; returns.&lt;/p&gt;
+
+&lt;p&gt;Based on the cast error, we can tell that  the compiler does not trust the type &lt;code&gt;GBox&amp;lt;String&amp;gt;&lt;/code&gt; and  inserts a run-time check that the result of the &lt;code&gt;.get()&lt;/code&gt; is a string object.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&amp;ldquo;Calling legacy code from generic code is inherently dangerous; once you mix generic code with non-generic legacy code, all the safety guarantees that the generic type system usually provides are void.&amp;rdquo; &lt;a href="https://www.oracle.com/technetwork/java/javase/generics-tutorial-159168.pdf"&gt;Generics in the Java Programming Language, Section 6.1&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="java-type-erasure"&gt;Java Type Erasure&lt;/h3&gt;
+
+&lt;p&gt;In order to support pre-generics and post-generics code on the same  &lt;a href="https://docs.oracle.com/javase/specs/jvms/se11/html/index.html"&gt;virtual machine&lt;/a&gt;,  the Java compiler &lt;a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.6"&gt;erases&lt;/a&gt;  generic type parameters after type-checking. Everywhere that the compiled code depends on an erased type, such as the  &lt;code&gt;String&lt;/code&gt; in &lt;code&gt;GBox&amp;lt;String&amp;gt;&lt;/code&gt; above, Java adds a cast to prove to the Java Virtual Machine (JVM)  that the erased bytecode is type-safe. (A smarter JVM type system might be able to prove that some casts are  unnecessary via &lt;a href="https://www2.ccs.neu.edu/racket/pubs/icfp10-thf.pdf"&gt;occurrence typing&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;After erasure, the &lt;code&gt;GBox&amp;lt;ValType&amp;gt;&lt;/code&gt; class declaration loses its parameter:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Erase `ValType`, replace with `Object`
+class GBox {
+  private Object val;
+
+  public GBox(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and the client code gains a cast:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GBox sBox = new GBox(new String("A"));
+
+((String) sBox.get()).charAt(0);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So far, so good. But it&amp;rsquo;s worth noting that erasure can cause problems with Java arrays. An array needs to know the run-time type of its elements, so the following &amp;ldquo;natural&amp;rdquo; definition of an &lt;code&gt;ArrayList&lt;/code&gt; is not permitted:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class ArrayList&amp;lt;T&amp;gt; {
+  private T[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new T[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    // TODO bounds check
+    return data[ix]
+  }
+
+  // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The trouble is that &lt;code&gt;T&lt;/code&gt; does not say anything about the data that a new array needs to handle:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ArrayList.java:6: error: generic array creation
+    data = new T[capacity];&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only work-arounds require an array of objects and unchecked casts. One solution is to unsafely cast the array to the generic type:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  // possibly dangerous, if `data` is aliased to an `Object[]`
+  public ArrayList(int capacity) {
+    data = (T[]) new Object[capacity];
+    size = 0;
+  }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The other is to unsafely cast array elements in the &lt;code&gt;get&lt;/code&gt; method, and elsewhere:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class ArrayList&amp;lt;T&amp;gt; {
+  private Object[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new Object[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    boundsCheck(ix);
+    return (T) data[ix];
+  }
+
+  // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Both may potentially lead to &lt;a href="http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ050"&gt;heap pollution&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;"The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.&lt;/p&gt;
+ &lt;p&gt;"Ultimately, the most important motivation for this decision is compatibility with existing code." &lt;a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7"&gt;Java Language Specification, section 4.7&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="run-time-guarantees"&gt;Run-time guarantees&lt;/h3&gt;
+
+&lt;p&gt;By contrast to Reticulated&amp;rsquo;s &lt;code&gt;C(T)&lt;/code&gt; transformation, the following &lt;code&gt;G(T)&lt;/code&gt;  transformation describes generic-type erasure,  where &lt;code&gt;T&amp;lt;T1&amp;gt;&lt;/code&gt; describes a type &lt;code&gt;T&lt;/code&gt; with parameter &lt;code&gt;T1&lt;/code&gt;  and &lt;code&gt;A[T1, T2]&lt;/code&gt; describes a type variable &lt;code&gt;A&lt;/code&gt; with lower bound &lt;code&gt;T1&lt;/code&gt; and upper bound &lt;code&gt;T2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  G(T&amp;lt;T1&amp;gt;)     = G(T)
+  G(A[T1, T2]) = G(T1)
+  G(T)         = T      otherwise&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If generic-type erasure results in a type mismatch (e.g., in &lt;code&gt;sBox.get().charAt(0)&lt;/code&gt; above),  the compiler inserts a cast. The inserted casts led to the run-time error in the previous example, and  provide the following run-time guarantee:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if &lt;code&gt;e&lt;/code&gt; is an expression with static type &lt;code&gt;T&lt;/code&gt; that evaluates to a value &lt;code&gt;v&lt;/code&gt;,  then &lt;code&gt;v&lt;/code&gt; is guaranteed to match the (bytecode) type &lt;code&gt;G(T)&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="discussion"&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;TypeScript, Reticulated Python, and Java 1.5.0 each improved the type system  of an existing language, but maintained backwards compatibility with existing  code. The name &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/"&gt;migratory typing&lt;/a&gt;  describes this kind of language extension.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;Gradual typing&lt;/a&gt; is a similar; a gradual type system starts with a statically-typed language and adds dynamic typing in a principled way (&lt;a href="https://pleiad.cl/papers/2016/garciaAl-popl2016.pdf"&gt;example&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The TypeScript team had a choice between erasing types and enforcing types. They chose to erase types and run all code (typed or untyped) at the level  of JavaScript. (Some TypeScript &lt;a href="https://lorefnon.tech/2018/03/25/typescript-and-validations-at-runtime-boundaries/"&gt;libraries&lt;/a&gt;, however, can enforce some types.)&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;TypeScript is not the only erasure language, nor is it the first. The oldest (I think) is &lt;a href="http://www.softwarepreservation.org/projects/LISP/maclisp_family/"&gt;MACLISP&lt;/a&gt;. For an erasure manifesto, see &lt;a href="http://bracha.org/pluggableTypesPosition.pdf"&gt;Pluggable Type Systems&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The Reticulated team faced an analogous choice, and chose to enforce the top-level  shape of values in typed code (&lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/popl17.pdf"&gt;POPL 2017&lt;/a&gt;). It will be interesting to see if this guarantee helps developers maintain programs,  or if it is too shallow to be much use. The &lt;a href="https://www.pyret.org/index.html"&gt;Pyret&lt;/a&gt; language has been successful with  comparable shallow checks.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: the POPL 2017 paper advertises an &amp;ldquo;open-world soundness&amp;rdquo;, but I do not see how this idea is different from the older idea of soundness in a multi-language system (&lt;a href="https://www.eecs.northwestern.edu/~robby/pubs/papers/toplas09-mf.pdf"&gt;TOPLAS 2009&lt;/a&gt;, &lt;a href="https://www2.ccs.neu.edu/racket/pubs/dls06-tf.pdf"&gt;DLS 2006&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Similarly, the Java team chose to erase generic types in Java 1.5.0 and use shallow casts in the JVM. The casts around type-erased generics provide a minimal level of safety &amp;mdash;  enough to prevent the use of a generic object from corrupting the state of a  VM instance.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, Java could enforce full generic types at run-time. Over the years there have been a few proposals to do so (&lt;a href="http://gafter.blogspot.com/2006/11/reified-generics-for-java.html"&gt;example 1&lt;/a&gt;,  &lt;a href="https://wiki.openjdk.java.net/display/valhalla/Main"&gt;example 2&lt;/a&gt;). The C# language has a similar type system and enforces  generics at run-time (sources:  &lt;a href="https://mattwarren.org/2018/03/02/How-generics-were-added-to-.NET/"&gt;blog post&lt;/a&gt;,  &lt;a href="https://www.microsoft.com/en-us/research/publication/design-and-implementation-of-generics-for-the-net-common-language-runtime/"&gt;PLDI 2001 paper&lt;/a&gt;,  &lt;a href="https://dl.acm.org/citation.cfm?doid=378795.378797"&gt;backup link to paper&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id="acknowledgments"&gt;Acknowledgments&lt;/h2&gt;
+
+&lt;p&gt;Thank you to &lt;a href="https://github.com/rmculpepper"&gt;Ryan Culpepper&lt;/a&gt; and &lt;a href="http://users.eecs.northwestern.edu/~jesse/"&gt;Jesse Tov&lt;/a&gt; for noticing the similarity between  Java&amp;rsquo;s generic-type erasure and transient migratory typing. Jesse commented on an early version of this post, supplied new Java example code, and explained the trouble with generics and arrays.&lt;/p&gt;</description></item></channel></rss>

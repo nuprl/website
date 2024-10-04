@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Scribble'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Scribble.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Scribble.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Scribble-html</id>
+ <updated>2019-02-17T16:20:50Z</updated>
+ <entry>
+  <title type="text">Writing a paper with Scribble</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/02/17/writing-a-paper-with-scribble/?utm_source=Scribble&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-02-17-writing-a-paper-with-scribble</id>
+  <published>2019-02-17T16:20:50Z</published>
+  <updated>2019-02-17T16:20:50Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;This post explains how to get started using Scribble to write a research paper.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;hr /&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;This post was written using &lt;a href="http://download.racket-lang.org/all-versions.html"&gt;Racket 7.1&lt;/a&gt; and &lt;a href="https://github.com/racket/scribble/releases/tag/v7.1"&gt;Scribble 1.29&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Writing about research is always difficult,  but a compile-to-LaTeX tool can make the task easier. If your research code is written in the same language as the paper, then:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the paper can import definitions from the research,  keeping a single point of control;&lt;/li&gt;
+ &lt;li&gt;the language&amp;rsquo;s functional abstractions can help manage the writing;&lt;/li&gt;
+ &lt;li&gt;the language&amp;rsquo;s drawing and/or plotting libraries can replace &lt;a href="https://ctan.org/pkg/pgf?lang=en"&gt;TikZ&lt;/a&gt;;&lt;/li&gt;
+ &lt;li&gt;and you can write unit tests to validate the claims made in the paper.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Scribble, &lt;a href="http://docs.racket-lang.org/scribble/index.html"&gt;the Racket documentation tool&lt;/a&gt;,  comes with a to-LaTeX compiler and a &lt;a href="http://docs.racket-lang.org/scribble/ACM_Paper_Format.html"&gt;scribble/acmart&lt;/a&gt;  library tailored to the new &lt;a href="https://ctan.org/pkg/acmart?lang=en"&gt;ACM paper format&lt;/a&gt;. I have been a pretty happy user of these tools. In the interest of attracting more happy users, this post  presents a short &amp;ldquo;getting started&amp;rdquo; guide  and links to some larger examples.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;For a Scribble tutorial, see the links in: &lt;a href="/blog/2017/05/23/building-a-website-with-scribble/index.html"&gt;Building a Website with Scribble&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="getting-started-with-"&gt;Getting started with &lt;a href="http://docs.racket-lang.org/scribble/ACM_Paper_Format.html"&gt;scribble/acmart&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;The first line of a &lt;a href="http://docs.racket-lang.org/scribble/ACM_Paper_Format.html"&gt;scribble/acmart&lt;/a&gt; document sets the formatting options (similar to a LaTeX file using &lt;code&gt;acmart.cls&lt;/code&gt;). For example, the &lt;a href="https://conf.researchr.org/track/gpce-2018/gpce-2018#Call-for-Papers"&gt;GPCE 2018 call for papers&lt;/a&gt;  asks for anonymized &lt;code&gt;sigplan&lt;/code&gt;-format submissions with line numbers and 10 point font. The proper Scribble incantation is:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang scribble/acmart @sigplan @anonymous @review @10pt&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Next, you may want to import some definitions. If we have a file &lt;code&gt;references.rkt&lt;/code&gt; (see below for a definition), we can import it as follows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@require{references.rkt}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The third main ingredient is the title and author information:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@(define neu (affiliation #:institution "Northeastern University"))
+@(define anon (email "anon@anon.net"))
+
+@title{Writing a paper with Scribble}
+@author[#:affiliation neu #:email anon]{Ben Greenman}
+
+@; optional: set the author names in the page headers
+@elem[#:style "Sshortauthors"]{B. Greenman}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The paper is now ready to be written. You can forge ahead with a new &lt;a href="http://docs.racket-lang.org/scribble/base.html#%28def._%28%28lib._scribble%2Fbase..rkt%29._section%29%29"&gt;section&lt;/a&gt;  and start adding content to the same file;  alternatively, you can organize the writing across different modules. In this post, we will use the main document as an outline and &lt;a href="http://docs.racket-lang.org/scribble/base.html#%28form._%28%28lib._scribble%2Fbase..rkt%29._include-section%29%29"&gt;import&lt;/a&gt;  content from other modules:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@include-abstract{abstract.scrbl}
+@include-section{introduction.scrbl}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Finally, the main page is a good place to &lt;a href="https://docs.racket-lang.org/scriblib/autobib.html"&gt;generate the bibliography&lt;/a&gt;. Assuming this document imports a file like the &lt;code&gt;references.rkt&lt;/code&gt; below,  this expression inserts a bibliography titled &amp;ldquo;References&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@generate-bibliography[#:sec-title "References"]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To build the document, invoke &lt;code&gt;scribble&lt;/code&gt; on the command-line with the &lt;code&gt;--pdf&lt;/code&gt; or &lt;code&gt;--latex&lt;/code&gt;  options:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ raco scribble --pdf FILE.scrbl&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If all goes well, this command generates a &lt;code&gt;FILE.pdf&lt;/code&gt; with properly-linked cross references.&lt;/p&gt;
+
+&lt;h3 id="auxiliary-files"&gt;Auxiliary Files&lt;/h3&gt;
+
+&lt;p&gt;If you save the code above to a file &lt;code&gt;example.scrbl&lt;/code&gt; and save the files below  in the same directory, then you should be able to build an &lt;code&gt;example.pdf&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;These files are available in a slightly different format at this link:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://gitlab.com/bengreenman/scribble-acmart-example"&gt;https://gitlab.com/bengreenman/scribble-acmart-example&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h4 id="referencesrkt"&gt;&lt;code&gt;references.rkt&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang racket/base
+
+(provide
+  ~cite citet generate-bibliography
+  fbf-icfp-2009)
+
+(require
+  scriblib/autobib)
+
+(define-cite ~cite citet generate-bibliography
+  #:style author+date-square-bracket-style)
+
+(define icfp "ICFP")
+
+(define fbf-icfp-2009
+  (make-bib
+    #:title "Scribble: Closing the Book on Ad Hoc Documentation Tools"
+    #:author (authors "Matthew Flatt" "Eli Barzilay" "Robert Bruce Findler")
+    #:location (proceedings-location icfp #:pages '(109 120))
+    #:date 2017))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="abstractscrbl"&gt;&lt;code&gt;abstract.scrbl&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang scribble/acmart
+
+A simple Scribble document.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="introductionscrbl"&gt;&lt;code&gt;introduction.scrbl&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang scribble/acmart
+@require{references.rkt}
+
+@; start with `title` instead of `section`, because importing via
+@;  `include-section` shifts all title/section/subsections down one level
+@title{Introduction}
+
+Scribble creates a connection between a stand-alone document and the artifact
+it describes@~cite[fbf-icfp-2009].&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-how-to-debug-scribble-error-messages"&gt;Q. How to debug Scribble error messages?&lt;/h3&gt;
+
+&lt;p&gt;If something goes wrong building a Scribble document, Racket is usually able to give a helpful error message.&lt;/p&gt;
+
+&lt;p&gt;As a compile-time example, adding &lt;code&gt;@ foo&lt;/code&gt; to a document produces the message  &lt;code&gt;unexpected whitespace after @&lt;/code&gt; and you can either delete the whitespace  or change the &lt;code&gt;@&lt;/code&gt; to &lt;code&gt;@"@"&lt;/code&gt; for a literal &lt;code&gt;@&lt;/code&gt;-sign.&lt;/p&gt;
+
+&lt;p&gt;As a run-time example, adding &lt;code&gt;@(+ 2 2)&lt;/code&gt; produces this message:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;not valid in document body (need a pre-part for decode) in: 4&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;One fix is to convert &lt;code&gt;4&lt;/code&gt; to a string, as in &lt;code&gt;@~a[(+ 2 2)]&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;But if something goes wrong when Scribble renders a generated document to  PDF, the default error output is &lt;strong&gt;not&lt;/strong&gt; likely to help. For example, adding &lt;code&gt;@elem[#:style "oops"]&lt;/code&gt; to a document produces a giant  message:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ raco scribble --pdf FILE.scrbl
+[[ ... 84K of output ... ]]
+Output written on example.pdf (1 page, 277876 bytes).
+PDF statistics:
+ 53 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
+ 7 named destinations out of 1000 (max. 500000)
+ 36877 words of extra memory for PDF output out of 42996 (max. 10000000)
+
+run-pdflatex: got error exit code
+  context...:
+  [[ ... 17 more lines ... ]]&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The best way to debug these messages is to &lt;strong&gt;ignore them&lt;/strong&gt; and use a LaTeX  compiler directly. For the &amp;ldquo;oops&amp;rdquo; mistake, LaTeX stops at the undefined control sequence &amp;mdash; giving  a hint about how to find the problem:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ raco scribble --latex FILE.scrbl
+$ pdflatex FILE.tex
+[[ ... 12KB of output ... ]]
+! Undefined control sequence.
+l.549 \oops
+           {}
+? &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-how-to-add-a-latex-style-file"&gt;Q. How to add a LaTeX style file?&lt;/h3&gt;
+
+&lt;p&gt;To add extra LaTeX code to the final document, create a new file and include  it with the &lt;code&gt;++style&lt;/code&gt; command-line flag. This copies the contents of the style file into the generated document  (the copy appears near the top of the generated code).&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ raco scribble ++style style.tex --pdf FILE.scrbl&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Here is an example style file.&lt;/p&gt;
+
+&lt;h4 id="styletex"&gt;&lt;code&gt;style.tex&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;\settopmatter{printfolios=true,printccs=true,printacmref=true}
+% add page numbers etc.
+
+\overfullrule=1mm
+% draw a black rectangle near lines that overflow the margin&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Another way to add extra LaTeX code is to add a &lt;a href="https://docs.racket-lang.org/scribble/core.html#%28def._%28%28lib._scribble%2Flatex-properties..rkt%29._tex-addition%29%29"&gt;&lt;code&gt;tex-addition&lt;/code&gt;&lt;/a&gt;  style property to the main title. This second approach makes it easy to include more than one file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang scribble/acmart
+
+@require[
+  (only-in scribble/core make-style)
+  (only-in scribble/latex-properties make-tex-addition)]
+
+@(define extra-style-files
+   (list (make-tex-addition "style.tex")))
+
+@title[#:style (make-style #f extra-style-files)]{Writing a paper with Scribble}
+
+@; ....&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-how-to-make-a-figure"&gt;Q. How to make a figure?&lt;/h3&gt;
+
+&lt;p&gt;Use the &lt;a href="http://docs.racket-lang.org/scriblib/figure.html#%28def._%28%28lib._scriblib%2Ffigure..rkt%29._figure%29%29"&gt;scriblib/figure&lt;/a&gt;  library to add figures to a document.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@require[pict scriblib/figure]
+@figure[
+  "fig:fish"  @; figure tag, see `figure-ref`
+  @elem{A Standard Fish}  @; figure caption, appears below the content
+  @elem{fish = @(standard-fish 90 40)}]  @; content&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The content of a figure can be almost anything that would work in the toplevel  of the document.&lt;/p&gt;
+
+&lt;h3 id="q-how-to-include-extra-files-pictures-latex"&gt;Q. How to include extra files (pictures, LaTeX)?&lt;/h3&gt;
+
+&lt;p&gt;The &lt;code&gt;++extra&lt;/code&gt; command-line flag names an auxilliary file that Scribble should  include when rendering the document. This flag may be supplied more than once.&lt;/p&gt;
+
+&lt;p&gt;For example, if a document includes the content of an external LaTeX file:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@elem[#:style "input"]{inline-this.tex}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;then make sure to build the document with a command like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ raco scribble ++style style.tex ++extra inline-this.tex FILE.scrbl&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id="inline-thistex"&gt;&lt;code&gt;inline-this.tex&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;% Raw LaTeX allowed here
+$\lambda x.\, x$&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-about-in-line-latex"&gt;Q. What about in-line LaTeX?&lt;/h3&gt;
+
+&lt;p&gt;An &lt;a href="https://docs.racket-lang.org/scribble/core.html#%28def._%28%28lib._scribble%2Fcore..rkt%29._element%29%29"&gt;element&lt;/a&gt;  with the &lt;a href="https://docs.racket-lang.org/scribble/core.html#%28idx._%28gentag._60._%28lib._scribblings%2Fscribble%2Fscribble..scrbl%29%29%29"&gt;&lt;code&gt;'exact-chars&lt;/code&gt;&lt;/a&gt;  &lt;a href="https://docs.racket-lang.org/scribble/core.html#%28tech._style._property%29"&gt;style property&lt;/a&gt;  renders directly to LaTeX.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;@(define (exact . stuff)
+   @; the style name "relax" puts a `\relax` no-op in front of the stuff
+   (make-element (make-style "relax" '(exact-chars)) stuff))
+
+@exact|{$\lambda x.\, x$}|
+@; ==&amp;gt; \relax{$\lambda x.\, x$}
+
+@(define ($ . math-stuff)
+   (apply exact (list "$" math-stuff "$")))
+
+@${\lambda x.\, x}
+@; ==&amp;gt; \relax{$\lambda x.\, x$}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="creating-a-httpdocsracket-langorgguidemodulesyntaxhtml28parthash-lang29lang-for-a-paper"&gt;Creating a &lt;a href="http://docs.racket-lang.org/guide/Module_Syntax.html#%28part._hash-lang%29"&gt;#lang&lt;/a&gt; for a paper&lt;/h2&gt;
+
+&lt;p&gt;For a Scribble document that is split across multiple files, it can be helpful  to make a &lt;code&gt;#lang&lt;/code&gt; that &lt;a href="http://blog.racket-lang.org/2017/03/languages-as-dotfiles.html"&gt;provides a common environment&lt;/a&gt;. Instead of starting each file with a &lt;code&gt;require&lt;/code&gt;, e.g.:&lt;/p&gt;
+
+&lt;h4 id="paperscrbl"&gt;&lt;code&gt;paper.scrbl&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang scribble/acmart
+@require["references.rkt" "helper-functions.rkt" scriblib/figure]
+
+....&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;files can start with a name that describes their common purpose:&lt;/p&gt;
+
+&lt;h4 id="paperscrbl"&gt;&lt;code&gt;paper.scrbl&lt;/code&gt;&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang conference-2018-submission
+
+....&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As a bonus, if the language is defined as a package then the Scribble document  can use Racket&amp;rsquo;s dependency management tools:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# to install the paper and interactively install dependencies:
+$ cd conference-2018-submission;
+$ raco pkg install
+
+# To check that the paper builds with no dependency issues:
+$ raco setup --check-pkg-deps conference-2018-submission
+
+# To run all unit tests
+$ raco test -c conference-2018-submission&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To create a package and language:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Move the Scribble document to a directory with the language name, i.e.,  &lt;code&gt;conference-2018-submission/&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;Write a simple &lt;code&gt;info.rkt&lt;/code&gt; to configure the package&lt;/li&gt;
+ &lt;li&gt;Create a normal Racket module that exports the common environment&lt;/li&gt;
+ &lt;li&gt;Create a &lt;code&gt;conference-2018-submission/lang/reader.rkt&lt;/code&gt; module&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Details below. For a full example, visit:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://gitlab.com/bennn/scribble-acmart-example"&gt;https://gitlab.com/bennn/scribble-acmart-example&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id="conference-2018-submissioninforkt"&gt;&lt;code&gt;conference-2018-submission/info.rkt&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;This file defines the basic metadata for a package. For more about &lt;code&gt;info.rkt&lt;/code&gt;, see: &lt;a href="http://blog.racket-lang.org/2017/10/tutorial-creating-a-package.html"&gt;Tutorial: Creating a Package&lt;/a&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang info
+(define collection "conference-2018-submission")
+(define deps '("base" "scribble-lib" "at-exp-lib"))
+(define build-deps '("racket-doc" "scribble-doc"))
+(define pkg-desc "Paper for Conference 2018")
+(define version "0.1")&lt;/code&gt;&lt;/pre&gt;
+
+&lt;br /&gt;
+
+&lt;h4 id="conference-2018-submissionmainrkt"&gt;&lt;code&gt;conference-2018-submission/main.rkt&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;This file defines and exports the common environment for every file in our  Scribble document. In this example, the common environment is:  the &lt;a href="http://docs.racket-lang.org/scribble/ACM_Paper_Format.html"&gt;scribble/acmart&lt;/a&gt; language,  the file &amp;ldquo;references.rkt&amp;rdquo;,  and the &lt;a href="http://docs.racket-lang.org/scriblib/figure.html#%28def._%28%28lib._scriblib%2Ffigure..rkt%29._figure%29%29"&gt;scriblib/figure&lt;/a&gt; library.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang racket/base
+
+(provide
+  (all-from-out
+    scribble/acmart
+    scribble/acmart/lang
+    scriblib/figure
+    "references.rkt"))
+
+(require
+  scribble/acmart
+  scribble/acmart/lang
+  scriblib/figure
+  "references.rkt")&lt;/code&gt;&lt;/pre&gt;
+
+&lt;br /&gt;
+
+&lt;h4 id="conference-2018-submissionlangreaderrkt"&gt;&lt;code&gt;conference-2018-submission/lang/reader.rkt&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;This file:  (1) tells Racket to use the Scribble reader on &lt;code&gt;#lang conference-2018-submission&lt;/code&gt;  modules, and (2) wraps the result of such modules in a shape that Scribble  expects.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;#lang s-exp scribble/base/reader
+conference-2018-submission
+#:wrapper1 (lambda (t) (cons 'doc (t)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id="links-to-example-documents"&gt;Links to Example Documents&lt;/h2&gt;
+
+&lt;p&gt;These documents use the &lt;code&gt;#lang&lt;/code&gt; approach to writing a paper with Scribble. Check their &lt;code&gt;main.rkt&lt;/code&gt; for example formatting functions and unit tests,  and check the &lt;code&gt;.scrbl&lt;/code&gt; files to see how the ideas above look in a larger document.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/retic_performance/tree/master/gm-pepm-2018"&gt;https://github.com/nuprl/retic_performance/tree/master/gm-pepm-2018&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/tag-sound/tree/master/gf-icfp-2018"&gt;https://github.com/nuprl/tag-sound/tree/master/gf-icfp-2018&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Finally, this repository provides a tool to start a new Scribble document:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://pkgd.racket-lang.org/pkgn/package/gtp-paper"&gt;https://pkgd.racket-lang.org/pkgn/package/gtp-paper&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="further-reading"&gt;Further Reading&lt;/h2&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://project.inria.fr/coqexchange/checking-machine-checked-proofs/"&gt;Checking Machine-Checked Proofs&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Building a Website with Scribble</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/23/building-a-website-with-scribble/?utm_source=Scribble&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-23-building-a-website-with-scribble</id>
+  <published>2017-05-23T01:53:13Z</published>
+  <updated>2017-05-23T01:53:13Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The source code for the PRL website is written using Scribble, the Racket  documentation tool. I am very happy with this choice, and you should be too!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="the-story-so-far"&gt;The Story so Far&lt;/h2&gt;
+
+&lt;p&gt;Last Fall, I took a flight to Chicago (on my way to &lt;a href="http://con.racket-lang.org/2016/"&gt;RacketCon 2016&lt;/a&gt;). When I landed, there was a new message in my inbox:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;    Subject: Web Page
+    Date: 2016-09-15
+
+    You have been nominated webmaster by public acclamation. Congratulations!&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Emboldened by the trust of my people, I promptly converted the PRL website  from Racket-generating-HTML to the fine &lt;a href="http://docs.racket-lang.org/scribble-pp/html.html"&gt;&lt;code&gt;scribble/html&lt;/code&gt;&lt;/a&gt;  preprocessor language (commit &lt;a href="https://github.com/nuprl/website/commit/a0600d32fec4bd70c5530b2717aec32979d634f7"&gt;&lt;code&gt;a0600d&lt;/code&gt;&lt;/a&gt;) This bold action polarized the community.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;I can&amp;rsquo;t read the source anymore! Is this really an improvement?&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Fear not, citizens. The switch to &lt;a href="http://docs.racket-lang.org/scribble-pp/html.html"&gt;&lt;code&gt;scribble/html&lt;/code&gt;&lt;/a&gt; was the right choice, and you  too can learn to read the source code.&lt;/p&gt;
+
+&lt;h2 id="how-to-read-scribblehtml-programs"&gt;How to Read &lt;code&gt;scribble/html&lt;/code&gt; Programs&lt;/h2&gt;
+
+&lt;h3 id="basics"&gt;Basics&lt;/h3&gt;
+
+&lt;p&gt;Scribble is a language for writing Racket documentation. The key innovation in Scribble is the &lt;em&gt;@-expression&lt;/em&gt; (read: &amp;ldquo;at expression&amp;rdquo;). The &lt;a href="http://docs.racket-lang.org/scribble-pp/html.html"&gt;&lt;code&gt;scribble/html&lt;/code&gt;&lt;/a&gt; language combines @-expression syntax with  functions that generate HTML.&lt;/p&gt;
+
+&lt;h4 id="-syntax"&gt;@-syntax&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href="http://www.greghendershott.com/2015/08/at-expressions.html"&gt;Greg Hendershott&lt;/a&gt; and the &lt;a href="http://docs.racket-lang.org/scribble/reader.html"&gt;Scribble Documentation&lt;/a&gt; explain @-expressions properly. Here&amp;rsquo;s a short tutorial (Part 1 of 2, &amp;ldquo;the basics&amp;rdquo;):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Scribble programs start in &amp;ldquo;text mode&amp;rdquo;.  Every character you type goes straight to the document you are building.&lt;/li&gt;
+ &lt;li&gt;The @-sign toggles to &amp;ldquo;Racket mode&amp;rdquo; for the next expression.  In Racket mode, the characters you type will be evaluated as a Racket program  to produce part of the document.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;Examples:&lt;/em&gt; Evaluating &lt;code&gt;"Hello Dave"&lt;/code&gt; puts &amp;ldquo;Hello Dave&amp;rdquo; in your document. Evaluating &lt;code&gt;"Hello @Dave"&lt;/code&gt; puts &amp;ldquo;Hello ???&amp;rdquo; in your document, where "???" is the value of the variable &lt;code&gt;Dave&lt;/code&gt;. Finally if &lt;code&gt;Dave&lt;/code&gt; is the name of a function, then &lt;code&gt;"Hello @(Dave)"&lt;/code&gt; calls the &lt;code&gt;Dave&lt;/code&gt; function with zero arguments and puts whatever it returns into your document.&lt;/p&gt;
+
+&lt;p&gt;To make it easy to interleave text, function calls, and code, Scribble  discriminates between 4 kinds of parentheses when they follow an @-sign (Part 2 of 2, &amp;ldquo;the parens&amp;rdquo;):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;code&gt;@(f A B)&lt;/code&gt; is just like the function call &lt;code&gt;(f A B)&lt;/code&gt; in Racket&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;@f[A B]&lt;/code&gt; is the same as &lt;code&gt;@(f A B)&lt;/code&gt;, but typically more useful because &amp;hellip;&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;@f[A B]{....}&lt;/code&gt; evaluates the &lt;code&gt;....&lt;/code&gt; in &amp;ldquo;text mode&amp;rdquo; to a list of words &lt;code&gt;w*&lt;/code&gt;,  then calls &lt;code&gt;f&lt;/code&gt; just like &lt;code&gt;(apply f A B w*)&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;@f{....}&lt;/code&gt; evaluates the &lt;code&gt;....&lt;/code&gt; in &amp;ldquo;text mode&amp;rdquo; and calls &lt;code&gt;f&lt;/code&gt; with the results&lt;/li&gt;
+ &lt;li&gt;&lt;code&gt;@f|{....}|&lt;/code&gt; is similar, but the &lt;code&gt;....&lt;/code&gt; are in &amp;ldquo;unescapable text mode&amp;rdquo;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&amp;ldquo;Unescapable text mode&amp;rdquo; treats @-signs as text instead of toggling between modes.&lt;/p&gt;
+
+&lt;h4 id="generating-html"&gt;Generating HTML&lt;/h4&gt;
+
+&lt;p&gt;The &lt;a href="http://docs.racket-lang.org/scribble-pp/html.html"&gt;&lt;code&gt;scribble/html&lt;/code&gt;&lt;/a&gt; language comes with functions that render HTML. These functions have the same name as the corresponding HTML tag.&lt;/p&gt;
+
+&lt;p&gt;Example program:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;scribble/html&lt;/span&gt;
+&lt;span class="n"&gt;@p&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Running this program prints:&lt;/p&gt;
+
+&lt;div class="brush: html"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Hello World&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;No surprises.&lt;/p&gt;
+
+&lt;p&gt;One thing that &lt;em&gt;is&lt;/em&gt; surprising is how &lt;code&gt;scribble/html&lt;/code&gt; handles tag attributes. Every tag-rendering function accepts &amp;ldquo;Racket mode&amp;rdquo; arguments that specify  an attribute name and attribute value.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;scribble/html&lt;/span&gt;
+&lt;span class="n"&gt;@p&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;style:&lt;/span&gt; &lt;span class="s2"&gt;"color:red"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="n"&gt;World&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Prints:&lt;/p&gt;
+
+&lt;div class="brush: html"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt; &lt;span class="na"&gt;style&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"color:red"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Hello World&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Hope the output looks familiar. The input syntax is strange, but that&amp;rsquo;s what it is.&lt;/p&gt;
+
+&lt;p&gt;Larger programs print larger webpages. Each page on the PRL website is HTML generated by one &lt;code&gt;scribble/html&lt;/code&gt; program.&lt;/p&gt;
+
+&lt;h2 id="why-scribblehtml-is-an-improvement"&gt;Why &lt;code&gt;scribble/html&lt;/code&gt; is an Improvement&lt;/h2&gt;
+
+&lt;p&gt;Before &lt;code&gt;scribble/html&lt;/code&gt;, the PRL website was implemented in &lt;code&gt;scribble/text&lt;/code&gt;. A &lt;code&gt;scribble/text&lt;/code&gt; program renders and prints text. There is no extra support for HTML.&lt;/p&gt;
+
+&lt;p&gt;To compare, here&amp;rsquo;s the start of the old homepage:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;
+&lt;span class="normal"&gt;9&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;scribble/text&lt;/span&gt;
+&lt;span class="n"&gt;@&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="s2"&gt;"templates.rkt"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;&amp;lt;!DOCTYPE&lt;/span&gt; &lt;span class="n"&gt;html&amp;gt;&lt;/span&gt;
+&lt;span class="n"&gt;&amp;lt;html&lt;/span&gt; &lt;span class="n"&gt;lang=&lt;/span&gt;&lt;span class="s2"&gt;"en"&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit"&gt;&amp;gt;&lt;/a&gt;&lt;/span&gt;
+  &lt;span class="n"&gt;@&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;header&lt;/span&gt; &lt;span class="s2"&gt;"Home"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="n"&gt;&amp;lt;body&lt;/span&gt; &lt;span class="n"&gt;id=&lt;/span&gt;&lt;span class="s2"&gt;"pn-top"&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit"&gt;&amp;gt;&lt;/a&gt;&lt;/span&gt;
+    &lt;span class="n"&gt;@&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;navbar&lt;/span&gt; &lt;span class="s2"&gt;"Home"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="n"&gt;class=&lt;/span&gt;&lt;span class="s2"&gt;"jumbotron"&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit"&gt;&amp;gt;&lt;/a&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And here is the start of the &lt;code&gt;scribble/html&lt;/code&gt;&amp;rsquo;d homepage:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;
+&lt;span class="normal"&gt;9&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;scribble/html&lt;/span&gt;
+&lt;span class="n"&gt;@require&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"templates.rkt"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="n"&gt;@doctype&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;html&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;@html&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;lang:&lt;/span&gt; &lt;span class="s2"&gt;"en"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;
+  &lt;span class="n"&gt;@header&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Home&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="n"&gt;@body&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;id:&lt;/span&gt; &lt;span class="s2"&gt;"pn-top"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;
+      &lt;span class="n"&gt;@navbar&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Home&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="n"&gt;@div&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;class:&lt;/span&gt; &lt;span class="s2"&gt;"jumbotron"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The pages look similar. The new one has more @-signs and parentheses, the old one has more &lt;code&gt;&amp;lt;&lt;/code&gt;-signs  and quotes. If you were able to edit the old page, you should be able to edit the new page.&lt;/p&gt;
+
+&lt;p&gt;The &lt;strong&gt;key improvement&lt;/strong&gt; in the new page is that &lt;strong&gt;common mistakes are now  compile-time errors&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Before, a typo like &lt;code&gt;&amp;lt;hmtl&amp;gt;&lt;/code&gt; would generate an ugly webpage.  After, a typo like &lt;code&gt;@hmtl&lt;/code&gt; is a syntax error.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Before, a typo like &lt;code&gt;&amp;lt;b&amp;gt;....&lt;/code&gt; with no closing tag would generate an ugly webpage.  After, a typo like &lt;code&gt;@b{....&lt;/code&gt; is a syntax error.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Both flavors of error message come with source-code line numbers. This is very very helpful.&lt;/p&gt;
+
+&lt;h3 id="small-improvements"&gt;Small Improvements&lt;/h3&gt;
+
+&lt;h4 id="1-more-functions"&gt;1. More Functions&lt;/h4&gt;
+
+&lt;p&gt;Before, the &lt;a href="http://prl.ccs.neu.edu/teaching.html"&gt;Teaching page&lt;/a&gt; contained  some interesting HTML for rendering vertical text (look for the word &amp;ldquo;Semantics&amp;rdquo; to see how this was used):&lt;/p&gt;
+
+&lt;div class="brush: html"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"how-to-design-programs"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;S&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;e&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;m&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;a&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;n&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;t&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;i&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;c&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;s&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;After, the same text is generated from a function call:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;@span&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;class:&lt;/span&gt; &lt;span class="s2"&gt;"how-to-design-programs"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;&lt;span class="n"&gt;@vertical-text&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;Semantics&lt;/span&gt;&lt;span class="p"&gt;}}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;vertical-text&lt;/code&gt; function is simple:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;@require&lt;/span&gt;&lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._only-in))" style="color: inherit"&gt;only-in&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;racket/list&lt;/span&gt; &lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._add-between))" style="color: inherit"&gt;add-between&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+
+&lt;span class="n"&gt;@&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit"&gt;define&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;vertical-text&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;str*&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._add-between))" style="color: inherit"&gt;add-between&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/strings.html#(def._((quote._~23~25kernel)._string-~3elist))" style="color: inherit"&gt;string-&amp;gt;list&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._append*))" style="color: inherit"&gt;append*&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;str*&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;br&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4 id="2-more-structure-less-boilerplate"&gt;2. More Structure, Less Boilerplate&lt;/h4&gt;
+
+&lt;p&gt;Here&amp;rsquo;s part of the old definition of &amp;ldquo;Ben Greenman&amp;rdquo; on the &lt;a href="http://prl.ccs.neu.edu/people.html"&gt;People page&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class="brush: html"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;
+&lt;span class="normal"&gt;23&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"row pn-person"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-12 pn-row-eq-height"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-3 pn-photo"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"img-wrapper"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;img&lt;/span&gt; &lt;span class="na"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"img/ben_greenman.jpg"&lt;/span&gt; &lt;span class="na"&gt;title&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"Ben Greenman"&lt;/span&gt; &lt;span class="na"&gt;alt&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"Ben Greenman"&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-9"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-4 pn-contact"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"pn-name"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;Ben Greenman&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;span&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+        Advisor: Matthias Felleisen&lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"mailto:types@"&lt;/span&gt;&lt;span class="err"&gt;@"&lt;/span&gt;&lt;span class="na"&gt;ccs&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;neu&lt;/span&gt;&lt;span class="err"&gt;.&lt;/span&gt;&lt;span class="na"&gt;edu&lt;/span&gt;&lt;span class="err"&gt;"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;types@"@"ccs.neu.edu&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;br&lt;/span&gt; &lt;span class="p"&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt; &lt;span class="na"&gt;href&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"http://www.ccs.neu.edu/home/types"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;www.ccs.neu.edu/home/types&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;a&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-3 pn-muted col-md-offset-5"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        Joined 2014
+      &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt; &lt;span class="na"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;"col-md-12 pn-bio"&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="p"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;I like constructions .... &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;p&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+      &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;span class="p"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="nt"&gt;div&lt;/span&gt;&lt;span class="p"&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The new definition uses a helper function with keyword arguments for each  &amp;ldquo;field&amp;rdquo; of the person:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;@person&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="kd"&gt;#:name&lt;/span&gt; &lt;span class="s2"&gt;"Ben Greenman"&lt;/span&gt;
+        &lt;span class="kd"&gt;#:title&lt;/span&gt; &lt;span class="s2"&gt;"Advisor: Matthias Felleisen"&lt;/span&gt;
+        &lt;span class="kd"&gt;#:e-mail&lt;/span&gt; &lt;span class="s2"&gt;"types@ccs.neu.edu"&lt;/span&gt;
+        &lt;span class="kd"&gt;#:website&lt;/span&gt; &lt;span class="s2"&gt;"http://ccs.neu.edu/home/types"&lt;/span&gt;
+        &lt;span class="kd"&gt;#:history&lt;/span&gt; &lt;span class="n"&gt;@list&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s2"&gt;"Joined 2014"&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+        &lt;span class="kd"&gt;#:img&lt;/span&gt; &lt;span class="s2"&gt;"ben_greenman.jpg"&lt;/span&gt;&lt;span class="p"&gt;]{&lt;/span&gt;
+  &lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="n"&gt;like&lt;/span&gt; &lt;span class="n"&gt;constructions&lt;/span&gt; &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4 id="3-less-string-formatting"&gt;3. Less String-Formatting&lt;/h4&gt;
+
+&lt;p&gt;Before, the code did a lot of string formatting (&lt;a href="https://github.com/nuprl/website/commit/a0600d#diff-1921e33ce89be28dd277cf1c7880d1beL9"&gt;link&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit"&gt;define&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/creatingunits.html#(form._((lib._racket/unit..rkt)._link))" style="color: inherit"&gt;link&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/strings.html#(def._((quote._~23~25kernel)._string-append))" style="color: inherit"&gt;string-append&lt;/a&gt;&lt;/span&gt; &lt;span class="s2"&gt;"&amp;lt;a href=&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="se"&gt;\"&lt;/span&gt;&lt;span class="s2"&gt;&amp;gt;"&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt; &lt;span class="s2"&gt;"&amp;lt;/a&amp;gt;"&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The new code has no need for such helper functions.&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;@a&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;href:&lt;/span&gt; &lt;span class="n"&gt;url&lt;/span&gt; &lt;span class="n"&gt;body&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4 id="bottom-line"&gt;Bottom Line&lt;/h4&gt;
+
+&lt;p&gt;Scribble is a good language for making static HTML pages.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;If you liked this post, you may also be interested in:&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://docs.racket-lang.org/pollen/index.html"&gt;Pollen&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/vishesh/racketscript"&gt;RacketScript&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;Other websites built using &lt;a href="http://docs.racket-lang.org/scribble-pp/html.html"&gt;&lt;code&gt;scribble/html&lt;/code&gt;&lt;/a&gt;:  (1) &lt;a href="http://nanopass.org/"&gt;nanopass.github.io&lt;/a&gt; (&lt;a href="https://github.com/nanopass/nanopass.github.io"&gt;source code&lt;/a&gt;),  (2) &lt;a href="http://prl.ccs.neu.edu/gtp/"&gt;Gradual Typing Across the Spectrum&lt;/a&gt; (&lt;a href="https://github.com/nuprl/gtp"&gt;source code&lt;/a&gt;).&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/"&gt;Notes from a Gradual Typing Across the Spectrum PI meeting&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry></feed>

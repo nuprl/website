@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Four Kinds of Scoping in R</title>
+    <meta name="description" content="In the first and second parts of this blog series, I defined lexical and dynamic scope, and demonstrated interesting cases of scoping in R.  In this third and final part of my blog series, I'd like to discuss a paper by the creators of R, where they motiv...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="scope, r, Author: Ming-Ho Yee">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2019/09/10/four-kinds-of-scoping-in-r/">
+    <link rel="next" href="/blog/2019/09/10/scoping-in-r/">
+    <link rel="prev" href="/blog/2019/10/31/complete-monitors-for-gradual-types/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Four Kinds of Scoping in R</h1>
+    <p class='date-and-tags'>
+<time datetime="2019-09-10" pubdate="true">2019-09-10</time> :: <span class="tags"><a href="/blog/tags/scope.html">scope</a>, <a href="/blog/tags/r.html">r</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ming-Ho-Yee.html">Ming-Ho Yee</a></span></p>
+  </header>
+
+<p>In the <a href="/blog/2019/09/05/lexical-and-dynamic-scope/">first</a> and <a href="/blog/2019/09/10/scoping-in-r/">second</a> parts of this blog series, I defined lexical and dynamic scope, and demonstrated interesting cases of scoping in R.</p>
+
+<p>In this third and final part of my blog series, I&rsquo;d like to discuss a paper by the creators of R, where they motivate the need for lexical scoping in a statistical programming language.</p>
+
+<p>This is a &ldquo;bonus&rdquo; blog post, because I&rsquo;m going to dive into some of the hairier R features to show how four different kinds of scoping can be simulated in R.</p>
+<!-- more-->
+
+<h2 id="lexical-scope-and-statistical-computation">Lexical scope and statistical computation</h2>
+
+<p>In <em>Lexical Scope and Statistical Computation</em>,<sup><a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-1-definition" name="2019-09-10-four-kinds-of-scoping-in-r-footnote-1-return">1</a></sup> Robert Gentleman and Ross Ihaka, the creators of R, discuss why they designed R with lexical scoping. The paper is written for a statistics audience, and they provide motivating examples for having lexical scoping in R.</p>
+
+<p>For the purpose of their discussion, they define four (slightly different) kinds of scoping rules:</p>
+
+<ul>
+ <li><em>trivial</em>: no free variables allowed</li>
+ <li><em>static</em>: a free variable takes its value from a set of global variables</li>
+ <li><em>lexical</em>: a free variable takes the value of the binding that was in  effect when the function was defined</li>
+ <li><em>dynamic</em>: a free variable takes the value of the most recent assignment to  that variable</li></ul>
+
+<p>Note that under this set of definitions, <em>static scoping</em> is a separate scoping rule and not another name for <em>lexical scoping</em>.</p>
+
+<p>It is possible to simulate each of strategies in R. For fun, we can even construct &ldquo;factories&rdquo; that take a function, and then modify it to use the desired scoping rule! (Jan Ječmen originally provided these examples to me, and I adapted them for this blog post after some feedback from Artem Pelenitsyn.)</p>
+
+<h3 id="template">Template</h3>
+
+<p>Our examples will follow the template given below:</p>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">factory</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="o">&lt;???&gt;</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="nf">factory</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">h</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># error, 0, 1, or 2</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>We want to define a <code>factory</code> that takes a function literal and returns a closure that implements the desired scoping rule.</p>
+
+<p>Our example consists of three definitions of <code>x</code>. On line 5, we assign <code>0</code> to <code>x</code> at the top level. On line 7, we assign <code>1</code> to <code>x</code> inside function <code>h</code>, where we also create the closure. On line 12, we assign <code>2</code> to <code>x</code> inside the function <code>f</code> and right before we call <code>g</code>, which is the closure.</p>
+
+<p>Finally, we call <code>f</code> and observe the result:</p>
+
+<ul>
+ <li>Under trivial scoping, no free variables are allowed, so <code>f()</code> should result  in an error.</li>
+ <li>Under static scoping, free variables may only refer to global variables, so  <code>f()</code> should return <code>0</code>.</li>
+ <li>Under lexical scoping, free variables refer to the variables in scope when  the function was defined, so <code>f()</code> should return <code>1</code>.</li>
+ <li>Under dynamic scoping, free variables take the value from the most recent  assignment, so <code>f()</code> should return <code>2</code>.</li></ul>
+
+<p>We will implement the body of <code>factory</code> in only 3&ndash;5 lines of code. The rest of the code snippet, from lines 7 to the end, will remain the same, other than the call to <code>factory</code> on line 10.</p>
+
+<h3 id="trivial-scoping">Trivial scoping</h3>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">makeTrivial</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">eval</span><span class="p">(</span><span class="nf">substitute</span><span class="p">(</span><span class="n">fun</span><span class="p">))</span>
+  <span class="nf">environment</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">baseenv</span><span class="p">()</span>
+  <span class="n">res</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="nf">makeTrivial</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">h</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># Error in f(0) : object &#39;x&#39; not found</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p><code>substitute</code> returns the unevaluated parse tree for <code>fun</code>. In other words, it obtains the literal argument that was passed for <code>fun</code>. This works because of call-by-need semantics in R: function arguments are packaged up into <em>promises</em>. As a result, the syntax tree of arguments is available for metaprogramming. A recent paper by Goel and Vitek<sup><a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-2-definition" name="2019-09-10-four-kinds-of-scoping-in-r-footnote-2-return">2</a></sup> discusses laziness in R in more detail.</p>
+
+<p>In this example, on line 8, we call <code>factory</code> with <code>function(a) x+a</code> as the argument for the formal parameter <code>fun</code>. Then, we evaluate that parse tree with <code>eval</code>.</p>
+
+<p>At this point, <code>res</code> is the closure with expression <code>function(a) x+a</code> and a reference to the environment of <code>makeTrivial</code>. On line 3, we change that reference to <code>baseenv()</code>, which is the environment containing library definitions. Since this environment is above the (user) top-level environment, global variables are not available.</p>
+
+<p>Therefore, variable lookup in the function literal will only search the base environment, so <code>f()</code> results in an error.</p>
+
+<h3 id="static-scoping">Static scoping</h3>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">makeStatic</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">eval</span><span class="p">(</span><span class="nf">substitute</span><span class="p">(</span><span class="n">fun</span><span class="p">))</span>
+  <span class="nf">environment</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">globalenv</span><span class="p">()</span>
+  <span class="n">res</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="nf">makeStatic</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">h</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 0</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>For this example, on line 3, we update the environment of <code>res</code> to refer to <code>globalenv()</code>, which is the top-level environment where globals are defined.</p>
+
+<p>Therefore, variable lookup searches the top-level environment, so <code>f()</code> returns <code>0</code>.</p>
+
+<h3 id="lexical-scoping">Lexical scoping</h3>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">makeLexical</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">eval</span><span class="p">(</span><span class="nf">substitute</span><span class="p">(</span><span class="n">fun</span><span class="p">))</span>
+  <span class="nf">environment</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">parent.frame</span><span class="p">()</span>
+  <span class="n">res</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="nf">makeLexical</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">h</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 1</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Although lexical scoping is the default for R, our factory template requires some metaprogramming to work properly. We need to set the environment of <code>res</code> to <code>parent.frame()</code>, which is the environment of the function (<code>h</code>) that called the current function (<code>makeLexical</code>). This allows us to simulate lexical scoping, as if the function literal was evaluated inside <code>h</code>, rather than <code>makeLexical</code>.</p>
+
+<p>Therefore, variable lookup searches the environment of <code>h</code>, so <code>f()</code> returns <code>1</code>.</p>
+
+<h3 id="dynamic-scoping">Dynamic scoping</h3>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">makeDynamic</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">fun</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">function</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">res</span> <span class="o">&lt;-</span> <span class="nf">eval</span><span class="p">(</span><span class="nf">substitute</span><span class="p">(</span><span class="n">fun</span><span class="p">))</span>
+    <span class="nf">environment</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">parent.frame</span><span class="p">()</span>
+    <span class="nf">res</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">h</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="nf">makeDynamic</span><span class="p">(</span><span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="n">x</span><span class="o">+</span><span class="n">a</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">h</span><span class="p">()</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 2</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>For this example, we need another level of indirection. <code>makeDynamic</code> returns an anonymous function literal. The anonymous function takes <code>...</code>, which represents an arbitrary list of arguments, and then on line 5 we call <code>res</code> with those exact arguments. Note that we set the environment of <code>res</code> to be the environment of the <em>caller</em> of the anonymous function. Because of the multiple levels of indirection, the caller is <code>f</code>, on line 17.</p>
+
+<p>On line 12, <code>makeDynamic</code> returns a closure for the anonymous function. <code>h</code> returns that closure when it is called, and assigns it to <code>g</code>. When <code>g</code> is called on line 17, the function literal <code>function(a) x+a</code> is finally evaluated, and its environment is set to the environment of <code>f</code>, the caller of <code>g</code>.</p>
+
+<p>Therefore, variable lookup searches the environment of <code>f</code>, so <code>f()</code> returns <code>2</code>.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully this blog post has shown another way of looking at scoping definitions. As discussed in the <a href="/blog/2019/09/10/scoping-in-r/">previous post</a>, it&rsquo;s very easy to get confused because different definitions are used by different people. Here, Gentleman and Ihaka very clearly state what definitions they are using.</p>
+
+<p>And finally, while I am far from an expert on metaprogramming in R, I hope this post has given a taste of what is possible.</p>
+
+<p><em>I would like to thank Jan Ječmen for coming up with and showing me the original versions of these code examples, and Artem Pelenitsyn for his feedback to improve and not discard these examples from an earlier blog draft.</em></p>
+
+<hr />
+
+<h2 id="references">References</h2>
+
+<div class="footnotes">
+ <ol>
+  <li id="2019-09-10-four-kinds-of-scoping-in-r-footnote-1-definition" class="footnote-definition">
+   <p>R. Gentleman and R. Ihaka. "Lexical Scope and Statistical Computing, <em>Journal of Computational and Graphical Statistics</em>, vol. 9, no. 3, 2000. [<a href="https://doi.org/10.1080/10618600.2000.10474895">DOI</a>][<a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/lexical.pdf">Available online</a>]&nbsp;<a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-1-return">↩</a></p></li>
+  <li id="2019-09-10-four-kinds-of-scoping-in-r-footnote-2-definition" class="footnote-definition">
+   <p>A. Goel and J. Vitek. &ldquo;On the Design, Implementation and Use of Laziness in R,&rdquo; in <em>Proceedings of the ACM in Programming Languages (PACMPL)</em>, vol. 3, no. OOPSLA, 2019. To appear. [<a href="http://janvitek.org/pubs/oopsla19a.pdf">Available online</a>]&nbsp;<a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-2-return">↩</a></p></li></ol></div>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2019/09/10/four-kinds-of-scoping-in-r/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2019/10/31/complete-monitors-for-gradual-types/">&larr; <em>Complete Monitors for Gradual Types</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2019/09/10/scoping-in-r/"><em>Scoping in R</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

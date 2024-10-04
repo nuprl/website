@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'haskell'</title>
+  <description>PRL Blog: Posts tagged 'haskell'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/haskell.html</link>
+  <lastBuildDate>Tue, 24 May 2016 10:51:34 UT</lastBuildDate>
+  <pubDate>Tue, 24 May 2016 10:51:34 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Measuring GC latencies in Haskell, OCaml, Racket</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/?utm_source=haskell&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-05-24-measuring-gc-latencies-in-haskell-ocaml-racket</guid>
+   <pubDate>Tue, 24 May 2016 10:51:34 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;James Fisher has a blog post on a case where GHC&amp;rsquo;s runtime system imposed unpleasant latencies on their Haskell program:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/"&gt;Low latency, large working set, and GHC&amp;rsquo;s garbage collector: pick two of three&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The blog post proposes a very simple, synthetic benchmark that exhibits the issue &amp;mdash; basically, latencies incurred by copy time &amp;mdash; with latencies of 50ms that are considered excessive. I thought it would be amusing to reproduce the synthetic benchmark in OCaml and Racket, to see how other GCs handle this.&lt;/p&gt;
+
+&lt;p&gt;Without further ado, the main take-away are as follows: the OCaml GC has no issue with large objects in its old generation, as it uses a mark&amp;amp;sweep instead of copying collection, and exhibits less than 3ms worst-case pauses on this benchmark.&lt;/p&gt;
+
+&lt;p&gt;The Racket GC also does not copy the old generation, but its incremental GC is still in infancy (compared to the throughput-oriented settings which works well) so the results are less good. It currently suffer from a &amp;ldquo;ramp-up&amp;rdquo; effect that I will describe, that causes large pauses at the beginning of the benchmark (up to 120ms latency), but in its steady state the longest pause are around 22ms.&lt;/p&gt;
+
+&lt;p&gt;Please keep in mind that the original benchmark is designed to exercise a very specific workflow that exercises worst-case behavior for GHC&amp;rsquo;s garbage collector. This does not mean that GHC&amp;rsquo;s latencies are bad in general, or that the other tested languages have smaller latencies in general.&lt;/p&gt;
+
+&lt;p&gt;The implementations I use, with a Makefile encapsulating the logic for running and analyzing them, are available in a Gitlab repository:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;git: &lt;a href="https://gitlab.com/gasche/gc-latency-experiment.git"&gt;https://gitlab.com/gasche/gc-latency-experiment.git&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;files: &lt;a href="https://gitlab.com/gasche/gc-latency-experiment/tree/master"&gt;https://gitlab.com/gasche/gc-latency-experiment/tree/master&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="the-haskell-benchmark"&gt;The Haskell benchmark&lt;/h2&gt;
+
+&lt;p&gt;James Fisher&amp;rsquo;s Haskell benchmark is very simple: it creates an association table in which medium-size strings are inserted repeatedly &amp;mdash; a million times. When the channel reaches 200_000 messages, a string is deleted each time a string is created, to keep the total working size constant.&lt;/p&gt;
+
+&lt;div class="brush: haskell"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Control.Exception&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Exception&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Control.Monad&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Monad&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Data.ByteString&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;qualified&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nn"&gt;Data.Map.Strict&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;as&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Map&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kr"&gt;data&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replicate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fromIntegral&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgContent&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="kt"&gt;Exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;evaluate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;msgContent&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;then&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;deleteMin&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;      &lt;/span&gt;&lt;span class="kr"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;()&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Monad&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;foldM_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;To compile and run the program (&lt;code&gt;make run-haskell&lt;/code&gt; also works in my repository):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ghc -O2 -optc-O3 Main.hs  # compile the program
+./Main +RTS -s            # run the program (with GC instrumentation enabled)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;On my machine, running the program takes around 1.5s. We are not interested in the total running time (the &lt;em&gt;throughput&lt;/em&gt; of the algorithm), but in the pause times induced by the GC: the worst pause time is 51ms (milliseconds), which is the same as the one reported by the blog post &amp;mdash; and there it is considered excessive, with an expected worst-case latency of at most &amp;ldquo;a few milliseconds&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;(I did my testing with GHC 7.8, Fischer reports results with 7.10, they are essentially the same.)&lt;/p&gt;
+
+&lt;p&gt;This Haskell code makes two assumption about the &lt;code&gt;Map&lt;/code&gt; data structure (immutable associative maps) that make the benchmark more cumbersome to port to other languages. It assumes that the element count is pre-cached in the data structure and thus &lt;code&gt;Map.size&lt;/code&gt; is constant-time &amp;mdash; for both OCaml and Racket it is linear. It also uses a key ordering that makes it easy to remove the smallest key &amp;mdash; OCaml does this as well, but Racket uses hashes instead.&lt;/p&gt;
+
+&lt;p&gt;I initially worked around this by storing count and minimum-key information in the ported versions, but in fact it&amp;rsquo;s much nicer to write a variant of the benchmark, with the same behavior, that does not require these specific features:&lt;/p&gt;
+
+&lt;div class="brush: haskell"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="kr"&gt;type&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;windowSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;msgCount&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1000000&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Msg&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;ByteString&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replicate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fromIntegral&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Int&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Chan&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;  &lt;/span&gt;&lt;span class="kt"&gt;Exception&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;evaluate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;windowSize&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;let&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;insert&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;highId&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;chan&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;in&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kr"&gt;then&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="kr"&gt;else&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;delete&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;lowId&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;inserted&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;::&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;IO&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;()&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="ow"&gt;=&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Monad&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;foldM_&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;pushMsg&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="kt"&gt;Map&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;..&lt;/span&gt;&lt;span class="n"&gt;msgCount&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This variant has the same running times and worst-case pause, 50ms, as the original program.&lt;/p&gt;
+
+&lt;h3 id="explaining-haskell-results"&gt;Explaining Haskell results&lt;/h3&gt;
+
+&lt;p&gt;James Fischer explains that the reason why the latencies are this high (50ms is considered high) is that while GHC&amp;rsquo;s garbage collector is generational, its older generation still uses a stop-and-copy scheme. This means that when it contains lots of large objects, a lot of time is spent copying them.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/"&gt;original blog post&lt;/a&gt; contains a more detailed description of the problem and of various optimizations that may be attempted. Unfortunately, it seems that it is currently impossible to optimize that kind of workloads by tuning the code or GC parameters: the copying behavior of the old heap cannot really be worked-around currently.&lt;/p&gt;
+
+&lt;p&gt;As a meta-comment, one possible explanation for why this design choice was made might be that a lot of effort was invested in the Haskell&amp;rsquo;s GC to support concurrent mutators (a multi-core runtime). The additional complexity imposed by this extremely challenging and useful requirement may have encouraged runtime authors to keep the general GC architecture as simple as reasonably possible, which could explain this choice of using the same collection strategy in all generational spaces.&lt;/p&gt;
+
+&lt;h2 id="ocaml-version"&gt;OCaml version&lt;/h2&gt;
+
+&lt;p&gt;The code can easily be ported into OCaml, for example as follows:&lt;/p&gt;
+
+&lt;div class="brush: ocaml"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;open&lt;/span&gt; &lt;span class="nc"&gt;Batteries&lt;/span&gt;
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nc"&gt;IMap&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Map&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nc"&gt;Make&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nc"&gt;Int&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;String&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make&lt;/span&gt; &lt;span class="mi"&gt;1024&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nn"&gt;Char&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;chr&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="ow"&gt;mod&lt;/span&gt; &lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;200_000&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;msg_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1_000_000&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="nn"&gt;Seq&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;init&lt;/span&gt; &lt;span class="n"&gt;msg_count&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="k"&gt;fun&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+  &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="nn"&gt;Seq&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fold_left&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;empty&lt;/span&gt; &lt;span class="o"&gt;|&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;ignore&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Evaluating throughput is not the point, and the balanced maps used by the Haskell and OCaml are certainly implemented in slightly different ways that would explain any performance difference, but I was still amused to see the total runtime be essentially the same: 1.5s.&lt;/p&gt;
+
+&lt;p&gt;To measure the maximal pause time, there are two options:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;use the new instrumented runtime contributed by Damien Doligez in  OCaml 4.03; this works but, being a relatively new feature with not  much usability effort put into it, it&amp;rsquo;s far from being as convenient  as GHC&amp;rsquo;s &lt;code&gt;+RTS -s&lt;/code&gt; parameter.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Simply measure the time spend in each iteration (pushing a message),  and using this as an upper bound on the pause time: clearly any GC  pause cannot pause for more time than the iteration takes. (With my Makefile,  &lt;code&gt;make run-ocaml&lt;/code&gt;)&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;To use the new instrumented runtime, you need to have an OCaml compiler, version 4.03.0, compiled with the &lt;code&gt;--with-instrumented-runtime&lt;/code&gt; configure-time switch. Then, you can use the &lt;code&gt;i&lt;/code&gt;-variant (&lt;code&gt;i&lt;/code&gt; for &amp;ldquo;instrumented&amp;rdquo;) of the runtime that is compiled with instrumentation enabled. (My makefile rule &lt;code&gt;make
+run-ocaml-instrumented&lt;/code&gt; does this for you, but you still need a switch compiled with the instrumented runtime.)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ocamlbuild -tag "runtime_variant(i)" main.native
+OCAML_INSTR_LOG=ocaml.log ./main.native&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The log file &lt;code&gt;ocaml.log&lt;/code&gt; will then contain a low-level log of all GC-related runtime calls, with nanosecond time, in a format made for machine rather than human consumption. The tools &lt;code&gt;ocaml-instr-report&lt;/code&gt; and &lt;code&gt;ocaml-instr-graph&lt;/code&gt; of the OCaml source distribution (not installed by default, you need a source checkout), will parse them and display tables or graph. The entry point of interest for worst-case latency is &lt;code&gt;dispatch&lt;/code&gt;, which contains the time spent in all GC activity. The relevant section of &lt;code&gt;ocaml-instr-report&lt;/code&gt;&amp;rsquo;s output shows:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;==== dispatch: 2506
+470ns..1.0us:  1     (768ns)                       0.04%
+1.0us..2.2us: # 2                                  0.12%
+2.2us..4.7us: ### 8                                0.44%
+4.7us..10us : #### 10                              0.84%
+ 10us..22us :  1     (14us)                        0.88%
+ 22us..47us :                                      0.88%
+ 47us..100us:                                      0.88%
+100us..220us: ## 3                                 1.00%
+220us..470us: ########## 668                      27.65%
+470us..1.0ms: ########### 1795                    99.28%
+1.0ms..2.2ms: ##### 17                            99.96%
+2.2ms..4.7ms:  1     (2.7ms)                     100.00%&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, most pauses are between 220µs and 1ms, with the longest pause being 2.7ms.&lt;/p&gt;
+
+&lt;p&gt;The other approach to measure latency for this program, which works on older OCaml versions without an instrumented runtime, is just to insert explicit timing calls and compute the worst-case time of an iteration &amp;mdash; as an over-approximation over the max pause time, assuming that the actual insertion/deletion time is small.&lt;/p&gt;
+
+&lt;div class="brush: ocaml"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ref&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;before&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Unix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gettimeofday&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Unix&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;gettimeofday&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="n"&gt;max&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;worst&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;after&lt;/span&gt; &lt;span class="o"&gt;-.&lt;/span&gt; &lt;span class="n"&gt;before&lt;/span&gt;&lt;span class="o"&gt;);&lt;/span&gt;
+  &lt;span class="n"&gt;result&lt;/span&gt;
+
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;push_msg&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;time&lt;/span&gt; &lt;span class="o"&gt;@@&lt;/span&gt; &lt;span class="k"&gt;fun&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;window_size&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;high_id&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="n"&gt;chan&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+  &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nn"&gt;IMap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;low_id&lt;/span&gt; &lt;span class="n"&gt;inserted&lt;/span&gt;
+
+&lt;span class="c"&gt;(* ..main loop.. *)&lt;/span&gt;
+&lt;span class="k"&gt;let&lt;/span&gt; &lt;span class="bp"&gt;()&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nn"&gt;Printf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;printf&lt;/span&gt; &lt;span class="s2"&gt;"Worst pause: %.2E&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt; &lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="n"&gt;worst&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Running this version reports a worst-case latency of 2ms seconds on my machine (I use the &lt;code&gt;%E&lt;/code&gt; formatter for scientific notation, so it gets printed as &lt;code&gt;2.03E-03&lt;/code&gt;), which is in line with the instrumented runtime &amp;mdash; actually slightly lower, as the instrumentation may add some overhead.&lt;/p&gt;
+
+&lt;p&gt;A downside of this poor man worst-latency computation approach is that we only get the worst time, not any kind of timing distribution.&lt;/p&gt;
+
+&lt;h3 id="explaining-ocaml-results"&gt;Explaining OCaml results&lt;/h3&gt;
+
+&lt;p&gt;The OCaml GC has had reliable incremental phases implemented by default for a long time, and does not use a copying strategy for its old generation. It is mark&amp;amp;sweep, executed well, so it was predictable from the start that this specific benchmark would not be a worst-case for OCaml.&lt;/p&gt;
+
+&lt;p&gt;The latest released OCaml version, OCaml 4.03.0, has seen work by Damien Doligez to improve the worst-case latency in some situations, motivated by the industrial use-cases of Jane Street. In particular, the latency &lt;em&gt;instrumentation&lt;/em&gt; tools that I&amp;rsquo;m using above were developed by Damien on this occasion. I checked with the second measurement strategy that the latency is just as good on previous OCaml versions: this particular use-case was not in need of improvement before 4.03.&lt;/p&gt;
+
+&lt;h2 id="racket-version"&gt;Racket version&lt;/h2&gt;
+
+&lt;p&gt;Max New wrote a first version of Racket port of this benchmark &amp;mdash; he had to explicitly keep track of the map count and minimum key to match the original GHC version. I adapted his code to my simplified variant, and it looks rather similar to the other implementations.&lt;/p&gt;
+
+&lt;div class="brush: scheme"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;lang&lt;/span&gt; &lt;span class="nv"&gt;racket/base&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;require&lt;/span&gt; &lt;span class="nv"&gt;racket/match&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;window-size&lt;/span&gt; &lt;span class="mi"&gt;200000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;msg-count&lt;/span&gt;  &lt;span class="mi"&gt;2000000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;message&lt;/span&gt; &lt;span class="nv"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;make-bytes&lt;/span&gt; &lt;span class="mi"&gt;1024&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;modulo &lt;/span&gt;&lt;span class="nv"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;256&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;push-msg&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;id-low&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;id-high&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;-&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;window-size&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;inserted&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;hash-set&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;message&lt;/span&gt; &lt;span class="nv"&gt;id-high&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;id-low&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="nv"&gt;inserted&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;hash-remove&lt;/span&gt; &lt;span class="nv"&gt;inserted&lt;/span&gt; &lt;span class="nv"&gt;id-low&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="nv"&gt;_&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;for/fold&lt;/span&gt;
+     &lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;make-immutable-hash&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+     &lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;in-range&lt;/span&gt; &lt;span class="nv"&gt;msg-count&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;push-msg&lt;/span&gt; &lt;span class="nv"&gt;chan&lt;/span&gt; &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I initially used the poor man approach of explicit timing calls to measure latency, but then switched to two better methods:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Sam Tobin-Hochstadt&amp;rsquo;s &lt;a href="https://github.com/samth/gcstats"&gt;gcstats&lt;/a&gt;  package makes Racket programs produce a summary of their runtime  behavior in the same format as GHC&amp;rsquo;s &lt;code&gt;+RTS -s&lt;/code&gt; output, with in  particular the worst-case pause time. It is also very easy to use:&lt;/p&gt;
+  &lt;pre&gt;&lt;code&gt;racket -l gcstats -t main.rkt&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;By setting the environment variable &lt;code&gt;PLTSTDERR=debug@GC&lt;/code&gt;, the racket  runtime will log GC events on the standard error output. One can  then grep for minor or major collections, or produce a histogram of  running times through the following scripting soup I cooked myself:&lt;/p&gt;
+  &lt;pre&gt;&lt;code&gt;cat racket.log | grep -v total | cut -d' ' -f7 | sort -n | uniq --count&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Racket has an incremental GC that is currently experimental (it is not enabled by default as it can degrade throughput) and is enabled by setting the environment variable &lt;code&gt;PLT_INCREMENTAL_GC=1&lt;/code&gt;. I compared with and without the incremental GC, and generally it shifts the latency histogram towards smaller latencies, but it turns out not to help so much for the worst-case latency without further tuning, for a reason I will explain. All results reported below use the incremental GC.&lt;/p&gt;
+
+&lt;p&gt;On my machine, using the latest release Racket 6.5, the maximal pause time reported by &lt;code&gt;gcstats&lt;/code&gt; is around 150ms, which is rather bad &amp;mdash; the excessive pause of GHC was 50ms.&lt;/p&gt;
+
+&lt;h3 id="investigating-the-racket-results"&gt;Investigating the Racket results&lt;/h3&gt;
+
+&lt;p&gt;I sent &lt;a href="https://groups.google.com/forum/#!topic/racket-dev/AH6c-HGgzJ0"&gt;an email&lt;/a&gt; to the racket-dev mailing list, hoping to get explanations and advice on how to improve the code to decrease GC latencies. (Remember that one problematic aspect of the GHC benchmark is that there is no real way for users to tweak the code to get better latencies for the same workflow. So we are evaluating default latencies but also tweakability.) It worked out quite well.&lt;/p&gt;
+
+&lt;p&gt;First, Matthew Flatt immediately sent a few commits on the Racket codebase to improve some behaviors that were problematic on the benchmark. Using the development version of Racket instead of 6.5, the worst-case latency drops from 150ms to 120ms on my machine. All remaining times are reported using the development version.&lt;/p&gt;
+
+&lt;p&gt;Matthew Flatt also analyzed the result and noticed that the worst-case latency systematically happens at the beginning of the benchmark, just after the channel reaches its maximal side of 200,000 messages. This is hard to see with the default benchmark parameters, where the &amp;ldquo;ramp-up&amp;rdquo; period of filling the channel takes one fifth of the total iterations. To see this clearly, I increased the iteration count from 1,000,000 to 10,000,000, then ran &lt;code&gt;make
+run-racket-instrumented&lt;/code&gt;. I can look at the pause time of major collections by doing &lt;code&gt;grep MAJ racket.log&lt;/code&gt;, and on my machine I have:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GC: 0:MAJ @ 50,634K(+37,221K)[+1,560K]; free 5,075K(-5,075K) 12ms @ 373
+GC: 0:MAJ @ 101,983K(+35,024K)[+1,560K]; free 10,880K(-5,168K) 38ms @ 521
+GC: 0:MAJ @ 192,491K(+38,404K)[+1,560K]; free 8,174K(-24,030K) 56ms @ 810
+GC: 0:MAJ @ 377,716K(+49,259K)[+1,560K]; free 10,832K(-9,536K) 92ms @ 1571
+GC: 0:MAJ @ 742,630K(+59,881K)[+1,560K]; free 140,354K(-156,738K) 138ms @ 3321
+GC: 0:MAJ @ 1,214,486K(+112,313K)[+1,560K]; free 361,371K(-377,755K) 60ms @ 6046
+GC: 0:MAJ @ 1,417,749K(+138,410K)[+1,560K]; free 600,291K(-600,291K) 23ms @ 8553
+GC: 0:MAJ @ 1,400,780K(+155,379K)[+1,560K]; free 564,923K(-564,923K) 21ms @ 11048
+GC: 0:MAJ @ 1,408,812K(+147,347K)[+1,560K]; free 583,454K(-583,454K) 21ms @ 13506
+GC: 0:MAJ @ 1,404,757K(+151,402K)[+1,560K]; free 572,350K(-572,350K) 20ms @ 15983
+GC: 0:MAJ @ 1,407,842K(+148,317K)[+1,560K]; free 579,079K(-579,079K) 22ms @ 18438
+GC: 0:MAJ @ 1,405,641K(+150,518K)[+1,560K]; free 575,624K(-575,624K) 21ms @ 20907
+GC: 0:MAJ @ 1,405,833K(+150,326K)[+1,560K]; free 577,191K(-577,191K) 21ms @ 23362
+GC: 0:MAJ @ 1,405,763K(+150,396K)[+1,560K]; free 575,779K(-575,779K) 20ms @ 25897
+GC: 0:MAJ @ 1,406,444K(+149,715K)[+1,560K]; free 577,553K(-577,553K) 20ms @ 28348
+GC: 0:MAJ @ 1,406,409K(+149,750K)[+1,560K]; free 576,323K(-576,323K) 21ms @ 30827
+GC: 0:MAJ @ 1,407,054K(+149,105K)[+1,560K]; free 577,961K(-577,961K) 21ms @ 33290
+GC: 0:MAJ @ 1,404,903K(+151,256K)[+1,560K]; free 576,241K(-576,241K) 20ms @ 35774
+GC: 0:MAJ @ 1,406,551K(+149,608K)[+1,560K]; free 575,352K(-575,352K) 22ms @ 38251
+GC: 0:MAJ @ 1,405,775K(+150,384K)[+1,560K]; free 577,401K(-577,401K) 21ms @ 40730
+GC: 0:MAJ @ 1,406,015K(+150,144K)[+1,560K]; free 575,563K(-575,563K) 20ms @ 43254
+GC: 0:MAJ @ 1,406,129K(+150,030K)[+1,560K]; free 577,760K(-577,760K) 21ms @ 45730
+GC: 0:MAJ @ 1,406,157K(+150,002K)[+1,560K]; free 575,394K(-575,394K) 22ms @ 48220
+GC: 0:MAJ @ 1,406,514K(+149,645K)[+1,560K]; free 577,765K(-577,765K) 21ms @ 50697&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Look at the evolution of major collection pause times: there is an early peek at &lt;code&gt;140ms&lt;/code&gt;, but then pause times decrease and the steady state has sensibly shorter pauses of around &lt;code&gt;22ms&lt;/code&gt;. By looking at the amount of memory freed during each collection, one can see that the peak corresponds to the first major collection that frees a lot of memory; it is the first major collection after the channel has reached its maximal size, and starts removing a lot of messages.&lt;/p&gt;
+
+&lt;p&gt;My understanding of this behavior is that the incremental GC keeps some runtime parameter that observe the memory allocation patterns of the program, and try to predict when the next collection should be or how much work it should do. Matthew Flatt explains that this monitoring logic currently fails to adapt gracefully to the change of regime in our program, and incurs a large peak pause at this point.&lt;/p&gt;
+
+&lt;p&gt;This is good news for our benchmark: sure, there is a very bad pause at the beginning of the program, but it&amp;rsquo;s a one-time thing. It does not really affect the last decile of latency that is discussed in James Fischer&amp;rsquo;s post, and would not be a problem during the steady state of an actual message-passing application.&lt;/p&gt;
+
+&lt;h3 id="tuning-the-racket-version"&gt;Tuning the Racket version&lt;/h3&gt;
+
+&lt;p&gt;Matthew Flatt also remarked that by inserting explicit calls to the GC, one can get collection performed more often than Racket&amp;rsquo;s heuristics demand and partly avoid the large peak pause. However, too frequent explicit collections hurt the program throughput.&lt;/p&gt;
+
+&lt;p&gt;I experimented a bit and found that the peak pause issue could be partly mitigated by inserting explicit GC calls around the change of regime &amp;mdash; around the iteration count that corresponds to the maximal channel size. I defined a function doing just that&lt;/p&gt;
+
+&lt;div class="brush: scheme"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;define &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;maybe-gc&lt;/span&gt; &lt;span class="nv"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;when&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;and &lt;/span&gt;&lt;span class="nv"&gt;gc-during-rampup&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;i&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;window-size&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;/&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;i&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;&amp;lt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;window-size&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="nv"&gt;*&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+             &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zero? &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;modulo &lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;collect-garbage&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;incremental&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;collect-garbage&lt;/span&gt; &lt;span class="ss"&gt;&amp;#39;minor&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which is controlled by a &lt;code&gt;gc-during-rampup&lt;/code&gt; parameter that you can explicitly set to &lt;code&gt;#t&lt;/code&gt; to experiment &amp;mdash; explicit GC calls are disabled by default in my benchmark code. Then I just inserted a &lt;code&gt;(maybe-gc i)&lt;/code&gt; call in the main loop.&lt;/p&gt;
+
+&lt;p&gt;Because the extra GC calls happen only during rampup, the performance of the steady state are unchanged and the global cost on throughput is moderate (20% in my experiment with iteration count 2,000,000). This seems effective at mitigating the peak pause issue: the worst-case time on my machine is now only 38ms &amp;mdash; the pauses during the steady state are unchanged, around 22ms.&lt;/p&gt;
+
+&lt;p&gt;This is, of course, a hack; the long-term solution is to wait for Racket developers to devise better dynamic control strategies to avoid the ramp-up problem. Apparently, the incremental GC was previously tested on games that had simpler allocation profiles, such as short-lived memory allocations during each game tick, with no such a long ramp-up phase. But I was still interested in the fact that expert users can tweak the code to noticeably decrease the worst-case pause time.&lt;/p&gt;
+
+&lt;p&gt;To summarize, Racket&amp;rsquo;s incremental GC exhibits a decent-but-not-excellent steady state behavior, with maximal latencies of around 22ms, but currently suffers from a GC control issues that cause much larger pauses during the benchmark ramp-up period. Explicit GC calls can partly mitigate them.&lt;/p&gt;</description></item></channel></rss>

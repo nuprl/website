@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'java'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/java.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/java.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-java-html</id>
+ <updated>2018-12-02T14:41:53Z</updated>
+ <entry>
+  <title type="text">Java and Migratory Typing</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/12/02/java-and-migratory-typing/?utm_source=java&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-12-02-java-and-migratory-typing</id>
+  <published>2018-12-02T14:41:53Z</published>
+  <updated>2018-12-02T14:41:53Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The &lt;em&gt;transient&lt;/em&gt; approach to migratory typing (circa &lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf"&gt;2014&lt;/a&gt;)  is similar to type erasure in Java (circa &lt;a href="https://docs.oracle.com/javase/1.5.0/docs/relnotes/features.html"&gt;2004&lt;/a&gt;)  in a few interesting ways.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="migratory-typing"&gt;Migratory typing&lt;/h2&gt;
+
+&lt;p&gt;The goal of &lt;em&gt;migratory typing&lt;/em&gt; is to enrich the type system of a language  without breaking backwards compatibility. Ideally, code that uses the enriched types:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;(G1) benefits from new ahead-of-time checks,&lt;/li&gt;
+ &lt;li&gt;(G2) benefits from stronger run-time guarantees, and&lt;/li&gt;
+ &lt;li&gt;(G3) may interact with all kinds of existing code.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;There are tradeoffs involved in the implementation of a migratory typing  system, however, and (as we will see) different implementations may focus on  different goals than the three above.&lt;/p&gt;
+
+&lt;p&gt;A typical migratory typing system adds a static type checker to a dynamically  typed language (&lt;a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/index.html"&gt;examples&lt;/a&gt;),  but one could also extend the type system of a statically-typed language;  for example, by &lt;a href="https://hal.inria.fr/hal-01629909v2"&gt;adding dependent types&lt;/a&gt;. In this sense, Java 1.5.0 is a migratory typing system for pre-generics Java. The addition of generic types enabled new ahead-of-time checks and maintained backwards  compatibility with existing Java code.&lt;/p&gt;
+
+&lt;p&gt;Java&amp;rsquo;s implementation of migratory typing has some interesting things in common  with the &lt;em&gt;transient&lt;/em&gt; implementation strategy recently proposed by  Michael Vitousek and collaborators (&lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/dls14.pdf"&gt;DLS&amp;rsquo;14&lt;/a&gt;, &lt;a href="https://mail.google.com/mail/u/0/h/1atrn21qlyrrh/?&amp;amp;"&gt;POPL&amp;rsquo;17&lt;/a&gt;). The goal of this post is to demonstrate the connections.&lt;/p&gt;
+
+&lt;h2 id="erasure-migratory-typing"&gt;Erasure migratory typing&lt;/h2&gt;
+
+&lt;p&gt;Before we compare Java 1.5.0 to transient, let&amp;rsquo;s review a simpler strategy:  the &lt;em&gt;erasure&lt;/em&gt; approach to migratory typing.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://www.typescriptlang.org/"&gt;TypeScript&lt;/a&gt; is a great (modern) example of the erasure approach. TypeScript is a migratory typing system for JavaScript. A TypeScript module gets validated by an ahead-of-time type checker and  compiles to JavaScript. After compilation, any JavaScript program may import bindings  from the generated code. Conversely, a TypeScript module may import bindings from a JavaScript module  by declaring a static type for each binding.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The &lt;a href="http://definitelytyped.org/"&gt;DefinitelyTyped&lt;/a&gt; repository provides TypeScript type definitions for many JavaScript libraries.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The TypeScript compiler erases types;  every type &lt;code&gt;T&lt;/code&gt; in the source code translates to the universal &amp;ldquo;JavaScript type&amp;rdquo;. For instance, a TypeScript function declaration compiles to an untyped  JavaScript function:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(function (n0 : number, n1 : number) { return n0 + n1; })
+
+// ==(compiles to)==&amp;gt;
+
+(function (n0, n1) { return n0 + n1; })&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;TypeScript satisfies goals &lt;strong&gt;G1&lt;/strong&gt; and &lt;strong&gt;G3&lt;/strong&gt; for a migratory typing system  because its type checker adds ahead-of-time checks and its  compiler outputs JavaScript. TypeScript does not satisfy goal &lt;strong&gt;G2&lt;/strong&gt; because the compiler erases types. In terms of the example above, the compiled function may be invoked with any  pair of JavaScript values; the variable &lt;code&gt;n0&lt;/code&gt; is not guaranteed to point  to a &lt;code&gt;number&lt;/code&gt; at run-time. On one hand, this means the type annotations have no effect on the behavior  of a program &amp;mdash; and in particular, cannot be trusted for debugging. On the other hand, it means that an experienced JavaScript programmer can  re-use their knowledge to predict the behavior of a TypeScript program.&lt;/p&gt;
+
+&lt;p&gt;In an ordinary program, the run-time guarantees of TypeScript are simply  the run-time guarantees of JavaScript:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if a TypeScript expression &lt;code&gt;e&lt;/code&gt; has the static type &lt;code&gt;T&lt;/code&gt; and evaluates to  a value &lt;code&gt;v&lt;/code&gt;,  then the only guarantee is that &lt;code&gt;v&lt;/code&gt; is a valid JavaScript value  (e.g., &lt;code&gt;T&lt;/code&gt; could be &lt;code&gt;number&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt; could be an incompatible object).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="transient-migratory-typing"&gt;Transient migratory typing&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated&lt;/a&gt; is a migratory typing  system for Python that follows a &lt;em&gt;transient&lt;/em&gt; implementation strategy. A Reticulated module gets type-checked and compiles to a Python module that  defends itself from certain type-invalid inputs through the use of  assertions that run in near-constant time. The type-checking addresses goal &lt;strong&gt;G1&lt;/strong&gt;,  the compilation to Python provides interoperability (goal &lt;strong&gt;G3&lt;/strong&gt;),  and the assertions partially meet goal &lt;strong&gt;G2&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;These &lt;em&gt;certain&lt;/em&gt; inputs are the ones that would cause a standard typed operational semantics to reach an undefined state. For a discussion of &lt;em&gt;near-constant&lt;/em&gt;, see &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;, section 2&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For example, here is a Reticulated function  that computes the average of a list of numbers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Reticulated (commit e478343)
+def average(nums : List(Float)) -&amp;gt; Float:
+  if ns:
+    return sum(ns) / len(ns)
+  else:
+    raise ValueError("average: expected non-empty list")&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and here is the Python code it compiles to:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;from retic.runtime import *
+from retic.transient import *
+from retic.typing import *
+
+def average(nums):
+    check_type_list(nums)
+    if ns:
+        return check_type_float((check_type_function(sum)(ns) / check_type_function(len)(ns)))
+    else:
+        raise check_type_function(ValueError)('average: expected non-empty list')&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: the Reticulated syntax for type annotations is similar to the one proposed in &lt;a href="https://www.python.org/dev/peps/pep-0484/"&gt;PEP 484&lt;/a&gt;, but not identical. For example, Reticulated does not require forward references to be embedded in strings.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The Reticulated compiler removes all type annotations and inserts &lt;code&gt;check_type&lt;/code&gt;  assertions throughout the code. In &lt;code&gt;average&lt;/code&gt;, these assertions check that: (1) the input is a list,  (2) the output is a &lt;code&gt;float&lt;/code&gt;, (3) and the names &lt;code&gt;sum&lt;/code&gt; &lt;code&gt;len&lt;/code&gt; and  &lt;code&gt;ValueError&lt;/code&gt; point to callable values. That&amp;rsquo;s all. The assertions &lt;strong&gt;do not check&lt;/strong&gt; that &lt;code&gt;nums&lt;/code&gt; contains only floating-point  numbers.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The assertions also do not check that the function bound to &lt;code&gt;sum&lt;/code&gt; is defined for a single argument, which is arguably a bug. Scaling a model to an implementation is always challenging.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;If &lt;code&gt;nums&lt;/code&gt; contains something other than floating point numbers, then the  call to &lt;code&gt;average&lt;/code&gt; may cause &lt;code&gt;sum&lt;/code&gt; to raise an exception or it may silently  compute a nonsense result. The behavior depends on the implementation of &lt;code&gt;sum&lt;/code&gt; in the same way that  the behavior of a TypeScript function depends on any JavaScript functions  that it invokes.&lt;/p&gt;
+
+&lt;p&gt;Reticulated does not erase types, nor does it fully enforce types. Every type in a Reticulated module translates to its  top-level type constructor &lt;code&gt;C(T)&lt;/code&gt;, e.g.:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  C(Float)                = Float
+  C(List(Float))          = List
+  C(List(Float) -&amp;gt; Float) = -&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Consequently, Reticulated has a slightly stronger run-time guarantee than Python:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if &lt;code&gt;e&lt;/code&gt; is an expression with static type &lt;code&gt;T&lt;/code&gt; that evaluates to a value &lt;code&gt;v&lt;/code&gt;,  then &lt;code&gt;v&lt;/code&gt; is guaranteed to have a top-level shape that matches the &lt;code&gt;C(T)&lt;/code&gt;  constructor.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="java-migratory-typing"&gt;Java migratory typing&lt;/h2&gt;
+
+&lt;p&gt;Java 1.5.0 added &lt;a href="https://www.jcp.org/en/jsr/detail?id=14"&gt;generic types&lt;/a&gt;  to the Java 1.4.0 type system. The benefit of generics is that a programmer can:  write one class definition,  use the definition in a few different contexts,  and receive specific feedback from the type checker in each context.&lt;/p&gt;
+
+&lt;h3 id="review-generic-types"&gt;Review: generic types&lt;/h3&gt;
+
+&lt;p&gt;Suppose we want to write a &lt;code&gt;Box&lt;/code&gt; class that holds some kind of value;  the value could be an &lt;code&gt;Integer&lt;/code&gt; or a &lt;code&gt;String&lt;/code&gt; or anything else. Here is a pre-generics definition:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Box {
+  private Object val;
+
+  public Box(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With this definition is it possible to make boxes that hold different types  of values:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// good!
+Box iBox = new Box(new Integer(4));
+Box sBox = new Box(new String("X"));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;but it is also possible to &amp;ldquo;change the type&amp;rdquo; of the contents of a &lt;code&gt;Box&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// maybe bad!
+iBox.set(new String("not a number"));&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and some calls to &lt;code&gt;get&lt;/code&gt; must be followed by a type cast:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// annoying!
+((String) sBox.get()).charAt(0);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;With generics, we can give a name (e.g. &lt;code&gt;ValType&lt;/code&gt;) to &amp;ldquo;the type of the value inside a box&amp;rdquo;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class GBox&amp;lt;ValType&amp;gt; {
+  private ValType val;
+
+  public GBox(ValType val) { this.set(val); }
+
+  public void set(ValType val) { this.val = val; }
+
+  public ValType get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and now we can tell the type checker to check different boxes differently (satisfying goal &lt;strong&gt;G1&lt;/strong&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GBox&amp;lt;Integer&amp;gt; iBox = new GBox&amp;lt;Integer&amp;gt;(new Integer(0));
+GBox&amp;lt;String&amp;gt; sBox = new GBox&amp;lt;String&amp;gt;(new String("A"));
+
+// iBox.set(new String("not a number")); // Type Error, good!
+
+sBox.get().charAt(0); // no cast, good!&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="backwards-compatibility--danger"&gt;Backwards compatibility &amp;amp; danger&lt;/h3&gt;
+
+&lt;p&gt;Java generics are backwards-compatible with older code (goal &lt;strong&gt;G3&lt;/strong&gt;). This means that pre-generics code can interact with instances of a generic  class. Vice-versa, generic code can interact with pre-generics classes. Since pre-generics code is not aware of type parameters, these interactions  are potentially unsafe. For example, a pre-generics method can change the type of a &lt;code&gt;GBox&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Java 1.4.0 method
+public static void evil(GBox b) { b.set(666); }
+
+// Java 1.5.0 method
+public static void test() {
+  GBox&amp;lt;String&amp;gt; sBox = new GBox&amp;lt;String&amp;gt;(new String("A"));
+  evil(sBox); // OK, but generates unchecked warning
+  sBox.get().charAt(0);
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The code above passes the type checker (with a warning about the &lt;code&gt;evil&lt;/code&gt; method),  and so it &lt;em&gt;seems&lt;/em&gt; as though running the code will run the nonsense  method call &lt;code&gt;666.charAt(0)&lt;/code&gt; and lead to evil behavior. The actual result, however, is a cast error immediately after the call  &lt;code&gt;sBox.get()&lt;/code&gt; returns.&lt;/p&gt;
+
+&lt;p&gt;Based on the cast error, we can tell that  the compiler does not trust the type &lt;code&gt;GBox&amp;lt;String&amp;gt;&lt;/code&gt; and  inserts a run-time check that the result of the &lt;code&gt;.get()&lt;/code&gt; is a string object.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&amp;ldquo;Calling legacy code from generic code is inherently dangerous; once you mix generic code with non-generic legacy code, all the safety guarantees that the generic type system usually provides are void.&amp;rdquo; &lt;a href="https://www.oracle.com/technetwork/java/javase/generics-tutorial-159168.pdf"&gt;Generics in the Java Programming Language, Section 6.1&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="java-type-erasure"&gt;Java Type Erasure&lt;/h3&gt;
+
+&lt;p&gt;In order to support pre-generics and post-generics code on the same  &lt;a href="https://docs.oracle.com/javase/specs/jvms/se11/html/index.html"&gt;virtual machine&lt;/a&gt;,  the Java compiler &lt;a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.6"&gt;erases&lt;/a&gt;  generic type parameters after type-checking. Everywhere that the compiled code depends on an erased type, such as the  &lt;code&gt;String&lt;/code&gt; in &lt;code&gt;GBox&amp;lt;String&amp;gt;&lt;/code&gt; above, Java adds a cast to prove to the Java Virtual Machine (JVM)  that the erased bytecode is type-safe. (A smarter JVM type system might be able to prove that some casts are  unnecessary via &lt;a href="https://www2.ccs.neu.edu/racket/pubs/icfp10-thf.pdf"&gt;occurrence typing&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;After erasure, the &lt;code&gt;GBox&amp;lt;ValType&amp;gt;&lt;/code&gt; class declaration loses its parameter:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;// Erase `ValType`, replace with `Object`
+class GBox {
+  private Object val;
+
+  public GBox(Object val) { this.set(val); }
+
+  public void set(Object val) { this.val = val; }
+
+  public Object get() { return this.val; }
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and the client code gains a cast:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;GBox sBox = new GBox(new String("A"));
+
+((String) sBox.get()).charAt(0);&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So far, so good. But it&amp;rsquo;s worth noting that erasure can cause problems with Java arrays. An array needs to know the run-time type of its elements, so the following &amp;ldquo;natural&amp;rdquo; definition of an &lt;code&gt;ArrayList&lt;/code&gt; is not permitted:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class ArrayList&amp;lt;T&amp;gt; {
+  private T[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new T[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    // TODO bounds check
+    return data[ix]
+  }
+
+  // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The trouble is that &lt;code&gt;T&lt;/code&gt; does not say anything about the data that a new array needs to handle:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ArrayList.java:6: error: generic array creation
+    data = new T[capacity];&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The only work-arounds require an array of objects and unchecked casts. One solution is to unsafely cast the array to the generic type:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  // possibly dangerous, if `data` is aliased to an `Object[]`
+  public ArrayList(int capacity) {
+    data = (T[]) new Object[capacity];
+    size = 0;
+  }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The other is to unsafely cast array elements in the &lt;code&gt;get&lt;/code&gt; method, and elsewhere:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class ArrayList&amp;lt;T&amp;gt; {
+  private Object[] data;
+  private int size;
+
+  public ArrayList(int capacity) {
+    data = new Object[capacity];
+    size = 0;
+  }
+
+  public T get(int ix) {
+    boundsCheck(ix);
+    return (T) data[ix];
+  }
+
+  // ....
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Both may potentially lead to &lt;a href="http://www.angelikalanger.com/GenericsFAQ/FAQSections/TechnicalDetails.html#FAQ050"&gt;heap pollution&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;"The decision not to make all generic types [not erased] is one of the most crucial, and controversial design decisions involving the type system of the Java programming language.&lt;/p&gt;
+ &lt;p&gt;"Ultimately, the most important motivation for this decision is compatibility with existing code." &lt;a href="https://docs.oracle.com/javase/specs/jls/se11/html/jls-4.html#jls-4.7"&gt;Java Language Specification, section 4.7&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="run-time-guarantees"&gt;Run-time guarantees&lt;/h3&gt;
+
+&lt;p&gt;By contrast to Reticulated&amp;rsquo;s &lt;code&gt;C(T)&lt;/code&gt; transformation, the following &lt;code&gt;G(T)&lt;/code&gt;  transformation describes generic-type erasure,  where &lt;code&gt;T&amp;lt;T1&amp;gt;&lt;/code&gt; describes a type &lt;code&gt;T&lt;/code&gt; with parameter &lt;code&gt;T1&lt;/code&gt;  and &lt;code&gt;A[T1, T2]&lt;/code&gt; describes a type variable &lt;code&gt;A&lt;/code&gt; with lower bound &lt;code&gt;T1&lt;/code&gt; and upper bound &lt;code&gt;T2&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  G(T&amp;lt;T1&amp;gt;)     = G(T)
+  G(A[T1, T2]) = G(T1)
+  G(T)         = T      otherwise&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If generic-type erasure results in a type mismatch (e.g., in &lt;code&gt;sBox.get().charAt(0)&lt;/code&gt; above),  the compiler inserts a cast. The inserted casts led to the run-time error in the previous example, and  provide the following run-time guarantee:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;if &lt;code&gt;e&lt;/code&gt; is an expression with static type &lt;code&gt;T&lt;/code&gt; that evaluates to a value &lt;code&gt;v&lt;/code&gt;,  then &lt;code&gt;v&lt;/code&gt; is guaranteed to match the (bytecode) type &lt;code&gt;G(T)&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="discussion"&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;TypeScript, Reticulated Python, and Java 1.5.0 each improved the type system  of an existing language, but maintained backwards compatibility with existing  code. The name &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/"&gt;migratory typing&lt;/a&gt;  describes this kind of language extension.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;Gradual typing&lt;/a&gt; is a similar; a gradual type system starts with a statically-typed language and adds dynamic typing in a principled way (&lt;a href="https://pleiad.cl/papers/2016/garciaAl-popl2016.pdf"&gt;example&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The TypeScript team had a choice between erasing types and enforcing types. They chose to erase types and run all code (typed or untyped) at the level  of JavaScript. (Some TypeScript &lt;a href="https://lorefnon.tech/2018/03/25/typescript-and-validations-at-runtime-boundaries/"&gt;libraries&lt;/a&gt;, however, can enforce some types.)&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;TypeScript is not the only erasure language, nor is it the first. The oldest (I think) is &lt;a href="http://www.softwarepreservation.org/projects/LISP/maclisp_family/"&gt;MACLISP&lt;/a&gt;. For an erasure manifesto, see &lt;a href="http://bracha.org/pluggableTypesPosition.pdf"&gt;Pluggable Type Systems&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The Reticulated team faced an analogous choice, and chose to enforce the top-level  shape of values in typed code (&lt;a href="http://homes.sice.indiana.edu/mvitouse/papers/popl17.pdf"&gt;POPL 2017&lt;/a&gt;). It will be interesting to see if this guarantee helps developers maintain programs,  or if it is too shallow to be much use. The &lt;a href="https://www.pyret.org/index.html"&gt;Pyret&lt;/a&gt; language has been successful with  comparable shallow checks.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: the POPL 2017 paper advertises an &amp;ldquo;open-world soundness&amp;rdquo;, but I do not see how this idea is different from the older idea of soundness in a multi-language system (&lt;a href="https://www.eecs.northwestern.edu/~robby/pubs/papers/toplas09-mf.pdf"&gt;TOPLAS 2009&lt;/a&gt;, &lt;a href="https://www2.ccs.neu.edu/racket/pubs/dls06-tf.pdf"&gt;DLS 2006&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Similarly, the Java team chose to erase generic types in Java 1.5.0 and use shallow casts in the JVM. The casts around type-erased generics provide a minimal level of safety &amp;mdash;  enough to prevent the use of a generic object from corrupting the state of a  VM instance.&lt;/p&gt;
+
+&lt;p&gt;Alternatively, Java could enforce full generic types at run-time. Over the years there have been a few proposals to do so (&lt;a href="http://gafter.blogspot.com/2006/11/reified-generics-for-java.html"&gt;example 1&lt;/a&gt;,  &lt;a href="https://wiki.openjdk.java.net/display/valhalla/Main"&gt;example 2&lt;/a&gt;). The C# language has a similar type system and enforces  generics at run-time (sources:  &lt;a href="https://mattwarren.org/2018/03/02/How-generics-were-added-to-.NET/"&gt;blog post&lt;/a&gt;,  &lt;a href="https://www.microsoft.com/en-us/research/publication/design-and-implementation-of-generics-for-the-net-common-language-runtime/"&gt;PLDI 2001 paper&lt;/a&gt;,  &lt;a href="https://dl.acm.org/citation.cfm?doid=378795.378797"&gt;backup link to paper&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id="acknowledgments"&gt;Acknowledgments&lt;/h2&gt;
+
+&lt;p&gt;Thank you to &lt;a href="https://github.com/rmculpepper"&gt;Ryan Culpepper&lt;/a&gt; and &lt;a href="http://users.eecs.northwestern.edu/~jesse/"&gt;Jesse Tov&lt;/a&gt; for noticing the similarity between  Java&amp;rsquo;s generic-type erasure and transient migratory typing. Jesse commented on an early version of this post, supplied new Java example code, and explained the trouble with generics and arrays.&lt;/p&gt;</content></entry></feed>

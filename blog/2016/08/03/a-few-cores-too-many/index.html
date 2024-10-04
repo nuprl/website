@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>A few cores too many</title>
+    <meta name="description" content="Performance matters for software systems, but performance is not always easy  to measure. At the PRL we recently had a scare with some unreliable measurements. Here is the story....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="performance, benchmarking, lost time, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/08/03/a-few-cores-too-many/">
+    <link rel="next" href="/blog/2016/08/02/tutorial-zero-to-sixty-in-racket/">
+    <link rel="prev" href="/blog/2016/09/15/nepls-on-october-7th-at-northeastern-university/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>A few cores too many</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-08-03" pubdate="true">2016-08-03</time> :: <span class="tags"><a href="/blog/tags/performance.html">performance</a>, <a href="/blog/tags/benchmarking.html">benchmarking</a>, <a href="/blog/tags/lost-time.html">lost time</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Performance matters for software systems, but performance is not always easy  to measure. At the PRL we recently had a scare with some unreliable measurements. Here is the story.</p>
+<!-- more-->
+
+<p>Last year, we proposed a method for evaluating the performance of gradual type  systems based on measuring <em>every possible configuration</em> of typed and untyped  code that a programmer might explore <a href="http://www.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf">(pdf)</a>. Given the freedom that gradual typing offers, this is the only realistic way to measure  the performance of a gradual type system.</p>
+
+<p>But it is a lot to measure! While developing the method, we spent over 3 months benchmarking a total of 75,844 configurations. Each configuration is a complete program and some gradual typings caused  some programs to slow by 50x or even 100x, so many of these configurations took  minutes to run.</p>
+
+<p>The next question we asked was naturally &ldquo;how can we scale this method to large software projects?&rdquo; In <a href="http://docs.racket-lang.org/ts-reference/Libraries_Provided_With_Typed_Racket.html#%28part._.Porting_.Untyped_.Modules_to_.Typed_.Racket%29">our case</a>,  the number of gradually typed configurations scaled exponentially with the number of modules. Current gradual type system for <a href="https://github.com/mvitousek/reticulated">Python</a>  and <a href="http://www.di.ens.fr/~zappa/readings/ecoop15.pdf">JavaScript</a>  are exponential in the number of <em>variables</em> in the program.</p>
+
+<p>We explored two solutions:</p>
+
+<ol>
+ <li>Max New began work on a prediction model (inspired by work  on <a href="http://subs.emis.de/LNI/Proceedings/Proceedings213/185.pdf">software product lines</a>)  to estimate the performance of <code>2^N</code> configurations after polynomially-many measurements.</li>
+ <li>Asumu Takikawa and I shopped for a multi-core computer.</li></ol>
+
+<p>By Thanksgiving, we had bought a Linux machine with 2 <a href="http://www.amd.com/en-us/products/server/opteron/6000/6300">AMD Opteron 6376 2.3GHz</a>  processors (16 cores each) and put it to work running benchmarks on 29 cores simultaneously. Life was good.</p>
+
+<p>Later that winter, Max implemented a prediction algorithm. The basic idea was to focus on <em>boundaries</em> between modules and isolate their  effect on performance. If two modules are untyped, their boundary will have zero cost. If the same two modules are typed, their boundary might result in an overall  performance improvement due to type-driven optimizations. And if one module is typed and the other untyped, their boundary will  suffer some cost of type checking at runtime. In general a program with <code>N</code> modules has at most <code>N(N - 1) / 2</code> internal boundaries,  so it is far more time-efficient to measure only the boundaries than to benchmark  <code>2^N</code> gradually typed configurations.</p>
+
+<p>Fast-forward to March, we had a prototype prediction algorithm and it was time to test. Again using 29 cores (because, why not), we gathered cost/benefit numbers for  one 4-module benchmark and used them to predict performance for its 16 configurations. The results were not very good.</p>
+
+<div class="figure"><img src="/img/a-few-cores-too-many-1.png" alt="Figure 1: True running time vs. predicted running time for 16 configurations" />
+ <p class="caption">Figure 1: True running time vs. predicted running time for 16 configurations</p></div>
+
+<p>Those green circles are the ground truth, the average running time after 5 iterations of each config. The blue triangles are what we predicted. Except for configurations 0 and 8, the triangles are FAR off from the truth. Many are even negative &hellip; obviously the algorithm needs work.</p>
+
+<p>But then, out of frustration, desperation, or just good luck, Max compared the  predictions to ground truth data gathered on a <em>single</em> core, leaving the other 31  cores idle.</p>
+
+<div class="figure"><img src="/img/a-few-cores-too-many-2.png" alt="Figure 2: Predictions made using measurements from a single core" />
+ <p class="caption">Figure 2: Predictions made using measurements from a single core</p></div>
+
+<p>First off, the red &ldquo;sequential truth&rdquo; dots are slightly closer to the predicted triangles. Second &mdash; and this is the scary part &mdash; the red dots are very different from  the green dots. <em>Running on 1 core vs. 29 cores should not change the measurements!</em></p>
+
+<p>From here we tried increasing the running time of the benchmark,  removing I/O and system calls,  checking for hyperthreading (ARM cores don&rsquo;t support it),  and even changing the cores&rsquo; CPU governor. The hope was that results taken from 1 core could match results from <code>N</code> cores,  for some <code>N &gt; 1</code>. It turns out <code>N = 2</code> was stable, but even for <code>N = 3</code> we found graphs like the following:</p>
+
+<div class="figure"><img src="/img/a-few-cores-too-many-3.png" alt="Figure 3: exact running times. Same-colored dots in each column should be tightly clustered." />
+ <p class="caption">Figure 3: exact running times. Same-colored dots in each column should be tightly clustered.</p></div>
+
+<p>This data is for the same 16 configurations as the previous two graphs. Green dots are exact running times measured with 25 cores. Red dots are running times measured with 1 core. The red dots are much closer together, and always unimodal. The green dots are evidence that maybe the 32-core machine has, as Jan Vitek  put it, 30 cores too many.</p>
+
+<blockquote>
+ <p>&ldquo;Oh my. You think it&rsquo;ll never happen to you. Well, now I&rsquo;ve learned my lesson.&rdquo;</p><!-- bg: If anyone knows this quote I will be AMAZED. If anyone can even Google this quote, I'll buy them 2 beers and a pizza.--></blockquote>
+
+<p>And so, we said goodbye to the last 4 months of data and started over running at most two cores. The new results are all stable, but still we keep pinching ourselves.</p>
+
+<p>P.S. the results from <a href="http://www.ccs.neu.edu/racket/pubs/#popl16-tfgnvf">POPL 2016</a> are just fine,  as they were not taken on the new machine running more than 2 cores.  If you have time to confirm, that data is in our  <a href="http://www.ccs.neu.edu/home/asumu/artifacts/popl-2016/">artifact</a>  and in the <a href="https://github.com/nuprl/gradual-typing-performance/tree/master/paper/popl-2016/data">gradual-typing-performance</a> repo.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/08/03/a-few-cores-too-many/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/09/15/nepls-on-october-7th-at-northeastern-university/">&larr; <em>NEPLS on October 7th at Northeastern University</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2016/08/02/tutorial-zero-to-sixty-in-racket/"><em>Tutorial: Zero to Sixty in Racket</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

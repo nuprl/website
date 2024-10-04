@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>PRL at SNAPL'17</title>
+    <meta name="description" content="PRL recently produced three papers for the SNAPL conference.   Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too, by Daniel  Patterson and Amal Ahmed. Search for Program Structure,  by Gabriel Scherer   Migratory Typing: Ten Years ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/04/25/prl-at-snapl-17/">
+    <link rel="next" href="/blog/2017/04/20/refinement-types/">
+    <link rel="prev" href="/blog/2017/04/28/what-is-soft-typing/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>PRL at SNAPL&rsquo;17</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-04-25" pubdate="true">2017-04-25</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>PRL recently produced three papers for the <a href="http://snapl.org/2017/index.html">SNAPL</a> conference.</p>
+
+<ul>
+ <li><a href="https://dbp.io/pubs/2017/linking-types-snapl.pdf">Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too</a>, by Daniel  Patterson and Amal Ahmed.</li>
+ <li><a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf">Search for Program Structure</a>,  by Gabriel Scherer</li>
+ <li><a href="http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf">Migratory Typing: Ten Years  Later</a>, by Sam  Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew  Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen  Strickland and Asumu Takikawa</li></ul>
+<!-- more-->
+
+<h3 id="httpsdbpiopubs2017linking-types-snaplpdflinking-types-for-multi-language-software-have-your-cake-and-eat--it-too"><a href="https://dbp.io/pubs/2017/linking-types-snapl.pdf">Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too</a></h3>
+
+<p>Daniel Patterson and Amal Ahmed, 2017</p>
+
+<blockquote>
+ <p>Software developers compose systems from components written in many different languages. A business-logic component may be written in Java or OCaml, a resource-intensive component in C or Rust, and a high-assurance component in Coq. In this multi-language world, program execution sends values from one linguistic context to another. This boundary-crossing exposes values to contexts with unforeseen behavior—that is, behavior that could not arise in the source language of the value. For example, a Rust function may end up being applied in an ML context that violates the memory usage policy enforced by Rust’s type system. This leads to the question of how developers ought to reason about code in such a multi-language world where behavior inexpressible in one language is easily realized in another.</p>
+ <p>This paper proposes the novel idea of linking types to address the problem of reasoning about single-language components in a multi-lingual setting. Specifically, linking types allow programmers to annotate where in a program they can link with components inexpressible in their unadulterated language. This enables developers to reason about (behavioral) equality using only their own language and the annotations, even though their code may be linked with code written in a language with more expressive power.</p></blockquote>
+
+<h3 id="httpwwwccsneueduhomegascheresearchcanonical-formssnaplpdfsearch-for-program-structure"><a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf">Search for Program Structure</a></h3>
+
+<p>Gabriel Scherer, 2017.</p>
+
+<blockquote>
+ <p>The community of programming language research loves the Curry-Howard correspondence between proofs and programs. Cut-elimination as computation, theorems for free, &lsquo;call/cc&rsquo; as excluded middle, dependently typed languages as proof assistants, etc.</p>
+ <p>Yet we have, for all these years, missed an obvious observation: &ldquo;the structure of <em>programs</em> corresponds to the structure of proof <em>search</em>&rdquo;. For pure programs and intuitionistic logic, more is known about the latter than the former. We think we know what programs are, but logicians know better!</p>
+ <p>To motivate the study of proof search for program structure, we retrace recent research on applying the logical technique of focusing to study the canonical structure of simply-typed λ-terms. We then motivate the open problem of extending canonical forms to support richer type systems, such as polymorphism, by discussing a few enticing applications of more canonical program representations.</p></blockquote>
+
+<h3 id="httpwwwccsneueduracketpubstyped-racketpdfmigratory-typing-ten-years-later"><a href="http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf">Migratory Typing: Ten Years Later</a></h3>
+
+<p>Sam Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen Strickland and Asumu Takikawa, 2017.</p>
+
+<blockquote>
+ <p>In this day and age, many developers work on large, untyped code repositories. Even if they are the creators of the code, they notice that they have to figure out the equivalent of method signatures every time they work on old code. This step is time consuming and error prone.</p>
+ <p>Ten years ago, the two lead authors outlined a linguistic solution to this problem. Specifically they proposed the creation of typed twins for untyped programming languages so that developers could migrate scripts from the untyped world to a typed one in an incremental manner. Their programmatic paper also spelled out three guiding design principles concerning the acceptance of grown idioms, the soundness of mixed-typed programs, and the units of migration.</p>
+ <p>This paper revisits this idea of a migratory type system as implemented for Racket. It explains how the design principles have been used to produce the Typed Racket twin and presents an assessment of the project’s status, highlighting successes and failures.</p></blockquote>
+
+<p>.</p>
+
+<p>SNAPL is not dissimilar to the (french-speaking) <a href="http://jfla.inria.fr/">JFLA</a> that I am more familiar with &mdash; with an added irritating call for paper and unreasonable registration price. It has an interesting diversity of topics of presentation: see also the complete <a href="http://snapl.org/2017/papers.html">list of accepted papers</a> this year, and the <a href="http://snapl.org/2015/papers.html">list of the previous edition</a>.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/04/25/prl-at-snapl-17/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/04/28/what-is-soft-typing/">&larr; <em>What is Soft Typing?</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/04/20/refinement-types/"><em>Refinement Types</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

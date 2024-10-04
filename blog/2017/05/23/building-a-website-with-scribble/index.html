@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Building a Website with Scribble</title>
+    <meta name="description" content="The source code for the PRL website is written using Scribble, the Racket  documentation tool. I am very happy with this choice, and you should be too!...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Scribble, tutorial, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/05/23/building-a-website-with-scribble/">
+    <link rel="next" href="/blog/2017/05/15/artifacts-for-semantics/">
+    <link rel="prev" href="/blog/2017/05/24/programming-language-conference-in-russia/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Building a Website with Scribble</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-05-23" pubdate="true">2017-05-23</time> :: <span class="tags"><a href="/blog/tags/Scribble.html">Scribble</a>, <a href="/blog/tags/tutorial.html">tutorial</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>The source code for the PRL website is written using Scribble, the Racket  documentation tool. I am very happy with this choice, and you should be too!</p>
+<!-- more-->
+
+<h2 id="the-story-so-far">The Story so Far</h2>
+
+<p>Last Fall, I took a flight to Chicago (on my way to <a href="http://con.racket-lang.org/2016/">RacketCon 2016</a>). When I landed, there was a new message in my inbox:</p>
+
+<pre><code>    Subject: Web Page
+    Date: 2016-09-15
+
+    You have been nominated webmaster by public acclamation. Congratulations!</code></pre>
+
+<p>Emboldened by the trust of my people, I promptly converted the PRL website  from Racket-generating-HTML to the fine <a href="http://docs.racket-lang.org/scribble-pp/html.html"><code>scribble/html</code></a>  preprocessor language (commit <a href="https://github.com/nuprl/website/commit/a0600d32fec4bd70c5530b2717aec32979d634f7"><code>a0600d</code></a>) This bold action polarized the community.</p>
+
+<blockquote>
+ <p>I can&rsquo;t read the source anymore! Is this really an improvement?</p></blockquote>
+
+<p>Fear not, citizens. The switch to <a href="http://docs.racket-lang.org/scribble-pp/html.html"><code>scribble/html</code></a> was the right choice, and you  too can learn to read the source code.</p>
+
+<h2 id="how-to-read-scribblehtml-programs">How to Read <code>scribble/html</code> Programs</h2>
+
+<h3 id="basics">Basics</h3>
+
+<p>Scribble is a language for writing Racket documentation. The key innovation in Scribble is the <em>@-expression</em> (read: &ldquo;at expression&rdquo;). The <a href="http://docs.racket-lang.org/scribble-pp/html.html"><code>scribble/html</code></a> language combines @-expression syntax with  functions that generate HTML.</p>
+
+<h4 id="-syntax">@-syntax</h4>
+
+<p><a href="http://www.greghendershott.com/2015/08/at-expressions.html">Greg Hendershott</a> and the <a href="http://docs.racket-lang.org/scribble/reader.html">Scribble Documentation</a> explain @-expressions properly. Here&rsquo;s a short tutorial (Part 1 of 2, &ldquo;the basics&rdquo;):</p>
+
+<ul>
+ <li>Scribble programs start in &ldquo;text mode&rdquo;.  Every character you type goes straight to the document you are building.</li>
+ <li>The @-sign toggles to &ldquo;Racket mode&rdquo; for the next expression.  In Racket mode, the characters you type will be evaluated as a Racket program  to produce part of the document.</li></ul>
+
+<p><em>Examples:</em> Evaluating <code>"Hello Dave"</code> puts &ldquo;Hello Dave&rdquo; in your document. Evaluating <code>"Hello @Dave"</code> puts &ldquo;Hello ???&rdquo; in your document, where "???" is the value of the variable <code>Dave</code>. Finally if <code>Dave</code> is the name of a function, then <code>"Hello @(Dave)"</code> calls the <code>Dave</code> function with zero arguments and puts whatever it returns into your document.</p>
+
+<p>To make it easy to interleave text, function calls, and code, Scribble  discriminates between 4 kinds of parentheses when they follow an @-sign (Part 2 of 2, &ldquo;the parens&rdquo;):</p>
+
+<ul>
+ <li><code>@(f A B)</code> is just like the function call <code>(f A B)</code> in Racket</li>
+ <li><code>@f[A B]</code> is the same as <code>@(f A B)</code>, but typically more useful because &hellip;</li>
+ <li><code>@f[A B]{....}</code> evaluates the <code>....</code> in &ldquo;text mode&rdquo; to a list of words <code>w*</code>,  then calls <code>f</code> just like <code>(apply f A B w*)</code></li>
+ <li><code>@f{....}</code> evaluates the <code>....</code> in &ldquo;text mode&rdquo; and calls <code>f</code> with the results</li>
+ <li><code>@f|{....}|</code> is similar, but the <code>....</code> are in &ldquo;unescapable text mode&rdquo;</li></ul>
+
+<p>&ldquo;Unescapable text mode&rdquo; treats @-signs as text instead of toggling between modes.</p>
+
+<h4 id="generating-html">Generating HTML</h4>
+
+<p>The <a href="http://docs.racket-lang.org/scribble-pp/html.html"><code>scribble/html</code></a> language comes with functions that render HTML. These functions have the same name as the corresponding HTML tag.</p>
+
+<p>Example program:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kn">#lang </span><span class="nn">scribble/html</span>
+<span class="n">@p</span><span class="p">{</span><span class="n">Hello</span> <span class="n">World</span><span class="p">}</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Running this program prints:</p>
+
+<div class="brush: html">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>No surprises.</p>
+
+<p>One thing that <em>is</em> surprising is how <code>scribble/html</code> handles tag attributes. Every tag-rendering function accepts &ldquo;Racket mode&rdquo; arguments that specify  an attribute name and attribute value.</p>
+
+<p>For example:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kn">#lang </span><span class="nn">scribble/html</span>
+<span class="n">@p</span><span class="p">[</span><span class="n">style:</span> <span class="s2">"color:red"</span><span class="p">]{</span><span class="n">Hello</span> <span class="n">World</span><span class="p">}</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Prints:</p>
+
+<div class="brush: html">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">"color:red"</span><span class="p">&gt;</span>Hello World<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Hope the output looks familiar. The input syntax is strange, but that&rsquo;s what it is.</p>
+
+<p>Larger programs print larger webpages. Each page on the PRL website is HTML generated by one <code>scribble/html</code> program.</p>
+
+<h2 id="why-scribblehtml-is-an-improvement">Why <code>scribble/html</code> is an Improvement</h2>
+
+<p>Before <code>scribble/html</code>, the PRL website was implemented in <code>scribble/text</code>. A <code>scribble/text</code> program renders and prints text. There is no extra support for HTML.</p>
+
+<p>To compare, here&rsquo;s the start of the old homepage:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kn">#lang </span><span class="nn">scribble/text</span>
+<span class="n">@</span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit">require</a></span> <span class="s2">"templates.rkt"</span><span class="p">)</span>
+
+<span class="n">&lt;!DOCTYPE</span> <span class="n">html&gt;</span>
+<span class="n">&lt;html</span> <span class="n">lang=</span><span class="s2">"en"</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit">&gt;</a></span>
+  <span class="n">@</span><span class="p">(</span><span class="n">header</span> <span class="s2">"Home"</span><span class="p">)</span>
+  <span class="n">&lt;body</span> <span class="n">id=</span><span class="s2">"pn-top"</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit">&gt;</a></span>
+    <span class="n">@</span><span class="p">(</span><span class="n">navbar</span> <span class="s2">"Home"</span><span class="p">)</span>
+    <span class="n">&lt;div</span> <span class="n">class=</span><span class="s2">"jumbotron"</span><span class="nb"><a href="http://docs.racket-lang.org/reference/generic-numbers.html#(def._((quote._~23~25kernel)._~3e))" style="color: inherit">&gt;</a></span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>And here is the start of the <code>scribble/html</code>&rsquo;d homepage:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kn">#lang </span><span class="nn">scribble/html</span>
+<span class="n">@require</span><span class="p">[</span><span class="s2">"templates.rkt"</span><span class="p">]</span>
+
+<span class="n">@doctype</span><span class="p">{</span><span class="n">html</span><span class="p">}</span>
+<span class="n">@html</span><span class="p">[</span><span class="n">lang:</span> <span class="s2">"en"</span><span class="p">]{</span>
+  <span class="n">@header</span><span class="p">{</span><span class="n">Home</span><span class="p">}</span>
+    <span class="n">@body</span><span class="p">[</span><span class="n">id:</span> <span class="s2">"pn-top"</span><span class="p">]{</span>
+      <span class="n">@navbar</span><span class="p">{</span><span class="n">Home</span><span class="p">}</span>
+      <span class="n">@div</span><span class="p">[</span><span class="n">class:</span> <span class="s2">"jumbotron"</span><span class="p">]{</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The pages look similar. The new one has more @-signs and parentheses, the old one has more <code>&lt;</code>-signs  and quotes. If you were able to edit the old page, you should be able to edit the new page.</p>
+
+<p>The <strong>key improvement</strong> in the new page is that <strong>common mistakes are now  compile-time errors</strong>.</p>
+
+<ul>
+ <li>
+  <p>Before, a typo like <code>&lt;hmtl&gt;</code> would generate an ugly webpage.  After, a typo like <code>@hmtl</code> is a syntax error.</p></li>
+ <li>
+  <p>Before, a typo like <code>&lt;b&gt;....</code> with no closing tag would generate an ugly webpage.  After, a typo like <code>@b{....</code> is a syntax error.</p></li></ul>
+
+<p>Both flavors of error message come with source-code line numbers. This is very very helpful.</p>
+
+<h3 id="small-improvements">Small Improvements</h3>
+
+<h4 id="1-more-functions">1. More Functions</h4>
+
+<p>Before, the <a href="http://prl.ccs.neu.edu/teaching.html">Teaching page</a> contained  some interesting HTML for rendering vertical text (look for the word &ldquo;Semantics&rdquo; to see how this was used):</p>
+
+<div class="brush: html">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"how-to-design-programs"</span><span class="p">&gt;</span>S<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>e<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>m<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>a<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>n<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>t<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>i<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>c<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>s<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>After, the same text is generated from a function call:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">@span</span><span class="p">[</span><span class="n">class:</span> <span class="s2">"how-to-design-programs"</span><span class="p">]{</span><span class="n">@vertical-text</span><span class="p">{</span><span class="n">Semantics</span><span class="p">}}</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The <code>vertical-text</code> function is simple:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">@require</span><span class="p">[(</span><span class="k"><a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._only-in))" style="color: inherit">only-in</a></span> <span class="n">racket/list</span> <span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._add-between))" style="color: inherit">add-between</a></span><span class="p">)]</span>
+
+<span class="n">@</span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="p">(</span><span class="n">vertical-text</span> <span class="o">.</span> <span class="n">str*</span><span class="p">)</span>
+   <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._add-between))" style="color: inherit">add-between</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/strings.html#(def._((quote._~23~25kernel)._string-~3elist))" style="color: inherit">string-&gt;list</a></span> <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/pairs.html#(def._((lib._racket/list..rkt)._append*))" style="color: inherit">append*</a></span> <span class="n">str*</span><span class="p">))</span> <span class="p">(</span><span class="n">br</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h4 id="2-more-structure-less-boilerplate">2. More Structure, Less Boilerplate</h4>
+
+<p>Here&rsquo;s part of the old definition of &ldquo;Ben Greenman&rdquo; on the <a href="http://prl.ccs.neu.edu/people.html">People page</a>:</p>
+
+<div class="brush: html">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"row pn-person"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-12 pn-row-eq-height"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-3 pn-photo"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"img-wrapper"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">img</span> <span class="na">src</span><span class="o">=</span><span class="s">"img/ben_greenman.jpg"</span> <span class="na">title</span><span class="o">=</span><span class="s">"Ben Greenman"</span> <span class="na">alt</span><span class="o">=</span><span class="s">"Ben Greenman"</span> <span class="p">/&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-9"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-4 pn-contact"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">"pn-name"</span><span class="p">&gt;</span>Ben Greenman<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+        Advisor: Matthias Felleisen<span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">"mailto:types@"</span><span class="err">@"</span><span class="na">ccs</span><span class="err">.</span><span class="na">neu</span><span class="err">.</span><span class="na">edu</span><span class="err">"</span><span class="p">&gt;</span>types@"@"ccs.neu.edu<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+        <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">"http://www.ccs.neu.edu/home/types"</span><span class="p">&gt;</span>www.ccs.neu.edu/home/types<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-3 pn-muted col-md-offset-5"</span><span class="p">&gt;</span>
+        Joined 2014
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"col-md-12 pn-bio"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>I like constructions .... <span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The new definition uses a helper function with keyword arguments for each  &ldquo;field&rdquo; of the person:</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">@person</span><span class="p">[</span><span class="kd">#:name</span> <span class="s2">"Ben Greenman"</span>
+        <span class="kd">#:title</span> <span class="s2">"Advisor: Matthias Felleisen"</span>
+        <span class="kd">#:e-mail</span> <span class="s2">"types@ccs.neu.edu"</span>
+        <span class="kd">#:website</span> <span class="s2">"http://ccs.neu.edu/home/types"</span>
+        <span class="kd">#:history</span> <span class="n">@list</span><span class="p">[</span><span class="s2">"Joined 2014"</span><span class="p">]</span>
+        <span class="kd">#:img</span> <span class="s2">"ben_greenman.jpg"</span><span class="p">]{</span>
+  <span class="n">I</span> <span class="n">like</span> <span class="n">constructions</span> <span class="n">....</span>
+<span class="p">}</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h4 id="3-less-string-formatting">3. Less String-Formatting</h4>
+
+<p>Before, the code did a lot of string formatting (<a href="https://github.com/nuprl/website/commit/a0600d#diff-1921e33ce89be28dd277cf1c7880d1beL9">link</a>):</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/define.html#(form._((lib._racket/private/base..rkt)._define))" style="color: inherit">define</a></span> <span class="p">(</span><span class="k"><a href="http://docs.racket-lang.org/reference/creatingunits.html#(form._((lib._racket/unit..rkt)._link))" style="color: inherit">link</a></span> <span class="n">url</span> <span class="n">body</span><span class="p">)</span>
+  <span class="p">(</span><span class="nb"><a href="http://docs.racket-lang.org/reference/strings.html#(def._((quote._~23~25kernel)._string-append))" style="color: inherit">string-append</a></span> <span class="s2">"&lt;a href=</span><span class="se">\"</span><span class="s2">"</span> <span class="n">url</span> <span class="s2">"</span><span class="se">\"</span><span class="s2">&gt;"</span> <span class="n">body</span> <span class="s2">"&lt;/a&gt;"</span><span class="p">))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>The new code has no need for such helper functions.</p>
+
+<div class="brush: racket">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">@a</span><span class="p">[</span><span class="n">href:</span> <span class="n">url</span> <span class="n">body</span><span class="p">]</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<h4 id="bottom-line">Bottom Line</h4>
+
+<p>Scribble is a good language for making static HTML pages.</p>
+
+<hr />
+
+<p><em>If you liked this post, you may also be interested in:</em></p>
+
+<ul>
+ <li><a href="http://docs.racket-lang.org/pollen/index.html">Pollen</a></li>
+ <li><a href="https://github.com/vishesh/racketscript">RacketScript</a></li>
+ <li>Other websites built using <a href="http://docs.racket-lang.org/scribble-pp/html.html"><code>scribble/html</code></a>:  (1) <a href="http://nanopass.org/">nanopass.github.io</a> (<a href="https://github.com/nanopass/nanopass.github.io">source code</a>),  (2) <a href="http://prl.ccs.neu.edu/gtp/">Gradual Typing Across the Spectrum</a> (<a href="https://github.com/nuprl/gtp">source code</a>).</li>
+ <li><a href="http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/">Notes from a Gradual Typing Across the Spectrum PI meeting</a></li></ul>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/05/23/building-a-website-with-scribble/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/05/24/programming-language-conference-in-russia/">&larr; <em>Programming Language Conference in Russia</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/05/15/artifacts-for-semantics/"><em>Artifacts for Semantics</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

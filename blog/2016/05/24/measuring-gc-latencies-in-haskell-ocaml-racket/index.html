@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Measuring GC latencies in Haskell, OCaml, Racket</title>
+    <meta name="description" content="James Fisher has a blog post on a case where GHC's runtime system imposed unpleasant latencies on their Haskell program:   Low latency, large working set, and GHC's garbage collector: pick two of three  The blog post proposes a very simple, synthetic benc...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="garbage collection, latency, instrumentation, haskell, ghc, ocaml, racket, Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/">
+    <link rel="next" href="/blog/2016/05/18/gradual-typing-across-the-spectrum/">
+    <link rel="prev" href="/blog/2016/06/07/icfp-2016-looking-for-student-volunteers/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Measuring GC latencies in Haskell, OCaml, Racket</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-05-24" pubdate="true">2016-05-24</time> :: <span class="tags"><a href="/blog/tags/garbage-collection.html">garbage collection</a>, <a href="/blog/tags/latency.html">latency</a>, <a href="/blog/tags/instrumentation.html">instrumentation</a>, <a href="/blog/tags/haskell.html">haskell</a>, <a href="/blog/tags/ghc.html">ghc</a>, <a href="/blog/tags/ocaml.html">ocaml</a>, <a href="/blog/tags/racket.html">racket</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>James Fisher has a blog post on a case where GHC&rsquo;s runtime system imposed unpleasant latencies on their Haskell program:</p>
+
+<blockquote>
+ <p><a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/">Low latency, large working set, and GHC&rsquo;s garbage collector: pick two of three</a></p></blockquote>
+
+<p>The blog post proposes a very simple, synthetic benchmark that exhibits the issue &mdash; basically, latencies incurred by copy time &mdash; with latencies of 50ms that are considered excessive. I thought it would be amusing to reproduce the synthetic benchmark in OCaml and Racket, to see how other GCs handle this.</p>
+
+<p>Without further ado, the main take-away are as follows: the OCaml GC has no issue with large objects in its old generation, as it uses a mark&amp;sweep instead of copying collection, and exhibits less than 3ms worst-case pauses on this benchmark.</p>
+
+<p>The Racket GC also does not copy the old generation, but its incremental GC is still in infancy (compared to the throughput-oriented settings which works well) so the results are less good. It currently suffer from a &ldquo;ramp-up&rdquo; effect that I will describe, that causes large pauses at the beginning of the benchmark (up to 120ms latency), but in its steady state the longest pause are around 22ms.</p>
+
+<p>Please keep in mind that the original benchmark is designed to exercise a very specific workflow that exercises worst-case behavior for GHC&rsquo;s garbage collector. This does not mean that GHC&rsquo;s latencies are bad in general, or that the other tested languages have smaller latencies in general.</p>
+
+<p>The implementations I use, with a Makefile encapsulating the logic for running and analyzing them, are available in a Gitlab repository:</p>
+
+<ul>
+ <li>git: <a href="https://gitlab.com/gasche/gc-latency-experiment.git">https://gitlab.com/gasche/gc-latency-experiment.git</a></li>
+ <li>files: <a href="https://gitlab.com/gasche/gc-latency-experiment/tree/master">https://gitlab.com/gasche/gc-latency-experiment/tree/master</a></li></ul>
+<!-- more-->
+
+<h2 id="the-haskell-benchmark">The Haskell benchmark</h2>
+
+<p>James Fisher&rsquo;s Haskell benchmark is very simple: it creates an association table in which medium-size strings are inserted repeatedly &mdash; a million times. When the channel reaches 200_000 messages, a string is deleted each time a string is created, to keep the total working size constant.</p>
+
+<div class="brush: haskell">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Control.Exception</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Exception</span><span class="w"></span>
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Control.Monad</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Monad</span><span class="w"></span>
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.ByteString</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">ByteString</span><span class="w"></span>
+<span class="kr">import</span><span class="w"> </span><span class="k">qualified</span><span class="w"> </span><span class="nn">Data.Map.Strict</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">Map</span><span class="w"></span>
+
+<span class="kr">data</span><span class="w"> </span><span class="kt">Msg</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Msg</span><span class="w"> </span><span class="o">!</span><span class="kt">Int</span><span class="w"> </span><span class="o">!</span><span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span><span class="w"></span>
+
+<span class="kr">type</span><span class="w"> </span><span class="kt">Chan</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span><span class="w"></span>
+
+<span class="nf">message</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Msg</span><span class="w"></span>
+<span class="nf">message</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Msg</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="p">(</span><span class="kt">ByteString</span><span class="o">.</span><span class="n">replicate</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="p">(</span><span class="n">fromIntegral</span><span class="w"> </span><span class="n">n</span><span class="p">))</span><span class="w"></span>
+
+<span class="nf">pushMsg</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Chan</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Msg</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="kt">Chan</span><span class="w"></span>
+<span class="nf">pushMsg</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="p">(</span><span class="kt">Msg</span><span class="w"> </span><span class="n">msgId</span><span class="w"> </span><span class="n">msgContent</span><span class="p">)</span><span class="w"> </span><span class="ow">=</span><span class="w"></span>
+<span class="w">  </span><span class="kt">Exception</span><span class="o">.</span><span class="n">evaluate</span><span class="w"> </span><span class="o">$</span><span class="w"></span>
+<span class="w">    </span><span class="kr">let</span><span class="w"> </span><span class="n">inserted</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span><span class="w"> </span><span class="n">msgId</span><span class="w"> </span><span class="n">msgContent</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="kr">in</span><span class="w"></span>
+<span class="w">      </span><span class="kr">if</span><span class="w"> </span><span class="mi">200000</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">size</span><span class="w"> </span><span class="n">inserted</span><span class="w"></span>
+<span class="w">      </span><span class="kr">then</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">deleteMin</span><span class="w"> </span><span class="n">inserted</span><span class="w"></span>
+<span class="w">      </span><span class="kr">else</span><span class="w"> </span><span class="n">inserted</span><span class="w"></span>
+
+<span class="nf">main</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="nb">()</span><span class="w"></span>
+<span class="nf">main</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Monad</span><span class="o">.</span><span class="n">foldM_</span><span class="w"> </span><span class="n">pushMsg</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="w"> </span><span class="p">(</span><span class="n">map</span><span class="w"> </span><span class="n">message</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="o">..</span><span class="mi">1000000</span><span class="p">])</span><span class="w"></span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>To compile and run the program (<code>make run-haskell</code> also works in my repository):</p>
+
+<pre><code>ghc -O2 -optc-O3 Main.hs  # compile the program
+./Main +RTS -s            # run the program (with GC instrumentation enabled)</code></pre>
+
+<p>On my machine, running the program takes around 1.5s. We are not interested in the total running time (the <em>throughput</em> of the algorithm), but in the pause times induced by the GC: the worst pause time is 51ms (milliseconds), which is the same as the one reported by the blog post &mdash; and there it is considered excessive, with an expected worst-case latency of at most &ldquo;a few milliseconds&rdquo;.</p>
+
+<p>(I did my testing with GHC 7.8, Fischer reports results with 7.10, they are essentially the same.)</p>
+
+<p>This Haskell code makes two assumption about the <code>Map</code> data structure (immutable associative maps) that make the benchmark more cumbersome to port to other languages. It assumes that the element count is pre-cached in the data structure and thus <code>Map.size</code> is constant-time &mdash; for both OCaml and Racket it is linear. It also uses a key ordering that makes it easy to remove the smallest key &mdash; OCaml does this as well, but Racket uses hashes instead.</p>
+
+<p>I initially worked around this by storing count and minimum-key information in the ported versions, but in fact it&rsquo;s much nicer to write a variant of the benchmark, with the same behavior, that does not require these specific features:</p>
+
+<div class="brush: haskell">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="kr">type</span><span class="w"> </span><span class="kt">Msg</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">ByteString</span><span class="o">.</span><span class="kt">ByteString</span><span class="w"></span>
+<span class="kr">type</span><span class="w"> </span><span class="kt">Chan</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="kt">Map</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="kt">Msg</span><span class="w"></span>
+
+<span class="nf">windowSize</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">200000</span><span class="w"></span>
+<span class="nf">msgCount</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="mi">1000000</span><span class="w"></span>
+
+<span class="nf">message</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Msg</span><span class="w"></span>
+<span class="nf">message</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">ByteString</span><span class="o">.</span><span class="n">replicate</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="p">(</span><span class="n">fromIntegral</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"></span>
+
+<span class="nf">pushMsg</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">Chan</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">Int</span><span class="w"> </span><span class="ow">-&gt;</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="kt">Chan</span><span class="w"></span>
+<span class="nf">pushMsg</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="n">highId</span><span class="w"> </span><span class="ow">=</span><span class="w"></span>
+<span class="w">  </span><span class="kt">Exception</span><span class="o">.</span><span class="n">evaluate</span><span class="w"> </span><span class="o">$</span><span class="w"></span>
+<span class="w">    </span><span class="kr">let</span><span class="w"> </span><span class="n">lowId</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="n">highId</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">windowSize</span><span class="w"> </span><span class="kr">in</span><span class="w"></span>
+<span class="w">    </span><span class="kr">let</span><span class="w"> </span><span class="n">inserted</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">insert</span><span class="w"> </span><span class="n">highId</span><span class="w"> </span><span class="p">(</span><span class="n">message</span><span class="w"> </span><span class="n">highId</span><span class="p">)</span><span class="w"> </span><span class="n">chan</span><span class="w"> </span><span class="kr">in</span><span class="w"></span>
+<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="n">lowId</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="kr">then</span><span class="w"> </span><span class="n">inserted</span><span class="w"></span>
+<span class="w">    </span><span class="kr">else</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">delete</span><span class="w"> </span><span class="n">lowId</span><span class="w"> </span><span class="n">inserted</span><span class="w"></span>
+
+<span class="nf">main</span><span class="w"> </span><span class="ow">::</span><span class="w"> </span><span class="kt">IO</span><span class="w"> </span><span class="nb">()</span><span class="w"></span>
+<span class="nf">main</span><span class="w"> </span><span class="ow">=</span><span class="w"> </span><span class="kt">Monad</span><span class="o">.</span><span class="n">foldM_</span><span class="w"> </span><span class="n">pushMsg</span><span class="w"> </span><span class="kt">Map</span><span class="o">.</span><span class="n">empty</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="o">..</span><span class="n">msgCount</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>This variant has the same running times and worst-case pause, 50ms, as the original program.</p>
+
+<h3 id="explaining-haskell-results">Explaining Haskell results</h3>
+
+<p>James Fischer explains that the reason why the latencies are this high (50ms is considered high) is that while GHC&rsquo;s garbage collector is generational, its older generation still uses a stop-and-copy scheme. This means that when it contains lots of large objects, a lot of time is spent copying them.</p>
+
+<p>The <a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/">original blog post</a> contains a more detailed description of the problem and of various optimizations that may be attempted. Unfortunately, it seems that it is currently impossible to optimize that kind of workloads by tuning the code or GC parameters: the copying behavior of the old heap cannot really be worked-around currently.</p>
+
+<p>As a meta-comment, one possible explanation for why this design choice was made might be that a lot of effort was invested in the Haskell&rsquo;s GC to support concurrent mutators (a multi-core runtime). The additional complexity imposed by this extremely challenging and useful requirement may have encouraged runtime authors to keep the general GC architecture as simple as reasonably possible, which could explain this choice of using the same collection strategy in all generational spaces.</p>
+
+<h2 id="ocaml-version">OCaml version</h2>
+
+<p>The code can easily be ported into OCaml, for example as follows:</p>
+
+<div class="brush: ocaml">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="k">open</span> <span class="nc">Batteries</span>
+<span class="k">module</span> <span class="nc">IMap</span> <span class="o">=</span> <span class="nn">Map</span><span class="p">.</span><span class="nc">Make</span><span class="o">(</span><span class="nc">Int</span><span class="o">)</span>
+
+<span class="k">let</span> <span class="n">message</span> <span class="n">n</span> <span class="o">=</span> <span class="nn">String</span><span class="p">.</span><span class="n">make</span> <span class="mi">1024</span> <span class="o">(</span><span class="nn">Char</span><span class="p">.</span><span class="n">chr</span> <span class="o">(</span><span class="n">n</span> <span class="ow">mod</span> <span class="mi">256</span><span class="o">))</span>
+
+<span class="k">let</span> <span class="n">window_size</span> <span class="o">=</span> <span class="mi">200_000</span>
+<span class="k">let</span> <span class="n">msg_count</span> <span class="o">=</span> <span class="mi">1_000_000</span>
+
+<span class="k">let</span> <span class="n">push_msg</span> <span class="n">chan</span> <span class="n">high_id</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">low_id</span> <span class="o">=</span> <span class="n">high_id</span> <span class="o">-</span> <span class="n">window_size</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">inserted</span> <span class="o">=</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">add</span> <span class="n">high_id</span> <span class="o">(</span><span class="n">message</span> <span class="n">high_id</span><span class="o">)</span> <span class="n">chan</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="n">low_id</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">inserted</span>
+  <span class="k">else</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">remove</span> <span class="n">low_id</span> <span class="n">inserted</span>
+
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span>
+  <span class="nn">Seq</span><span class="p">.</span><span class="n">init</span> <span class="n">msg_count</span> <span class="o">(</span><span class="k">fun</span> <span class="n">i</span> <span class="o">-&gt;</span> <span class="n">i</span><span class="o">)</span>
+  <span class="o">|&gt;</span> <span class="nn">Seq</span><span class="p">.</span><span class="n">fold_left</span> <span class="n">push_msg</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">empty</span> <span class="o">|&gt;</span> <span class="n">ignore</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Evaluating throughput is not the point, and the balanced maps used by the Haskell and OCaml are certainly implemented in slightly different ways that would explain any performance difference, but I was still amused to see the total runtime be essentially the same: 1.5s.</p>
+
+<p>To measure the maximal pause time, there are two options:</p>
+
+<ul>
+ <li>
+  <p>use the new instrumented runtime contributed by Damien Doligez in  OCaml 4.03; this works but, being a relatively new feature with not  much usability effort put into it, it&rsquo;s far from being as convenient  as GHC&rsquo;s <code>+RTS -s</code> parameter.</p></li>
+ <li>
+  <p>Simply measure the time spend in each iteration (pushing a message),  and using this as an upper bound on the pause time: clearly any GC  pause cannot pause for more time than the iteration takes. (With my Makefile,  <code>make run-ocaml</code>)</p></li></ul>
+
+<p>To use the new instrumented runtime, you need to have an OCaml compiler, version 4.03.0, compiled with the <code>--with-instrumented-runtime</code> configure-time switch. Then, you can use the <code>i</code>-variant (<code>i</code> for &ldquo;instrumented&rdquo;) of the runtime that is compiled with instrumentation enabled. (My makefile rule <code>make
+run-ocaml-instrumented</code> does this for you, but you still need a switch compiled with the instrumented runtime.)</p>
+
+<pre><code>ocamlbuild -tag "runtime_variant(i)" main.native
+OCAML_INSTR_LOG=ocaml.log ./main.native</code></pre>
+
+<p>The log file <code>ocaml.log</code> will then contain a low-level log of all GC-related runtime calls, with nanosecond time, in a format made for machine rather than human consumption. The tools <code>ocaml-instr-report</code> and <code>ocaml-instr-graph</code> of the OCaml source distribution (not installed by default, you need a source checkout), will parse them and display tables or graph. The entry point of interest for worst-case latency is <code>dispatch</code>, which contains the time spent in all GC activity. The relevant section of <code>ocaml-instr-report</code>&rsquo;s output shows:</p>
+
+<pre><code>==== dispatch: 2506
+470ns..1.0us:  1     (768ns)                       0.04%
+1.0us..2.2us: # 2                                  0.12%
+2.2us..4.7us: ### 8                                0.44%
+4.7us..10us : #### 10                              0.84%
+ 10us..22us :  1     (14us)                        0.88%
+ 22us..47us :                                      0.88%
+ 47us..100us:                                      0.88%
+100us..220us: ## 3                                 1.00%
+220us..470us: ########## 668                      27.65%
+470us..1.0ms: ########### 1795                    99.28%
+1.0ms..2.2ms: ##### 17                            99.96%
+2.2ms..4.7ms:  1     (2.7ms)                     100.00%</code></pre>
+
+<p>As you can see, most pauses are between 220µs and 1ms, with the longest pause being 2.7ms.</p>
+
+<p>The other approach to measure latency for this program, which works on older OCaml versions without an instrumented runtime, is just to insert explicit timing calls and compute the worst-case time of an iteration &mdash; as an over-approximation over the max pause time, assuming that the actual insertion/deletion time is small.</p>
+
+<div class="brush: ocaml">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="k">let</span> <span class="n">worst</span> <span class="o">=</span> <span class="n">ref</span> <span class="mi">0</span><span class="o">.</span>
+<span class="k">let</span> <span class="n">time</span> <span class="n">f</span> <span class="o">=</span>
+  <span class="k">let</span> <span class="n">before</span> <span class="o">=</span> <span class="nn">Unix</span><span class="p">.</span><span class="n">gettimeofday</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">result</span> <span class="o">=</span> <span class="n">f</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">after</span> <span class="o">=</span> <span class="nn">Unix</span><span class="p">.</span><span class="n">gettimeofday</span> <span class="bp">()</span> <span class="k">in</span>
+  <span class="n">worst</span> <span class="o">:=</span> <span class="n">max</span> <span class="o">!</span><span class="n">worst</span> <span class="o">(</span><span class="n">after</span> <span class="o">-.</span> <span class="n">before</span><span class="o">);</span>
+  <span class="n">result</span>
+
+<span class="k">let</span> <span class="n">push_msg</span> <span class="n">chan</span> <span class="n">high_id</span> <span class="o">=</span> <span class="n">time</span> <span class="o">@@</span> <span class="k">fun</span> <span class="bp">()</span> <span class="o">-&gt;</span>
+  <span class="k">let</span> <span class="n">low_id</span> <span class="o">=</span> <span class="n">high_id</span> <span class="o">-</span> <span class="n">window_size</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="n">inserted</span> <span class="o">=</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">add</span> <span class="n">high_id</span> <span class="o">(</span><span class="n">message</span> <span class="n">high_id</span><span class="o">)</span> <span class="n">chan</span> <span class="k">in</span>
+  <span class="k">if</span> <span class="n">low_id</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">inserted</span>
+  <span class="k">else</span> <span class="nn">IMap</span><span class="p">.</span><span class="n">remove</span> <span class="n">low_id</span> <span class="n">inserted</span>
+
+<span class="c">(* ..main loop.. *)</span>
+<span class="k">let</span> <span class="bp">()</span> <span class="o">=</span> <span class="nn">Printf</span><span class="p">.</span><span class="n">printf</span> <span class="s2">"Worst pause: %.2E</span><span class="se">\n</span><span class="s2">"</span> <span class="o">!</span><span class="n">worst</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Running this version reports a worst-case latency of 2ms seconds on my machine (I use the <code>%E</code> formatter for scientific notation, so it gets printed as <code>2.03E-03</code>), which is in line with the instrumented runtime &mdash; actually slightly lower, as the instrumentation may add some overhead.</p>
+
+<p>A downside of this poor man worst-latency computation approach is that we only get the worst time, not any kind of timing distribution.</p>
+
+<h3 id="explaining-ocaml-results">Explaining OCaml results</h3>
+
+<p>The OCaml GC has had reliable incremental phases implemented by default for a long time, and does not use a copying strategy for its old generation. It is mark&amp;sweep, executed well, so it was predictable from the start that this specific benchmark would not be a worst-case for OCaml.</p>
+
+<p>The latest released OCaml version, OCaml 4.03.0, has seen work by Damien Doligez to improve the worst-case latency in some situations, motivated by the industrial use-cases of Jane Street. In particular, the latency <em>instrumentation</em> tools that I&rsquo;m using above were developed by Damien on this occasion. I checked with the second measurement strategy that the latency is just as good on previous OCaml versions: this particular use-case was not in need of improvement before 4.03.</p>
+
+<h2 id="racket-version">Racket version</h2>
+
+<p>Max New wrote a first version of Racket port of this benchmark &mdash; he had to explicitly keep track of the map count and minimum key to match the original GHC version. I adapted his code to my simplified variant, and it looks rather similar to the other implementations.</p>
+
+<div class="brush: scheme">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="o">#</span><span class="nv">lang</span> <span class="nv">racket/base</span>
+<span class="p">(</span><span class="nf">require</span> <span class="nv">racket/match</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">window-size</span> <span class="mi">200000</span><span class="p">)</span>
+<span class="p">(</span><span class="k">define </span><span class="nv">msg-count</span>  <span class="mi">2000000</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">message</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">make-bytes</span> <span class="mi">1024</span> <span class="p">(</span><span class="nb">modulo </span><span class="nv">n</span> <span class="mi">256</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">push-msg</span> <span class="nv">chan</span> <span class="nv">id-high</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">define </span><span class="nv">id-low</span> <span class="p">(</span><span class="nf">id-high</span> <span class="o">.</span> <span class="nv">-</span> <span class="o">.</span> <span class="nv">window-size</span><span class="p">))</span>
+  <span class="p">(</span><span class="k">define </span><span class="nv">inserted</span> <span class="p">(</span><span class="nf">hash-set</span> <span class="nv">chan</span> <span class="nv">id-high</span> <span class="p">(</span><span class="nf">message</span> <span class="nv">id-high</span><span class="p">)))</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">id-low</span> <span class="o">.</span> <span class="nv">&lt;</span> <span class="o">.</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">inserted</span>
+      <span class="p">(</span><span class="nf">hash-remove</span> <span class="nv">inserted</span> <span class="nv">id-low</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">_</span>
+  <span class="p">(</span><span class="nf">for/fold</span>
+     <span class="p">([</span><span class="nv">chan</span> <span class="p">(</span><span class="nf">make-immutable-hash</span><span class="p">)])</span>
+     <span class="p">([</span><span class="nv">i</span> <span class="p">(</span><span class="nf">in-range</span> <span class="nv">msg-count</span><span class="p">)])</span>
+     <span class="p">(</span><span class="nf">push-msg</span> <span class="nv">chan</span> <span class="nv">i</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>I initially used the poor man approach of explicit timing calls to measure latency, but then switched to two better methods:</p>
+
+<ul>
+ <li>
+  <p>Sam Tobin-Hochstadt&rsquo;s <a href="https://github.com/samth/gcstats">gcstats</a>  package makes Racket programs produce a summary of their runtime  behavior in the same format as GHC&rsquo;s <code>+RTS -s</code> output, with in  particular the worst-case pause time. It is also very easy to use:</p>
+  <pre><code>racket -l gcstats -t main.rkt</code></pre></li>
+ <li>
+  <p>By setting the environment variable <code>PLTSTDERR=debug@GC</code>, the racket  runtime will log GC events on the standard error output. One can  then grep for minor or major collections, or produce a histogram of  running times through the following scripting soup I cooked myself:</p>
+  <pre><code>cat racket.log | grep -v total | cut -d' ' -f7 | sort -n | uniq --count</code></pre></li></ul>
+
+<p>Racket has an incremental GC that is currently experimental (it is not enabled by default as it can degrade throughput) and is enabled by setting the environment variable <code>PLT_INCREMENTAL_GC=1</code>. I compared with and without the incremental GC, and generally it shifts the latency histogram towards smaller latencies, but it turns out not to help so much for the worst-case latency without further tuning, for a reason I will explain. All results reported below use the incremental GC.</p>
+
+<p>On my machine, using the latest release Racket 6.5, the maximal pause time reported by <code>gcstats</code> is around 150ms, which is rather bad &mdash; the excessive pause of GHC was 50ms.</p>
+
+<h3 id="investigating-the-racket-results">Investigating the Racket results</h3>
+
+<p>I sent <a href="https://groups.google.com/forum/#!topic/racket-dev/AH6c-HGgzJ0">an email</a> to the racket-dev mailing list, hoping to get explanations and advice on how to improve the code to decrease GC latencies. (Remember that one problematic aspect of the GHC benchmark is that there is no real way for users to tweak the code to get better latencies for the same workflow. So we are evaluating default latencies but also tweakability.) It worked out quite well.</p>
+
+<p>First, Matthew Flatt immediately sent a few commits on the Racket codebase to improve some behaviors that were problematic on the benchmark. Using the development version of Racket instead of 6.5, the worst-case latency drops from 150ms to 120ms on my machine. All remaining times are reported using the development version.</p>
+
+<p>Matthew Flatt also analyzed the result and noticed that the worst-case latency systematically happens at the beginning of the benchmark, just after the channel reaches its maximal side of 200,000 messages. This is hard to see with the default benchmark parameters, where the &ldquo;ramp-up&rdquo; period of filling the channel takes one fifth of the total iterations. To see this clearly, I increased the iteration count from 1,000,000 to 10,000,000, then ran <code>make
+run-racket-instrumented</code>. I can look at the pause time of major collections by doing <code>grep MAJ racket.log</code>, and on my machine I have:</p>
+
+<pre><code>GC: 0:MAJ @ 50,634K(+37,221K)[+1,560K]; free 5,075K(-5,075K) 12ms @ 373
+GC: 0:MAJ @ 101,983K(+35,024K)[+1,560K]; free 10,880K(-5,168K) 38ms @ 521
+GC: 0:MAJ @ 192,491K(+38,404K)[+1,560K]; free 8,174K(-24,030K) 56ms @ 810
+GC: 0:MAJ @ 377,716K(+49,259K)[+1,560K]; free 10,832K(-9,536K) 92ms @ 1571
+GC: 0:MAJ @ 742,630K(+59,881K)[+1,560K]; free 140,354K(-156,738K) 138ms @ 3321
+GC: 0:MAJ @ 1,214,486K(+112,313K)[+1,560K]; free 361,371K(-377,755K) 60ms @ 6046
+GC: 0:MAJ @ 1,417,749K(+138,410K)[+1,560K]; free 600,291K(-600,291K) 23ms @ 8553
+GC: 0:MAJ @ 1,400,780K(+155,379K)[+1,560K]; free 564,923K(-564,923K) 21ms @ 11048
+GC: 0:MAJ @ 1,408,812K(+147,347K)[+1,560K]; free 583,454K(-583,454K) 21ms @ 13506
+GC: 0:MAJ @ 1,404,757K(+151,402K)[+1,560K]; free 572,350K(-572,350K) 20ms @ 15983
+GC: 0:MAJ @ 1,407,842K(+148,317K)[+1,560K]; free 579,079K(-579,079K) 22ms @ 18438
+GC: 0:MAJ @ 1,405,641K(+150,518K)[+1,560K]; free 575,624K(-575,624K) 21ms @ 20907
+GC: 0:MAJ @ 1,405,833K(+150,326K)[+1,560K]; free 577,191K(-577,191K) 21ms @ 23362
+GC: 0:MAJ @ 1,405,763K(+150,396K)[+1,560K]; free 575,779K(-575,779K) 20ms @ 25897
+GC: 0:MAJ @ 1,406,444K(+149,715K)[+1,560K]; free 577,553K(-577,553K) 20ms @ 28348
+GC: 0:MAJ @ 1,406,409K(+149,750K)[+1,560K]; free 576,323K(-576,323K) 21ms @ 30827
+GC: 0:MAJ @ 1,407,054K(+149,105K)[+1,560K]; free 577,961K(-577,961K) 21ms @ 33290
+GC: 0:MAJ @ 1,404,903K(+151,256K)[+1,560K]; free 576,241K(-576,241K) 20ms @ 35774
+GC: 0:MAJ @ 1,406,551K(+149,608K)[+1,560K]; free 575,352K(-575,352K) 22ms @ 38251
+GC: 0:MAJ @ 1,405,775K(+150,384K)[+1,560K]; free 577,401K(-577,401K) 21ms @ 40730
+GC: 0:MAJ @ 1,406,015K(+150,144K)[+1,560K]; free 575,563K(-575,563K) 20ms @ 43254
+GC: 0:MAJ @ 1,406,129K(+150,030K)[+1,560K]; free 577,760K(-577,760K) 21ms @ 45730
+GC: 0:MAJ @ 1,406,157K(+150,002K)[+1,560K]; free 575,394K(-575,394K) 22ms @ 48220
+GC: 0:MAJ @ 1,406,514K(+149,645K)[+1,560K]; free 577,765K(-577,765K) 21ms @ 50697</code></pre>
+
+<p>Look at the evolution of major collection pause times: there is an early peek at <code>140ms</code>, but then pause times decrease and the steady state has sensibly shorter pauses of around <code>22ms</code>. By looking at the amount of memory freed during each collection, one can see that the peak corresponds to the first major collection that frees a lot of memory; it is the first major collection after the channel has reached its maximal size, and starts removing a lot of messages.</p>
+
+<p>My understanding of this behavior is that the incremental GC keeps some runtime parameter that observe the memory allocation patterns of the program, and try to predict when the next collection should be or how much work it should do. Matthew Flatt explains that this monitoring logic currently fails to adapt gracefully to the change of regime in our program, and incurs a large peak pause at this point.</p>
+
+<p>This is good news for our benchmark: sure, there is a very bad pause at the beginning of the program, but it&rsquo;s a one-time thing. It does not really affect the last decile of latency that is discussed in James Fischer&rsquo;s post, and would not be a problem during the steady state of an actual message-passing application.</p>
+
+<h3 id="tuning-the-racket-version">Tuning the Racket version</h3>
+
+<p>Matthew Flatt also remarked that by inserting explicit calls to the GC, one can get collection performed more often than Racket&rsquo;s heuristics demand and partly avoid the large peak pause. However, too frequent explicit collections hurt the program throughput.</p>
+
+<p>I experimented a bit and found that the peak pause issue could be partly mitigated by inserting explicit GC calls around the change of regime &mdash; around the iteration count that corresponds to the maximal channel size. I defined a function doing just that</p>
+
+<div class="brush: scheme">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">maybe-gc</span> <span class="nv">i</span><span class="p">)</span>
+  <span class="p">(</span><span class="nf">when</span> <span class="p">(</span><span class="k">and </span><span class="nv">gc-during-rampup</span>
+             <span class="p">(</span><span class="nf">i</span> <span class="o">.</span> <span class="nv">&gt;</span> <span class="o">.</span> <span class="p">(</span><span class="nf">window-size</span> <span class="o">.</span> <span class="nv">/</span> <span class="o">.</span> <span class="mi">2</span><span class="p">))</span>
+             <span class="p">(</span><span class="nf">i</span> <span class="o">.</span> <span class="nv">&lt;</span> <span class="o">.</span> <span class="p">(</span><span class="nf">window-size</span> <span class="o">.</span> <span class="nv">*</span> <span class="o">.</span> <span class="mi">2</span><span class="p">))</span>
+             <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">modulo </span><span class="nv">i</span> <span class="mi">50</span><span class="p">)))</span>
+        <span class="p">(</span><span class="nf">collect-garbage</span> <span class="ss">&#39;incremental</span><span class="p">)</span>
+        <span class="p">(</span><span class="nf">collect-garbage</span> <span class="ss">&#39;minor</span><span class="p">)))</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>which is controlled by a <code>gc-during-rampup</code> parameter that you can explicitly set to <code>#t</code> to experiment &mdash; explicit GC calls are disabled by default in my benchmark code. Then I just inserted a <code>(maybe-gc i)</code> call in the main loop.</p>
+
+<p>Because the extra GC calls happen only during rampup, the performance of the steady state are unchanged and the global cost on throughput is moderate (20% in my experiment with iteration count 2,000,000). This seems effective at mitigating the peak pause issue: the worst-case time on my machine is now only 38ms &mdash; the pauses during the steady state are unchanged, around 22ms.</p>
+
+<p>This is, of course, a hack; the long-term solution is to wait for Racket developers to devise better dynamic control strategies to avoid the ramp-up problem. Apparently, the incremental GC was previously tested on games that had simpler allocation profiles, such as short-lived memory allocations during each game tick, with no such a long ramp-up phase. But I was still interested in the fact that expert users can tweak the code to noticeably decrease the worst-case pause time.</p>
+
+<p>To summarize, Racket&rsquo;s incremental GC exhibits a decent-but-not-excellent steady state behavior, with maximal latencies of around 22ms, but currently suffers from a GC control issues that cause much larger pauses during the benchmark ramp-up period. Explicit GC calls can partly mitigate them.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/06/07/icfp-2016-looking-for-student-volunteers/">&larr; <em>ICFP 2016: looking for student volunteers</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2016/05/18/gradual-typing-across-the-spectrum/"><em>Gradual Typing Across the Spectrum</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>
