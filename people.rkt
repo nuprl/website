@@ -429,17 +429,6 @@ software.
             My interests are dynamic languages implementations, Just-in-time compilers, and WebAssembly.
           }
 
-          @person[#:name "Minsung Cho"
-                  #:title "Advisor: Steven Holtzen"
-                  #:e-mail "minsung@ccs.neu.edu"
-                  #:history @list[
-                      "Joined Northeastern, 2022"
-                      "BS, Carnegie Mellon University"]
-                  #:img "minsung_cho.jpg"
-                  #:website "https://cho.minsung.pl"]{
-            I'm interested in combining expressive abstractions, such as effect handlers, with languages for scalable inference and database querying.
-          }
-
           @person[#:name "Gwenyth Lincroft"
                   #:title "Advisor: Jonathan Bell"
                   #:e-mail "lincroft.g@northeastern.edu"
