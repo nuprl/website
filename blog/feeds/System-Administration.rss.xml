@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'System Administration'</title>
+  <description>PRL Blog: Posts tagged 'System Administration'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/System-Administration.html</link>
+  <lastBuildDate>Mon, 17 Oct 2016 21:48:25 UT</lastBuildDate>
+  <pubDate>Mon, 17 Oct 2016 21:48:25 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Emacs daemon for fast editor startup</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/10/17/emacs-daemon-for-fast-editor-startup/?utm_source=System-Administration&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-10-17-emacs-daemon-for-fast-editor-startup</guid>
+   <pubDate>Mon, 17 Oct 2016 21:48:25 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;In the early days of the famous Emacs/Vim debates, Emacs was often ridiculed for its bulkiness (Eight Megabytes-of-RAM And Constantly Swapping, etc.). The computational power of our computer has grown much faster than Emacs&amp;rsquo; bloat: it takes exactly one second to load on my machine. However, our workflows have also changed, and my workflow implies frequently starting new text editors &amp;mdash; on each git commit for example, or when I use a &lt;a href="https://addons.mozilla.org/en-US/firefox/addon/its-all-text/"&gt;Firefox extension&lt;/a&gt; to edit a textarea content in a proper editor.&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I describe how to use &lt;code&gt;emacsclient&lt;/code&gt; to reuse an existing Emacs process when creating a new editor window, which reduces editor startup times from 1s to 0.150s on my machine.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Emacs has long supported a client/server mode: a daemon emacs instance is loaded in the background, and whenever you request a new emacs window you can creates a new frame (~ window) using the same instance. This means that the startup time is dramatically reduced after the daemon is launched, as for example the execution of your personal configuration code does not have to be repeated.&lt;/p&gt;
+
+&lt;p&gt;To use it, I have this code as &lt;code&gt;/usr/bin/editor&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class="brush: sh"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+emacsclient -a &lt;span class="s2"&gt;""&lt;/span&gt; -c &lt;span class="s2"&gt;"&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;&lt;span class="s2"&gt;"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The empty &lt;code&gt;-a&lt;/code&gt; parameter means that if no daemon exists, it should start one in the background and retry. The &lt;code&gt;-c&lt;/code&gt; option means that a new frame (window) should be created instead of reusing an existing one. &lt;code&gt;"$@"&lt;/code&gt;means that when the script is invoked with a path as command-line parameter (&lt;code&gt;editor /tmp/foo.txt&lt;/code&gt;), the corresponding file will be opened.&lt;/p&gt;
+
+&lt;p&gt;Finally, my &lt;code&gt;.bash_profile&lt;/code&gt; sets the &lt;code&gt;EDITOR&lt;/code&gt; variable to &lt;code&gt;editor&lt;/code&gt; (&lt;code&gt;export EDITOR=/usr/bin/editor&lt;/code&gt;); this environment variable is what most tools (git included) will use to invoke a text editor.&lt;/p&gt;
+
+&lt;p&gt;On my machine, starting the daemon takes 1.4s. Creating a client windows takes around 0.150s.&lt;/p&gt;
+
+&lt;p&gt;If you want to control the environment in which the daemon process is started, you can launch it explicitly by running &lt;code&gt;emacs --daemon&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Cool kids use &lt;a href="http://spacemacs.org/"&gt;Spacemacs&lt;/a&gt; these days, which comes with all sort of convenient settings built in, and I&amp;rsquo;m told that it does daemonization out of the box. I haven&amp;rsquo;t taken the time to give Spacemacs a try yet.&lt;/p&gt;
+
+&lt;p&gt;Finally, sometimes having all editor windows share the same process is not the right thing, because I do stuff which makes Emacs a bit unstable. (It&amp;rsquo;s not very good at asynchronous communication with the rest of the world, so for example accessing a file through SSH from Emacs can hang the process when network goes bad.). I&amp;rsquo;ve been bitten a few times by a crash of all editor windows at the same time, and since then, when I know I&amp;rsquo;m going to do &amp;ldquo;heavy stuff&amp;rdquo;, I launch a separate process for it (just &lt;code&gt;emacs&lt;/code&gt; instead of &lt;code&gt;editor&lt;/code&gt; or &lt;code&gt;emacsclient&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;P.S.: To precisely measure the startup time, ask Emacs to evaluate a Lisp expression on startup, to kill it immediately.:&lt;/p&gt;
+
+&lt;div class="brush: sh"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;time&lt;/span&gt; emacs --eval &lt;span class="s2"&gt;"(save-buffers-kill-terminal)"&lt;/span&gt;
+$ &lt;span class="nb"&gt;time&lt;/span&gt; emacsclient -a &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt; -c -e &lt;span class="s2"&gt;"(save-buffers-kill-terminal)"&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;</description></item></channel></rss>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'coq'</title>
+  <description>PRL Blog: Posts tagged 'coq'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/coq.html</link>
+  <lastBuildDate>Tue, 21 Feb 2017 19:04:28 UT</lastBuildDate>
+  <pubDate>Tue, 21 Feb 2017 19:04:28 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Bullets are good for your Coq proofs</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/?utm_source=coq&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-02-21-bullets-are-good-for-your-coq-proofs</guid>
+   <pubDate>Tue, 21 Feb 2017 19:04:28 UT</pubDate>
+   <author>Gabriel Scherer</author>
+   <description>
+&lt;p&gt;I believe that bullets are one of the most impactful features of recent versions of Coq, among those that non-super-expert users can enjoy. They had a big impact on the maintainability of my proofs. Unfortunately, they are not very well-known, due to the fact that some introductory documents have not been updated to use them.&lt;/p&gt;
+
+&lt;p&gt;Bullets are a very general construction and there are several possible ways to use them; I have iterated through different styles. In this post I will give the general rules, and explain my current usage style.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="why-bullets"&gt;Why bullets&lt;/h2&gt;
+
+&lt;p&gt;While you are doing a proof, Coq shows a list of subgoals that have to be proved before the whole proof is complete. Most proof steps will operate on the current active subgoal, changing the hypotheses or the goal to prove, but some proof steps will split it into several subgoals (growing the total list of goals), or may terminate the proof of the current subgoal and show you the next active subgoal.&lt;/p&gt;
+
+&lt;p&gt;Before bullets, a typical proof script would contain the proofs of each subgoal, one after another.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
+
+proof of first subgoal.
+
+proof of second subgoal.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are many ways to structure this to make the structure more apparent: people would typically have a comment on each subgoal, or make disciplined use of indentation and blank lines. But, in my experience, a major problem with this style was maintainability in the face of changes to the definitions or parts of automation. It could be very hard of what was happening when a proof suddenly broke after a change before in the file:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;If a proof step now proves &lt;em&gt;less&lt;/em&gt; things, then what used to be the  end of a subgoal may not be anymore. Coq would then start reading  the proof of the next subgoal and try to apply it to the unfinished  previous goals, generating very confusing errors (you believe you  are in the second subgoal, but the context talks about a leaf case  of the first goal).&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;If a proof step now proves &lt;em&gt;more&lt;/em&gt; things, it is also very bad! The  next proof steps, meant for the first subgoal (for example), would  then apply to the beginning of the second subgoal, and you get very  confusing errors again.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;What we need for robustness is a way to indicate our &lt;em&gt;intent&lt;/em&gt; to Coq, when we think that a subgoal is finished and that a new subgoal starts, so that Coq can fail loudly at the moment where it notices that this intent does not match reality, instead of at an arbitrary later time.&lt;/p&gt;
+
+&lt;p&gt;(The &lt;code&gt;S*Case&lt;/code&gt; tactics used in (older versions of) Software Foundations can solve this problem if used in a carefully, systematic way, and additionally provides naming. Alexandre Pilkiewicz implemented an even more powerful &lt;a href="https://github.com/pilki/cases"&gt;cases&lt;/a&gt; plugin. Bullets are available in standard Coq since 8.4 (released in 2012), and can be used with no effort.)&lt;/p&gt;
+
+&lt;p&gt;There is not much discussion of bullets around; see the &lt;a href="https://coq.inria.fr/distrib/8.6/refman/Reference-Manual009.html#sec326"&gt;documentation&lt;/a&gt; in the Coq manual. I learned a lot from Arthur Azevedo de Amorim&amp;rsquo;s &lt;a href="https://github.com/arthuraa/poleiro/blob/master/theories/Bullets.v"&gt;Bullets.v&lt;/a&gt; file.&lt;/p&gt;
+
+&lt;p&gt;Finally, some people don&amp;rsquo;t use bullets, because they systematically use so much automation that they never see subgoals &amp;mdash; each lemma has a one-line proof. This is also a valid style. (I have been going to Adam Chlipala&amp;rsquo;s &lt;a href="https://frap.csail.mit.edu/main"&gt;Formal Reasoning about Programs&lt;/a&gt; 2017 class, where Adam ignores bullets because that is his usual style.) Because I am not crushy enough to do this from the start, my proofs tend to start with cases and subgoals, and then I refine them to add more automation for robustness. I found bullets very useful for the first step, and during the refinement process.&lt;/p&gt;
+
+&lt;h2 id="bullets"&gt;Bullets&lt;/h2&gt;
+
+&lt;p&gt;Bullets are actually a combination of two features, braces &lt;code&gt;{ ... }&lt;/code&gt; and actual list bullets &amp;mdash; &lt;code&gt;-&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt;, &lt;code&gt;*&lt;/code&gt;, or homogeneous repetitions of those, for example &lt;code&gt;--&lt;/code&gt; or &lt;code&gt;***&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id="braces"&gt;Braces&lt;/h3&gt;
+
+&lt;p&gt;The opening brace &lt;code&gt;{&lt;/code&gt; focuses the proof on the current subgoal. If you finish the proof of the subgoal, the following subgoal will not become accessible automatically; you have to use the closing brace &lt;code&gt;}&lt;/code&gt; first. (If you finish the goal earlier than you think, you get an error.) Conversely, &lt;code&gt;}&lt;/code&gt; fails if the subgoal is not complete. (If you fail to finish, you get an error.)&lt;/p&gt;
+
+&lt;p&gt;The previous example can thus be written as follows, and will be more robust:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
+{
+  proof of first subgoal.
+}
+{
+  proof of second subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you also want to make sure that an error occurs if the number of subgoals changes (for example if new constructors are added to the inductive type of &lt;code&gt;foo&lt;/code&gt;), you can use an outer layer of braces:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo. (* this creates many subgoal *)
+  {
+    proof of first subgoal.
+  }
+  {
+    proof of second subgoal.
+  }
+} (* would fail if a new subgoal appeared *)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="list-bullets"&gt;List bullets&lt;/h3&gt;
+
+&lt;p&gt;A bullet, for example &lt;code&gt;--&lt;/code&gt;, also focuses on the next subgoal. The difference is that when the subgoal is finished, you do not have a closing construction, you must use the same bullet to move to the next subgoal. (Again, this fails if the first proof step changes to prove too much or too little.) With bullets you would write&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;induction foo. (* this creates many subgoal *)
++ proof of first subgoal.
++ proof of second subgoal.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Bullets can be nested, but you must use different bullets for the different nesting levels. For example, if this proof is only one subgoal of a larger proof, you can use:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- induction foo. (* this creates many subgoal *)
+  + proof of first subgoal.
+  + proof of second subgoal.
+- (* would fail if a new subgoal appeared *)
+  rest of the proof&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The natural ordering of bullets, I think, is by increasing number of lines: &lt;code&gt;-&lt;/code&gt;, &lt;code&gt;+&lt;/code&gt; then &lt;code&gt;*&lt;/code&gt; (and then multi-character bullets, I guess). You can also mix bullets with braces: the opening brace resets the bullet scope, any bullet can be used again with the subgoal.&lt;/p&gt;
+
+&lt;p&gt;This gives a large space of freedom in how you want to use these features. You can use only braces, only bullets, braces and only one level of bullets, etc. My own style evolved with experience using the feature, and I will present the current status below.&lt;/p&gt;
+
+&lt;h2 id="my-current-bullet-style"&gt;My current bullet style&lt;/h2&gt;
+
+&lt;p&gt;When deciding how to use bullets, one distinguishes the commands that preserve the number of subgoals and those that may create new subgoals. I use some additional distinctions.&lt;/p&gt;
+
+&lt;p&gt;Some tactics, for example &lt;code&gt;assert&lt;/code&gt;, create a number of subgoals that is &lt;em&gt;statically&lt;/em&gt; known, always the same for the tactic. I then use braces around each sub-proof, except the last one, which I think of as the &amp;ldquo;rest&amp;rdquo; of the current proof.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;assert foo as H.
+{ proof of foo. }
+rest of the proof using H:foo.&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(If the proof of &lt;code&gt;foo&lt;/code&gt; takes several lines, I two-indent them, with the braces alone on their lines.)&lt;/p&gt;
+
+&lt;p&gt;Most tactics create a &lt;em&gt;dynamic&lt;/em&gt; number of subgoals, that depends on the specifics of the objects being operated on; this is the case of &lt;code&gt;case&lt;/code&gt;, &lt;code&gt;destruct&lt;/code&gt;, &lt;code&gt;induction&lt;/code&gt; for example. In this case, I open a brace before the tactic, and use a bullet for each subgoal.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo; simpl; auto.
+- proof of first remaining subgoal.
+- proof of second remaining subgoal.
+  rest of the proof of the second subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(Notice that the subgoal-creating step is vertically aligned with the proof steps: I use both braces and bullets, but take only one indentation level each time.)&lt;/p&gt;
+
+&lt;p&gt;As an exception, I may omit the braces if we are at the toplevel of the proof (&lt;code&gt;Proof .. Qed&lt;/code&gt; serve as braces).&lt;/p&gt;
+
+&lt;p&gt;Note that omitting the braces here and using different bullets when you nest is also just fine. In my experience it gives proofs that are a bit more pleasant to read but also a bit more cumbersome to edit and move around.&lt;/p&gt;
+
+&lt;p&gt;Finally, a not-uncommon mode of use of &amp;ldquo;dynamic&amp;rdquo; tactics in the sense above is to expect all the cases, except one, to be discharged by direct automation (for example they are all absurd except one). When it is my intent that all cases but one be discharged (and not a coincidence), I express it by not using braces (this command preserves the number of subgoals), but marking the remaining subgoal with a new bullet &lt;em&gt;without&lt;/em&gt; increasing the indentation level.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ induction foo.
+- first subgoal.
+- second subgoal.
+  case blah; discharge all sub-subgoals but one.
++ remaining sub-subgoal of the second subgoal.
+  finish the sub-subgoal.
+- third subgoal.
+}&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;(This is the only time where I use several bullet levels.)&lt;/p&gt;
+
+&lt;p&gt;If you are the kind of programmer that is passionate about indentation style, I should now have tricked you to use bullets to propose a different variant. Otherwise, please consider using bullets anyway, for example by following the style above, it will make your life easier in the face of changing developments.&lt;/p&gt;</description></item>
+  <item>
+   <title>CompCert Overview</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/10/11/compcert-overview/?utm_source=coq&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-10-11-compcert-overview</guid>
+   <pubDate>Tue, 11 Oct 2016 17:41:16 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;If you are interested in learning about the &lt;em&gt;internals&lt;/em&gt; of the CompCert C compiler but would rather not read its source code, this post is for you.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;(This is a public service announcement.)&lt;/p&gt;
+
+&lt;p&gt;Last fall, I gave a short lecture on the 2006 paper &lt;a href="http://gallium.inria.fr/~xleroy/publi/compiler-certif.pdf"&gt;&amp;ldquo;Formal Certification of a Compiler Back-End&amp;rdquo;&lt;/a&gt; by Xavier Leroy for Amal Ahmed&amp;rsquo;s &lt;a href="http://www.ccs.neu.edu/home/amal/course/7480-f15/"&gt;&amp;ldquo;Special Topics in Programming Languages&amp;rdquo;&lt;/a&gt; class. Rather than present CompCert as it existed in 2006, I read the documentation and source code for &lt;a href="https://github.com/AbsInt/CompCert/releases/tag/v2.5"&gt;CompCert 2.5&lt;/a&gt; (released June 2015). The lecture then focused on three questions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;What subset of C does CompCert handle, today?&lt;/li&gt;
+ &lt;li&gt;What optimizing passes does CompCert perform?&lt;/li&gt;
+ &lt;li&gt;What is the &amp;ldquo;correctness theorem&amp;rdquo; for CompCert, and what does this theorem mean?&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;My notes for the lecture give a &amp;ldquo;mid-level&amp;rdquo; summary of the compiler &amp;mdash; there are more details than you&amp;rsquo;ll find in papers, but it&amp;rsquo;s (hopefully!) easier to read than the source code. The document is also hyperlinked to locations in the &lt;a href="https://github.com/AbsInt/CompCert"&gt;CompCert GitHub repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is the document:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; &lt;a href="http://www.ccs.neu.edu/home/types/resources/notes/compcert/cc.pdf"&gt;http://www.ccs.neu.edu/home/types/resources/notes/compcert/cc.pdf&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;And here is a table-of-contents:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Motivation, details of the source and target languages, high-level guarantees&lt;/li&gt;
+ &lt;li&gt;Compiler pipeline, optimizing passes, links intermediate language grammars and Coq theorems&lt;/li&gt;
+ &lt;li&gt;Background on compiler correctness&lt;/li&gt;
+ &lt;li&gt;CompCert&amp;rsquo;s correctness, properties that CompCert does &lt;strong&gt;not&lt;/strong&gt; guarantee&lt;/li&gt;
+ &lt;li&gt;Recent (2006 &amp;ndash; 2015) work in the CompCert ecosystem&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;The document ends with a short description of two other research projects that have grown into &amp;ldquo;industry software&amp;rdquo; and a link to Xaver Leroy&amp;rsquo;s &lt;a href="https://www.cs.uoregon.edu/research/summerschool/summer12/curriculum.html"&gt;OPLSS lectures on certified compilers&lt;/a&gt;. Enjoy!&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'r'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/r.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/r.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-r-html</id>
+ <updated>2019-09-10T11:00:00Z</updated>
+ <entry>
+  <title type="text">Four Kinds of Scoping in R</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/09/10/four-kinds-of-scoping-in-r/?utm_source=r&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-09-10-four-kinds-of-scoping-in-r</id>
+  <published>2019-09-10T11:00:00Z</published>
+  <updated>2019-09-10T11:00:00Z</updated>
+  <author>
+   <name>Ming-Ho Yee</name></author>
+  <content type="html">
+&lt;p&gt;In the &lt;a href="/blog/2019/09/05/lexical-and-dynamic-scope/"&gt;first&lt;/a&gt; and &lt;a href="/blog/2019/09/10/scoping-in-r/"&gt;second&lt;/a&gt; parts of this blog series, I defined lexical and dynamic scope, and demonstrated interesting cases of scoping in R.&lt;/p&gt;
+
+&lt;p&gt;In this third and final part of my blog series, I&amp;rsquo;d like to discuss a paper by the creators of R, where they motivate the need for lexical scoping in a statistical programming language.&lt;/p&gt;
+
+&lt;p&gt;This is a &amp;ldquo;bonus&amp;rdquo; blog post, because I&amp;rsquo;m going to dive into some of the hairier R features to show how four different kinds of scoping can be simulated in R.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="lexical-scope-and-statistical-computation"&gt;Lexical scope and statistical computation&lt;/h2&gt;
+
+&lt;p&gt;In &lt;em&gt;Lexical Scope and Statistical Computation&lt;/em&gt;,&lt;sup&gt;&lt;a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-1-definition" name="2019-09-10-four-kinds-of-scoping-in-r-footnote-1-return"&gt;1&lt;/a&gt;&lt;/sup&gt; Robert Gentleman and Ross Ihaka, the creators of R, discuss why they designed R with lexical scoping. The paper is written for a statistics audience, and they provide motivating examples for having lexical scoping in R.&lt;/p&gt;
+
+&lt;p&gt;For the purpose of their discussion, they define four (slightly different) kinds of scoping rules:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;em&gt;trivial&lt;/em&gt;: no free variables allowed&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;static&lt;/em&gt;: a free variable takes its value from a set of global variables&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;lexical&lt;/em&gt;: a free variable takes the value of the binding that was in  effect when the function was defined&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;dynamic&lt;/em&gt;: a free variable takes the value of the most recent assignment to  that variable&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Note that under this set of definitions, &lt;em&gt;static scoping&lt;/em&gt; is a separate scoping rule and not another name for &lt;em&gt;lexical scoping&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;It is possible to simulate each of strategies in R. For fun, we can even construct &amp;ldquo;factories&amp;rdquo; that take a function, and then modify it to use the desired scoping rule! (Jan Ječmen originally provided these examples to me, and I adapted them for this blog post after some feedback from Artem Pelenitsyn.)&lt;/p&gt;
+
+&lt;h3 id="template"&gt;Template&lt;/h3&gt;
+
+&lt;p&gt;Our examples will follow the template given below:&lt;/p&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;factory&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;lt;???&amp;gt;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="nf"&gt;factory&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;h&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# error, 0, 1, or 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We want to define a &lt;code&gt;factory&lt;/code&gt; that takes a function literal and returns a closure that implements the desired scoping rule.&lt;/p&gt;
+
+&lt;p&gt;Our example consists of three definitions of &lt;code&gt;x&lt;/code&gt;. On line 5, we assign &lt;code&gt;0&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt; at the top level. On line 7, we assign &lt;code&gt;1&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt; inside function &lt;code&gt;h&lt;/code&gt;, where we also create the closure. On line 12, we assign &lt;code&gt;2&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt; inside the function &lt;code&gt;f&lt;/code&gt; and right before we call &lt;code&gt;g&lt;/code&gt;, which is the closure.&lt;/p&gt;
+
+&lt;p&gt;Finally, we call &lt;code&gt;f&lt;/code&gt; and observe the result:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Under trivial scoping, no free variables are allowed, so &lt;code&gt;f()&lt;/code&gt; should result  in an error.&lt;/li&gt;
+ &lt;li&gt;Under static scoping, free variables may only refer to global variables, so  &lt;code&gt;f()&lt;/code&gt; should return &lt;code&gt;0&lt;/code&gt;.&lt;/li&gt;
+ &lt;li&gt;Under lexical scoping, free variables refer to the variables in scope when  the function was defined, so &lt;code&gt;f()&lt;/code&gt; should return &lt;code&gt;1&lt;/code&gt;.&lt;/li&gt;
+ &lt;li&gt;Under dynamic scoping, free variables take the value from the most recent  assignment, so &lt;code&gt;f()&lt;/code&gt; should return &lt;code&gt;2&lt;/code&gt;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;We will implement the body of &lt;code&gt;factory&lt;/code&gt; in only 3&amp;ndash;5 lines of code. The rest of the code snippet, from lines 7 to the end, will remain the same, other than the call to &lt;code&gt;factory&lt;/code&gt; on line 10.&lt;/p&gt;
+
+&lt;h3 id="trivial-scoping"&gt;Trivial scoping&lt;/h3&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;makeTrivial&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;substitute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;baseenv&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="nf"&gt;makeTrivial&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;h&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# Error in f(0) : object &amp;#39;x&amp;#39; not found&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;substitute&lt;/code&gt; returns the unevaluated parse tree for &lt;code&gt;fun&lt;/code&gt;. In other words, it obtains the literal argument that was passed for &lt;code&gt;fun&lt;/code&gt;. This works because of call-by-need semantics in R: function arguments are packaged up into &lt;em&gt;promises&lt;/em&gt;. As a result, the syntax tree of arguments is available for metaprogramming. A recent paper by Goel and Vitek&lt;sup&gt;&lt;a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-2-definition" name="2019-09-10-four-kinds-of-scoping-in-r-footnote-2-return"&gt;2&lt;/a&gt;&lt;/sup&gt; discusses laziness in R in more detail.&lt;/p&gt;
+
+&lt;p&gt;In this example, on line 8, we call &lt;code&gt;factory&lt;/code&gt; with &lt;code&gt;function(a) x+a&lt;/code&gt; as the argument for the formal parameter &lt;code&gt;fun&lt;/code&gt;. Then, we evaluate that parse tree with &lt;code&gt;eval&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;At this point, &lt;code&gt;res&lt;/code&gt; is the closure with expression &lt;code&gt;function(a) x+a&lt;/code&gt; and a reference to the environment of &lt;code&gt;makeTrivial&lt;/code&gt;. On line 3, we change that reference to &lt;code&gt;baseenv()&lt;/code&gt;, which is the environment containing library definitions. Since this environment is above the (user) top-level environment, global variables are not available.&lt;/p&gt;
+
+&lt;p&gt;Therefore, variable lookup in the function literal will only search the base environment, so &lt;code&gt;f()&lt;/code&gt; results in an error.&lt;/p&gt;
+
+&lt;h3 id="static-scoping"&gt;Static scoping&lt;/h3&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;makeStatic&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;substitute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;globalenv&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="nf"&gt;makeStatic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;h&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For this example, on line 3, we update the environment of &lt;code&gt;res&lt;/code&gt; to refer to &lt;code&gt;globalenv()&lt;/code&gt;, which is the top-level environment where globals are defined.&lt;/p&gt;
+
+&lt;p&gt;Therefore, variable lookup searches the top-level environment, so &lt;code&gt;f()&lt;/code&gt; returns &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id="lexical-scoping"&gt;Lexical scoping&lt;/h3&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;makeLexical&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;substitute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;parent.frame&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+  &lt;span class="n"&gt;res&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="nf"&gt;makeLexical&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;h&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Although lexical scoping is the default for R, our factory template requires some metaprogramming to work properly. We need to set the environment of &lt;code&gt;res&lt;/code&gt; to &lt;code&gt;parent.frame()&lt;/code&gt;, which is the environment of the function (&lt;code&gt;h&lt;/code&gt;) that called the current function (&lt;code&gt;makeLexical&lt;/code&gt;). This allows us to simulate lexical scoping, as if the function literal was evaluated inside &lt;code&gt;h&lt;/code&gt;, rather than &lt;code&gt;makeLexical&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Therefore, variable lookup searches the environment of &lt;code&gt;h&lt;/code&gt;, so &lt;code&gt;f()&lt;/code&gt; returns &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id="dynamic-scoping"&gt;Dynamic scoping&lt;/h3&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;makeDynamic&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;...&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;res&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;substitute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fun&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;parent.frame&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="nf"&gt;res&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;...&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;h&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="nf"&gt;makeDynamic&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;h&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;For this example, we need another level of indirection. &lt;code&gt;makeDynamic&lt;/code&gt; returns an anonymous function literal. The anonymous function takes &lt;code&gt;...&lt;/code&gt;, which represents an arbitrary list of arguments, and then on line 5 we call &lt;code&gt;res&lt;/code&gt; with those exact arguments. Note that we set the environment of &lt;code&gt;res&lt;/code&gt; to be the environment of the &lt;em&gt;caller&lt;/em&gt; of the anonymous function. Because of the multiple levels of indirection, the caller is &lt;code&gt;f&lt;/code&gt;, on line 17.&lt;/p&gt;
+
+&lt;p&gt;On line 12, &lt;code&gt;makeDynamic&lt;/code&gt; returns a closure for the anonymous function. &lt;code&gt;h&lt;/code&gt; returns that closure when it is called, and assigns it to &lt;code&gt;g&lt;/code&gt;. When &lt;code&gt;g&lt;/code&gt; is called on line 17, the function literal &lt;code&gt;function(a) x+a&lt;/code&gt; is finally evaluated, and its environment is set to the environment of &lt;code&gt;f&lt;/code&gt;, the caller of &lt;code&gt;g&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Therefore, variable lookup searches the environment of &lt;code&gt;f&lt;/code&gt;, so &lt;code&gt;f()&lt;/code&gt; returns &lt;code&gt;2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Hopefully this blog post has shown another way of looking at scoping definitions. As discussed in the &lt;a href="/blog/2019/09/10/scoping-in-r/"&gt;previous post&lt;/a&gt;, it&amp;rsquo;s very easy to get confused because different definitions are used by different people. Here, Gentleman and Ihaka very clearly state what definitions they are using.&lt;/p&gt;
+
+&lt;p&gt;And finally, while I am far from an expert on metaprogramming in R, I hope this post has given a taste of what is possible.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I would like to thank Jan Ječmen for coming up with and showing me the original versions of these code examples, and Artem Pelenitsyn for his feedback to improve and not discard these examples from an earlier blog draft.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+
+&lt;div class="footnotes"&gt;
+ &lt;ol&gt;
+  &lt;li id="2019-09-10-four-kinds-of-scoping-in-r-footnote-1-definition" class="footnote-definition"&gt;
+   &lt;p&gt;R. Gentleman and R. Ihaka. "Lexical Scope and Statistical Computing, &lt;em&gt;Journal of Computational and Graphical Statistics&lt;/em&gt;, vol. 9, no. 3, 2000. [&lt;a href="https://doi.org/10.1080/10618600.2000.10474895"&gt;DOI&lt;/a&gt;][&lt;a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/lexical.pdf"&gt;Available online&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-1-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li id="2019-09-10-four-kinds-of-scoping-in-r-footnote-2-definition" class="footnote-definition"&gt;
+   &lt;p&gt;A. Goel and J. Vitek. &amp;ldquo;On the Design, Implementation and Use of Laziness in R,&amp;rdquo; in &lt;em&gt;Proceedings of the ACM in Programming Languages (PACMPL)&lt;/em&gt;, vol. 3, no. OOPSLA, 2019. To appear. [&lt;a href="http://janvitek.org/pubs/oopsla19a.pdf"&gt;Available online&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-four-kinds-of-scoping-in-r-footnote-2-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;</content></entry>
+ <entry>
+  <title type="text">Scoping in R</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/09/10/scoping-in-r/?utm_source=r&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-09-10-scoping-in-r</id>
+  <published>2019-09-10T10:00:00Z</published>
+  <updated>2019-09-10T10:00:00Z</updated>
+  <author>
+   <name>Ming-Ho Yee</name></author>
+  <content type="html">
+&lt;p&gt;In the &lt;a href="/blog/2019/09/05/lexical-and-dynamic-scope/"&gt;previous post&lt;/a&gt; of this three-part blog series, we discussed lexical and dynamic scope. Now, in this second part, we can return to the original question: &lt;em&gt;is R lexically or dynamically scoped?&lt;/em&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Recall the example program from before:&lt;/p&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# what does this return?&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Let&amp;rsquo;s examine what happens when we run this example. First, we create a mapping for &lt;code&gt;x&lt;/code&gt; in the top-level environment. On line 2, we define a function &lt;code&gt;f&lt;/code&gt;, which returns the value of some &lt;code&gt;x&lt;/code&gt;. On line 3, we define a function &lt;code&gt;g&lt;/code&gt;, which creates a new mapping for &lt;code&gt;x&lt;/code&gt;, and then calls &lt;code&gt;f&lt;/code&gt;. Note that the assignment on line 4 does &lt;em&gt;not&lt;/em&gt; update the definition on line 1.&lt;/p&gt;
+
+&lt;p&gt;When &lt;code&gt;f&lt;/code&gt; is called, it needs to look up the value of &lt;code&gt;x&lt;/code&gt;. In other words, does the reference of &lt;code&gt;x&lt;/code&gt; on line 2 refer to the assignment on line 1 or the assignment on line 4? If &lt;code&gt;f&lt;/code&gt; returns &lt;code&gt;1&lt;/code&gt;, then the behaviour matches lexical scoping. If it returns &lt;code&gt;2&lt;/code&gt;, then the behaviour matches dynamic scoping.&lt;/p&gt;
+
+&lt;p&gt;When we run this example, the result is &lt;code&gt;1&lt;/code&gt;. This implies that R is lexically scoped.&lt;/p&gt;
+
+&lt;p&gt;But there&amp;rsquo;s more to this story. In the rest of this blog post, I&amp;rsquo;ll examine some interesting scoping examples in R, and discuss how the scoping definitions relate to R.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/"&gt;next and final part&lt;/a&gt; of this blog series, published simultaneously with this one, is an appendix where I implement four different scoping disciplines in R.&lt;/p&gt;
+
+&lt;h2 id="r-is-lexically-scoped-but"&gt;R is lexically scoped, but&amp;hellip;&lt;/h2&gt;
+
+&lt;p&gt;In &lt;em&gt;Evaluating the Design of the R Language&lt;/em&gt;,&lt;sup&gt;&lt;a href="#2019-09-10-scoping-in-r-footnote-1-definition" name="2019-09-10-scoping-in-r-footnote-1-return"&gt;1&lt;/a&gt;&lt;/sup&gt; Morandat, Hill, Osvald, and Vitek write:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;As is often the case, R is lexically scoped up to the point it is not. R is above all a dynamic language with full reflective access to the running program’s data and representation.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;In other words, R provides many different &amp;ldquo;escape hatches&amp;rdquo;&amp;mdash;ways to bypass lexical scoping. Additionally, even without escape hatches, some of R&amp;rsquo;s functionality can be surprising.&lt;/p&gt;
+
+&lt;h3 id="functions-environments-and-variables-in-r"&gt;Functions, environments, and variables in R&lt;/h3&gt;
+
+&lt;p&gt;Before we look at some examples, I think it&amp;rsquo;s useful to briefly discuss some of the core concepts in R that relate to scoping.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Functions.&lt;/strong&gt; R has first-class functions, and functions evaluate to  closures. In other words, a function value includes both the body of the  function as well as the environment that the function was evaluated in. In  R, the programmer can modify the environment of a closure. Note that R is  function scoped; there is no block scoping.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Environments.&lt;/strong&gt; An environment in R is a mapping from variables to  values. Each function has its own local environment. Furthermore, each  environment has a reference to the &amp;ldquo;enclosing&amp;rdquo; environment that it was  evaluated in. R environments are first-class, meaning the programmer can  add, modify, or removing variable mappings, and also change the reference to  the enclosing environment.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Variable lookup.&lt;/strong&gt; When R looks up a variable, it will search in the  current environment for a mapping. If no mapping is found, then it will  search in the enclosing environment. This process continues until a mapping  is found, or the topmost, empty environment is reached, in which case an  error is raised.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Variable assignment.&lt;/strong&gt; &lt;code&gt;&amp;lt;-&lt;/code&gt; is the variable assignment operator in R. The  expression &lt;code&gt;x &amp;lt;- 1&lt;/code&gt; assigns the value &lt;code&gt;1&lt;/code&gt; to the variable &lt;code&gt;x&lt;/code&gt; in the  current environment. If a mapping for &lt;code&gt;x&lt;/code&gt; already exists in the  environment, then the assignment will update and overwrite the existing  value. Otherwise, a new mapping is created in the environment. Note that  variable assignment can only update the current environment, and never  creates a scope.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;From this description, we can see that R implements lexical scoping (or at least, something that behaves a lot like lexical scoping): each function value is associated with the environment it was evaluated in, and variable lookup proceeds along the chain of enclosing environments. In fact, the creators of R have confirmed that lexical scoping was their intent.&lt;sup&gt;&lt;a href="#2019-09-10-scoping-in-r-footnote-2-definition" name="2019-09-10-scoping-in-r-footnote-2-return"&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;On the other hand, variable lookup depends on the run-time state of the program&amp;mdash;names cannot be resolved statically. Furthermore, since R provides operations for environment manipulation, a programmer can easily circumvent lexical scoping.&lt;/p&gt;
+
+&lt;p&gt;The following examples will make this clear.&lt;/p&gt;
+
+&lt;h3 id="examples"&gt;Examples&lt;/h3&gt;
+
+&lt;h4 id="adding-variable-mappings-at-run-time"&gt;Adding variable mappings at run time&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;When &lt;code&gt;f&lt;/code&gt; is called, it creates a function &lt;code&gt;g&lt;/code&gt; that returns &lt;code&gt;x&lt;/code&gt;, assigns &lt;code&gt;2&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt;, and then calls &lt;code&gt;g&lt;/code&gt;. When &lt;code&gt;g&lt;/code&gt; is called, it looks up &lt;code&gt;x&lt;/code&gt;. Since no mapping is found in &lt;code&gt;g&lt;/code&gt;&amp;rsquo;s environment, it searches in the enclosing environment (&lt;code&gt;f&lt;/code&gt;&amp;rsquo;s), and finds that &lt;code&gt;x&lt;/code&gt; has value &lt;code&gt;2&lt;/code&gt;. Therefore, &lt;code&gt;g&lt;/code&gt; returns &lt;code&gt;2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note that the &lt;code&gt;x&lt;/code&gt; on line 3 is resolved only when function &lt;code&gt;g&lt;/code&gt; is called, not when it is defined. However, when &lt;code&gt;g&lt;/code&gt; is defined, its environment has a reference to &lt;code&gt;f&lt;/code&gt;&amp;rsquo;s environment. Therefore, as long as &lt;code&gt;x&lt;/code&gt; is defined &lt;em&gt;before&lt;/em&gt; &lt;code&gt;g&lt;/code&gt; is called, the lookup will always succeed.&lt;/p&gt;
+
+&lt;p&gt;Here&amp;rsquo;s a second example:&lt;/p&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;f&lt;/code&gt; is a function that branches on its argument, &lt;code&gt;b&lt;/code&gt;. If &lt;code&gt;b&lt;/code&gt; evaluates to true, then the expression &lt;code&gt;x &amp;lt;- 2&lt;/code&gt; is evaluated, and a mapping for &lt;code&gt;x&lt;/code&gt; is created in &lt;code&gt;f&lt;/code&gt;&amp;rsquo;s environment. Otherwise, no mapping is created.&lt;/p&gt;
+
+&lt;p&gt;When we look up the value of &lt;code&gt;x&lt;/code&gt; on line 5, R will first search the function&amp;rsquo;s environment. If &lt;code&gt;b&lt;/code&gt; evaluated to true, then R will find a value for &lt;code&gt;x&lt;/code&gt;, which is &lt;code&gt;2&lt;/code&gt;. Otherwise, R will search in the enclosing environment of &lt;code&gt;f&lt;/code&gt;, and find that &lt;code&gt;x&lt;/code&gt; is &lt;code&gt;1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Both of these examples vaguely resemble dynamic scoping, in that &lt;code&gt;x&lt;/code&gt; takes the value of the most recent assignment. However, this is not how R is implemented, and it is not consistent with how R behaves in other examples.&lt;/p&gt;
+
+&lt;h4 id="function-lookup"&gt;Function lookup&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# not an error&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;42&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;R has slightly different lookup rules, if the variable is in function call position. Specifically, R will search the environment chain and skip non-function values.&lt;/p&gt;
+
+&lt;p&gt;In this example, we call &lt;code&gt;g&lt;/code&gt; with the argument &lt;code&gt;42&lt;/code&gt;, which is not a function. Then, in the body of &lt;code&gt;g&lt;/code&gt;, we call &lt;code&gt;f(0)&lt;/code&gt; on line 3, which requires looking up &lt;code&gt;f&lt;/code&gt;. Although there is an &lt;code&gt;f&lt;/code&gt; in the environment of &lt;code&gt;g&lt;/code&gt;, its value is &lt;code&gt;42&lt;/code&gt;, which is not a function. R will then search the enclosing environment, where it finds the function defined on line 1. Therefore, the lookup on line 3 resolves to the function on line 1, so &lt;code&gt;f(0)&lt;/code&gt; returns &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This behaviour exists because &lt;code&gt;c&lt;/code&gt; is the built-in function that constructs vectors (in other words, one of the most commonly used functions in R), but it is also a commonly used argument name.&lt;/p&gt;
+
+&lt;h4 id="super-assignment"&gt;Super assignment&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 1&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt;   &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;&amp;lt;&amp;lt;-&lt;/code&gt; is the &amp;ldquo;super assignment&amp;rdquo; operator. It skips the current environment and then searches the chain of enclosing environments until it finds a variable to update. If no variable is found, then a new mapping is created at the top environment.&lt;/p&gt;
+
+&lt;p&gt;In the above program, we define &lt;code&gt;x&lt;/code&gt; to be &lt;code&gt;0&lt;/code&gt; at the top level, and then define the function &lt;code&gt;f&lt;/code&gt;. When we call &lt;code&gt;f&lt;/code&gt; on line 7, it assigns &lt;code&gt;1&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt; on line 3, which creates a mapping in the local environment. On line 4, the super assignment skips the mapping in the local environment and instead updates the mapping created on line 1. Next, &lt;code&gt;f&lt;/code&gt; returns &lt;code&gt;x&lt;/code&gt;, which is looked up from the local environment and has value &lt;code&gt;1&lt;/code&gt;. Finally, line 8 looks up &lt;code&gt;x&lt;/code&gt; from the top level environment, which has value &lt;code&gt;2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="evaluating-arbitrary-code"&gt;Evaluating arbitrary code&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;parse&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"x &amp;lt;- 0"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;R has a mechanism for converting an arbitrary string to code and then executing it. On line 3, we parse and evaluate the argument &lt;code&gt;t&lt;/code&gt;, which happens to be the string &lt;code&gt;"x &amp;lt;- 0"&lt;/code&gt;. Then, when line 4 executes, the lookup of &lt;code&gt;x&lt;/code&gt; returns &lt;code&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="simulating-dynamic-scope"&gt;Simulating dynamic scope&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;
+&lt;span class="normal"&gt;8&lt;/span&gt;
+&lt;span class="normal"&gt;9&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"x"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;envir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;parent.frame&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;On line 3, we perform an explicit variable lookup for &lt;code&gt;x&lt;/code&gt;, but we do so in the environment &lt;code&gt;parent.frame()&lt;/code&gt;, which refers to the calling function&amp;rsquo;s environment, in this case, &lt;code&gt;g&lt;/code&gt;&amp;rsquo;s environment.. Therefore, the lookup returns &lt;code&gt;2&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Note that R has a similarly named function, &lt;code&gt;parent.env(e)&lt;/code&gt; which returns the &lt;em&gt;enclosing environment&lt;/em&gt; of the given environment &lt;code&gt;e&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="constructing-an-arbitrary-environment"&gt;Constructing an arbitrary environment&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;new.env&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+  &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;3&lt;/span&gt;
+  &lt;span class="nf"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"x"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;envir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 3&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;When &lt;code&gt;f&lt;/code&gt; is called, it constructs a new environment, &lt;code&gt;e&lt;/code&gt;, which is initially empty. (By default, its enclosing environment is the current environment, which is &lt;code&gt;f&lt;/code&gt;&amp;rsquo;s.) Next, on line 4, it directly adds a mapping to that environment, assigning &lt;code&gt;3&lt;/code&gt; to &lt;code&gt;x&lt;/code&gt;. Then, on line 5, the lookup is explicitly done in environment &lt;code&gt;e&lt;/code&gt;, so &lt;code&gt;f&lt;/code&gt; returns &lt;code&gt;3&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="deleting-mappings"&gt;Deleting mappings&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;rm&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;"x"&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;envir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nf"&gt;parent.env&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# Error in f() : object &amp;#39;x&amp;#39; not found&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Not only is it possible to dynamically add and modify mappings in R, but it is also possible to &lt;em&gt;delete&lt;/em&gt; mappings. This is what line 3 does: it explicitly removes the mapping for &lt;code&gt;x&lt;/code&gt; from the enclosing environment of the current environment. In other words, the definition on line 1 is deleted. Therefore, when &lt;code&gt;f&lt;/code&gt; is called, the lookup of &lt;code&gt;x&lt;/code&gt; fails and an error is raised.&lt;/p&gt;
+
+&lt;h4 id="infinite-loop-during-variable-lookup"&gt;Infinite loop during variable lookup&lt;/h4&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;
+&lt;span class="normal"&gt;5&lt;/span&gt;
+&lt;span class="normal"&gt;6&lt;/span&gt;
+&lt;span class="normal"&gt;7&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;enva&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;new.env&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;envb&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;new.env&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="nf"&gt;parent.env&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;enva&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;envb&lt;/span&gt;
+&lt;span class="nf"&gt;parent.env&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;envb&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;enva&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="nf"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="n"&gt;enva&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In this final example, manipulation of environments allows us to create a function where variable lookup results in an infinite loop.&lt;/p&gt;
+
+&lt;p&gt;On lines 1 and 2, we create new, empty environments. Both have the same enclosing environment, which is the top-level environment. However, on lines 3 and 4, we modify their enclosing environments to create a cycle: &lt;code&gt;enva&lt;/code&gt;&amp;rsquo;s enclosing environment is &lt;code&gt;envb&lt;/code&gt;, and &lt;code&gt;envb&lt;/code&gt;&amp;rsquo;s enclosing environment is &lt;code&gt;enva&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;On line 5, we define a function with a free variable, &lt;code&gt;x&lt;/code&gt;, but on line 6, we set &lt;code&gt;f&lt;/code&gt;&amp;rsquo;s environment to be &lt;code&gt;enva&lt;/code&gt;. Finally, we call &lt;code&gt;f&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;When the body of &lt;code&gt;f&lt;/code&gt; is evaluated, it needs to look up &lt;code&gt;x&lt;/code&gt;. Lookup starts in &lt;code&gt;f&lt;/code&gt;&amp;rsquo;s environment, which we set to be &lt;code&gt;enva&lt;/code&gt;. Since no mapping for &lt;code&gt;x&lt;/code&gt; is found, lookup continues in &lt;code&gt;enva&lt;/code&gt;&amp;rsquo;s enclosing environment, which is &lt;code&gt;envb&lt;/code&gt;. However, &lt;code&gt;envb&lt;/code&gt; is also empty, so lookup continues in its enclosing environment, which is &lt;code&gt;enva&lt;/code&gt;, and now lookup results in an infinite loop.&lt;/p&gt;
+
+&lt;h3 id="an-intuition-for-scoping-in-r"&gt;An intuition for scoping in R&lt;/h3&gt;
+
+&lt;p&gt;Some of the above examples appear to demonstrate dynamic scoping. Recall two of our examples:&lt;/p&gt;
+
+&lt;div class="brush: r"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# example 1&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;g&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="nf"&gt;g&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="c1"&gt;# 2&lt;/span&gt;
+
+&lt;span class="c1"&gt;# example 2&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="nf"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nf"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;
+  &lt;span class="n"&gt;x&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;TRUE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kc"&gt;FALSE&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It seems that &lt;code&gt;x&lt;/code&gt; takes on the value of the last assignment, but we know this is not the case, from the first example. This is also not how R is implemented. What&amp;rsquo;s missing from our intuition?&lt;/p&gt;
+
+&lt;p&gt;The key insight is that R is &lt;em&gt;function scoped&lt;/em&gt;. In R, each function has an associated environment, and that environment implements a scope. In general, only a function definition can create a scope. Therefore, the assignment operator &lt;code&gt;&amp;lt;-&lt;/code&gt; &lt;em&gt;does not create a new scope&lt;/em&gt;, and it is more useful to think of it as a mutation &lt;em&gt;on the current environment&lt;/em&gt;. (In contrast, in most languages, a variable binding or definition creates a new scope, and an assignment mutates that variable.)&lt;/p&gt;
+
+&lt;p&gt;In a sense, it might be more accurate to say that R &lt;em&gt;environments&lt;/em&gt; are lexically scoped, variables are scoped to functions (but a reference can occur syntactically before a definition), and variable assignment is an update to the environment.&lt;/p&gt;
+
+&lt;h2 id="discussion"&gt;Discussion&lt;/h2&gt;
+
+&lt;p&gt;All of this might make you a little uncomfortable, and uncertain about R&amp;rsquo;s scoping rules.&lt;/p&gt;
+
+&lt;p&gt;On one hand, R passes the first example program as a lexically scoped language, the implementation of closures and variable lookup imply &amp;ldquo;lexical-like&amp;rdquo; behaviour, and the creators have confirmed that lexical scoping was the intent.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, variable lookup depends on the run-time state of the program, and variable bindings cannot be resolved statically. Some of the examples even resemble dynamic scoping, where a free variable takes the value of the most recent assignment&amp;mdash;but this is not consistent with R&amp;rsquo;s behaviour in other examples. Furthermore, the dynamic nature of R and its reflection and metaprogramming capabilities allow programmers to completely circumvent lexical scoping.&lt;/p&gt;
+
+&lt;p&gt;This ambiguity shows up in a paper,&lt;sup&gt;&lt;a href="#2019-09-10-scoping-in-r-footnote-3-definition" name="2019-09-10-scoping-in-r-footnote-3-return"&gt;3&lt;/a&gt;&lt;/sup&gt; where the authors write:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Furthermore, because variable scoping in R is dynamic and can be modified at the language level [&amp;hellip;] it cannot be trivially guaranteed that &lt;code&gt;x&lt;/code&gt; is going to point to the same data structure throughout the entire execution of the loop.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;It is true that a variable &lt;code&gt;x&lt;/code&gt; may not point to the same data structure during the execution of a loop. It is true that scoping in R can be modified at the language level.&lt;/p&gt;
+
+&lt;p&gt;It is true that variable &lt;em&gt;lookup&lt;/em&gt; is dynamic, as it is performed at run time and depends on the run-time program state. If that is your definition of &lt;em&gt;dynamic scope&lt;/em&gt;, then it would be fair to say that R is dynamically scoped.&lt;/p&gt;
+
+&lt;p&gt;But if your definition of &lt;em&gt;dynamic scope&lt;/em&gt; is &amp;ldquo;a variable is bound to the most recent assignment during the program&amp;rsquo;s execution,&amp;rdquo; then it is not correct to say R is dynamically scoped.&lt;/p&gt;
+
+&lt;p&gt;I think we have this ambiguity because &lt;em&gt;scope&lt;/em&gt; (the places in a program where a variable can be referenced) and &lt;em&gt;variable lookup&lt;/em&gt; or &lt;em&gt;name resolution&lt;/em&gt; (determining which binding or definition a name refers to) are often considered together. For most lexically scoped languages, name resolution can be done at compile time. For most dynamically scoped languages, name resolution must be done at run time. R is lexically scoped, but must perform name resolution at run time.&lt;/p&gt;
+
+&lt;p&gt;Personally, I prefer the definition of &lt;em&gt;scope&lt;/em&gt; that treats name resolution as an orthogonal issue. I think it is more useful to keep the two issues separate. In addition, I think it is confusing and unhelpful to say that R is &lt;em&gt;both&lt;/em&gt; lexically and dynamically scoped, or that R is &lt;em&gt;neither&lt;/em&gt; lexically and dynamically scoped.&lt;/p&gt;
+
+&lt;p&gt;I think it is more helpful to treat R as a lexically scoped language (with certain exceptions and surprises) than as a dynamically scoped language&amp;mdash;when I read and write R code, I find it more convenient to think about nested function definitions and free variables in terms of lexical scoping rules. And I think that it is more accurate, based on the design and implementation, to classify R as a lexically scoped language.&lt;/p&gt;
+
+&lt;p&gt;Regardless, it is very easy to miscommunicate, so I think it&amp;rsquo;s important to be very clear and make sure you and your audience know what definitions of scoping you&amp;rsquo;re using!&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This entire adventure started when we were working on a paper,&lt;sup&gt;&lt;a href="#2019-09-10-scoping-in-r-footnote-4-definition" name="2019-09-10-scoping-in-r-footnote-4-return"&gt;4&lt;/a&gt;&lt;/sup&gt; and asked each other, is R lexically or dynamically scoped? Eventually, it became apparent that we had different definitions of lexical and dynamic scope, so of course we were unable to agree on an answer!&lt;/p&gt;
+
+&lt;p&gt;This got me interested in exploring definitions of scope, the history of lexical scope, and how R fits with traditional definitions of lexical scope. The result was this mini blog series.&lt;/p&gt;
+
+&lt;p&gt;To summarize, I would say that &lt;em&gt;scope&lt;/em&gt; refers to the places in a program where a variable is visible and can be referenced. Under &lt;em&gt;lexical scoping&lt;/em&gt;, the scope of a variable is determined by the lexical (&lt;em&gt;i.e.&lt;/em&gt;, textual) structure of a program. Under &lt;em&gt;dynamic scoping&lt;/em&gt;, a variable is bound to the most recent value assigned to that variable, &lt;em&gt;i.e.&lt;/em&gt;, the most recent assignment during the program&amp;rsquo;s execution.&lt;/p&gt;
+
+&lt;p&gt;I would say that R &lt;em&gt;aims&lt;/em&gt; to be lexically scoped&amp;mdash;it was part of the design and implementation, but certain features make the situation more complicated. In particular, variables are function scoped, definitions do not introduce new scopes, and variable lookup is performed at run time. Furthermore, the dynamic nature of R and its metaprogramming capabilities allow programmers to completely circumvent lexical scoping.&lt;/p&gt;
+
+&lt;p&gt;Finally, there are some definitions of lexical and dynamic scope that also consider variable lookup. Under these definitions, R might be considered a dynamically scoped language, since variable lookup happens at run time. Therefore, it is important to be precise about your definitions!&lt;/p&gt;
+
+&lt;p&gt;If you want more content about R and scoping, the &lt;a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/"&gt;third and final part&lt;/a&gt; of this blog series is already published. In it, I walk through four different examples of using metaprogramming to simulate different scoping disciplines in R.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Edited 2020/02/21:&lt;/strong&gt; For another discussion on R environments and lookups, (and also packages and namespaces, which I did not cover in my post), &lt;a href="http://blog.obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff/"&gt;this blog post&lt;/a&gt; has some nice examples and diagrams.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;I would like to thank Sam Caldwell, Guido Chari, Oli Flückiger, Aviral Goel, Ben Greenman, Jakob Hain, Jan Ječmen, Hugo Musso Gualandi, Artem Pelenitsyn, and Jan Vitek for their comments, feedback, and discussions that have greatly improved and shaped this blog post.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;If you liked this post, you may also be interested in the following Twitter threads about R: &lt;a href="https://twitter.com/mhyee/status/1063983175163158531"&gt;one&lt;/a&gt;, &lt;a href="https://twitter.com/mhyee/status/1067818720532316166"&gt;two&lt;/a&gt; and &lt;a href="https://twitter.com/mhyee/status/1074744049951739905"&gt;three&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="references"&gt;References&lt;/h2&gt;
+
+&lt;div class="footnotes"&gt;
+ &lt;ol&gt;
+  &lt;li id="2019-09-10-scoping-in-r-footnote-1-definition" class="footnote-definition"&gt;
+   &lt;p&gt;F. Morandat, B. Hill, L. Osvald, J. Vitek. &amp;ldquo;Evaluating the Design of the R Language,&amp;rdquo; in &lt;em&gt;Proceedings of the European Conference on Object-Oriented Programming (ECOOP)&lt;/em&gt;, 2012. [&lt;a href="https://doi.org/10.1007/978-3-642-31057-7_6"&gt;DOI&lt;/a&gt;][&lt;a href="http://janvitek.org/pubs/ecoop12.pdf"&gt;Available online&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-scoping-in-r-footnote-1-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li id="2019-09-10-scoping-in-r-footnote-2-definition" class="footnote-definition"&gt;
+   &lt;p&gt;R. Gentleman and R. Ihaka. &amp;ldquo;Lexical Scope and Statistical Computing&amp;rdquo;, &lt;em&gt;Journal of Computational and Graphical Statistics&lt;/em&gt;, vol. 9, no. 3, 2000. [&lt;a href="https://doi.org/10.1080/10618600.2000.10474895"&gt;DOI&lt;/a&gt;][&lt;a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/lexical.pdf"&gt;Available online&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-scoping-in-r-footnote-2-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li id="2019-09-10-scoping-in-r-footnote-3-definition" class="footnote-definition"&gt;
+   &lt;p&gt;L. Stadler, A. Welc, C. Humer, and M. Jordan. &amp;ldquo;Optimizing R Language Execution via Aggressive Speculation,&amp;rdquo; in &lt;em&gt;Proceedings of the Symposium on Dynamic Languages (DLS)&lt;/em&gt;, 2016. [&lt;a href="https://doi.org/10.1145/2989225.2989236"&gt;DOI&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-scoping-in-r-footnote-3-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+  &lt;li id="2019-09-10-scoping-in-r-footnote-4-definition" class="footnote-definition"&gt;
+   &lt;p&gt;O. Flückiger, G. Chari, J. Ječmen, M.-H. Yee, J. Hain, and J. Vitek. &amp;ldquo;R Melts Brains: An IR for First-Class Environments and Lazy Effectful Arguments,&amp;rdquo; in &lt;em&gt;Proceedings of the Symposium on Dynamic Languages (DLS)&lt;/em&gt;, 2019. To appear. [&lt;a href="http://janvitek.org/pubs/dls19.pdf"&gt;Available online&lt;/a&gt;]&amp;nbsp;&lt;a href="#2019-09-10-scoping-in-r-footnote-4-return"&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;&lt;/div&gt;</content></entry></feed>

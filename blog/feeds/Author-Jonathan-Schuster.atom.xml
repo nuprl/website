@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Jonathan Schuster'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Jonathan-Schuster.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Jonathan-Schuster.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Jonathan-Schuster-html</id>
+ <updated>2016-11-30T15:24:45Z</updated>
+ <entry>
+  <title type="text">[Getting Started in Programming Languages (Cross-Post)](http://jschuster.org/blog/2016/11/29/getting-started-in-programming-languages/)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/11/30/-getting-started-in-programming-languages-cross-post-http-jschuster-org-blog-2016-11-29-getting-started-in-programming-languages/?utm_source=Author-Jonathan-Schuster&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-11-30-getting-started-in-programming-languages-cross-post-http-jschuster-org-blog-2016-11-29-getting-started-in-programming-languages</id>
+  <published>2016-11-30T15:24:45Z</published>
+  <updated>2016-11-30T15:24:45Z</updated>
+  <author>
+   <name>Jonathan Schuster</name></author>
+  <content type="html"></content></entry></feed>

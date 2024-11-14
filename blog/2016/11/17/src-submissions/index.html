@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>SRC-submissions</title>
+    <meta name="description" content="Max New, Daniel Patterson and Ben Greenman recently wrote three two-page abstracts on what they are working on right now. Come have a look -- and any feedback is welcome!...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/11/17/src-submissions/">
+    <link rel="next" href="/blog/2016/11/16/understanding-constructive-galois-connections/">
+    <link rel="prev" href="/blog/2016/11/30/-getting-started-in-programming-languages-cross-post-http-jschuster-org-blog-2016-11-29-getting-started-in-programming-languages/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>SRC-submissions</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-11-17" pubdate="true">2016-11-17</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>Max New, Daniel Patterson and Ben Greenman recently wrote three two-page abstracts on what they are working on right now. Come have a look &mdash; and any feedback is welcome!</p>
+<!-- more-->
+
+<h2 id="gradual-type-precision-as-retraction">Gradual Type Precision as Retraction</h2>
+
+<p><a href="http://maxsnew.github.io/docs/precision-as-retraction.pdf">Gradual Type Precision as Retraction</a>
+ <br />Max New
+ <br />2016</p>
+
+<blockquote>
+ <p>Gradually typed programming languages allow for a mix of precision of static type information, allowing advanced type features to be added to existing languages, while still supporting interoperability with legacy code. The advantages of gradual typing are enticing to researchers and practitioners alike, but a general theory of gradually typed languages is only beginning to emerge after a decade of research.</p>
+ <p>It has long been noted that there is much similarity between work on contracts and gradual typing, and the use of retracts in domain theory which were used to relate models of untyped and typed lambda calculus in <a href="https://pdfs.semanticscholar.org/359e/ca57fe42d97cbb67f0b5591869abe5eb5421.pdf">Scott(1976)</a> and <a href="http://andrewkish-name.s3.amazonaws.com/scott80.pdf">Scott(1980)</a>. Here we take this connection seriously and consider how judgments in modern gradually typed languages can be framed in terms of retractions. While retractions in programming languages were originally studied in terms of denotational semantics in domains, our presentation will use only the most basic elements of category theory: composition, identity and equality of terms, so our formulation is equally applicable to axiomatic or operational semantics.</p>
+ <p>In particular we propose a semantic criterion for the notion of precision of gradual types, a common judgment in gradually typed languages (sometimes called naive subtyping for historical reasons). We relate it to a previous definition from <a href="https://www.eecs.northwestern.edu/%7Erobby/pubs/papers/esop2009-wf.pdf">Wadler and Findler(2009)</a> that defines type precision in terms of blame. We show that our definition decomposes in a similar way into “positive” and “negative” type precision, but without depending on a specific notion of blame in the language.</p></blockquote>
+
+<h2 id="linking-types-specifying-safe-interoperability-and-equivalences">Linking Types: Specifying Safe Interoperability and Equivalences</h2>
+
+<p><a href="https://dbp.io/pubs/2016/linking-types-poplsrc2017-proposal.pdf">Linking Types: Specifying Safe Interoperability and Equivalences</a>
+ <br />Daniel Patterson
+ <br />2016</p>
+
+<blockquote>
+ <p>All programs written in high-level languages link with libraries written in lower-level languages, often to expose constructs, like threads, random numbers, or automatic serialization, that aren’t possible in the high-level language. This linking usually takes place after compiling both languages to a common language, possibly assembly. In this sense, reasoning about crosslanguage linking means reasoning about compilation.</p>
+ <p>While most languages include cross-language linking (FFI) mechanisms, they are ad-hoc and can easily break the semantic equivalences of the source language, making it hard for source programmers to reason about correctness of their programs and hard for compiler writers to reason about correctness of their optimizations.</p>
+ <p>In this work, I design and motivate linking types, a language-based mechanism for formally specifying safe linking with libraries utilizing features inexpressible in the source. Linking types allows programmers to reason about their programs in the presence of behavior inexpressible in their language, without dealing with the intricacies of either the compiler or the particular language they are linking with.</p></blockquote>
+
+<h2 id="pruning-contracts-with-rosette">Pruning Contracts with Rosette</h2>
+
+<p><a href="http://www.ccs.neu.edu/home/types/resources/popl2017-src.pdf">Pruning Contracts with Rosette</a>
+ <br />Ben Greenman
+ <br />2016</p>
+
+<blockquote>
+ <p><a href="http://www.ccs.neu.edu/racket/pubs/icfp16-dnff.pdf">Contracts</a> are a pragmatic tool for managing software systems, but programs using contracts suffer runtime overhead. If this overhead becomes a performance bottleneck, programmers must manually edit or remove their contracts. This is no good. Rather, the contracts should identify their own inefficiencies and remove unnecessary dynamic checks. Implementing contracts with <a href="https://emina.github.io/rosette/">Rosette</a> is a promising way to build such self-aware contracts.</p></blockquote>
+
+<h2 id="while-were-at-it-lets-rant-on-srcs">While we&rsquo;re at it let&rsquo;s rant on SRCs</h2>
+
+<p>These abstracts are submitted at POPL&rsquo;s &ldquo;Student Research Competition&rdquo;. You submit an abstract, and if you get accepted to that thing, you get a bit of travel support money, and you have to prepare a poster and present it at the conference.</p>
+
+<p>I have a firm dislike for the <em>Competition</em> part of that concept: I think that people think of research too competitively already, and that we should have less of that, not more. (Having some is unfortunately unavoidable in scarce-resource situations.) I think that the process of awarding prizes to students with the &ldquo;best poster&rdquo; is dumb &mdash; and borderline ridiculous.</p>
+
+<p>On the other hand, my experience seeing them writing these extended abstracts is that it&rsquo;s a useful exercise for them, and produces nice result &mdash; short, readable introductions to their ideas. And Jennifer Paykin <a href="https://github.com/gasche/icfp2016-blog/blob/master/SVs/jennifer_paykin.md">convincingly argues</a> that although writing a poster is rather painful, actually presenting it during the conference is interesting and useful. In her words, &ldquo;it&rsquo;s worth it to get the experience of authentic and fruitful discussions&rdquo;. Plus having posters in the corridors of one&rsquo;s lab is very nice.</p>
+
+<p>I think we could have &ldquo;Student Research Sessions&rdquo; or &ldquo;Student Poster Sessions&rdquo;, where students are encouraged to present their work, would write those nice extended abstracts and posters, interact with researchers at the conference, and get travel money, without the ranking and prize stuff. (I would still encourage students to participate to SRC today, it seems to be worth it.)</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/11/17/src-submissions/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/11/30/-getting-started-in-programming-languages-cross-post-http-jschuster-org-blog-2016-11-29-getting-started-in-programming-languages/">&larr; <em><a href="http://jschuster.org/blog/2016/11/29/getting-started-in-programming-languages/">Getting Started in Programming Languages (Cross-Post)</a></em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2016/11/16/understanding-constructive-galois-connections/"><em>Understanding Constructive Galois Connections</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>
