@@ -33,7 +33,7 @@
                   }
 
                   @div[class: "col-xs-6 col-md-4 pad-contact"]{
-                    @h4{ZED-talks} @a[href: "mailto:mail@camoy.name"]{Cameron Moy}
+                    @h4{ZED-talks} @a[href: "mailto:mail@camoy.net"]{Cameron Moy}
                   }
                 }
 

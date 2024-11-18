@@ -308,7 +308,7 @@ software.
           @person[#:name "Cameron Moy"
                   #:title "Advisor: Matthias Felleisen"
                   #:e-mail "camoy@ccs.neu.edu"
-                  #:website "http://camoy.name"
+                  #:website "http://camoy.net"
                   #:history @list[
                     "Joined Northeastern, 2019"]
                   #:img "cameron_camoy.jpg"]{
