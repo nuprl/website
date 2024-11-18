@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Scoping in R</title>
+    <meta name="description" content="In the previous post of this three-part blog series, we discussed lexical and dynamic scope. Now, in this second part, we can return to the original question: _is R lexically or dynamically scoped?_...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="scope, r, Author: Ming-Ho Yee">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2019/09/10/scoping-in-r/">
+    <link rel="next" href="/blog/2019/09/05/lexical-and-dynamic-scope/">
+    <link rel="prev" href="/blog/2019/09/10/four-kinds-of-scoping-in-r/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Scoping in R</h1>
+    <p class='date-and-tags'>
+<time datetime="2019-09-10" pubdate="true">2019-09-10</time> :: <span class="tags"><a href="/blog/tags/scope.html">scope</a>, <a href="/blog/tags/r.html">r</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ming-Ho-Yee.html">Ming-Ho Yee</a></span></p>
+  </header>
+
+<p>In the <a href="/blog/2019/09/05/lexical-and-dynamic-scope/">previous post</a> of this three-part blog series, we discussed lexical and dynamic scope. Now, in this second part, we can return to the original question: <em>is R lexically or dynamically scoped?</em></p>
+<!-- more-->
+
+<p>Recall the example program from before:</p>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="n">x</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># what does this return?</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Let&rsquo;s examine what happens when we run this example. First, we create a mapping for <code>x</code> in the top-level environment. On line 2, we define a function <code>f</code>, which returns the value of some <code>x</code>. On line 3, we define a function <code>g</code>, which creates a new mapping for <code>x</code>, and then calls <code>f</code>. Note that the assignment on line 4 does <em>not</em> update the definition on line 1.</p>
+
+<p>When <code>f</code> is called, it needs to look up the value of <code>x</code>. In other words, does the reference of <code>x</code> on line 2 refer to the assignment on line 1 or the assignment on line 4? If <code>f</code> returns <code>1</code>, then the behaviour matches lexical scoping. If it returns <code>2</code>, then the behaviour matches dynamic scoping.</p>
+
+<p>When we run this example, the result is <code>1</code>. This implies that R is lexically scoped.</p>
+
+<p>But there&rsquo;s more to this story. In the rest of this blog post, I&rsquo;ll examine some interesting scoping examples in R, and discuss how the scoping definitions relate to R.</p>
+
+<p>The <a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/">next and final part</a> of this blog series, published simultaneously with this one, is an appendix where I implement four different scoping disciplines in R.</p>
+
+<h2 id="r-is-lexically-scoped-but">R is lexically scoped, but&hellip;</h2>
+
+<p>In <em>Evaluating the Design of the R Language</em>,<sup><a href="#2019-09-10-scoping-in-r-footnote-1-definition" name="2019-09-10-scoping-in-r-footnote-1-return">1</a></sup> Morandat, Hill, Osvald, and Vitek write:</p>
+
+<blockquote>
+ <p>As is often the case, R is lexically scoped up to the point it is not. R is above all a dynamic language with full reflective access to the running program’s data and representation.</p></blockquote>
+
+<p>In other words, R provides many different &ldquo;escape hatches&rdquo;&mdash;ways to bypass lexical scoping. Additionally, even without escape hatches, some of R&rsquo;s functionality can be surprising.</p>
+
+<h3 id="functions-environments-and-variables-in-r">Functions, environments, and variables in R</h3>
+
+<p>Before we look at some examples, I think it&rsquo;s useful to briefly discuss some of the core concepts in R that relate to scoping.</p>
+
+<ul>
+ <li>
+  <p><strong>Functions.</strong> R has first-class functions, and functions evaluate to  closures. In other words, a function value includes both the body of the  function as well as the environment that the function was evaluated in. In  R, the programmer can modify the environment of a closure. Note that R is  function scoped; there is no block scoping.</p></li>
+ <li>
+  <p><strong>Environments.</strong> An environment in R is a mapping from variables to  values. Each function has its own local environment. Furthermore, each  environment has a reference to the &ldquo;enclosing&rdquo; environment that it was  evaluated in. R environments are first-class, meaning the programmer can  add, modify, or removing variable mappings, and also change the reference to  the enclosing environment.</p></li>
+ <li>
+  <p><strong>Variable lookup.</strong> When R looks up a variable, it will search in the  current environment for a mapping. If no mapping is found, then it will  search in the enclosing environment. This process continues until a mapping  is found, or the topmost, empty environment is reached, in which case an  error is raised.</p></li>
+ <li>
+  <p><strong>Variable assignment.</strong> <code>&lt;-</code> is the variable assignment operator in R. The  expression <code>x &lt;- 1</code> assigns the value <code>1</code> to the variable <code>x</code> in the  current environment. If a mapping for <code>x</code> already exists in the  environment, then the assignment will update and overwrite the existing  value. Otherwise, a new mapping is created in the environment. Note that  variable assignment can only update the current environment, and never  creates a scope.</p></li></ul>
+
+<p>From this description, we can see that R implements lexical scoping (or at least, something that behaves a lot like lexical scoping): each function value is associated with the environment it was evaluated in, and variable lookup proceeds along the chain of enclosing environments. In fact, the creators of R have confirmed that lexical scoping was their intent.<sup><a href="#2019-09-10-scoping-in-r-footnote-2-definition" name="2019-09-10-scoping-in-r-footnote-2-return">2</a></sup></p>
+
+<p>On the other hand, variable lookup depends on the run-time state of the program&mdash;names cannot be resolved statically. Furthermore, since R provides operations for environment manipulation, a programmer can easily circumvent lexical scoping.</p>
+
+<p>The following examples will make this clear.</p>
+
+<h3 id="examples">Examples</h3>
+
+<h4 id="adding-variable-mappings-at-run-time">Adding variable mappings at run time</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="n">x</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 2</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>When <code>f</code> is called, it creates a function <code>g</code> that returns <code>x</code>, assigns <code>2</code> to <code>x</code>, and then calls <code>g</code>. When <code>g</code> is called, it looks up <code>x</code>. Since no mapping is found in <code>g</code>&rsquo;s environment, it searches in the enclosing environment (<code>f</code>&rsquo;s), and finds that <code>x</code> has value <code>2</code>. Therefore, <code>g</code> returns <code>2</code>.</p>
+
+<p>Note that the <code>x</code> on line 3 is resolved only when function <code>g</code> is called, not when it is defined. However, when <code>g</code> is defined, its environment has a reference to <code>f</code>&rsquo;s environment. Therefore, as long as <code>x</code> is defined <em>before</em> <code>g</code> is called, the lookup will always succeed.</p>
+
+<p>Here&rsquo;s a second example:</p>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if </span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">)</span>  <span class="c1"># 2</span>
+<span class="nf">f</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">)</span> <span class="c1"># 1</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p><code>f</code> is a function that branches on its argument, <code>b</code>. If <code>b</code> evaluates to true, then the expression <code>x &lt;- 2</code> is evaluated, and a mapping for <code>x</code> is created in <code>f</code>&rsquo;s environment. Otherwise, no mapping is created.</p>
+
+<p>When we look up the value of <code>x</code> on line 5, R will first search the function&rsquo;s environment. If <code>b</code> evaluated to true, then R will find a value for <code>x</code>, which is <code>2</code>. Otherwise, R will search in the enclosing environment of <code>f</code>, and find that <code>x</code> is <code>1</code>.</p>
+
+<p>Both of these examples vaguely resemble dynamic scoping, in that <code>x</code> takes the value of the most recent assignment. However, this is not how R is implemented, and it is not consistent with how R behaves in other examples.</p>
+
+<h4 id="function-lookup">Function lookup</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">x</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">f</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="c1"># not an error</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">(</span><span class="m">42</span><span class="p">)</span> <span class="c1"># 0</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>R has slightly different lookup rules, if the variable is in function call position. Specifically, R will search the environment chain and skip non-function values.</p>
+
+<p>In this example, we call <code>g</code> with the argument <code>42</code>, which is not a function. Then, in the body of <code>g</code>, we call <code>f(0)</code> on line 3, which requires looking up <code>f</code>. Although there is an <code>f</code> in the environment of <code>g</code>, its value is <code>42</code>, which is not a function. R will then search the enclosing environment, where it finds the function defined on line 1. Therefore, the lookup on line 3 resolves to the function on line 1, so <code>f(0)</code> returns <code>0</code>.</p>
+
+<p>This behaviour exists because <code>c</code> is the built-in function that constructs vectors (in other words, one of the most commonly used functions in R), but it is also a commonly used argument name.</p>
+
+<h4 id="super-assignment">Super assignment</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+  <span class="n">x</span> <span class="o">&lt;&lt;-</span> <span class="m">2</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 1</span>
+<span class="n">x</span>   <span class="c1"># 2</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p><code>&lt;&lt;-</code> is the &ldquo;super assignment&rdquo; operator. It skips the current environment and then searches the chain of enclosing environments until it finds a variable to update. If no variable is found, then a new mapping is created at the top environment.</p>
+
+<p>In the above program, we define <code>x</code> to be <code>0</code> at the top level, and then define the function <code>f</code>. When we call <code>f</code> on line 7, it assigns <code>1</code> to <code>x</code> on line 3, which creates a mapping in the local environment. On line 4, the super assignment skips the mapping in the local environment and instead updates the mapping created on line 1. Next, <code>f</code> returns <code>x</code>, which is looked up from the local environment and has value <code>1</code>. Finally, line 8 looks up <code>x</code> from the top level environment, which has value <code>2</code>.</p>
+
+<h4 id="evaluating-arbitrary-code">Evaluating arbitrary code</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">eval</span><span class="p">(</span><span class="nf">parse</span><span class="p">(</span><span class="n">text</span> <span class="o">=</span> <span class="n">t</span><span class="p">))</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">(</span><span class="s">"x &lt;- 0"</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># 0</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>R has a mechanism for converting an arbitrary string to code and then executing it. On line 3, we parse and evaluate the argument <code>t</code>, which happens to be the string <code>"x &lt;- 0"</code>. Then, when line 4 executes, the lookup of <code>x</code> returns <code>0</code>.</p>
+
+<h4 id="simulating-dynamic-scope">Simulating dynamic scope</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">get</span><span class="p">(</span><span class="s">"x"</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="nf">parent.frame</span><span class="p">())</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># 2</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>On line 3, we perform an explicit variable lookup for <code>x</code>, but we do so in the environment <code>parent.frame()</code>, which refers to the calling function&rsquo;s environment, in this case, <code>g</code>&rsquo;s environment.. Therefore, the lookup returns <code>2</code>.</p>
+
+<p>Note that R has a similarly named function, <code>parent.env(e)</code> which returns the <em>enclosing environment</em> of the given environment <code>e</code>.</p>
+
+<h4 id="constructing-an-arbitrary-environment">Constructing an arbitrary environment</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">e</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">()</span>
+  <span class="n">e</span><span class="o">$</span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">3</span>
+  <span class="nf">get</span><span class="p">(</span><span class="s">"x"</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># 3</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>When <code>f</code> is called, it constructs a new environment, <code>e</code>, which is initially empty. (By default, its enclosing environment is the current environment, which is <code>f</code>&rsquo;s.) Next, on line 4, it directly adds a mapping to that environment, assigning <code>3</code> to <code>x</code>. Then, on line 5, the lookup is explicitly done in environment <code>e</code>, so <code>f</code> returns <code>3</code>.</p>
+
+<h4 id="deleting-mappings">Deleting mappings</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nf">rm</span><span class="p">(</span><span class="s">"x"</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="nf">parent.env</span><span class="p">(</span><span class="nf">environment</span><span class="p">()))</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+<span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">f</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">g</span><span class="p">()</span> <span class="c1"># Error in f() : object &#39;x&#39; not found</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>Not only is it possible to dynamically add and modify mappings in R, but it is also possible to <em>delete</em> mappings. This is what line 3 does: it explicitly removes the mapping for <code>x</code> from the enclosing environment of the current environment. In other words, the definition on line 1 is deleted. Therefore, when <code>f</code> is called, the lookup of <code>x</code> fails and an error is raised.</p>
+
+<h4 id="infinite-loop-during-variable-lookup">Infinite loop during variable lookup</h4>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="n">enva</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">()</span>
+<span class="n">envb</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">()</span>
+<span class="nf">parent.env</span><span class="p">(</span><span class="n">enva</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">envb</span>
+<span class="nf">parent.env</span><span class="p">(</span><span class="n">envb</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">enva</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="n">x</span>
+<span class="nf">environment</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">enva</span>
+<span class="nf">f</span><span class="p">()</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>In this final example, manipulation of environments allows us to create a function where variable lookup results in an infinite loop.</p>
+
+<p>On lines 1 and 2, we create new, empty environments. Both have the same enclosing environment, which is the top-level environment. However, on lines 3 and 4, we modify their enclosing environments to create a cycle: <code>enva</code>&rsquo;s enclosing environment is <code>envb</code>, and <code>envb</code>&rsquo;s enclosing environment is <code>enva</code>.</p>
+
+<p>On line 5, we define a function with a free variable, <code>x</code>, but on line 6, we set <code>f</code>&rsquo;s environment to be <code>enva</code>. Finally, we call <code>f</code>.</p>
+
+<p>When the body of <code>f</code> is evaluated, it needs to look up <code>x</code>. Lookup starts in <code>f</code>&rsquo;s environment, which we set to be <code>enva</code>. Since no mapping for <code>x</code> is found, lookup continues in <code>enva</code>&rsquo;s enclosing environment, which is <code>envb</code>. However, <code>envb</code> is also empty, so lookup continues in its enclosing environment, which is <code>enva</code>, and now lookup results in an infinite loop.</p>
+
+<h3 id="an-intuition-for-scoping-in-r">An intuition for scoping in R</h3>
+
+<p>Some of the above examples appear to demonstrate dynamic scoping. Recall two of our examples:</p>
+
+<div class="brush: r">
+ <table class="sourcetable">
+  <tbody>
+   <tr>
+    <td class="linenos">
+     <div class="linenodiv">
+      <pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span></pre></div></td>
+    <td class="code">
+     <div class="source">
+      <pre><span></span><span class="c1"># example 1</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">g</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="n">x</span>
+  <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="nf">g</span><span class="p">()</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">()</span> <span class="c1"># 2</span>
+
+<span class="c1"># example 2</span>
+<span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span>
+<span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nf">if </span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">2</span>
+  <span class="n">x</span>
+<span class="p">}</span>
+<span class="nf">f</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">)</span>  <span class="c1"># 2</span>
+<span class="nf">f</span><span class="p">(</span><span class="kc">FALSE</span><span class="p">)</span> <span class="c1"># 1</span>
+</pre></div>
+</td></tr></tbody></table>
+</div>
+
+<p>It seems that <code>x</code> takes on the value of the last assignment, but we know this is not the case, from the first example. This is also not how R is implemented. What&rsquo;s missing from our intuition?</p>
+
+<p>The key insight is that R is <em>function scoped</em>. In R, each function has an associated environment, and that environment implements a scope. In general, only a function definition can create a scope. Therefore, the assignment operator <code>&lt;-</code> <em>does not create a new scope</em>, and it is more useful to think of it as a mutation <em>on the current environment</em>. (In contrast, in most languages, a variable binding or definition creates a new scope, and an assignment mutates that variable.)</p>
+
+<p>In a sense, it might be more accurate to say that R <em>environments</em> are lexically scoped, variables are scoped to functions (but a reference can occur syntactically before a definition), and variable assignment is an update to the environment.</p>
+
+<h2 id="discussion">Discussion</h2>
+
+<p>All of this might make you a little uncomfortable, and uncertain about R&rsquo;s scoping rules.</p>
+
+<p>On one hand, R passes the first example program as a lexically scoped language, the implementation of closures and variable lookup imply &ldquo;lexical-like&rdquo; behaviour, and the creators have confirmed that lexical scoping was the intent.</p>
+
+<p>On the other hand, variable lookup depends on the run-time state of the program, and variable bindings cannot be resolved statically. Some of the examples even resemble dynamic scoping, where a free variable takes the value of the most recent assignment&mdash;but this is not consistent with R&rsquo;s behaviour in other examples. Furthermore, the dynamic nature of R and its reflection and metaprogramming capabilities allow programmers to completely circumvent lexical scoping.</p>
+
+<p>This ambiguity shows up in a paper,<sup><a href="#2019-09-10-scoping-in-r-footnote-3-definition" name="2019-09-10-scoping-in-r-footnote-3-return">3</a></sup> where the authors write:</p>
+
+<blockquote>
+ <p>Furthermore, because variable scoping in R is dynamic and can be modified at the language level [&hellip;] it cannot be trivially guaranteed that <code>x</code> is going to point to the same data structure throughout the entire execution of the loop.</p></blockquote>
+
+<p>It is true that a variable <code>x</code> may not point to the same data structure during the execution of a loop. It is true that scoping in R can be modified at the language level.</p>
+
+<p>It is true that variable <em>lookup</em> is dynamic, as it is performed at run time and depends on the run-time program state. If that is your definition of <em>dynamic scope</em>, then it would be fair to say that R is dynamically scoped.</p>
+
+<p>But if your definition of <em>dynamic scope</em> is &ldquo;a variable is bound to the most recent assignment during the program&rsquo;s execution,&rdquo; then it is not correct to say R is dynamically scoped.</p>
+
+<p>I think we have this ambiguity because <em>scope</em> (the places in a program where a variable can be referenced) and <em>variable lookup</em> or <em>name resolution</em> (determining which binding or definition a name refers to) are often considered together. For most lexically scoped languages, name resolution can be done at compile time. For most dynamically scoped languages, name resolution must be done at run time. R is lexically scoped, but must perform name resolution at run time.</p>
+
+<p>Personally, I prefer the definition of <em>scope</em> that treats name resolution as an orthogonal issue. I think it is more useful to keep the two issues separate. In addition, I think it is confusing and unhelpful to say that R is <em>both</em> lexically and dynamically scoped, or that R is <em>neither</em> lexically and dynamically scoped.</p>
+
+<p>I think it is more helpful to treat R as a lexically scoped language (with certain exceptions and surprises) than as a dynamically scoped language&mdash;when I read and write R code, I find it more convenient to think about nested function definitions and free variables in terms of lexical scoping rules. And I think that it is more accurate, based on the design and implementation, to classify R as a lexically scoped language.</p>
+
+<p>Regardless, it is very easy to miscommunicate, so I think it&rsquo;s important to be very clear and make sure you and your audience know what definitions of scoping you&rsquo;re using!</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>This entire adventure started when we were working on a paper,<sup><a href="#2019-09-10-scoping-in-r-footnote-4-definition" name="2019-09-10-scoping-in-r-footnote-4-return">4</a></sup> and asked each other, is R lexically or dynamically scoped? Eventually, it became apparent that we had different definitions of lexical and dynamic scope, so of course we were unable to agree on an answer!</p>
+
+<p>This got me interested in exploring definitions of scope, the history of lexical scope, and how R fits with traditional definitions of lexical scope. The result was this mini blog series.</p>
+
+<p>To summarize, I would say that <em>scope</em> refers to the places in a program where a variable is visible and can be referenced. Under <em>lexical scoping</em>, the scope of a variable is determined by the lexical (<em>i.e.</em>, textual) structure of a program. Under <em>dynamic scoping</em>, a variable is bound to the most recent value assigned to that variable, <em>i.e.</em>, the most recent assignment during the program&rsquo;s execution.</p>
+
+<p>I would say that R <em>aims</em> to be lexically scoped&mdash;it was part of the design and implementation, but certain features make the situation more complicated. In particular, variables are function scoped, definitions do not introduce new scopes, and variable lookup is performed at run time. Furthermore, the dynamic nature of R and its metaprogramming capabilities allow programmers to completely circumvent lexical scoping.</p>
+
+<p>Finally, there are some definitions of lexical and dynamic scope that also consider variable lookup. Under these definitions, R might be considered a dynamically scoped language, since variable lookup happens at run time. Therefore, it is important to be precise about your definitions!</p>
+
+<p>If you want more content about R and scoping, the <a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/">third and final part</a> of this blog series is already published. In it, I walk through four different examples of using metaprogramming to simulate different scoping disciplines in R.</p>
+
+<p><strong>Edited 2020/02/21:</strong> For another discussion on R environments and lookups, (and also packages and namespaces, which I did not cover in my post), <a href="http://blog.obeautifulcode.com/R/How-R-Searches-And-Finds-Stuff/">this blog post</a> has some nice examples and diagrams.</p>
+
+<p><em>I would like to thank Sam Caldwell, Guido Chari, Oli Flückiger, Aviral Goel, Ben Greenman, Jakob Hain, Jan Ječmen, Hugo Musso Gualandi, Artem Pelenitsyn, and Jan Vitek for their comments, feedback, and discussions that have greatly improved and shaped this blog post.</em></p>
+
+<p><em>If you liked this post, you may also be interested in the following Twitter threads about R: <a href="https://twitter.com/mhyee/status/1063983175163158531">one</a>, <a href="https://twitter.com/mhyee/status/1067818720532316166">two</a> and <a href="https://twitter.com/mhyee/status/1074744049951739905">three</a>.</em></p>
+
+<hr />
+
+<h2 id="references">References</h2>
+
+<div class="footnotes">
+ <ol>
+  <li id="2019-09-10-scoping-in-r-footnote-1-definition" class="footnote-definition">
+   <p>F. Morandat, B. Hill, L. Osvald, J. Vitek. &ldquo;Evaluating the Design of the R Language,&rdquo; in <em>Proceedings of the European Conference on Object-Oriented Programming (ECOOP)</em>, 2012. [<a href="https://doi.org/10.1007/978-3-642-31057-7_6">DOI</a>][<a href="http://janvitek.org/pubs/ecoop12.pdf">Available online</a>]&nbsp;<a href="#2019-09-10-scoping-in-r-footnote-1-return">↩</a></p></li>
+  <li id="2019-09-10-scoping-in-r-footnote-2-definition" class="footnote-definition">
+   <p>R. Gentleman and R. Ihaka. &ldquo;Lexical Scope and Statistical Computing&rdquo;, <em>Journal of Computational and Graphical Statistics</em>, vol. 9, no. 3, 2000. [<a href="https://doi.org/10.1080/10618600.2000.10474895">DOI</a>][<a href="https://www.stat.auckland.ac.nz/~ihaka/downloads/lexical.pdf">Available online</a>]&nbsp;<a href="#2019-09-10-scoping-in-r-footnote-2-return">↩</a></p></li>
+  <li id="2019-09-10-scoping-in-r-footnote-3-definition" class="footnote-definition">
+   <p>L. Stadler, A. Welc, C. Humer, and M. Jordan. &ldquo;Optimizing R Language Execution via Aggressive Speculation,&rdquo; in <em>Proceedings of the Symposium on Dynamic Languages (DLS)</em>, 2016. [<a href="https://doi.org/10.1145/2989225.2989236">DOI</a>]&nbsp;<a href="#2019-09-10-scoping-in-r-footnote-3-return">↩</a></p></li>
+  <li id="2019-09-10-scoping-in-r-footnote-4-definition" class="footnote-definition">
+   <p>O. Flückiger, G. Chari, J. Ječmen, M.-H. Yee, J. Hain, and J. Vitek. &ldquo;R Melts Brains: An IR for First-Class Environments and Lazy Effectful Arguments,&rdquo; in <em>Proceedings of the Symposium on Dynamic Languages (DLS)</em>, 2019. To appear. [<a href="http://janvitek.org/pubs/dls19.pdf">Available online</a>]&nbsp;<a href="#2019-09-10-scoping-in-r-footnote-4-return">↩</a></p></li></ol></div>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2019/09/10/scoping-in-r/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2019/09/10/four-kinds-of-scoping-in-r/">&larr; <em>Four Kinds of Scoping in R</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2019/09/05/lexical-and-dynamic-scope/"><em>Lexical and Dynamic Scope</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

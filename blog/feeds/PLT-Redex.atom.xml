@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'PLT Redex'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/PLT-Redex.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/PLT-Redex.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-PLT-Redex-html</id>
+ <updated>2017-09-25T23:39:16Z</updated>
+ <entry>
+  <title type="text">PLT Redex FAQ</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/09/25/plt-redex-faq/?utm_source=PLT-Redex&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-09-25-plt-redex-faq</id>
+  <published>2017-09-25T23:39:16Z</published>
+  <updated>2017-09-25T23:39:16Z</updated>
+  <author>Ben Greenman</author>
+  <author>Sam Caldwell</author>
+  <author>
+   <name>Ben Greenman, Sam Caldwell</name></author>
+  <content type="html">
+&lt;p&gt;A short guide to Redex concepts, conventions, and common mistakes.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;To contribute to this FAQ, submit issues and pull requests to:  &lt;a href="https://github.com/nuprl/website/"&gt;https://github.com/nuprl/website/&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id="q-what-is-redex-useful-for"&gt;Q. What is Redex useful for?&lt;/h3&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;declaring &lt;a href="https://en.wikipedia.org/wiki/Regular_tree_grammar"&gt;regular tree grammars&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;defining &lt;em&gt;pattern&lt;/em&gt;-based judgments and relations on &lt;em&gt;terms&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;testing properties of the above&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;More generally, Redex is helpful for experimenting with a programming language  design, and helping you decide what you might want to prove about a language.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-redex-not-useful-for"&gt;Q. What is Redex &lt;strong&gt;not&lt;/strong&gt; useful for?&lt;/h3&gt;
+
+&lt;p&gt;Proving theorems about a grammar, judgment, or relation.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-term"&gt;Q. What is a &lt;em&gt;term&lt;/em&gt;?&lt;/h3&gt;
+
+&lt;p&gt;Informally, a term is:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;a Redex &amp;ldquo;atom&amp;rdquo;, or&lt;/li&gt;
+ &lt;li&gt;an object that represents a sequence of characters.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;More formally, a term is the result of evaluating &lt;strong&gt;(term X)&lt;/strong&gt;, where &lt;strong&gt;X&lt;/strong&gt; is  any syntactically-correct Racket expression.&lt;/p&gt;
+
+&lt;p&gt;Examples:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ racket
+Welcome to Racket v6.10.0.3.
+&amp;gt; (require redex/reduction-semantics)
+&amp;gt; (term 42)
+42
+&amp;gt; (term (+ 2 2))
+'(+ 2 2)
+&amp;gt; (term ("hello" world (#false)))
+'("hello" world (#f))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some terms may look strange. That&amp;rsquo;s OK, because a term by itself has no meaning.&lt;/p&gt;
+
+&lt;p&gt;Terms can refer to previously-defined values using the &lt;strong&gt;unquote&lt;/strong&gt; escape.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;gt; (define x (term 42))
+&amp;gt; (term (+ 2 x))
+'(+ 2 x)
+&amp;gt; (term (+ ,x (unquote x)))
+'(+ 42 42)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-is-a-redex-model"&gt;Q. What is a &lt;em&gt;Redex model&lt;/em&gt;?&lt;/h3&gt;
+
+&lt;p&gt;A Redex model is collection of tools for working with terms. The tools may include:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;em&gt;languages&lt;/em&gt;, to define a grammar for terms&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;judgments&lt;/em&gt;, to describe properties of terms or relations between terms&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;metafunctions&lt;/em&gt;, to transform terms&lt;/li&gt;
+ &lt;li&gt;&lt;em&gt;reduction relations&lt;/em&gt;, to define a term rewriting system&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The goal of these tools is to encode a &amp;ldquo;real thing&amp;rdquo; (maybe, a programming language)  using Redex terms.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-language"&gt;Q. What is a language?&lt;/h3&gt;
+
+&lt;p&gt;A Redex &lt;em&gt;language&lt;/em&gt; is a named set of non-terminals, &lt;em&gt;patterns&lt;/em&gt;, and &lt;em&gt;binding forms&lt;/em&gt;. For example, a Redex model of the natural numbers might start with this language:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language nat
+  [N ::= Zero
+         (Plus1 N)])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the name of the language is &lt;strong&gt;nat&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;the non-terminal &lt;strong&gt;N&lt;/strong&gt; is associated with two patterns: &lt;strong&gt;Zero&lt;/strong&gt; and &lt;strong&gt;(Plus1 N)&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;there are no &lt;em&gt;binding forms&lt;/em&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Each pattern describes a syntactic category of terms. Each non-terminal gives a name to the union of the patterns that follow it.&lt;/p&gt;
+
+&lt;p&gt;The non-terminal &lt;strong&gt;N&lt;/strong&gt; describes all terms that are either:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;the symbol &lt;strong&gt;Zero&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;lists of the form &lt;strong&gt;(Plus1 N)&lt;/strong&gt;, where &lt;strong&gt;N&lt;/strong&gt; is either &lt;strong&gt;Zero&lt;/strong&gt; or another &amp;ldquo;Plus1&amp;rdquo;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;For example,&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(term Zero)
+(term (Plus1 Zero))
+(term (Plus1 (Plus1 Zero)))
+(term (Plus1 (Plus1 (Plus1 Zero))))
+;; .... and so on&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If a language has binding forms, then some terms can introduce names. See the question on &lt;em&gt;binding forms&lt;/em&gt; (below) for an example.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-pattern"&gt;Q. What is a pattern?&lt;/h3&gt;
+
+&lt;p&gt;A pattern is a sequence of characters and variables. If you have: (1) a language, and (2) a pattern that contains &lt;em&gt;named non-terminals&lt;/em&gt; from the language,  then you can ask whether a Redex term matches the pattern.&lt;/p&gt;
+
+&lt;p&gt;A &lt;em&gt;named non-terminal&lt;/em&gt; for a language &lt;strong&gt;L&lt;/strong&gt; is an identifier made of:  (1) a non-terminal from &lt;strong&gt;L&lt;/strong&gt;, (2) an underscore (&lt;strong&gt;_&lt;/strong&gt;), and (3) any other identifier. See the FAQ entry below.&lt;/p&gt;
+
+&lt;p&gt;For example, &lt;strong&gt;(redex-match? L p t)&lt;/strong&gt; returns &lt;strong&gt;#true&lt;/strong&gt; if the term &lt;strong&gt;t&lt;/strong&gt; matches  the pattern &lt;strong&gt;p&lt;/strong&gt; relative to the language &lt;strong&gt;L&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language nat
+  [N ::= Zero (Plus1 N)])
+
+(redex-match? nat N_some-name (term Zero))
+;; #true
+(redex-match? nat (Plus1 N_a) (term Zero))
+;; #false
+(redex-match? nat (Plus1 N_0) (term (Plus1 (Plus1 Zero))))
+;; #true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If &lt;strong&gt;(redex-match? L p t)&lt;/strong&gt; is &lt;strong&gt;#true&lt;/strong&gt;, then &lt;strong&gt;(redex-match L p t)&lt;/strong&gt; shows how  named non-terminals in the pattern bind to subterms of &lt;strong&gt;t&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(redex-match nat N_0 (term Zero))
+;; (list (match (list (bind 'N_0 'Zero))))
+(redex-match nat (Plus1 N_0) (term Zero))
+;; #f
+(redex-match nat (Plus1 N_0) (term (Plus1 (Plus1 Zero))))
+;; (list (match (list (bind 'N_0 '(Plus1 Zero)))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-is-a-named-non-terminal"&gt;Q. What is a named non-terminal?&lt;/h3&gt;
+
+&lt;p&gt;A named non-terminal in a language &lt;strong&gt;L&lt;/strong&gt; is an identifier of the form &lt;strong&gt;X_Y&lt;/strong&gt;, where:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;strong&gt;X&lt;/strong&gt; is a non-terminal from &lt;strong&gt;L&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Y&lt;/strong&gt; is any identifier&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The name helps when one pattern contains multiple occurrences of the same non-terminal. If you want the two occurrences to bind the same term, then use the same name.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language trees
+  [binary-tree ::= Leaf
+                   (Node binary-tree binary-tree)])
+
+(redex-match trees
+  (Node binary-tree_left binary-tree_right)
+  (term (Node Leaf (Node Leaf Leaf))))
+;; (list
+;;  (match
+;;   (list (bind 'binary-tree_left 'Leaf)
+;;         (bind 'binary-tree_right '(Node Leaf Leaf)))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-else-can-patterns-express"&gt;Q. What else can patterns express?&lt;/h3&gt;
+
+&lt;p&gt;Redex patterns may contain special identifiers to guide pattern-matching. For instance:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;The &lt;strong&gt;_&lt;/strong&gt; pattern matches any term (and does not bind).&lt;/li&gt;
+ &lt;li&gt;A pattern &lt;strong&gt;(p &amp;hellip;)&lt;/strong&gt; matches any sequence whose elements match the pattern &lt;strong&gt;p&lt;/strong&gt;.  If the pattern &lt;strong&gt;p&lt;/strong&gt; is a named non-terminal, then the non-terminal binds  a sequence of subterms.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Examples:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(redex-match? nat (Plus1 _) (term (Plus1 9)))
+;; #true
+(redex-match? nat (N_0 ...) (term ()))
+;; #true
+(redex-match? nat (N_0 ...) (term (Zero)))
+;; #true
+(redex-match nat (N_0 ...) (term (Zero Zero Zero)))
+;; (list (match (list (bind 'N_0 '(Zero Zero Zero)))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;See &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._pattern%29"&gt;the Redex reference&lt;/a&gt; for the full pattern language,  including the &lt;em&gt;named and unique non-terminals&lt;/em&gt; of the form &lt;strong&gt;X_!_Y&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id="q-what-can-patterns-not-express"&gt;Q. What can patterns &lt;strong&gt;not&lt;/strong&gt; express?&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Disjunctions of patterns, e.g., &amp;ldquo;number or boolean&amp;rdquo;.  (Use a language non-terminal.)&lt;/li&gt;
+ &lt;li&gt;Negations of patterns. (Compose &lt;strong&gt;not&lt;/strong&gt; with &lt;strong&gt;redex-match?&lt;/strong&gt;.)&lt;/li&gt;
+ &lt;li&gt;Some non-regular patterns. (Named  dots &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._pattern%29"&gt;&lt;code&gt;..._N&lt;/code&gt;&lt;/a&gt;  or &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-language%29%29"&gt;&lt;code&gt;define-language&lt;/code&gt;&lt;/a&gt;  with a side condition may be able to help.)&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-what-is-a-judgment"&gt;Q. What is a judgment?&lt;/h3&gt;
+
+&lt;p&gt;A Redex &lt;em&gt;judgment&lt;/em&gt; form defines a relation on terms. The relation is defined by a set of inference rules.&lt;/p&gt;
+
+&lt;p&gt;Programming languages papers use inference rules all the time. Redex can express many of the judgments in papers; for example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;well-formedness conditions (i.e., whether a term contains free variables)&lt;/li&gt;
+ &lt;li&gt;type checking rules&lt;/li&gt;
+ &lt;li&gt;type inference rules&lt;/li&gt;
+ &lt;li&gt;evaluation relations&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Every judgment needs (1) a language (2) a mode (3) a contract (4) a set of inference rules. For example, the following judgment defines an equality relation on natural numbers.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language nat
+  [N ::= Zero (Plus1 N)])
+
+(define-judgment-form nat
+  #:mode (N= I I)
+  #:contract (N= N N)
+  [
+   --- Zero=
+   (N= Zero Zero)]
+  [
+   (where (Plus1 N_0--) N_0)
+   (where (Plus1 N_1--) N_1)
+   (N= N_0-- N_1--)
+   --- Plus1=
+   (N= N_0 N_1)])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;the language is &lt;strong&gt;nat&lt;/strong&gt;; Redex uses the language to interpret patterns&lt;/li&gt;
+ &lt;li&gt;the mode is &lt;strong&gt;(N= I I)&lt;/strong&gt;; this means &lt;strong&gt;N=&lt;/strong&gt; is the name of a judgment that  expects two input terms (or, &lt;strong&gt;N=&lt;/strong&gt; is a binary relation on terms)&lt;/li&gt;
+ &lt;li&gt;the contract is &lt;strong&gt;(N= N N)&lt;/strong&gt;; in other words, &lt;strong&gt;N=&lt;/strong&gt; expects two terms that  match the &lt;strong&gt;N&lt;/strong&gt; non-terminal from the &lt;strong&gt;nat&lt;/strong&gt; language&lt;/li&gt;
+ &lt;li&gt;there are two inference rules, named &lt;strong&gt;Zero=&lt;/strong&gt; and &lt;strong&gt;Plus1=&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;the &lt;strong&gt;Zero=&lt;/strong&gt; rule states that &lt;strong&gt;(N= Zero Zero)&lt;/strong&gt; always holds&lt;/li&gt;
+ &lt;li&gt;the &lt;strong&gt;Plus1=&lt;/strong&gt; rule states that &lt;strong&gt;(N= N_0 N_1)&lt;/strong&gt; holds if &lt;strong&gt;N_0&lt;/strong&gt; and &lt;strong&gt;N_1&lt;/strong&gt;  are both &lt;strong&gt;Plus1&lt;/strong&gt; terms whose contents are related by &lt;strong&gt;N=&lt;/strong&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;The &lt;strong&gt;where&lt;/strong&gt; clauses are &lt;em&gt;guards&lt;/em&gt;. When Redex tries to apply a rule with premises of the form  &lt;strong&gt;(where pattern term)&lt;/strong&gt;, it checks that each pattern matches the corresponding term. If not, Redex stops applying the rule. See &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-judgment-form%29%29"&gt;the Redex reference&lt;/a&gt; for more.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(judgment-holds (N= Zero Zero))
+;; #true
+(judgment-holds (N= (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero))))
+;; #true
+(judgment-holds (N= (Plus1 Zero) (Plus1 (Plus1 Zero))))
+;; #false&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: the inference rules form a &lt;em&gt;set&lt;/em&gt;, not a &lt;em&gt;sequence&lt;/em&gt;. So when you ask Redex whether &lt;strong&gt;(judgment-holds (N= Zero Zero))&lt;/strong&gt;, it applies  all rules that match &lt;strong&gt;(N= Zero Zero)&lt;/strong&gt;. For &lt;strong&gt;N=&lt;/strong&gt; this is just one rule, but in general it could be many rules.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-judgment-form-mode"&gt;Q. What is a judgment form &lt;strong&gt;#:mode&lt;/strong&gt;?&lt;/h3&gt;
+
+&lt;p&gt;A &lt;strong&gt;#:mode&lt;/strong&gt; declaration expects a list of the form &lt;strong&gt;(id pos-use &amp;hellip;)&lt;/strong&gt;,  where &lt;strong&gt;id&lt;/strong&gt; is an identifier and each &lt;strong&gt;pos-use&lt;/strong&gt; is either  &lt;strong&gt;I&lt;/strong&gt; or &lt;strong&gt;O&lt;/strong&gt;. These declarations say four things:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt; is the name of a new judgment form&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt; expects &lt;strong&gt;N&lt;/strong&gt; arguments, where &lt;strong&gt;N&lt;/strong&gt; is the number of &lt;strong&gt;pos-use&lt;/strong&gt; symbols&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt; expects an &lt;em&gt;input&lt;/em&gt; at each position where the mode contains an &lt;strong&gt;I&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;id&lt;/strong&gt; produces an &lt;em&gt;output&lt;/em&gt; at each position where the mode contains an &lt;strong&gt;O&lt;/strong&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;For example, a type inference judgment may take an expression as input and output a type. Here&amp;rsquo;s a fast and easy type inference judgment for arithmetic expressions. Given any term &lt;strong&gt;e_0&lt;/strong&gt;, the judgment outputs the type &lt;strong&gt;Int&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language Arith
+  (e ::= integer (e + e))
+  (τ ::= Int))
+
+(define-judgment-form Arith
+  #:mode (infer-type I O)
+  #:contract (infer-type e τ)
+  [
+   --- T-Int
+   (infer-type e_0 Int)])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-can-judgments-not-express"&gt;Q. What can judgments &lt;strong&gt;not&lt;/strong&gt; express?&lt;/h3&gt;
+
+&lt;p&gt;Redex does not support inference rules that require guessing.&lt;/p&gt;
+
+&lt;p&gt;One example of this is a transitivity rule: "&lt;strong&gt;τ_0&lt;/strong&gt; is related to &lt;strong&gt;τ_2&lt;/strong&gt;  if there exists a &lt;strong&gt;τ_1&lt;/strong&gt; such that &lt;strong&gt;τ_0&lt;/strong&gt; is related to &lt;strong&gt;τ_1&lt;/strong&gt; and &lt;strong&gt;τ_1&lt;/strong&gt; is  related to &lt;strong&gt;τ_2&lt;/strong&gt;". The following example tries to define a transitive subtyping (&lt;strong&gt;&amp;lt;:&lt;/strong&gt;) relation,  but Redex rejects the &lt;strong&gt;S-Trans&lt;/strong&gt; rule.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language SomeTypes
+  (τ ::= (→ τ τ) Integer))
+
+(define-judgment-form SomeTypes
+  #:mode (&amp;lt;: I I)
+  #:contract (&amp;lt;: τ τ)
+  [
+   (&amp;lt;: τ_0 τ_1)
+   (&amp;lt;: τ_1 τ_2)
+   --- S-Trans
+   (&amp;lt;: τ_0 τ_2)]
+  [
+   --- S-Refl
+   (&amp;lt;: τ_0 τ_0)]
+  [
+   (&amp;lt;: τ_dom-1 τ_dom-0)
+   (&amp;lt;: τ_cod-0 τ_cod-1)
+   --- S-Arrow
+   (&amp;lt;: (→ τ_dom-0 τ_cod-0) (→ τ_dom-1 τ_cod-1))])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The error is that in the rule &lt;strong&gt;S-Trans&lt;/strong&gt;,  the named non-terminal &lt;strong&gt;τ_1&lt;/strong&gt; appears in an input position but is not bound to a term.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-metafunction"&gt;Q. What is a metafunction?&lt;/h3&gt;
+
+&lt;p&gt;A metafunction is a term-level function on terms.&lt;/p&gt;
+
+&lt;p&gt;Every metafunction needs: (1) a language (2) a name (3) a contract (4) a sequence of guarded input/output cases.&lt;/p&gt;
+
+&lt;p&gt;Here is a metafunction that returns &lt;strong&gt;#true&lt;/strong&gt; when given two equal natural numbers. The definition is similar to the &lt;strong&gt;N=&lt;/strong&gt; judgment form.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-metafunction nat
+  N=? : N N -&amp;gt; boolean
+  [(N=? Zero Zero)
+   #true]
+  [(N=? N_0 N_1)
+   (N=? N_0-- N_1--)
+   (where (Plus1 N_0--) N_0)
+   (where (Plus1 N_1--) N_1)]
+  [(N=? N_0 N_1)
+   #false])&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the metafunction is named &lt;strong&gt;N=?&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;its contract is &lt;strong&gt;N N -&amp;gt; boolean&lt;/strong&gt;, this means &lt;strong&gt;N=?&lt;/strong&gt; expects 2 terms that  match the &lt;strong&gt;N&lt;/strong&gt; pattern and returns a term that matches the pattern &lt;strong&gt;boolean&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;there are three cases; the second case is guarded by two &lt;strong&gt;where&lt;/strong&gt; clauses&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Any occurrence of &lt;strong&gt;(N=? &amp;hellip;.)&lt;/strong&gt; in any term is evaluated.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(term (N=? (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero))))
+;; #true
+(term ((N=? Zero Zero) Zero))
+;; '(#true Zero)
+(term (N=? (Plus1 Zero) (Plus1 (Plus1 Zero))))
+;; #false&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Any occurrence of &lt;strong&gt;N=?&lt;/strong&gt; outside a &lt;strong&gt;term&lt;/strong&gt; is an error.&lt;/p&gt;
+
+&lt;p&gt;Metafunction &lt;strong&gt;where&lt;/strong&gt;-clauses are analogous to judgment form &lt;strong&gt;where&lt;/strong&gt;-clauses. See &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._metafunction%29"&gt;the Redex reference&lt;/a&gt; for more.&lt;/p&gt;
+
+&lt;p&gt;Note: the cases in a metafunction form a &lt;em&gt;sequence&lt;/em&gt;, not a &lt;em&gt;set&lt;/em&gt;. To evaluate a metafunction application, Redex tries each case in order  and returns the result of the first case that (1) matches the call-site (2)  for which all guards succeed.&lt;/p&gt;
+
+&lt;h3 id="q-should-i-use-a-metafunction-or-a-judgment-form"&gt;Q. Should I use a metafunction or a judgment form?&lt;/h3&gt;
+
+&lt;p&gt;Use a judgment form.&lt;/p&gt;
+
+&lt;p&gt;Metafunctions are handy, but judgments are easier to read and debug and maintain.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-a-reduction-relation"&gt;Q. What is a reduction relation?&lt;/h3&gt;
+
+&lt;p&gt;A reduction relation is a set of term-rewriting rules.&lt;/p&gt;
+
+&lt;p&gt;Every reduction relation needs: (1) a language (2) a domain (3) a set of rewrite rules.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;The language tells Redex how to interpret patterns.&lt;/li&gt;
+ &lt;li&gt;The domain is a pattern.  Input to the reduction relation must match the pattern,  and output from the reduction relation must match the pattern.&lt;/li&gt;
+ &lt;li&gt;The rewrite rules have the form &lt;strong&gt;(&amp;mdash;&amp;gt; term term guard &amp;hellip;)&lt;/strong&gt;.  The term on the left is the input, the term on the right is the output.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;See &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._reduction-relation%29%29"&gt;the Redex reference&lt;/a&gt; for a full description of the guards.&lt;/p&gt;
+
+&lt;p&gt;The preferred way to define a reduction relation is to define a language that includes three non-terminals:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;a non-terminal for the domain of the reduction relation&lt;/li&gt;
+ &lt;li&gt;a non-terminal for a &lt;em&gt;subset&lt;/em&gt; of the domain that cannot reduce further&lt;/li&gt;
+ &lt;li&gt;a non-terminal for evaluation contexts&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;An evaluation context is a term that contains a &lt;strong&gt;hole&lt;/strong&gt;. A reduction relation can match a term against an evaluation context to find  a sub-term to rewrite &amp;mdash; in particular, the sub-term that matches the &lt;strong&gt;hole&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the following example, &lt;strong&gt;bexp&lt;/strong&gt; is the domain of a reduction relation. A &lt;strong&gt;bexp&lt;/strong&gt; term represents a boolean expression, which can be &lt;strong&gt;#true&lt;/strong&gt; or  &lt;strong&gt;#false&lt;/strong&gt; or a conjunction of expressions or a disjunction of expressions. The boolean expressions &lt;strong&gt;#true&lt;/strong&gt; and &lt;strong&gt;#false&lt;/strong&gt; are also values (&lt;strong&gt;val&lt;/strong&gt;);  these cannot reduce further. The non-terminal &lt;strong&gt;E&lt;/strong&gt; is for evaluation contexts.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language Bool
+  (bexp ::= #true #false (bexp ∧ bexp) (bexp ∨ bexp))
+  (val ::= #true #false)
+  (E ::= hole (E ∧ bexp) (val ∧ E) (E ∨ bexp) (val ∨ E)))
+
+(define step
+  (reduction-relation Bool
+    #:domain bexp
+    [--&amp;gt; (in-hole E (val_lhs ∧ val_rhs))
+         (in-hole E val_new)
+         ∧-step
+         (where val_new ,(and (term val_lhs) (term val_rhs)))]
+    [--&amp;gt; (in-hole E (val_lhs ∨ val_rhs))
+         (in-hole E val_new)
+         ∨-step
+         (where val_new ,(or (term val_lhs) (term val_rhs)))]))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The function &lt;strong&gt;apply-reduction-relation&lt;/strong&gt; applies a reduction relation to a  term and returns a list of ways that the term can step.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(apply-reduction-relation step (term #true))
+;; '()
+(apply-reduction-relation step (term (#true ∧ #true)))
+;; '(#true)
+(apply-reduction-relation step (term (#true ∧ #false)))
+;; '(#false)
+(apply-reduction-relation step (term ((#true ∨ #false) ∧ #true)))
+;; '((#true ∧ #true))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Three things about the reduction relation &lt;strong&gt;step&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Using &lt;strong&gt;in-hole&lt;/strong&gt; on the first argument of &lt;strong&gt;&amp;mdash;&amp;gt;&lt;/strong&gt; searches a term  for a subterm that Redex can apply a reduction rule to.&lt;/li&gt;
+ &lt;li&gt;Using &lt;strong&gt;in-hole&lt;/strong&gt; on the second argument of &lt;strong&gt;&amp;mdash;&amp;gt;&lt;/strong&gt; puts a new value  back into the &lt;strong&gt;hole&lt;/strong&gt; in the evaluation context.&lt;/li&gt;
+ &lt;li&gt;The unquote operator (&lt;strong&gt;,&lt;/strong&gt;) escapes to &amp;ldquo;Racket mode&amp;rdquo; (see below) to evaluate  a conjunction or disjunction.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;A judgment or metafunction is a formal alternative to &amp;ldquo;escaping to Racket&amp;rdquo;,  but escaping can be convenient.&lt;/p&gt;
+
+&lt;p&gt;Note: the cases in a reduction relation form a &lt;em&gt;set&lt;/em&gt;, not a &lt;em&gt;sequence&lt;/em&gt;. If more than one case matches, Redex applies them all.&lt;/p&gt;
+
+&lt;h3 id="q-what-is-racket-mode-what-is-redex-mode"&gt;Q. What is &amp;ldquo;Racket mode&amp;rdquo;? What is &amp;ldquo;Redex mode&amp;rdquo;?&lt;/h3&gt;
+
+&lt;p&gt;Code in a Redex model is sometimes evaluated in &amp;ldquo;Racket mode&amp;rdquo; and  sometimes evaluated in &amp;ldquo;Redex mode&amp;rdquo;. Racket mode evaluates Racket syntax to Racket values. Redex mode evaluates Racket syntax (possibly containing metafunction names) to terms.&lt;/p&gt;
+
+&lt;p&gt;Key points:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;A Redex program starts in Racket mode.&lt;/li&gt;
+ &lt;li&gt;The &lt;strong&gt;X&lt;/strong&gt; in &lt;strong&gt;(term X)&lt;/strong&gt; is evaluated in Redex mode &amp;hellip;&lt;/li&gt;
+ &lt;li&gt;&amp;hellip; unless &lt;strong&gt;X&lt;/strong&gt; contains unquoted sub-expressions. Unquoting escapes to Racket mode &amp;hellip;&lt;/li&gt;
+ &lt;li&gt;&amp;hellip; and &lt;strong&gt;term&lt;/strong&gt;s inside an unquoted sub-expression are evaluated in Redex mode.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;In other words, &lt;strong&gt;term&lt;/strong&gt; enters Redex mode and &lt;strong&gt;unquote&lt;/strong&gt; (&lt;strong&gt;,&lt;/strong&gt;) escapes back to Racket.&lt;/p&gt;
+
+&lt;p&gt;Redex implicitly switches to Redex mode in a few other places, for example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the right-side of a &lt;strong&gt;where&lt;/strong&gt; clause is in Redex mode&lt;/li&gt;
+ &lt;li&gt;the result of a metafunction is in Redex mode&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;When in doubt, try using an &lt;strong&gt;unquote&lt;/strong&gt;. Redex will raise an exception if it finds an unquote in Racket mode.&lt;/p&gt;
+
+&lt;h3 id="q-are-side-conditions-evaluated-in-racket-mode-or-redex-mode"&gt;Q. Are &lt;strong&gt;side-condition&lt;/strong&gt;s evaluated in &amp;ldquo;Racket mode&amp;rdquo; or &amp;ldquo;Redex mode&amp;rdquo;?&lt;/h3&gt;
+
+&lt;p&gt;A &lt;strong&gt;(side-condition e)&lt;/strong&gt; sometimes evaluates &lt;strong&gt;e&lt;/strong&gt; as a Racket expression  and sometimes evaluates &lt;strong&gt;e&lt;/strong&gt; as a Redex expression.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;reduction relations and metafunctions expect a &lt;strong&gt;Racket&lt;/strong&gt; expression&lt;/li&gt;
+ &lt;li&gt;judgments expect a &lt;strong&gt;Redex&lt;/strong&gt; expression&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-what-is-a-binding-form"&gt;Q. What is a binding form?&lt;/h3&gt;
+
+&lt;p&gt;In the lambda calculus, &lt;strong&gt;λ&lt;/strong&gt;-terms bind variables. A term &lt;strong&gt;(λ x M)&lt;/strong&gt; means that any free occurrence of &lt;strong&gt;x&lt;/strong&gt; in the sub-term &lt;strong&gt;M&lt;/strong&gt;  refers to the &lt;strong&gt;x&lt;/strong&gt; from the &lt;strong&gt;λ&lt;/strong&gt;-term.&lt;/p&gt;
+
+&lt;p&gt;Redex can express this idea with a binding form.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language Λ
+  [e ::= (e e) x (λ x e)]
+  [x ::= variable-not-otherwise-mentioned]
+  #:binding-forms
+  (λ x_0 e_0 #:refers-to x_0))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: all the non-terminals in a language must be defined before the &lt;strong&gt;#:binding-forms&lt;/strong&gt; keyword. If a non-terminal definition appears after the &lt;strong&gt;#:binding-forms&lt;/strong&gt; keyword, then Redex will interpret the &amp;ldquo;definition&amp;rdquo; as a binding form.&lt;/p&gt;
+
+&lt;p&gt;Binding forms work together with Redex&amp;rsquo;s functions for substitution and  alphabetic equivalence.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(alpha-equivalent? Λ
+  (term (λ x x))
+  (term (λ y y))))
+;; #true
+
+(define-metafunction Λ
+  test-substitute : e -&amp;gt; e
+  [(test-substitute (λ x_0 e_0))
+   (substitute e_0 x_0 y)])
+(term (test-substitute (λ z (z z))))
+;; '(y y)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-what-is--what-is-"&gt;Q. What is &lt;strong&gt;&amp;hellip;&lt;/strong&gt;? What is &lt;strong&gt;&amp;hellip;.&lt;/strong&gt;?&lt;/h3&gt;
+
+&lt;p&gt;Three dots (&lt;strong&gt;&amp;hellip;&lt;/strong&gt;) is for building patterns. If &lt;strong&gt;p&lt;/strong&gt; is a pattern then &lt;strong&gt;(p &amp;hellip;)&lt;/strong&gt; matches any list whose elements all  match &lt;strong&gt;p&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language L)
+(redex-match? L (number ... boolean ...) (term (1 2 #true #true)))
+;; #true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Four dots (&lt;strong&gt;&amp;hellip;.&lt;/strong&gt;) may be used in &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-extended-language%29%29"&gt;&lt;strong&gt;define-extended-language&lt;/strong&gt;&lt;/a&gt;  to extend a previously-defined non-terminal.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;(define-language C
+  (keyword ::= auto break case))
+(define-extended-language C++
+  C
+  (keyword ::= .... class))
+
+(redex-match? C keyword (term auto))
+;; #true
+(redex-match? C keyword (term class))
+;; #false
+(redex-match? C++ keyword (term auto))
+;; #true
+(redex-match? C++ keyword (term class))
+;; #true&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="q-where-to-learn-more-about-redex"&gt;Q. Where to learn more about Redex?&lt;/h3&gt;
+
+&lt;p&gt;&amp;ldquo;Critical path&amp;rdquo; resources:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Code examples for this post: &lt;a href="https://github.com/nuprl/website/blob/master/blog/static/redex-faq.rkt"&gt;https://github.com/nuprl/website/blob/master/blog/static/redex-faq.rkt&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;Redex documentation: &lt;a href="http://docs.racket-lang.org/redex/index.html"&gt;http://docs.racket-lang.org/redex/index.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://dvanhorn.github.io/redex-aam-tutorial/"&gt;&lt;em&gt;An Introduction to Redex with Abstracting Abstract Machines&lt;/em&gt;&lt;/a&gt; by David Van Horn&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://www.leafac.com/playing-the-game-with-plt-redex/"&gt;&lt;em&gt;Playing the Game with PLT Redex&lt;/em&gt;&lt;/a&gt; by Leandro Facchinetti&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://williamjbowman.com/doc/experimenting-with-redex/index.html"&gt;&lt;em&gt;Experimenting with Languages in Redex&lt;/em&gt;&lt;/a&gt; by William J. Bowman&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;&amp;ldquo;Procrastination&amp;rdquo; resources:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://tata.gforge.inria.fr/"&gt;&lt;em&gt;Tree Automata Techniques and Applications&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="http://lamport.azurewebsites.net/pubs/lamport-types.pdf"&gt;&lt;em&gt;Should your Specification Language be Typed?&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;Redex source code (see &lt;code&gt;redex-lib/&lt;/code&gt;): &lt;a href="https://github.com/racket/redex"&gt;https://github.com/racket/redex&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">PLT Redex: mf-apply</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/03/03/plt-redex-mf-apply/?utm_source=PLT-Redex&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-03-03-plt-redex-mf-apply</id>
+  <published>2017-03-03T08:54:20Z</published>
+  <updated>2017-03-03T08:54:20Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The &lt;code&gt;mf-apply&lt;/code&gt; keyword is for checked metafunction application in PLT Redex. In other words, &lt;code&gt;(mf-apply f x)&lt;/code&gt; is just like &lt;code&gt;(f x)&lt;/code&gt;, but errors if &lt;code&gt;f&lt;/code&gt; is  not a previously-defined metafunction.&lt;/p&gt;
+
+&lt;p&gt;Also, consider applying to attend &lt;em&gt;The Racket School of Semantics and Languages&lt;/em&gt; in Salt Lake City this summer: &lt;a href="http://summer-school.racket-lang.org/2017/"&gt;http://summer-school.racket-lang.org/2017/&lt;/a&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="metafunctions-vs-list-patterns"&gt;Metafunctions vs. List Patterns&lt;/h2&gt;
+
+&lt;p&gt;Have you used PLT Redex? Good! Maybe this has happened to you:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
+&lt;span class="normal"&gt; 2&lt;/span&gt;
+&lt;span class="normal"&gt; 3&lt;/span&gt;
+&lt;span class="normal"&gt; 4&lt;/span&gt;
+&lt;span class="normal"&gt; 5&lt;/span&gt;
+&lt;span class="normal"&gt; 6&lt;/span&gt;
+&lt;span class="normal"&gt; 7&lt;/span&gt;
+&lt;span class="normal"&gt; 8&lt;/span&gt;
+&lt;span class="normal"&gt; 9&lt;/span&gt;
+&lt;span class="normal"&gt;10&lt;/span&gt;
+&lt;span class="normal"&gt;11&lt;/span&gt;
+&lt;span class="normal"&gt;12&lt;/span&gt;
+&lt;span class="normal"&gt;13&lt;/span&gt;
+&lt;span class="normal"&gt;14&lt;/span&gt;
+&lt;span class="normal"&gt;15&lt;/span&gt;
+&lt;span class="normal"&gt;16&lt;/span&gt;
+&lt;span class="normal"&gt;17&lt;/span&gt;
+&lt;span class="normal"&gt;18&lt;/span&gt;
+&lt;span class="normal"&gt;19&lt;/span&gt;
+&lt;span class="normal"&gt;20&lt;/span&gt;
+&lt;span class="normal"&gt;21&lt;/span&gt;
+&lt;span class="normal"&gt;22&lt;/span&gt;
+&lt;span class="normal"&gt;23&lt;/span&gt;
+&lt;span class="normal"&gt;24&lt;/span&gt;
+&lt;span class="normal"&gt;25&lt;/span&gt;
+&lt;span class="normal"&gt;26&lt;/span&gt;
+&lt;span class="normal"&gt;27&lt;/span&gt;
+&lt;span class="normal"&gt;28&lt;/span&gt;
+&lt;span class="normal"&gt;29&lt;/span&gt;
+&lt;span class="normal"&gt;30&lt;/span&gt;
+&lt;span class="normal"&gt;31&lt;/span&gt;
+&lt;span class="normal"&gt;32&lt;/span&gt;
+&lt;span class="normal"&gt;33&lt;/span&gt;
+&lt;span class="normal"&gt;34&lt;/span&gt;
+&lt;span class="normal"&gt;35&lt;/span&gt;
+&lt;span class="normal"&gt;36&lt;/span&gt;
+&lt;span class="normal"&gt;37&lt;/span&gt;
+&lt;span class="normal"&gt;38&lt;/span&gt;
+&lt;span class="normal"&gt;39&lt;/span&gt;
+&lt;span class="normal"&gt;40&lt;/span&gt;
+&lt;span class="normal"&gt;41&lt;/span&gt;
+&lt;span class="normal"&gt;42&lt;/span&gt;
+&lt;span class="normal"&gt;43&lt;/span&gt;
+&lt;span class="normal"&gt;44&lt;/span&gt;
+&lt;span class="normal"&gt;45&lt;/span&gt;
+&lt;span class="normal"&gt;46&lt;/span&gt;
+&lt;span class="normal"&gt;47&lt;/span&gt;
+&lt;span class="normal"&gt;48&lt;/span&gt;
+&lt;span class="normal"&gt;49&lt;/span&gt;
+&lt;span class="normal"&gt;50&lt;/span&gt;
+&lt;span class="normal"&gt;51&lt;/span&gt;
+&lt;span class="normal"&gt;52&lt;/span&gt;
+&lt;span class="normal"&gt;53&lt;/span&gt;
+&lt;span class="normal"&gt;54&lt;/span&gt;
+&lt;span class="normal"&gt;55&lt;/span&gt;
+&lt;span class="normal"&gt;56&lt;/span&gt;
+&lt;span class="normal"&gt;57&lt;/span&gt;
+&lt;span class="normal"&gt;58&lt;/span&gt;
+&lt;span class="normal"&gt;59&lt;/span&gt;
+&lt;span class="normal"&gt;60&lt;/span&gt;
+&lt;span class="normal"&gt;61&lt;/span&gt;
+&lt;span class="normal"&gt;62&lt;/span&gt;
+&lt;span class="normal"&gt;63&lt;/span&gt;
+&lt;span class="normal"&gt;64&lt;/span&gt;
+&lt;span class="normal"&gt;65&lt;/span&gt;
+&lt;span class="normal"&gt;66&lt;/span&gt;
+&lt;span class="normal"&gt;67&lt;/span&gt;
+&lt;span class="normal"&gt;68&lt;/span&gt;
+&lt;span class="normal"&gt;69&lt;/span&gt;
+&lt;span class="normal"&gt;70&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 1. You define a language&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-language&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;V&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;integer&lt;/span&gt; &lt;span class="n"&gt;boolean&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;V&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;τ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;Int&lt;/span&gt; &lt;span class="n"&gt;Bool&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;τ&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/type-ref.html#(form._((lib._typed-racket/base-env/base-types-extra..rkt)._~e2~86~92))" style="color: inherit"&gt;→&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;ρ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;V&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Γ&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;::=&lt;/span&gt; &lt;span class="n"&gt;variable-not-otherwise-mentioned&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="kd"&gt;#:binding-forms&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="kd"&gt;#:refers-to&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 2. You define a few metafunctions&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-metafunction&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/function-contracts.html#(form._((lib._racket/contract/base..rkt)._-~3e))" style="color: inherit"&gt;-&amp;gt;&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt;
+  &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;Λ&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-metafunction&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="n"&gt;closure-&amp;gt;env&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/function-contracts.html#(form._((lib._racket/contract/base..rkt)._-~3e))" style="color: inherit"&gt;-&amp;gt;&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;
+  &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;env&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;ρ&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 3. You try defining a judgment form . . .&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;define-judgment-form&lt;/span&gt; &lt;span class="n"&gt;STLC&lt;/span&gt;
+  &lt;span class="kd"&gt;#:mode&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;I&lt;/span&gt; &lt;span class="n"&gt;O&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="kd"&gt;#:contract&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Var&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M_0&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M_1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-App&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;M_0&lt;/span&gt; &lt;span class="n"&gt;M_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="n"&gt;τ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;M&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/sets.html#(def._((lib._racket/set..rkt)._set-remove))" style="color: inherit"&gt;set-remove&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="n"&gt;x_0&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Λ&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Integer&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;integer_0&lt;/span&gt; &lt;span class="p"&gt;())]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Boolean&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;boolean_0&lt;/span&gt; &lt;span class="p"&gt;())]&lt;/span&gt;
+  &lt;span class="p"&gt;[&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-&amp;gt;lam&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;Λ&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;,&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&lt;a href="http://docs.racket-lang.org/reference/sets.html#(def._((lib._racket/set..rkt)._set-subtract))" style="color: inherit"&gt;set-subtract&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_0&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+   &lt;span class="n"&gt;---&lt;/span&gt; &lt;span class="n"&gt;FVS-Closure&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_2&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))])&lt;/span&gt;
+
+
+&lt;span class="c1"&gt;;; -----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class="c1"&gt;;; 4. You test the judgment, and it mysteriously fails&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;judgment-holds&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;free-variables&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/lambda.html#(form._((lib._racket/private/base..rkt)._~ce~bb))" style="color: inherit"&gt;λ&lt;/a&gt;&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="n"&gt;&lt;a href="http://docs.racket-lang.org/ts-reference/special-forms.html#(form._((lib._typed-racket/base-env/prims..rkt)._~3a))" style="color: inherit"&gt;:&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;Int&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;())&lt;/span&gt;
+                  &lt;span class="p"&gt;()))&lt;/span&gt;
+&lt;span class="c1"&gt;;; ==&amp;gt; #f&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;WHAT HAPPENED??!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem is this line in the &lt;code&gt;FVS-Closure&lt;/code&gt; rule:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;which checks that the list &lt;code&gt;(closure-env C)&lt;/code&gt; (whose first element is the  symbol &lt;code&gt;closure-env&lt;/code&gt; and second element is the symbol &lt;code&gt;C&lt;/code&gt;) matches the pattern  &lt;code&gt;((x_1 τ_1) ...)&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Right.&lt;/p&gt;
+
+&lt;p&gt;Of course you meant to apply the metafunction &lt;code&gt;closure-&amp;gt;env&lt;/code&gt; but made a typo. And since the syntax for metafunction application is the same as the syntax  for building a list, Redex doesn&amp;rsquo;t report an error.&lt;/p&gt;
+
+&lt;p&gt;We can fix this code with the new &lt;a href="https://www.cs.utah.edu/plt/snapshots/current/doc/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._mf-apply%29%29"&gt;&lt;code&gt;mf-apply&lt;/code&gt;&lt;/a&gt; keyword (available on &lt;a href="https://github.com/racket/racket"&gt;GitHub&lt;/a&gt; or in a &lt;a href="https://www.cs.utah.edu/plt/snapshots/"&gt;snapshot build&lt;/a&gt;):&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Running &lt;code&gt;raco make&lt;/code&gt; now gives a compile-time error.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  term: expected a previously defined metafunction
+    at: closure-env
+    in: (mf-apply closure-env C)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id="but-i-still-need-to-type-mf-apply-correctly"&gt;But I still need to type &lt;code&gt;mf-apply&lt;/code&gt; correctly!&lt;/h3&gt;
+
+&lt;p&gt;Leif Andersen says:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;I should point out that this has the issue of you still need to type &lt;code&gt;mf-apply&lt;/code&gt; correctly. ;)&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;That is, if you accidentally write:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;   &lt;span class="n"&gt;....&lt;/span&gt;
+   &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;where&lt;/span&gt; &lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;x_1&lt;/span&gt; &lt;span class="n"&gt;τ_1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-applu&lt;/span&gt; &lt;span class="n"&gt;closure-env&lt;/span&gt; &lt;span class="n"&gt;C&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+   &lt;span class="n"&gt;....&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then the code compiles, thinking you intend to match a list of three elements  against the pattern.&lt;/p&gt;
+
+&lt;p&gt;Never fear, there are at least two solutions.&lt;/p&gt;
+
+&lt;h4 id="solution-1-rename-mf-apply"&gt;Solution 1: rename &lt;code&gt;mf-apply&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;A simple fix is to rename the &lt;code&gt;mf-apply&lt;/code&gt; keyword to something shorter (and harder to mis-type):&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;
+         &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._rename-in))" style="color: inherit"&gt;rename-in&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;
+           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;MF&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4 id="solution-2-the-mf-apply-lang-extension"&gt;Solution 2: the &lt;code&gt;mf-apply&lt;/code&gt; lang extension&lt;/h4&gt;
+
+&lt;p&gt;A fancier solution is to install the &lt;code&gt;mf-apply&lt;/code&gt; meta-language.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  $ raco pkg install mf-apply&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This language updates the &lt;a href="http://docs.racket-lang.org/reference/readtables.html#%28tech._readtable%29"&gt;&lt;em&gt;readtable&lt;/em&gt;&lt;/a&gt;  to interpret S-expressions that begin with &lt;code&gt;#{&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="ss"&gt;f&lt;/span&gt; &lt;span class="ss"&gt;x&lt;/span&gt; &lt;span class="ss"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;as a metafunction application:&lt;/p&gt;
+
+&lt;div class="brush: racket"&gt;
+ &lt;table class="sourcetable"&gt;
+  &lt;tbody&gt;
+   &lt;tr&gt;
+    &lt;td class="linenos"&gt;
+     &lt;div class="linenodiv"&gt;
+      &lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
+&lt;span class="normal"&gt;2&lt;/span&gt;
+&lt;span class="normal"&gt;3&lt;/span&gt;
+&lt;span class="normal"&gt;4&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;
+    &lt;td class="code"&gt;
+     &lt;div class="source"&gt;
+      &lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;#lang &lt;/span&gt;&lt;span class="nn"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;racket&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/require.html#(form._((lib._racket/private/base..rkt)._require))" style="color: inherit"&gt;require&lt;/a&gt;&lt;/span&gt; &lt;span class="n"&gt;redex&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;term&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mf-apply&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="k"&gt;&lt;a href="http://docs.racket-lang.org/reference/stx-patterns.html#(form._((lib._racket/private/stxcase-scheme..rkt)._......))" style="color: inherit"&gt;...&lt;/a&gt;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You the programmer only needs to write the &lt;code&gt;#{....}&lt;/code&gt; syntax.&lt;/p&gt;
+
+&lt;p&gt;Source code is on GitHub:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/bennn/mf-apply"&gt;https://github.com/bennn/mf-apply&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;(It&amp;rsquo;s the simplest lang-extension I know of)&lt;/p&gt;
+
+&lt;h2 id="what-is-plt-redex"&gt;What is PLT Redex?&lt;/h2&gt;
+
+&lt;p&gt;PLT Redex is a library for semantics engineering. One of my favorite Redex features is it implements capture-avoiding substitution  and α-equivalence for any language with a &lt;code&gt;#:binding-forms&lt;/code&gt; specification  (such as STLC, above).&lt;/p&gt;
+
+&lt;p&gt;You can read more:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;in the &amp;ldquo;Amb&amp;rdquo; tutorial: &lt;a href="http://docs.racket-lang.org/redex/tutorial.html"&gt;http://docs.racket-lang.org/redex/tutorial.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;in the &amp;ldquo;Long Tutorial&amp;rdquo;: &lt;a href="http://docs.racket-lang.org/redex/redex2015.html"&gt;http://docs.racket-lang.org/redex/redex2015.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;in the Redex reference manual: &lt;a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html"&gt;http://docs.racket-lang.org/redex/The_Redex_Reference.html&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;on the PLT Redex website: &lt;a href="https://redex.racket-lang.org/"&gt;https://redex.racket-lang.org/&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;on GitHub: &lt;a href="https://github.com/racket/redex"&gt;https://github.com/racket/redex&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;And if you act now, you can become a &lt;em&gt;Redexan&lt;/em&gt; between July 10 and July 14  at the summer school in Salt Lake City, Utah:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://summer-school.racket-lang.org/2017/"&gt;http://summer-school.racket-lang.org/2017/&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry></feed>

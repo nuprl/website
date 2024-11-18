@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>PRL Blog (page 4)</title>
+    <meta name="description" content="PRL Blog (page 4)">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="history, lectures, clojurescript, announcement, Ř JIT, all, Author: Max New, category theory, conference, Author: Sam Caldwell, Author: Zeina Migeed, Author: Gabriel Scherer, Author: Jonathan Schuster, array language, constructions, ocaml, Author: Aaron Weiss, compilers, language implementation, statistics, eventual consistency, dynamic typing, Author: Jan Vitek, r, types, transient, reduction, language, Author: Dustin Jamner, package, coq, definitions, final encoding, interactive syntax, Author: Olivier Flückiger, offsite, NEPLS, Emacs, ghc, haskell, Author: Rob Kleffner, Scribble, Author: William J. Bowman, Author: Milo Davis, dawn of the digital era, clojure, lambda, instrumentation, Author: Daniel Patterson, Author: Li-Yao Xia, 1st blog post, higher-order contracts, compiler correctness, lang-extension, gradual typing, ICFP, castle, garbage collection, Author: Kevin Clancy, FFI, typed racket, Takikawa constant, Author: Julia Belyakova, closure conversion, tutorial, racket, beta, complete monitoring, performance, Author: Asumu Takikawa, Author: Matt Kolosick, Author: Tony Garnock-Jones, pliss, Author: Leif Andersen, galois connection, benchmarking, about, Racket, PL Junior, PLT Redex, coYoneda, extended abstract, Author: Stephen Chang, Gradual Typing, tutorials, PI meeting, Author: Ben Greenman, adjunction, Author: Alexi Turcotte, dsl, Author: Ming-Ho Yee, Author: Justin Slepak, monotonicity, windows, latency, event, observational equivalence, scope, semantics, CRDTs, bugs, dissertation, math, HOPL, System Administration, migratory typing, icfp, Yoneda, books, calculus, Author: Olek Gierczak, proceedings, Author: Artem Pelenitsyn, visr, turnstile, lost time, dear diary, java, Author: Ben Chung">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/index-4.html">
+
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h2><a href='/blog/2017/09/25/plt-redex-faq/'>PLT Redex FAQ</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-09-25" pubdate="true">2017-09-25</time> :: <span class="tags"><a href="/blog/tags/tutorial.html">tutorial</a>, <a href="/blog/tags/PLT-Redex.html">PLT Redex</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a>, <a href="/blog/tags/Author-Sam-Caldwell.html">Sam Caldwell</a></span></p>
+  </header>
+
+<p>A short guide to Redex concepts, conventions, and common mistakes.</p>
+  <footer>
+    <a href='/blog/2017/09/25/plt-redex-faq/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/'><a href="https://williamjbowman.com/blog/2017/08/29/why-am-i-going-to-icfp-2017/">Why am I going to ICFP 2017? (cross-post)</a></a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-08-29" pubdate="true">2017-08-29</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-William-J-Bowman.html">William J. Bowman</a></span></p>
+  </header>
+
+
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/08/28/closure-conversion-as-coyoneda/'>Closure Conversion as CoYoneda</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-08-28" pubdate="true">2017-08-28</time> :: <span class="tags"><a href="/blog/tags/Yoneda.html">Yoneda</a>, <a href="/blog/tags/coYoneda.html">coYoneda</a>, <a href="/blog/tags/category-theory.html">category theory</a>, <a href="/blog/tags/compilers.html">compilers</a>, <a href="/blog/tags/closure-conversion.html">closure conversion</a>, <a href="/blog/tags/math.html">math</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Max-New.html">Max New</a></span></p>
+  </header>
+
+<p>The continuation-passing style transform (cps) and closure conversion (cc) are two techniques widely employed by compilers for functional languages, and have been studied extensively in the compiler correctness literature. Interestingly, <em>typed</em> versions of each can be proven to be equivalence preserving using polymorphic types and parametric reasoning, as shown by my advisor Amal Ahmed and Matthias Blume (<a href="http://www.ccs.neu.edu/home/amal/papers/epc.pdf">cps</a>,<a href="http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf">cc</a>).</p>
+
+<p>In fact, there is something like a duality between the two proofs, cps uses a universal type, closure-conversion uses an existential type and the isomorphism proofs use analogous reasoning. It turns out that both are instances of general theorems in category theory: the polymorphic cps isomorphism can be proven using the Yoneda lemma, and the polymorphic closure-conversion isomorphism can be proven using a less well known theorem often called the <a href="https://ncatlab.org/nlab/show/co-Yoneda+lemma">*co*Yoneda lemma</a>.</p>
+
+<p>The connection between cps and the Yoneda embedding/lemma is detailed elsewhere in the <a href="http://www.cs.ox.ac.uk/people/daniel.james/iso/iso.pdf">literature</a> and blogosphere (<a href="https://golem.ph.utexas.edu/category/2008/01/the_continuation_passing_trans.html">ncafe</a>, <a href="https://bartoszmilewski.com/2015/09/01/the-Yoneda-lemma/">Bartosz</a>), so I&rsquo;ll focus on closure conversion here. Also, I&rsquo;ll try to go into some detail in showing how the &ldquo;usual&rdquo; version of Yoneda/coYoneda (using the category of sets) relates to the appropriate version for compilers.</p>
+
+<p>I&rsquo;ll assume some background knowledge on closure conversion and parametricity below. Fortunately, Matt Might has a <a href="http://matt.might.net/articles/closure-conversion/">nice blog post explaining untyped closure conversion</a>.</p>
+  <footer>
+    <a href='/blog/2017/08/28/closure-conversion-as-coyoneda/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/'>Gradual Typing Across the Spectrum, part II</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-08-22" pubdate="true">2017-08-22</time> :: <span class="tags"><a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/PI-meeting.html">PI meeting</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Last week, Northeastern hosted a PI meeting for the <a href="http://prl.ccs.neu.edu/gtp/">Gradual Typing Across the  Spectrum</a> NSF grant. The meeting was made of 20+ researchers from four institutions,  and 12 technical talks. Schedule:</p>
+
+<p><a href="http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html">http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html</a></p>
+
+<p>A common thread among the talks was the question:  <em>how to convert a research idea into a tool for software developers?</em></p>
+  <footer>
+    <a href='/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/'>Reviews and author responses: we should stop asking for 500-word responses</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-08-13" pubdate="true">2017-08-13</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>This year I reviewed many ICFP submissions, and got to be on the receiving end of equally many author responses (also sometimes called, somewhat combatively, rebuttals). I found that there was a large difference between the official written advice on author responses and what I, as a reviewer reading the responses, found effective. In particular, I now believe that limiting yourself to 500 words should strongly be avoided &mdash; we should even stop giving that advice.</p>
+  <footer>
+    <a href='/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/07/19/trees-1973/'>Trees, 1973</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-07-19" pubdate="true">2017-07-19</time> :: <span class="tags"><a href="/blog/tags/history.html">history</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>From the PRL archives:</p>
+
+<blockquote>
+ <p>I think that I shall never see a matrix lovely as a tree. &mdash; <a href="/img/gls-trees-poem-1979.pdf"><em>Trees</em></a>, by Guy L. Steele Jr., MIT, 1973</p></blockquote>
+  <footer>
+    <a href='/blog/2017/07/19/trees-1973/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/07/17/continuations/'>Continuations</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-07-17" pubdate="true">2017-07-17</time> :: <span class="tags"><a href="/blog/tags/history.html">history</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>From the PRL archives:</p>
+
+<blockquote>
+ <p>It was also a concept that grabbed my mind, ran off with it, and only returned it after substantial renovation and expansion. &mdash; <a href="/img/nall-continuations-1983.pdf"><em>Continuations</em></a> by Alan Nall, Indiana University, 1983</p></blockquote>
+  <footer>
+    <a href='/blog/2017/07/17/continuations/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/06/24/quotes-and-stories-from-turing-50/'>Quotes and Stories from &ldquo;Turing 50&rdquo;</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-06-24" pubdate="true">2017-06-24</time> :: <span class="tags"><a href="/blog/tags/dear-diary.html">dear diary</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>The ACM recently hosted <a href="https://www.acm.org/turing-award-50">a celebration of 50 years of the A.M. Turing award</a>. These are some notes and thoughts from the event, including how Fred Brooks once rented a bus, Don Knuth&rsquo;s outrageous implementation of batch processing, and Judea Pearl&rsquo;s theory of homo sapiens.</p>
+  <footer>
+    <a href='/blog/2017/06/24/quotes-and-stories-from-turing-50/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/06/16/spring-2017-pl-junior-retrospective/'>Spring 2017 PL Junior Retrospective</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-06-16" pubdate="true">2017-06-16</time> :: <span class="tags"><a href="/blog/tags/PL-Junior.html">PL Junior</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Chung.html">Ben Chung</a>, <a href="/blog/tags/Author-Milo-Davis.html">Milo Davis</a>, <a href="/blog/tags/Author-Ming-Ho-Yee.html">Ming-Ho Yee</a>, <a href="/blog/tags/Author-Matt-Kolosick.html">Matt Kolosick</a>, <a href="/blog/tags/Author-Dustin-Jamner.html">Dustin Jamner</a>, <a href="/blog/tags/Author-Artem-Pelenitsyn.html">Artem Pelenitsyn</a>, <a href="/blog/tags/Author-Julia-Belyakova.html">Julia Belyakova</a>, <a href="/blog/tags/Author-Sam-Caldwell.html">Sam Caldwell</a></span></p>
+  </header>
+
+<p>The <a href="http://prl.ccs.neu.edu/seminars.html">PL Junior Seminar</a> is for beginning PhD and interested undergrad and masters students to understand the foundations of programming languages research. It serves to fill in background knowledge and get up to speed with different areas of PL research.</p>
+
+<p>For the spring 2017 instance of PL Junior we chose program synthesis, the sequent calculus, and logic programming as topics we wanted to learn more about. We also did two group paper readings for Luca Cardelli&rsquo;s <a href="http://www.lucacardelli.name/Papers/TypefulProg.pdf">Typeful Programming</a> and Alan Kay&rsquo;s <a href="http://worrydream.com/EarlyHistoryOfSmalltalk/">Early History of Smalltalk</a>. At the same time, we changed up the format from the previous semester.</p>
+  <footer>
+    <a href='/blog/2017/06/16/spring-2017-pl-junior-retrospective/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/06/09/-bridging-the-system-configuration-gap-cross-post-https-aaronweiss-us-posts-2017-06-05-bridging-the-system-configuration-gap-html/'><a href="https://aaronweiss.us/posts/2017-06-05-bridging-the-system-configuration-gap.html">Bridging the System Configuration Gap (Cross-Post)</a></a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-06-09" pubdate="true">2017-06-09</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Aaron-Weiss.html">Aaron Weiss</a></span></p>
+  </header>
+
+
+</article>
+<footer>
+ <ul class="pagination">
+  <li class="page-item"><a class="page-link" href="/blog/index-3.html">
+    <quote>&larr;</quote></a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index.html">1</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-2.html">2</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-3.html">3</a></li>
+  <li class="page-item active"><a class="page-link" href="/blog/index-4.html">4</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-5.html">5</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-6.html">6</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-7.html">7</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-8.html">8</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-9.html">9</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/index-5.html">
+    <quote>&rarr;</quote></a></li></ul></footer>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

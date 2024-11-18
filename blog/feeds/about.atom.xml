@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'about'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/about.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/about.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-about-html</id>
+ <updated>2016-04-29T14:50:29Z</updated>
+ <entry>
+  <title type="text">Welcome to the PRL blog</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/04/29/welcome-to-the-prl-blog/?utm_source=about&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-04-29-welcome-to-the-prl-blog</id>
+  <published>2016-04-29T14:50:29Z</published>
+  <updated>2016-04-29T14:50:29Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;Greetings, ground rules, hopes, dreams, and notes for contributors. Welcome aboard.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Earlier this year, the Programming Research Lab (PRL) was blessed with a new  postdoc: &lt;a href="http://gallium.inria.fr/~scherer/"&gt;Gabriel Scherer&lt;/a&gt; from INRIA  Paris-Rocquencourt, France. Ever since Gabriel arrived things have been changing here in Boston. We now have homemade bread on the first Tuesday of every month,  &lt;a href="https://en.wikipedia.org/wiki/Orange_flower_water"&gt;orange water&lt;/a&gt; crepes  after holidays, and someone new to go out for bubble tea with in between. All that and an enthusiastic colleague and researcher.&lt;/p&gt;
+
+&lt;p&gt;In his spare time between lobbying the CS department for an espresso machine and  building multi-language compilers, Gabriel is also a champion of open access. Hence this blog, a window into the life and times of PRL students made  possible by Gabriel&amp;rsquo;s tactical prodding and careful delegation of responsibilities. Anything you might read about in a rejected conference paper or hear over  coffee is fair game here: the goal is to give the wide world a glimpse of  our lab and people.&lt;/p&gt;
+
+&lt;h2 id="for-contributors"&gt;For Contributors&lt;/h2&gt;
+
+&lt;p&gt;These pages are generated using Greg Hendershott&amp;rsquo;s &lt;a href="https://github.com/greghendershott/frog"&gt;frog&lt;/a&gt;  static website generator. To create a new post:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Clone or fork the &lt;a href="https://github.com/nuprl/nuprl.github.io"&gt;nuprl.github.io&lt;/a&gt; repository&lt;/li&gt;
+ &lt;li&gt;Check out a new git branch for your post&lt;/li&gt;
+ &lt;li&gt;Run &lt;code&gt;cd blog; raco frog -n "TITLE"&lt;/code&gt; to build a template for a new post&lt;/li&gt;
+ &lt;li&gt;Add content to the new markdown file (under &lt;code&gt;_src/posts&lt;/code&gt;)&lt;/li&gt;
+ &lt;li&gt;Rebuild the blog with &lt;code&gt;raco frog -b&lt;/code&gt;&lt;/li&gt;
+ &lt;li&gt;Run &lt;code&gt;cd ..; raco frog -p&lt;/code&gt; to start a web server and view your changes at &lt;a href="http://localhost:3000/"&gt;http://localhost:3000/&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;Send a pull request to the &lt;a href="https://github.com/nuprl/nuprl.github.io"&gt;nuprl.github.io&lt;/a&gt; repo&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;An open pull request is the best place to ask questions about the formatting or content of a post. We promise that within a few days of opening a PR someone with push access will reply with feedback or merge the request.&lt;/p&gt;
+
+&lt;p&gt;Contributions are open to anyone: current labmates, alumni, friends from the  Racket mailing list, and even recovering C programmers. One should have a strong connection to Northeastern or our research, but  even that is not strictly necessary. Visitors are always welcome to the PRL.&lt;/p&gt;</content></entry></feed>

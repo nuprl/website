@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'compiler correctness'</title>
+  <description>PRL Blog: Posts tagged 'compiler correctness'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/compiler-correctness.html</link>
+  <lastBuildDate>Tue, 11 Oct 2016 17:41:16 UT</lastBuildDate>
+  <pubDate>Tue, 11 Oct 2016 17:41:16 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>CompCert Overview</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/10/11/compcert-overview/?utm_source=compiler-correctness&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-10-11-compcert-overview</guid>
+   <pubDate>Tue, 11 Oct 2016 17:41:16 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;If you are interested in learning about the &lt;em&gt;internals&lt;/em&gt; of the CompCert C compiler but would rather not read its source code, this post is for you.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;(This is a public service announcement.)&lt;/p&gt;
+
+&lt;p&gt;Last fall, I gave a short lecture on the 2006 paper &lt;a href="http://gallium.inria.fr/~xleroy/publi/compiler-certif.pdf"&gt;&amp;ldquo;Formal Certification of a Compiler Back-End&amp;rdquo;&lt;/a&gt; by Xavier Leroy for Amal Ahmed&amp;rsquo;s &lt;a href="http://www.ccs.neu.edu/home/amal/course/7480-f15/"&gt;&amp;ldquo;Special Topics in Programming Languages&amp;rdquo;&lt;/a&gt; class. Rather than present CompCert as it existed in 2006, I read the documentation and source code for &lt;a href="https://github.com/AbsInt/CompCert/releases/tag/v2.5"&gt;CompCert 2.5&lt;/a&gt; (released June 2015). The lecture then focused on three questions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;What subset of C does CompCert handle, today?&lt;/li&gt;
+ &lt;li&gt;What optimizing passes does CompCert perform?&lt;/li&gt;
+ &lt;li&gt;What is the &amp;ldquo;correctness theorem&amp;rdquo; for CompCert, and what does this theorem mean?&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;My notes for the lecture give a &amp;ldquo;mid-level&amp;rdquo; summary of the compiler &amp;mdash; there are more details than you&amp;rsquo;ll find in papers, but it&amp;rsquo;s (hopefully!) easier to read than the source code. The document is also hyperlinked to locations in the &lt;a href="https://github.com/AbsInt/CompCert"&gt;CompCert GitHub repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here is the document:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; &lt;a href="http://www.ccs.neu.edu/home/types/resources/notes/compcert/cc.pdf"&gt;http://www.ccs.neu.edu/home/types/resources/notes/compcert/cc.pdf&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;And here is a table-of-contents:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Motivation, details of the source and target languages, high-level guarantees&lt;/li&gt;
+ &lt;li&gt;Compiler pipeline, optimizing passes, links intermediate language grammars and Coq theorems&lt;/li&gt;
+ &lt;li&gt;Background on compiler correctness&lt;/li&gt;
+ &lt;li&gt;CompCert&amp;rsquo;s correctness, properties that CompCert does &lt;strong&gt;not&lt;/strong&gt; guarantee&lt;/li&gt;
+ &lt;li&gt;Recent (2006 &amp;ndash; 2015) work in the CompCert ecosystem&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;The document ends with a short description of two other research projects that have grown into &amp;ldquo;industry software&amp;rdquo; and a link to Xaver Leroy&amp;rsquo;s &lt;a href="https://www.cs.uoregon.edu/research/summerschool/summer12/curriculum.html"&gt;OPLSS lectures on certified compilers&lt;/a&gt;. Enjoy!&lt;/p&gt;</description></item></channel></rss>
