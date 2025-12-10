@@ -7,9 +7,13 @@
 @;   - quality : as low as possible
 @;
 @;  To change size with imagemagick:
+@;   `magick ORIGINAL-FILENAME.jpg -resize 180x180 NEW-FILENAME.jpg`
+@;  For old imagemagick (<= IM6):
 @;   `convert -resize 180x180 ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
 @;
 @;  To change quality with imagemagick:
+@;   `magick ORIGINAL-FILENAME.jpg -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB NEW-FILENAME.jpg`
+@;  For old imagemagick (<= IM6):
 @;   `convert -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace RGB ORIGINAL-FILENAME.jpg NEW-FILENAME.jpg`
 @;  (Try replacing '85' with a smaller number. Go lower until it looks bad!)
 
@@ -140,17 +144,6 @@
             I work on problems involving semantics of programming languages, including advanced type systems for programs that manipulate memory, correct and secure compilation, gradual typing, and language interoperability.  My prior work has shown how to scale the logical relations proof method to realistic languages.  This technique has been used in numerous contexts, e.g., to prove compiler correctness, to verify concurrent code, to establish guarantees provided by type systems for confidentiality or differential privacy.  My present focus is on how to build verified compilers that ensure safe linking of code compiled from different programming languages.
           }
 
-          @person[#:name "Ben Lerner"
-                  #:title "Associate Teaching Professor"
-                  #:e-mail "blerner@ccs.neu.edu"
-                  #:history @list[
-                    "Joined Northeastern, 2014"
-                    "PhD, University of Washington, 2011"
-                  ]
-                  #:img "ben_lerner.jpg"]{
-            I have worked on problems in web programming semantics, including designing and analyzing extensibility mechanisms for browsers, studying the interactions between extensions and each other or with intended browser behavior.  With colleagues at Brown, I have been helping to design and implement a language that focuses on the linguistic support needed for introductory-level pedagogy.
-          }
-
           @person[#:name "Jan Vitek"
                   #:title "Professor"
                   #:e-mail "vitekj@me.com"
@@ -270,31 +263,65 @@ other things, I am interested in language-based approaches for giving
 state-of-the-art security guarantees to high-performance, cryptographic
 software.
           }
-
-          @person[#:name "Ryan Doenges"
+                                   
+          @person[#:name "Alex Boruch⁠-⁠Gruszecki"
                   #:title "Postdoc"
-                  #:e-mail "r.doenges@northeastern.edu"
-                  #:website "http://ryandoeng.es"
+                  #:e-mail "research@abgru.me"
+                  #:website "https://abgru.me/"
                   #:history @list[
-                                  "Joined Northeastern, 2023"
-                                  "PhD, Cornell University, 2023"
-                                  "BS, University of Washington, 2017"]
-                  #:img "ryan_doenges.jpg"]{I study computer systems using tools from programming languages and formal verification, especially domain-specific languages (DSLs). My PhD introduced mechanized semantics and certified translation validators for P4, a networking DSL. My postdoctoral research focuses on DSLs for hardware. }
+                  "Joined Northeastern, 2025"
+                  "PhD, EPFL"
+                  ]
+                  #:img "alex_bg.jpg"]{
+            I think AI-based tools are the future of software development, and I’m investigating how our understanding of programming languages can help us build that future.
+
+Currently a postdoc in Arjun Guha’s group at the Northeastern University.
+
+In a previous life, I was interested in building strong theoretical foundations for pragmatic programming language features.
+During my PhD in Martin Odersky’s lab my main focus was on the theory of Capture Tracking for Scala.
+Also, I worked on SuperF, a type inference algorithm for System F and added subtyping reconstruction, a novel object-oriented take on GADTs,
+to the Scala compiler.
+          }
+
+          @person[#:name "Jialu Bao"
+                  #:title "Postdoc"
+                  #:e-mail "jialu8ao@gmail.com"
+                  #:website "https://baojia.lu/about"
+                  #:history @list[
+                  "Joined Northeastern, 2025"
+                  "PhD, Cornell University, 2025"
+                  "B.S., Cornell University, 2019"
+                  ]
+                  #:img "jialu_bao.jpg"]{
+            I work on making it easier to program with probability. 
+My PhD focused on developing probabilistic separation logic for analyzing randomized algorithms by leveraging probabilistic independence and dependencies. As a postdoctoral researcher, I am working on efficient probabilistic inference techniques with formal guarantees. 
+          }
+                                               
+          @person[#:name "Robert Schenck"
+                  #:title "Postdoc"
+                  #:e-mail "r@bert.lol"
+                  #:website "https://rschenck.com/"
+                  #:history @list[
+                  "Joined Northeastern, 2025"
+                  "PhD, DIKU"
+                  "MS, International Max Planck Research School for Computer Science"
+                  "BA, Brown University"
+                  ]
+                  #:img "robert_schenck.jpg"]{
+            I spent my PhD working on a higher-order functional array language
+(Futhark). At Northeastern, I work on a higher-order functional array
+language (Remora). In the future, I hope to work on higher-order
+functional array languages.
+          }
+
+                    
         }
 
         @div[class: "pn-separator-img"]{
-           @h2{Students}}
+           @h2{Students}
+        }
 
         @div[class: "container"]{
-
-          @person[#:name "Michael Ballantyne"
-                  #:title "Advisor: Matthias Felleisen"
-                  #:e-mail "michael.ballantyne@gmail.com"
-                  #:website "http://mballantyne.net"
-                  #:history @list["Joined Northeastern, 2017"]
-                  #:img "ballantyne.jpg"]{
-            I find delight in programming languages that allow extension of their notation, syntactic forms, type systems, runtime behaviors, and development environments. My research aims to build the foundations needed to bring these extensibility features into widespread use.
-          }
 
           @person[#:name "Olek Gierczak"
                   #:title "Advisor: Amal Ahmed"
@@ -325,17 +352,6 @@ software.
               I research probabilistic programming languages, specifically designing languages that let users fine-tune the (statistical) inference process.
           }
 
-          @person[#:name "Nate Yazdani"
-                  #:title "Advisor: Amal Ahmed"
-                  #:e-mail "nyazdani@ccs.neu.edu"
-                  #:website "https://nateyazdani.github.io/"
-                  #:history @list[
-                    "Joined Northeastern, 2019"
-                    "MS, University of Washington, 2019"]
-                  #:img "nate_yazdani.jpg"]{
-             I like types, proofs, and occasionally programs.
-          }
-
           @person[#:name "Andrew Wagner"
                   #:title "Advisor: Amal Ahmed"
                   #:e-mail "ahwagner@ccs.neu.edu"
@@ -344,29 +360,6 @@ software.
                     "BS, Brown University, 2020"]
                   #:img "andrew_wagner.jpg"]{
             I like to design domain-specific languages with strong guarantees, which are usually supported by rich type systems and formal methods. My current research is on language-based security.
-          }
-
-          @person[#:name "Katherine Hough"
-                  #:title "Advisor: Jonathan Bell"
-                  #:e-mail "hough.k@northeastern.edu"
-                  #:history @list[
-                    "Joined Northeastern, 2020"
-                    "MS, George Mason University"
-                    "BS, George Mason University"]
-                  #:img "Katherine_Hough.png"]{
-            My research focuses on helping developers identify and correct software bugs and vulnerabilities.
-          }
-
-          @person[#:name "Donald Pinckney"
-                  #:title "Advisor: Arjun Guha"
-                  #:e-mail "donald_pinckney@icloud.com"
-                  #:website "https://donaldpinckney.com"
-                  #:history @list[
-                    "Joined Northeastern, 2020"
-                    "MS, UMass Amherst"
-                    "BS, UC Davis"]
-                  #:img "donald_pinckney.jpg"]{
-            I enjoy working on formalizing semantics of systems so as to uncover surprising behavior, and fix related bugs. Recently I'm working on understanding the semantics of package managers.
           }
 
           @person[#:name "Michelle Thalakottur"
@@ -397,26 +390,6 @@ software.
                     "Joined Northeastern, 2021"]
                   #:img "john_li.jpg"]{
             I like logic, semantics, and interactive theorem proving.
-          }
-
-          @person[#:name "Satyajit Gokhale"
-                  #:title "Advisor: Frank Tip"
-                  #:e-mail "gokhale.sa@northeastern.edu"
-                  #:history @list[
-                    "Joined PRL, 2021"
-                    "MS, Northeastern University"]
-                  #:img "satyajit_gokhale.jpg"]{
-            I am interested in program analysis and security. I am currently working on static analysis for JavaScript, and security in PLCs.
-          }
-
-          @person[#:name "James Perretta"
-                  #:title "Advisors: Jonathan Bell and Arjun Guha"
-                  #:e-mail "perretta.j@northeastern.edu"
-                  #:history @list[
-                    "Joined Northeastern, 2021"
-                    "MS, University of Michigan"]
-                  #:img "james_perretta.jpg"]{
-            I completed my master's degree at University of Michigan, where I also developed an automated grading system that is used by over 5000 students per semester. My research interests lie at the intersection of PL and Software Engineering, and my current work is focused on mutation testing.
           }
 
           @person[#:name "Yangtian Zi"
@@ -454,17 +427,6 @@ software.
                     "Joined Northeastern, 2023"]
                   #:img "Farideh_khalili.jpg"]{
             I'm interested in program analysis and optimization.
-          }
-
-          @person[#:name "Liam DeVoe"
-                  #:title "Advisor: Jonathan Bell"
-                  #:e-mail "devoe.l@northeastern.edu"
-                  #:history @list[
-                      "Joined Northeastern, 2023"
-                      "B.S. University of Maryland"]
-                  #:website "https://tybug.github.io/"
-                  #:img "liam_devoe.jpg"]{
-            I'm interested in property based testing, fuzzing, and testing of all kinds.
           }
 
           @person[#:name "Shubh Agrawal"
@@ -509,17 +471,69 @@ software.
             I primarily work on compilers, trying to make programs run fast, and I am also interested in adjacent fields like Programming Languages.
 Currently working on a compiler that produces parallel GPU code, so developers don't have to use C++ and think about hardware
           }
-           @person[#:name "Luis Garcia"
-                   #:title "Advisor: Chris Martens"
-                   #:e-mail "garcia.lui@northeastern.edu"
-                   #:history @list[
+          @person[#:name "Luis Garcia"
+                  #:title "Advisor: Chris Martens"
+                  #:e-mail "garcia.lui@northeastern.edu"
+                  #:history @list[
                        "Joined Northeastern, 2022"
-                       ]
-                   #:website "https://himluis.com"
-                   #:img "luis_garcia.jpg"
-                   ]{
+                  ]
+                  #:website "https://himluis.com"
+                  #:img "luis_garcia.jpg"]{
              I study linear logic and its relationship to other formalisms like planning.
-           }
+          }
+                                          
+          @person[#:name "Michael Zhang"
+                  #:title "Advisor: Joshua Gancher"
+                  #:e-mail "zhang.michael3@northeastern.edu"
+                  #:history @list[
+                       "Joined Northeastern, 2025"
+                  ]
+                  #:website "https://mzhang.io/"
+                  #:img "michael_zhang.jpg"]{
+             My current research is in the intersection of type theory with distributed systems. I aim to discover formalisms for writing correct systems code by construction.
+          }
+                                            
+          @person[#:name "Rebecca (Bex) Golovanov"
+                  #:title "Advisor: Joshua Gancher"
+                  #:e-mail "golovanov.r@northeastern.edu"
+                  #:history @list[
+                       "Joined Northeastern, 2025"
+                  ]
+                  #:img "bex_golovanov.jpg"]{
+             I’m currently interested in applying a math/PL flavored perspective to formal security
+          }
+                                            
+          @person[#:name "Elan Semenova"
+                  #:title "Advisor: Amal Ahmed"
+                  #:e-mail "semenova.s@northeastern.edu"
+                  #:history @list[
+                       "Joined Northeastern, 2025"
+                  ]
+                  #:img "elan_semenova.jpg"]{
+             I completed my undergraduate degree in computer science and math at University of Maryland while working under Leonidas Lampropoulos. While I'm still discovering what exactly within PL I want to pursue, I know that if it has something to do with types and logic, I'll enjoy it.
+          }
+                                            
+          @person[#:name "Joseph Rotella"
+                  #:title "Advisor: Chris Martens"
+                  #:e-mail "rotella.j@northeastern.edu"
+                  #:history @list[
+                       "Joined Northeastern, 2025"
+                       "Sc.B., Brown University, 2024"
+                  ]
+                  #:website "https://josephrotella.com/"
+                  #:img "anon.png"]{
+             I'm interested in (dependent) types, logic, and proof assistants.
+          }
+                                         
+          @person[#:name "James Li"
+                  #:title "Advisor: Steven Holtzen"
+                  #:e-mail "li.j36@northeastern.edu"
+                  #:history @list[
+                       "Joined Northeastern, 2025"
+                  ]
+                  #:img "james_li.jpg"]{
+             I like semantics, program logics, and leveraging these to improve how we implement and reason about probabilistic programs. 
+          }
         }
 
         @div[class: "pn-separator-img"]{
@@ -757,7 +771,15 @@ Currently working on a compiler that produces parallel GPU code, so developers d
                         #:extra "(Meta)")
               @(alumnus "Max Bernstein" #:year 2024
                         #:personal-site "https://bernsteinbear.com")
-              ]}}
+              @(alumnus "Michael Ballantyne" #:year 2025
+                        #:personal-site "https://mballantyne.net"
+                        #:extra "(Washington State University)")
+              @(alumnus "Katherine Hough" #:year 2024 #:extra "(Amazon)")
+              @(alumnus "Donald Pinckney" #:year 2024 #:extra "(Gitar)")
+              @(alumnus "Satyajit Gokhale" #:year 2025 #:extra "(Amazon)")
+              @(alumnus "James Perretta" #:year 2025 #:extra "(UMass Amherst)")
+              @(alumnus "Liam DeVoe" #:year 2025)
+            ]}}
 
         @div[class: "container"]{
           @div[class: "row"]{
@@ -835,6 +857,9 @@ Currently working on a compiler that produces parallel GPU code, so developers d
                 @(alumnus "John Boyland" #:year 2021
                           #:personal-site "http://www.cs.uwm.edu/faculty/boyland/"
                           #:extra "(visited from University of Wisconsin-Milwaukee)")
+                @(alumnus "Ryan Doenges" #:year 2025
+                          #:personal-site "http://ryandoeng.es"
+                          #:extra "(Boston College)")
               ]}}
 
         @div[class: "container"]{
@@ -849,6 +874,8 @@ Currently working on a compiler that produces parallel GPU code, so developers d
                 @(alumnus "Jason Hemann" #:year 2022
                           #:personal-site "https://jasonhemann.github.io/"
                           #:extra "(Seton Hall University)")
+                @(alumnus "Ben Lerner" #:year 2025
+                          #:extra "(Genetec)")
               ]}}
         @footer{}
 }}}}

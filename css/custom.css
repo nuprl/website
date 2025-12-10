@@ -294,8 +294,10 @@ ul
 
 .content .pn-person .pn-photo img
 {
-    height: 100%;
-    width: 100%;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  
 }
 
 .content .pn-person .pn-contact .pn-name
