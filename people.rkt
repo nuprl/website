@@ -515,7 +515,7 @@ Currently working on a compiler that produces parallel GPU code, so developers d
                                             
           @person[#:name "Joseph Rotella"
                   #:title "Advisor: Chris Martens"
-                  #:e-mail "rotella.j@northeastern.edu"
+                  #:e-mail "rotella.jo@northeastern.edu"
                   #:history @list[
                        "Joined Northeastern, 2025"
                        "Sc.B., Brown University, 2024"
