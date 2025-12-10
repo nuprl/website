@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Disappearing Code</title>
+    <meta name="description" content="Two experiences at SPLASH 2018 reminded me that software gets thrown away and replaced....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="dear diary, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2018/11/24/disappearing-code/">
+    <link rel="next" href="/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/">
+    <link rel="prev" href="/blog/2018/11/30/turnstile-mailing-list/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Disappearing Code</h1>
+    <p class='date-and-tags'>
+<time datetime="2018-11-24" pubdate="true">2018-11-24</time> :: <span class="tags"><a href="/blog/tags/dear-diary.html">dear diary</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Two experiences at <a href="https://2018.splashcon.org/home">SPLASH 2018</a> reminded me that software gets thrown away and replaced.</p>
+<!-- more-->
+
+<h3 id="story-1">Story 1</h3>
+
+<p>The first reminder came near the end of a <a href="https://conf.researchr.org/event/sle-2018/papers-a-new-approach-for-software-correctness-and-reliability">talk</a> by  <a href="https://people.csail.mit.edu/rinard/">Martin Rinard</a>. Once upon a time, Martin was working as a consultant and a firm asked him to  review a software package. (The firm wanted a second opinion about how the software computed its results.) The firm sent a zipfile; Martin found six versions of the code inside; the  firm said &ldquo;well, please check all six versions&rdquo;; and it turned out:</p>
+
+<ul>
+ <li><strong>Version 1</strong> : the source code was written in a domain-specific language  (DSL) that generated code for the application</li>
+ <li><strong>Version 2</strong> : the DSL source was the same as version 1, but the generated  code was slightly modified</li>
+ <li>&hellip;</li>
+ <li><strong>Version 6</strong> : the generated code was the source code and the DSL was gone</li></ul>
+
+<p>The moral of Martin&rsquo;s story was:   (1) the creators of a software system are often different from the maintainers,  and (2) researchers need to build tools to help these maintainers.</p>
+
+<h3 id="story-2">Story 2</h3>
+
+<p>The second reminder came from a teaching assistant who said the  <a href="https://www.cs.cornell.edu/courses/cs3110/2018fa/">functional programming course</a>  at their institution was currently using a Python script  to test students&rsquo; code. Once upon a time, I was a teaching assistant for the  <a href="https://www.cs.cornell.edu/courses/cs3110/2014sp/">same course</a> at the same  institution. We had trouble testing students&rsquo; code via the Python script  left by the pre&ndash;2013 course staff, so I wrote a  <a href="https://gitlab.com/bengreenman/ocaml_tools/">command-line tool</a> to handle the tests and other  compile/run/grade tasks. To keep history from repeating itself, I used the same language the course  teaches (OCaml) and wrote some documentation &mdash; but it seems like that was  not enough. At any rate, writing the tool was a good exercise.</p>
+
+<blockquote>
+ <p><em>In the end, everybody must understand for himself.</em> &mdash; <a href="https://dl.acm.org/citation.cfm?id=3731">Per Martin-Löf</a></p></blockquote>
+
+<h3 id="reflection">Reflection</h3>
+
+<p>In each story, the maintainers of a software system threw away some old  code to make their job easier in the short term. How can we stop this &ldquo;re-inventing the wheel&rdquo; from happening?</p>
+
+<p>Martin Rinard&rsquo;s solution is to let maintenance programmers keep their current  habits, but provide tools to make the short-term, pragmatic solutions into a  more robust systems. Search for "<a href="https://people.csail.mit.edu/rinard/paper/osdi04.pdf">failure-oblivious computing</a>"  to learn more (this was the topic of his <a href="https://conf.researchr.org/event/sle-2018/papers-a-new-approach-for-software-correctness-and-reliability">talk</a>).</p>
+
+<p>In Story 1, the maintainers were able to avoid the DSL by modifying an  inherited blob of DSL-generated code. If the DSL did not generate code, history might have taken a different course;  it might be best to start with a language that offers tools for linguistic  re-use, and to build a DSL from these tools &mdash; so there is no generated code. The Racket programming language is exploring this path. For a recent example, see the <a href="https://www2.ccs.neu.edu/racket/pubs/icfp17-acf.pdf">video-lang paper</a>.</p>
+
+<p>The Story 2 test harness, however, was not generating code. Its maintainers discarded a &ldquo;big&rdquo; program written in a typed  functional language in favor of a script. Perhaps we need a language that allows mixing statically-typed and  dynamically-typed code (shouts out to  <a href="https://www2.ccs.neu.edu/racket/pubs/icfp18-gf.pdf">my own research</a>).</p>
+
+<p>The best solution is probably to start with a team and keep the culture alive. Always pair program!</p>
+
+<hr />
+
+<h4 id="addendum-comment-from-mitch-wand">Addendum: comment from Mitch Wand</h4>
+
+<blockquote>
+ <p>The best solution is probably to start with a team and keep the culture alive. Always pair program!</p></blockquote>
+
+<p>Ermm, this works better for sourdough bread than for people.</p>
+
+<p>Even in the not-so-real world of checking student solutions, there&rsquo;s often no way of guaranteeing that one half of a pair will be around for the second round. They may be on co-op. Or the course will not be offered the next semster/year/etc. Or the course will change at the next offering (from OCaml to Python or from Racket to Java) so that large chunks of the infrastructure will have to be discarded or rewritten.</p>
+
+<p>The &ldquo;real&rdquo; solution is to write literate code (as we preached incessantly in PDP), so that the next reader will have at least some clue as about what you wrote. This just may be sufficient incentive to modify rather than rebuild from scratch.</p>
+
+<p>Ever the optimist, &mdash;Mitch</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2018/11/24/disappearing-code/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2018/11/30/turnstile-mailing-list/">&larr; <em>Turnstile Mailing List</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/"><em>Defining Local Bindings in Turnstile Languages</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

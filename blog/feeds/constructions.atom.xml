@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'constructions'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/constructions.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/constructions.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-constructions-html</id>
+ <updated>2016-10-31T17:20:33Z</updated>
+ <entry>
+  <title type="text">Meaningful Distinctions</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/10/31/meaningful-distinctions/?utm_source=constructions&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-10-31-meaningful-distinctions</id>
+  <published>2016-10-31T17:20:33Z</published>
+  <updated>2016-10-31T17:20:33Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;blockquote&gt;
+ &lt;p&gt;&amp;ldquo;Meaningful distinctions deserve to be maintained.&amp;rdquo; &amp;mdash; Errett A. Bishop&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Likewise, memorable quotations deserve to be read in context. In this spirit, I am happy to present the above &amp;ldquo;basic principle&amp;rdquo; in its context:  &lt;a href="/img/sicm.pdf"&gt;&lt;em&gt;Schizophrenia in contemporary mathematics&lt;/em&gt; (pdf)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Read on for a brief summary.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;I first read the above quotation in &lt;a href="http://www.michaelbeeson.com/research/papers/BishopForeword.pdf"&gt;Michael Beeson&amp;rsquo;s introduction&lt;/a&gt; to the 2012 edition of Bishop&amp;rsquo;s &lt;a href="https://www.amazon.com/Foundations-Constructive-Analysis-Errett-Bishop/dp/4871877140"&gt;&lt;em&gt;Foundations of Constructive Analysis&lt;/em&gt;&lt;/a&gt;. That was two years ago.&lt;/p&gt;
+
+&lt;p&gt;Last month, I tried to find its context. &lt;a href="https://books.google.com/books?id=uPx8tGCaxzUC&amp;amp;pg=PA214&amp;amp;lpg=PA214&amp;amp;dq=meaningful+distinctions+deserve+to+be+maintained&amp;amp;source=bl&amp;amp;ots=cWjwOTnNuT&amp;amp;sig=wN143wNyfXtMFLGABBQM-22aSOQ&amp;amp;hl=en&amp;amp;sa=X&amp;amp;ved=0ahUKEwjPwt2HmYbQAhWE6IMKHU5rB8YQ6AEIHjAA#v=onepage&amp;amp;q=meaningful%20distinctions%20deserve%20to%20be%20maintained&amp;amp;f=false"&gt;Many&lt;/a&gt; &lt;a href="https://www.jstor.org/stable/2589553"&gt;other&lt;/a&gt; &lt;a href="https://books.google.com/books?id=J4DkBwAAQBAJ&amp;amp;pg=PA6&amp;amp;lpg=PA6&amp;amp;dq=meaningful+distinctions+deserve+to+be+maintained&amp;amp;source=bl&amp;amp;ots=KYkrkBrJd_&amp;amp;sig=AAK1A_uIkQlVcYCY1TFljfA3CqA&amp;amp;hl=en&amp;amp;sa=X&amp;amp;ved=0ahUKEwjPwt2HmYbQAhWE6IMKHU5rB8YQ6AEIJTAC#v=onepage&amp;amp;q=meaningful%20distinctions%20deserve%20to%20be%20maintained&amp;amp;f=false"&gt;uses&lt;/a&gt; &lt;a href="https://books.google.com/books?id=oN5nsPkXhhsC&amp;amp;pg=PR6&amp;amp;lpg=PR6&amp;amp;dq=meaningful+distinctions+deserve+to+be+maintained&amp;amp;source=bl&amp;amp;ots=4doTufVdsy&amp;amp;sig=u3e_Z_xdN-tjt9p1eqQ88juA5Ns&amp;amp;hl=en&amp;amp;sa=X&amp;amp;ved=0ahUKEwjPwt2HmYbQAhWE6IMKHU5rB8YQ6AEIKDAD#v=onepage&amp;amp;q=meaningful%20distinctions%20deserve%20to%20be%20maintained&amp;amp;f=false"&gt;of&lt;/a&gt; &lt;a href="https://books.google.com/books?id=GR44SKXCZJsC&amp;amp;pg=RA1-PA199&amp;amp;lpg=RA1-PA199&amp;amp;dq=meaningful+distinctions+deserve+to+be+maintained&amp;amp;source=bl&amp;amp;ots=lNpzR5QV7h&amp;amp;sig=IGg2Q_KtreSAhrbSJxsV7mQ8xok&amp;amp;hl=en&amp;amp;sa=X&amp;amp;ved=0ahUKEwjPwt2HmYbQAhWE6IMKHU5rB8YQ6AEIMDAF#v=onepage&amp;amp;q=meaningful%20distinctions%20deserve%20to%20be%20maintained&amp;amp;f=false"&gt;the&lt;/a&gt; &lt;a href="http://www.math.canterbury.ac.nz/php/groups/cm/faq/"&gt;quote&lt;/a&gt; &lt;a href="http://www.ben-sherman.net/aux/evident-logic.pdf"&gt;cited&lt;/a&gt; a &lt;em&gt;Schizophrenia in comtemporary mathematics&lt;/em&gt;, but I could not find an electronic copy. (It turns out, the AMS Bookstore page for &lt;a href="http://bookstore.ams.org/conm-39"&gt;&lt;em&gt;Erret Bishop: Reflections on Him and His Research&lt;/em&gt;&lt;/a&gt; includes a facsimile.)&lt;/p&gt;
+
+&lt;p&gt;Lest anyone else be tempted to conjure the ancient magic of inter-library loan, here is a scan of the pages I borrowed. Thanks to the University of Toledo for supplying the hard copy.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt; &lt;a href="/img/sicm.pdf"&gt;prl.ccs.neu.edu/img/sicm.pdf&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The document is Bishop&amp;rsquo;s &amp;ldquo;feeling for the philosophical issues involved&amp;rdquo; in constructive mathematics. First, Bishop lists &amp;ldquo;schizophrenic attributes&amp;rdquo; (trouble spots) of contemporary mathematics. Next, he gives basic principles of constructivism and Brouwer&amp;rsquo;s interpretation of the logical quantifiers. Along the way, and as a source of examples, Bishop describes integers, sets, and real numbers. The emphasis is always on common-sense meaning and finite constructions.&lt;/p&gt;
+
+&lt;p&gt;After a brief summary and reflection, the last ten pages list recent advances in constructive mathematics and upcoming tasks. The open tasks are particularly interesting:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;systematically develop (constructive) algebra&lt;/li&gt;
+ &lt;li&gt;give a constructive foundation for general topology&lt;/li&gt;
+ &lt;li&gt;engage with the deeper &amp;ldquo;meaning of mathematics&amp;rdquo;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The popular quote on &amp;ldquo;Meaningful Distinctions&amp;rdquo; appears early in the paper, as one of Bishop&amp;rsquo;s four principles that &amp;ldquo;stand out as basic&amp;rdquo; to the philosophy of constructivism:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;A. Mathematics is common sense.&lt;/p&gt;
+ &lt;p&gt;B. Do not ask whether a statement is true until you know what it means.&lt;/p&gt;
+ &lt;p&gt;C. A proof is any completely convincing argument.&lt;/p&gt;
+ &lt;p&gt;D. Meaningful distinctions deserve to be maintained.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I had no idea that D was &amp;ldquo;a principle&amp;rdquo;, or that it had three siblings.&lt;/p&gt;
+
+&lt;p&gt;To further tempt you into reading the whole truth, here are some of my favorite phrases:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;ul&gt;
+  &lt;li&gt;One suspects that the majority of pure mathematicians &amp;hellip; ignore as much content as they possibly can.&lt;/li&gt;
+  &lt;li&gt;We have geared ourselves to producing research mathematicians who will begin to write papers as soon as possible.  This anti-social and anti-intellectual process defeats even its own narrow ends.&lt;/li&gt;
+  &lt;li&gt;&amp;hellip; truth is not a source of trouble to the constructivist, because of his emphasis on meaning.&lt;/li&gt;
+  &lt;li&gt;&amp;hellip; guided primarily by considerations of content rather than elegance and formal attractiveness &amp;hellip;&lt;/li&gt;
+  &lt;li&gt;Let me tell you what a smart sequence will do.&lt;/li&gt;
+  &lt;li&gt;Classical mathematics fails to observe meaningful distinctions having to do with integers.&lt;/li&gt;
+  &lt;li&gt;Constructive mathematics does not postulate a pre-existent universe, with objects lying around waiting to be collected and grouped into sets, like shells on a beach.&lt;/li&gt;
+  &lt;li&gt;It might be worthwhile to investigate the possibility that constructive mathematics would afford a solid philosophical basis for the theory of computation &amp;hellip;&lt;/li&gt;
+  &lt;li&gt;&amp;hellip; if the product of two real numbers is 0, we are not entitled to conclude that one of them is 0.&lt;/li&gt;
+  &lt;li&gt;It is fair to say that almost nobody finds his proof intelligible.&lt;/li&gt;
+  &lt;li&gt;Mathematics is such a complicated activity that disagreements are bound to arise.&lt;/li&gt;
+  &lt;li&gt;Algebraic topology, at least on the elementary level, should not be too difficult to constructivize.&lt;/li&gt;
+  &lt;li&gt;I hope all this accords with your common sense, as it does with mine.&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Now go find their context!&lt;/p&gt;</content></entry></feed>

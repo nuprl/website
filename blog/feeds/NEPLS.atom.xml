@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'NEPLS'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/NEPLS.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/NEPLS.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-NEPLS-html</id>
+ <updated>2016-09-15T21:18:45Z</updated>
+ <entry>
+  <title type="text">NEPLS on October 7th at Northeastern University</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/09/15/nepls-on-october-7th-at-northeastern-university/?utm_source=NEPLS&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-09-15-nepls-on-october-7th-at-northeastern-university</id>
+  <published>2016-09-15T21:18:45Z</published>
+  <updated>2016-09-15T21:18:45Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The next edition of the New England Programming Language Seminar (NEPLS) will be held on Friday, October 7th at Northeastern University. Organizers are Gabriel Scherer and Max New. See you there!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;Here is the official announcement from the NEPLS mailing list.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Hi everyone,&lt;/p&gt;
+ &lt;p&gt;The next New England Programming Languages and Systems Symposium will take place on&lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt; Friday, October 7th 2016&lt;/p&gt;&lt;/blockquote&gt;
+ &lt;p&gt;at&lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt; Northeastern University, Boston.&lt;/p&gt;&lt;/blockquote&gt;
+ &lt;p&gt;Please mark it in your calendars!&lt;/p&gt;
+ &lt;p&gt;The speaker selection committee solicits talks for this meeting. To propose yourself or someone else, send a title, list of authors, and a brief description. You may provide UP TO ONE PAGE of description, but you can keep it as short as a paragraph. We particularly invite talks by researchers from outside the area who are visiting on the date of the NEPLS meeting.&lt;/p&gt;
+ &lt;p&gt;Talks can vary in length. Though 30-minute conference-style slots are traditional, speakers may request slots of as little as 5 minutes; we encourage the shorter formats. This variety permits the presentation of smaller results, preliminary work, progress reports on ongoing projects (such as language standards and compiler toolkits), and updates to past presentations. In general, NEPLS talks need not sound like conference presentations.&lt;/p&gt;
+ &lt;p&gt;The submission deadline is&lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt; Sunday, September 25th.&lt;/p&gt;&lt;/blockquote&gt;
+ &lt;p&gt;Acceptance notifications will be out on Thursday, September 28th.&lt;/p&gt;
+ &lt;p&gt;Send your proposal to&lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt; &lt;a href="mailto:nepls-talks-committee@lists.cs.brown.edu"&gt;nepls-talks-committee@lists.cs.brown.edu&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+ &lt;p&gt;More details about NEPLS are available on the NEPLS webpage:&lt;/p&gt;
+ &lt;blockquote&gt;
+  &lt;p&gt; &lt;a href="http://www.nepls.org/"&gt;http://www.nepls.org/&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;To subscribe to the NEPLS mailing list, visit this page:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://lists.cs.brown.edu/sympa/subscribe/nepls"&gt;https://lists.cs.brown.edu/sympa/subscribe/nepls&lt;/a&gt;&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">NEPLS on May 31st at UMass, Amherst</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/?utm_source=NEPLS&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-05-03-nepls-on-may-31st-at-umass-amherst</id>
+  <published>2016-05-03T08:21:07Z</published>
+  <updated>2016-05-03T08:21:07Z</updated>
+  <author>
+   <name>Gabriel Scherer</name></author>
+  <content type="html">
+&lt;p&gt;It is my pleasure to relay the following announcement for the next edition of the New England Programming Language Seminer (NEPLS), to be held on Tuesday May 31st at UMass, Amherst, organized by Arjun Guha. Venez nombreux!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The next New England Programming Languages and Systems Symposium will take place on Tuesday, May 31st 2016 at University of Massachusetts, Amherst. Please mark it in your calendars!&lt;/p&gt;
+ &lt;p&gt;The speaker selection committee solicits talks for this meeting. To propose yourself or someone else, send a title, list of authors, and a brief description. You may provide UP TO ONE PAGE of description, but you can keep it as short as a paragraph. We particularly invite talks by researchers from outside the area who are visiting on the date of the NEPLS meeting.&lt;/p&gt;
+ &lt;p&gt;Talks can vary in length. Though 30-minute conference-style slots are traditional, speakers may request slots of as little as 5 minutes; we encourage the shorter formats. This variety permits the presentation of smaller results, preliminary work, progress reports on ongoing projects (such as language standards and compiler toolkits), and updates to past presentations. In general, NEPLS talks need not sound like conference presentations.&lt;/p&gt;
+ &lt;p&gt;The submission deadline is Tuesday, May 17th. Send your proposal to talks@nepls.org.&lt;/p&gt;
+ &lt;p&gt;More details about NEPLS are available on the NEPLS webpage:&lt;/p&gt;
+ &lt;p&gt; http://www.nepls.org/&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;I&amp;rsquo;m personally fond of such regional events, which is a great time to learn about the research around us in a less formal and exhausting setting than a 200-attendees conference.&lt;/p&gt;
+
+&lt;p&gt;If you are in the area, please consider applying to talk about your work. If one of your colleague is working on something you find exciting, please invite them to apply!&lt;/p&gt;</content></entry></feed>

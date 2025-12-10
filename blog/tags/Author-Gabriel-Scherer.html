@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Posts tagged 'Author: Gabriel Scherer'</title>
+    <meta name="description" content="Posts tagged 'Author: Gabriel Scherer'">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/tags/Author-Gabriel-Scherer.html">
+
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+              <h1>Posts tagged <em>Author: Gabriel Scherer</em></h1>
+
+              <article>
+  <header>
+    <h2><a href='/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/'>Reviews and author responses: we should stop asking for 500-word responses</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-08-13" pubdate="true">2017-08-13</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>This year I reviewed many ICFP submissions, and got to be on the receiving end of equally many author responses (also sometimes called, somewhat combatively, rebuttals). I found that there was a large difference between the official written advice on author responses and what I, as a reviewer reading the responses, found effective. In particular, I now believe that limiting yourself to 500 words should strongly be avoided &mdash; we should even stop giving that advice.</p>
+  <footer>
+    <a href='/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/06/05/syntactic-parametricity-strikes-again/'>Syntactic parametricity strikes again</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-06-05" pubdate="true">2017-06-05</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a>, <a href="/blog/tags/Author-Li-Yao-Xia.html">Li-Yao Xia</a></span></p>
+  </header>
+
+<p>In this blog post, reporting on a collaboration with <a href="https://poisson.chat/">Li-Yao Xia</a>, I will show an example of how some results that we traditionally think of as arising from free theorems / parametricity can be established in a purely &ldquo;syntactic&rdquo; way, by looking at the structure of canonical derivations. More precisely, I prove that \(
+\newcommand{\List}[1]{\mathsf{List}~#1}
+\newcommand{\Fin}[1]{\mathsf{Fin}~#1}
+\newcommand{\Nat}[1]{\mathbb{N}}
+\newcommand{\rule}[2]{\frac{\displaystyle \array{#1}}{\displaystyle #2}}
+\newcommand{\judge}[2]{{#1} \vdash {#2}}
+\newcommand{\emptyrule}[1]{\begin{array}{c}\\[-1em] #1 \end{array}}
+  ∀α. \List α → \List \alpha
+\) is isomorphic to \(
+    Π(n:\Nat{}). \List{(\Fin{n})}
+\) where \(\Fin{n}\) is the type of integers smaller than \(n\), corresponding to the set \(\{0, 1, \dots, n-1\}\).</p>
+  <footer>
+    <a href='/blog/2017/06/05/syntactic-parametricity-strikes-again/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/04/25/prl-at-snapl-17/'>PRL at SNAPL&rsquo;17</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-04-25" pubdate="true">2017-04-25</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>PRL recently produced three papers for the <a href="http://snapl.org/2017/index.html">SNAPL</a> conference.</p>
+
+<ul>
+ <li><a href="https://dbp.io/pubs/2017/linking-types-snapl.pdf">Linking Types for Multi-Language Software: Have Your Cake and Eat  It Too</a>, by Daniel  Patterson and Amal Ahmed.</li>
+ <li><a href="http://www.ccs.neu.edu/home/gasche/research/canonical-forms/snapl.pdf">Search for Program Structure</a>,  by Gabriel Scherer</li>
+ <li><a href="http://www.ccs.neu.edu/racket/pubs/typed-racket.pdf">Migratory Typing: Ten Years  Later</a>, by Sam  Tobin-Hochstadt, Matthias Felleisen, Robert Bruce Findler, Matthew  Flatt, Ben Greenman, Andrew M. Kent, Vincent St-Amour, T. Stephen  Strickland and Asumu Takikawa</li></ul>
+  <footer>
+    <a href='/blog/2017/04/25/prl-at-snapl-17/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/'>Bullets are good for your Coq proofs</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2017-02-21" pubdate="true">2017-02-21</time> :: <span class="tags"><a href="/blog/tags/coq.html">coq</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>I believe that bullets are one of the most impactful features of recent versions of Coq, among those that non-super-expert users can enjoy. They had a big impact on the maintainability of my proofs. Unfortunately, they are not very well-known, due to the fact that some introductory documents have not been updated to use them.</p>
+
+<p>Bullets are a very general construction and there are several possible ways to use them; I have iterated through different styles. In this post I will give the general rules, and explain my current usage style.</p>
+  <footer>
+    <a href='/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/12/17/measuring-the-submission-review-balance/'>Measuring the submission/review balance</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-12-17" pubdate="true">2016-12-17</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>How do researchers know whether they are doing &ldquo;enough&rdquo; or &ldquo;too many&rdquo; reviews? A measurable goal is to be review-neutral: to have demanded, through our submissions, as many reviews as we have produced as reviewers.</p>
+  <footer>
+    <a href='/blog/2016/12/17/measuring-the-submission-review-balance/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/11/17/src-submissions/'>SRC-submissions</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-11-17" pubdate="true">2016-11-17</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>Max New, Daniel Patterson and Ben Greenman recently wrote three two-page abstracts on what they are working on right now. Come have a look &mdash; and any feedback is welcome!</p>
+  <footer>
+    <a href='/blog/2016/11/17/src-submissions/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/10/17/emacs-daemon-for-fast-editor-startup/'>Emacs daemon for fast editor startup</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-10-17" pubdate="true">2016-10-17</time> :: <span class="tags"><a href="/blog/tags/System-Administration.html">System Administration</a>, <a href="/blog/tags/Emacs.html">Emacs</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>In the early days of the famous Emacs/Vim debates, Emacs was often ridiculed for its bulkiness (Eight Megabytes-of-RAM And Constantly Swapping, etc.). The computational power of our computer has grown much faster than Emacs&rsquo; bloat: it takes exactly one second to load on my machine. However, our workflows have also changed, and my workflow implies frequently starting new text editors &mdash; on each git commit for example, or when I use a <a href="https://addons.mozilla.org/en-US/firefox/addon/its-all-text/">Firefox extension</a> to edit a textarea content in a proper editor.</p>
+
+<p>In this blog post, I describe how to use <code>emacsclient</code> to reuse an existing Emacs process when creating a new editor window, which reduces editor startup times from 1s to 0.150s on my machine.</p>
+  <footer>
+    <a href='/blog/2016/10/17/emacs-daemon-for-fast-editor-startup/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/'>Does anyone still care about printed proceedings? (Grab some at NEU this week!)</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-06-13" pubdate="true">2016-06-13</time> :: <span class="tags"><a href="/blog/tags/proceedings.html">proceedings</a>, <a href="/blog/tags/dawn-of-the-digital-era.html">dawn of the digital era</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>Are you interested in printed conference Proceedings? We have a good stack of them left away at Northeastern University (Boston, MA) and it seems that nobody wants them!</p>
+  <footer>
+    <a href='/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/06/07/icfp-2016-looking-for-student-volunteers/'>ICFP 2016: looking for student volunteers</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-06-07" pubdate="true">2016-06-07</time> :: <span class="tags"><a href="/blog/tags/ICFP.html">ICFP</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>If you are a student, you should consider <a href="http://goo.gl/forms/fKg3vpjNryBlGWB32">applying</a> to become an ICFP 2016 student volunteer! The deadline for application is July 31st, 2016.</p>
+  <footer>
+    <a href='/blog/2016/06/07/icfp-2016-looking-for-student-volunteers/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<article>
+  <header>
+    <h2><a href='/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/'>Measuring GC latencies in Haskell, OCaml, Racket</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2016-05-24" pubdate="true">2016-05-24</time> :: <span class="tags"><a href="/blog/tags/garbage-collection.html">garbage collection</a>, <a href="/blog/tags/latency.html">latency</a>, <a href="/blog/tags/instrumentation.html">instrumentation</a>, <a href="/blog/tags/haskell.html">haskell</a>, <a href="/blog/tags/ghc.html">ghc</a>, <a href="/blog/tags/ocaml.html">ocaml</a>, <a href="/blog/tags/racket.html">racket</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>James Fisher has a blog post on a case where GHC&rsquo;s runtime system imposed unpleasant latencies on their Haskell program:</p>
+
+<blockquote>
+ <p><a href="https://blog.pusher.com/latency-working-set-ghc-gc-pick-two/">Low latency, large working set, and GHC&rsquo;s garbage collector: pick two of three</a></p></blockquote>
+
+<p>The blog post proposes a very simple, synthetic benchmark that exhibits the issue &mdash; basically, latencies incurred by copy time &mdash; with latencies of 50ms that are considered excessive. I thought it would be amusing to reproduce the synthetic benchmark in OCaml and Racket, to see how other GCs handle this.</p>
+
+<p>Without further ado, the main take-away are as follows: the OCaml GC has no issue with large objects in its old generation, as it uses a mark&amp;sweep instead of copying collection, and exhibits less than 3ms worst-case pauses on this benchmark.</p>
+
+<p>The Racket GC also does not copy the old generation, but its incremental GC is still in infancy (compared to the throughput-oriented settings which works well) so the results are less good. It currently suffer from a &ldquo;ramp-up&rdquo; effect that I will describe, that causes large pauses at the beginning of the benchmark (up to 120ms latency), but in its steady state the longest pause are around 22ms.</p>
+
+<p>Please keep in mind that the original benchmark is designed to exercise a very specific workflow that exercises worst-case behavior for GHC&rsquo;s garbage collector. This does not mean that GHC&rsquo;s latencies are bad in general, or that the other tested languages have smaller latencies in general.</p>
+
+<p>The implementations I use, with a Makefile encapsulating the logic for running and analyzing them, are available in a Gitlab repository:</p>
+
+<ul>
+ <li>git: <a href="https://gitlab.com/gasche/gc-latency-experiment.git">https://gitlab.com/gasche/gc-latency-experiment.git</a></li>
+ <li>files: <a href="https://gitlab.com/gasche/gc-latency-experiment/tree/master">https://gitlab.com/gasche/gc-latency-experiment/tree/master</a></li></ul>
+  <footer>
+    <a href='/blog/2016/05/24/measuring-gc-latencies-in-haskell-ocaml-racket/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+<footer>
+ <ul class="pagination">
+  <li class="page-item disabled"><a class="page-link" href="#">
+    <quote>&larr;</quote></a></li>
+  <li class="page-item active"><a class="page-link" href="/blog/tags/Author-Gabriel-Scherer.html">1</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/tags/Author-Gabriel-Scherer-2.html">2</a></li>
+  <li class="page-item"><a class="page-link" href="/blog/tags/Author-Gabriel-Scherer-2.html">
+    <quote>&rarr;</quote></a></li></ul></footer>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

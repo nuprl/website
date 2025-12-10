@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'offsite'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/offsite.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/offsite.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-offsite-html</id>
+ <updated>2020-01-15T12:16:35Z</updated>
+ <entry>
+  <title type="text">The Typed Racket Optimizer vs. Transient</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/?utm_source=offsite&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2020-01-15-the-typed-racket-optimizer-vs-transient</id>
+  <published>2020-01-15T12:16:35Z</published>
+  <updated>2020-01-15T12:16:35Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;What type-directed optimizations does Typed Racket perform  and do any require full types?&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;This post is based on a short talk. Slides from the talk are here: &lt;a href="http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf"&gt;http://ccs.neu.edu/home/types/resources/talks/prl-offsite-2019.pdf&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Standard Typed Racket guarantees full type soundness and uses higher-order  contracts to make sure that interactions between Typed Racket and untyped  Racket obey the types. These contracts can be very expensive [&lt;a href="https://doi.org/10.1017/S0956796818000217"&gt;JFP 2019&lt;/a&gt;]. And so, the standard types are very strong but (possibly) slow.&lt;/p&gt;
+
+&lt;p&gt;Lately, I&amp;rsquo;ve been working on a &lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;transient&lt;/a&gt;  back-end for Typed Racket. Transient Typed Racket provides a weaker guarantee &amp;mdash; only that typed code  cannot get &amp;ldquo;stuck&amp;rdquo; &amp;mdash; via simpler run-time checks. Early data shows that these simple checks are often faster   than the standard boundary checks [&lt;a href="https://doi.org/10.1145/3236766"&gt;ICFP 2018&lt;/a&gt;],  hence we want both options for Typed Racket programmers: slow/correct  and fast/wrong.&lt;/p&gt;
+
+&lt;p&gt;The implementation of Transient needs to re-use some parts of Standard Typed  Racket and modify others. Typed Racket comes with three major components:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;a static type checker,&lt;/li&gt;
+ &lt;li&gt;a compiler from types to contracts, and&lt;/li&gt;
+ &lt;li&gt;a type-driven optimizer [&lt;a href="https://www2.ccs.neu.edu/racket/pubs/padl12-stff.pdf"&gt;PADL 2012&lt;/a&gt;, &lt;a href="https://doi.org/10.1145/2384616.2384629"&gt;OOPSLA 2012&lt;/a&gt;].&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Transient Typed Racket can re-use all of the type checker  and parts of the type-to-contract compiler. The question for this post is: can Transient re-use the optimizer?&lt;/p&gt;
+
+&lt;h2 id="q-can-transient-re-use-the-typed-racket-optimizer"&gt;Q. Can Transient re-use the Typed Racket optimizer?&lt;/h2&gt;
+
+&lt;p&gt;The answer requires some thought because Standard Typed Racket and Transient  Typed Racket preserve different amounts of type information.&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;In Standard Typed Racket, if an expression &lt;strong&gt;e&lt;/strong&gt; has type &lt;strong&gt;T&lt;/strong&gt; and reduces  to a value &lt;strong&gt;v&lt;/strong&gt; (for short, &lt;strong&gt;e : T &amp;mdash;&amp;gt;* v&lt;/strong&gt;), then the result &lt;strong&gt;v&lt;/strong&gt; definitely  matches the full type &lt;strong&gt;T&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;In Transient Typed Racket, if &lt;strong&gt;e : T &amp;mdash;&amp;gt;* v&lt;/strong&gt; then the result &lt;strong&gt;v&lt;/strong&gt; matches  the toplevel &amp;ldquo;shape&amp;rdquo; of &lt;strong&gt;T&lt;/strong&gt; but (maybe) nothing more.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The idea of a &amp;ldquo;shape&amp;rdquo; is that it corresponds to the outermost constructor of  a type. A shape check must be decidable, but otherwise finding the best shape for a type  is an engineering challenge. On one hand, deeper checks give stronger guarantees. On the other hand, shallower checks are quicker to validate.&lt;/p&gt;
+
+&lt;p&gt;Here are a few shapes according to the current Transient prototype:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  Shape(Natural)                = Natural
+  Shape(Listof String)          = Listof Any
+  Shape(Symbol -&amp;gt; Boolean)      = Any -&amp;gt; Any
+  Shape(Vector Void Void)       = Vector Any Any
+  Shape(U Void (Listof Symbol)) = U Void (Listof Any)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For the current shapes, can we re-use the Typed Racket optimizer?&lt;/p&gt;
+
+&lt;h2 id="optimization-topics"&gt;Optimization Topics&lt;/h2&gt;
+
+&lt;p&gt;Typed Racket implements 15 kinds of type-directed transformation. Below, each gets: a short description, an example, and a verdict of &amp;ldquo;safe&amp;rdquo;  or &amp;ldquo;unsafe&amp;rdquo; for Transient.&lt;/p&gt;
+
+&lt;p&gt;To be clear: some optimization topics perform many kinds of transformations, but this post picks only one example transformation for each.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-1-apply"&gt;Topic 1: apply&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/apply.rkt"&gt;apply.rkt&lt;/a&gt;  &amp;ldquo;inlines&amp;rdquo; expressions of the form &lt;code&gt;(apply f (map g xs))&lt;/code&gt; to map and fold  in one pass over the list (&lt;code&gt;xs&lt;/code&gt;). Currently, the pass only triggers when &lt;code&gt;f&lt;/code&gt; is &lt;code&gt;+&lt;/code&gt; or &lt;code&gt;*&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: xs (Listof Integer))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (apply + (map abs xs))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let loop ((v 0)
+             (lst xs))
+    (if (null? lst)
+      v
+      (loop (+ v (abs (unsafe-car lst)))
+            (unsafe-cdr lst))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, but risky.&lt;/p&gt;
+
+&lt;p&gt;Technically, this transformation is unsound for Transient because of how it uses &lt;code&gt;unsafe-car&lt;/code&gt;. The expansion of &lt;code&gt;(apply * (map g xs))&lt;/code&gt; applies &lt;code&gt;(g (unsafe-car xs))&lt;/code&gt; without  confirming that the first element of &lt;code&gt;xs&lt;/code&gt; matches its expected type. This unsoundness is no problem, though, as long as &lt;em&gt;every&lt;/em&gt; Transient-typed function  checks the shape of its input. (Typed functions that flow to untyped code already need to check inputs.)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-2-box"&gt;Topic 2: box&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/box.rkt"&gt;box.rkt&lt;/a&gt;  safely applies unsafe box operations to expressions with &lt;code&gt;Box&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: b (Boxof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (unbox b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-unbox b)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-3-dead-code"&gt;Topic 3: dead-code&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/dead-code.rkt"&gt;dead-code.rkt&lt;/a&gt;  uses type information to identify code that cannot run. Once identified, the TR optimizer makes the dead code obvious for the Racket  bytecode compiler. The pass deals with &lt;code&gt;if&lt;/code&gt; expressions, &lt;code&gt;lambda&lt;/code&gt; expressions, and &lt;code&gt;case-lambda&lt;/code&gt;;  the latter is the most interesting for Transient.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f (-&amp;gt; Symbol Symbol)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       (for/list ((_i (in-range i))) s))))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define f
+    (case-lambda
+      ((s) s)
+      ((s i)
+       ; dead code, replace with no-op
+       (void))))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: unsafe, can change behavior&lt;/p&gt;
+
+&lt;p&gt;The pass infers that some branches of a &lt;code&gt;case-lambda&lt;/code&gt; can never run because  the type says they do not exist. In Standard Typed Racket, this inference is correct because a run-time contract  seals off the &amp;ldquo;untyped&amp;rdquo; branches. In Transient, though, there is no need to add a contract and therefore no  guarantee these branches are inaccessible. An application in untyped code can enter the dead branch;  if it does, then adding Transient types to part of a program can change  its result to &lt;code&gt;(void)&lt;/code&gt; and thereby violate the graduality design goal [&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;SNAPL 2015&lt;/a&gt;, &lt;a href="https://doi.org/10.1145/3236768"&gt;ICFP 2018&lt;/a&gt;]  &amp;mdash; that is, that adding types should only change behavior by introducing runtime  type mismatches.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-4-extflonum"&gt;Topic 4: extflonum&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/extflonum.rkt"&gt;extflonum.rkt&lt;/a&gt;  safely applies unsafe extflonum operations to expressions with &lt;code&gt;Extflonum&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: e Extflonum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (extflabs e)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-extflabs e)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-5-fixnum"&gt;Topic 5: fixnum&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/fixnum.rkt"&gt;fixnum.rkt&lt;/a&gt;  safely applies unsafe fixnum operations to expressions with &lt;code&gt;Fixnum&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f Fixnum)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (exact-&amp;gt;inexact f)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-fx-&amp;gt;fl f)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-6-float-complex"&gt;Topic 6: float-complex&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float-complex.rkt"&gt;float-complex.rkt&lt;/a&gt;  unboxes complex numbers (into one real-part variable and one imaginary-part variable)  and rewrites operations to handle the unboxed numbers.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: f (-&amp;gt; Float-Complex Float-Complex Float-Complex))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (define (f n0 n1)
+    (+ n0 n1))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (define (f n0 n1)
+    (let* ((unboxed-real-0 (unsafe-flreal-part n0))
+           (unboxed-imag-0 (unsafe-flimag-part n0))
+           (unboxed-real-1 (unsafe-flreal-part n1))
+           (unboxed-imag-1 (unsafe-flimag-part n1))
+           (unboxed-real-2 (unsafe-fl+ (real-&amp;gt;double-flonum unboxed-real-0)
+                                       unboxed-real-1))
+           (unboxed-imag-2 (unsafe-fl+ (real-&amp;gt;double-flonum unboxed-imag-0)
+                                       unboxed-imag-1)))
+      (unsafe-make-flrectangular unboxed-real-2 unboxed-imag-2)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with caution&lt;/p&gt;
+
+&lt;p&gt;The body of a Transient-typed function (that can flow to untyped code)  must first check that its inputs have the correct shape. Currently, the &lt;strong&gt;float-complex&lt;/strong&gt; pass creates functions that apply &lt;code&gt;unsafe-flreal-part&lt;/code&gt; before  anything else; to be safe, the pass needs to make sure that Transient checks  come first.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-7-float"&gt;Topic 7: float&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/float.rkt"&gt;float.rkt&lt;/a&gt;  safely applies unsafe flonum operations to expressions with &lt;code&gt;Flonum&lt;/code&gt; type  and also transforms some &lt;code&gt;random&lt;/code&gt; calls to use &lt;code&gt;unsafe-flrandom&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; --------------------------------------------------
+  ;; Before Optimization
+  (random)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-flrandom (current-pseudo-random-generator))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, but a close call&lt;/p&gt;
+
+&lt;p&gt;Accessing a parameter, as in &lt;code&gt;(current-pseudo-random-generator)&lt;/code&gt;, is an  elimination form that may require a shape check. This particular parameter, however, is protected by a contract that enforces  the precondition of &lt;code&gt;unsafe-flrandom&lt;/code&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-8-list"&gt;Topic 8: list&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/list.rkt"&gt;list.rkt&lt;/a&gt;  safely applies unsafe list operations to list expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: lst (List Symbol Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (list-ref lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-list-ref lst 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong-enough shape checks&lt;/p&gt;
+
+&lt;p&gt;The shape check for a &lt;code&gt;(Listof T)&lt;/code&gt; must check for proper lists (via &lt;code&gt;list?&lt;/code&gt;);  note that the cost of this check depends on the size of incoming values. The shape check for a &lt;code&gt;(List T ...)&lt;/code&gt; type must validate the length of incoming  values.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-9-number"&gt;Topic 9: number&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/number.rkt"&gt;number.rkt&lt;/a&gt;  performs simple transformations on &lt;code&gt;Real&lt;/code&gt;-valued expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: r Real)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (+ r)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  r&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-10-pair"&gt;Topic 10: pair&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/pair.rkt"&gt;pair.rkt&lt;/a&gt;  safely applies pair-access operations to (possibly-nested) pairs.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: p (Pairof (Pairof Symbol Void) String))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (cdar p)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-cdr (unsafe-car p))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: unsafe&lt;/p&gt;
+
+&lt;p&gt;Transient guarantees the first level of a type, but nothing more. Concretely, &lt;code&gt;Shape(Pairof (Pairof Symbol Void) String) = Pairof Any Any&lt;/code&gt;  and so the &lt;code&gt;unsafe-cdr&lt;/code&gt; above is not safe.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-11-sequence"&gt;Topic 11: sequence&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/sequence.rkt"&gt;sequence.rkt&lt;/a&gt;  safely applies unsafe sequence operations to expressions with &lt;code&gt;(Sequenceof T)&lt;/code&gt; type.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: s String)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (for ((c s))
+    (void))
+
+  ;; --------------------------------------------------
+  ;; After Optimization (simplified)
+  (for ((c (in-string s)))
+    (void))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong enough shape checks (see &lt;strong&gt;list&lt;/strong&gt; and &lt;strong&gt;vector&lt;/strong&gt;)&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-12-string"&gt;Topic 12: string&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/string.rkt"&gt;string.rkt&lt;/a&gt;  safely applies unsafe string operations to expressions with &lt;code&gt;String&lt;/code&gt; type. (Note that &lt;code&gt;unsafe-string-ref&lt;/code&gt; is only safe when the result is sure to be  a Latin&amp;ndash;1 character.)&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: b Bytes)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (bytes-length b)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-bytes-length b)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-13-struct"&gt;Topic 13: struct&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/struct.rkt"&gt;struct.rkt&lt;/a&gt;  safely applies unsafe struct operations to struct expressions, using  Typed Racket&amp;rsquo;s &lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/types/struct-table.rkt"&gt;internal registry of struct info&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (struct open-interval ([lo : Real] [hi : Real]))
+  (: ivl open-interval)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (open-interval-lo ivl)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-struct-ref ivl 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-14-unboxed-let"&gt;Topic 14: unboxed-let&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/unboxed-let.rkt"&gt;unboxed-let.rkt&lt;/a&gt;  cooperates with the &lt;code&gt;float-complex&lt;/code&gt; pass by transforming the binding-site  of some complex numbers. This pass may change a &lt;code&gt;let&lt;/code&gt;-expression into a &lt;code&gt;let-values&lt;/code&gt; that expects  a real-part and imag-part, and may change a function to expect twice as many  arguments &amp;mdash; provided the optimizer can find &lt;em&gt;all&lt;/em&gt; calls to the function.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: k Float-Complex)
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (let ((f (lambda ((n : Float-Complex)) (+ n n))))
+    (f k))
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (let ((f (lambda (real-part-n imag-part-n) ....)))
+    (f (unsafe-flreal-part k) (unsafe-flimag-part k)))&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, thanks to the (conservative) escape analysis&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id="topic-15-vector"&gt;Topic 15: vector&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/racket/typed-racket/blob/master/typed-racket-lib/typed-racket/optimizer/vector.rkt"&gt;vector.rkt&lt;/a&gt;  safely applies vector operations to vector expressions.&lt;/p&gt;
+
+&lt;h4 id="example"&gt;Example&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code&gt;  ;; Type Assumptions
+  (: v (Vector (Listof Symbol) String))
+  (: lst (Listof Symbol))
+
+  ;; --------------------------------------------------
+  ;; Before Optimization
+  (vector-set! v lst 0)
+
+  ;; --------------------------------------------------
+  ;; After Optimization
+  (unsafe-vector-set! v lst 0)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Verdict&lt;/strong&gt;: safe, with strong-enough shape checks&lt;/p&gt;
+
+&lt;p&gt;The check for &lt;code&gt;(Vector T ...)&lt;/code&gt; must check the length of incoming values.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;The Typed Racket optimizer implements 15 kinds of transformations. Two are definitely unsafe for Transient as-is (&lt;strong&gt;dead-code&lt;/strong&gt;, &lt;strong&gt;pair&lt;/strong&gt;). One must take care when rewriting a Transient function (&lt;strong&gt;float-complex&lt;/strong&gt;). One may limit our ability to reduce the number of run-time checks in a program (&lt;strong&gt;apply&lt;/strong&gt;). Two others require transient checks whose cost depends on the size of the input values (&lt;strong&gt;list&lt;/strong&gt;, &lt;strong&gt;sequence&lt;/strong&gt;).&lt;/p&gt;
+
+&lt;p&gt;There may be other issues that I missed while reading the optimizer code. If so, I&amp;rsquo;ll try to remember to update this post.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">PRL Offsite 2019 Retrospective</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/12/12/prl-offsite-2019-retrospective/?utm_source=offsite&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-12-12-prl-offsite-2019-retrospective</id>
+  <published>2019-12-12T12:51:53Z</published>
+  <updated>2019-12-12T12:51:53Z</updated>
+  <author>Ben Greenman</author>
+  <author>Olek Gierczak</author>
+  <author>
+   <name>Ben Greenman, Olek Gierczak</name></author>
+  <content type="html">
+&lt;p&gt;On November 11th 2019, the PRL had a private offsite meeting at the  &lt;a href="https://mtwyouth.org"&gt;More Than Words bookstore&lt;/a&gt; in downtown Boston. For future offsite organizers, this post records what happened and how.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="early-planning-goals"&gt;Early Planning, Goals&lt;/h2&gt;
+
+&lt;p&gt;Every Fall, the PRL holds a kickoff meeting to assign  &lt;a href="http://prl.ccs.neu.edu/contact"&gt;roles&lt;/a&gt; for the coming academic year. This year, Prof. Amal Ahmed led the meeting and expressed interest in having  a retreat at some point. Seconds later, Amal enlisted Olek Gierczak and Ben Greenman  to help plan a retreat.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Ben G. was on the (unsuccessful) 2018 retreat planning committee. The three lessons from that year were: (1) Veterans Day is a possible date in the Fall, (2) there are approximately zero possible dates in the Spring and Summer, (3) the &lt;a href="http://www.warrencenter.com"&gt;Warren Conference Center&lt;/a&gt; is &lt;a href="https://www.northeastern.edu/events/northeastern-owned-off-campus-venues"&gt;Northeastern University&amp;rsquo;s only franchised&lt;/a&gt; off-campus venue.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The &lt;strong&gt;motivation&lt;/strong&gt; for the retreat was to bring our growing department together  for one day in the hope that everyone has (at least) a small interaction with  everyone else. These little interactions are crucial for new Ph.D. students &amp;mdash; both to get  to know the group, and to become known. They&amp;rsquo;re also useful for everyone else to build a stronger community and  to open doors for collaboration. And yet, despite the fact that these interactions are an admittedly key benefit  of having a lab, the last time the PRL got all together in a big way (more  than a few hours for PL seminar or Ph.D. open house) was for the  &lt;a href="http://www.ccs.neu.edu/home/matthias/7480-s17/index.html"&gt;Spring 2017 edition&lt;/a&gt;  of HOPL.&lt;/p&gt;
+
+&lt;p&gt;Our primary &lt;strong&gt;goal&lt;/strong&gt; this year was for every Ph.D student to present research. Time permitting, we wanted a keynote speaker, a panel discussion, and activities. Weather permitting, we wanted to go outside during lunch.&lt;/p&gt;
+
+&lt;p&gt;In light of the main goal, we prefer to call the event an &amp;ldquo;offsite&amp;rdquo;  (or &amp;ldquo;offsite meeting&amp;rdquo;) rather than a &amp;ldquo;retreat&amp;rdquo; because the target was an  informative day rather than a relaxing one.&lt;/p&gt;
+
+&lt;h2 id="booking-and-logistics"&gt;Booking and Logistics&lt;/h2&gt;
+
+&lt;p&gt;Our planning went like this: (1) pick a date, (2) find a venue, (3) invite a keynote  speaker, (4) order food, and (5) arrange the technical program. The process took 2 months because that&amp;rsquo;s all we had.&lt;/p&gt;
+
+&lt;h3 id="date--nov-11"&gt;Date = Nov 11&lt;/h3&gt;
+
+&lt;p&gt;In the beginning, we chose Veterans&amp;rsquo; Day (2019&amp;ndash;11&amp;ndash;11) and Northeastern &lt;a href="https://registrar.northeastern.edu/app/uploads/2019-2020-University-Wide-Calendar-List.pdf"&gt;reading  day&lt;/a&gt;  (2019&amp;ndash;12&amp;ndash;05) as possible dates. We ended up with Veterans&amp;rsquo; Day.&lt;/p&gt;
+
+&lt;p&gt;A small number of lab members were opposed to Veterans&amp;rsquo; Day. They gave two reasons: the Fall semester is especially busy, and Veterans&amp;rsquo; Day  is a federal holiday.&lt;/p&gt;
+
+&lt;h3 id="venue--mtw"&gt;Venue = MTW&lt;/h3&gt;
+
+&lt;p&gt;The first venue we tried was the &lt;a href="http://www.warrencenter.com"&gt;Warren Conference Center&lt;/a&gt; in  Framingham. The venue was difficult to contact. We submitted an online form; no response. We searched the website for contact email addresses; no luck. We called the office, got forwarded to the event manager, and left a message; no response. Lastly we asked the &lt;a href="https://www.khoury.northeastern.edu/people/chelsea-smith/"&gt;Khoury Events Team&lt;/a&gt;  to reach out on our behalf. They returned with an email address and  &lt;a href="/blog/static/warren-center-meetings-and-retreats.pdf"&gt;event menu&lt;/a&gt;  (Thank you Chelsea and Donald!)  and we decided the Warren Center was not a good fit for our small and short-notice offsite.&lt;/p&gt;
+&lt;!-- Donald Pepple (Northeastern) made contact with Christine Barisano (Framingham)--&gt;
+
+&lt;p&gt;Second, we contacted the &lt;a href="https://alumni.northeastern.edu/about/alumni-center/"&gt;Northeastern University Alumni Center&lt;/a&gt;. They were not open on Veterans&amp;rsquo; Day 2019.&lt;/p&gt;
+
+&lt;p&gt;Third, we turned to Google and Yelp for venue options in New England. Most were at a corporate-level price range, but this search led to our  winner: &lt;a href="https://mtwyouth.org"&gt;More Than Words&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;More Than Words (MTW) is a bookstore and event space. We got in touch via email, visited the store, and then booked. Easy!&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;More Than Words is also a nonprofit social enterprise that offers job training for ~350 young adults each year. If you visit, you&amp;rsquo;ll see a mix of &amp;ldquo;employees&amp;rdquo; and &amp;ldquo;volunteers&amp;rdquo; helping out.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Booking was complicated, though, by the fact that Northeastern requires  &lt;a href="http://catalog.northeastern.edu/graduate/health-sciences/academic-policies-procedures/liability-insurance/"&gt;liability insurance&lt;/a&gt;  for all off-campus events. If &lt;strong&gt;you&lt;/strong&gt; are booking an event, get a contract from the venue well ahead  of time and allow 2 to 4 weeks for Northeastern to process and sign it. We received our contract with 1 week until the payment was due and were very  fortunate that the Northeastern administrative staff met the deadline.&lt;/p&gt;
+
+&lt;p&gt;Here are more facts about MTW:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the theater space seats 30 with lots of extra space&lt;/li&gt;
+ &lt;li&gt;the two long tables in the reading room can seat about 20&lt;/li&gt;
+ &lt;li&gt;the projector is 16:9 native and accepts HDMI input; bring your own HDMI adaptor&lt;/li&gt;
+ &lt;li&gt;there&amp;rsquo;s no whiteboard, but MTW can supply an easel stand&lt;/li&gt;
+ &lt;li&gt;much of the furniture in store is antique and for sale, so be careful using  it &amp;mdash; both to avoid damaging it, and because antiques can be oddly-shaped&lt;/li&gt;
+ &lt;li&gt;the bookstore was closed on Veterans&amp;rsquo; Day, but we were able to have our  event and buy books&lt;/li&gt;
+ &lt;li&gt;MTW may have fridge space to temporarily hold leftovers&lt;/li&gt;
+ &lt;li&gt;closest T station: &lt;a href="https://www.mbta.com/stops/place-tumnl"&gt;Tufts Medical Center&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="keynote--none"&gt;Keynote = None&lt;/h3&gt;
+
+&lt;p&gt;The original, ambitious plan was to invite two keynote speakers &amp;mdash; one working  in industry and one from academia &amp;mdash; to enrich the offsite  with new knowledge. And because this was the PRL&amp;rsquo;s first offsite, it was decided that these speakers  must have roughly-equal research overlap with every Ph.D. student. (Later meetings could specialize.)&lt;/p&gt;
+
+&lt;p&gt;We failed to come up with many candidates that met our goal, and so we  fell back to a simpler plan: pick one. To this end, we sent out a Google Form to assess preferences and research overlap. The form responses indicated a clear favorite, who we invited.&lt;/p&gt;
+
+&lt;p&gt;Our chosen speaker, however, was unable to attend. Rather than invite a different guest, we replaced the keynote time with a  morning activity (more on that later).&lt;/p&gt;
+&lt;!-- to future planners: we invited Kathi Fisler; she had grant-writing plans for that day and would be interested in coming to a future offsite--&gt;
+
+&lt;h3 id="food-coffee-tea"&gt;Food, Coffee, Tea&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href="https://flourbakery.com/"&gt;Flour Bakery + Cafe&lt;/a&gt; provided lunch. For most days, you can order from Flour using an &lt;a href="https://flourbakery.com/menu/catering/catering-information/"&gt;online form&lt;/a&gt;. For holidays, you may need to send an email &amp;mdash; that&amp;rsquo;s what we did, and  the catering staff quickly helped us place an order. We ordered 16 assorted meat sandwiches, 16 assorted veggie sandwiches, 4 vegan hummus  sandwiches, and 2 vegan &amp;amp; gluten-free &lt;em&gt;everything spiced&lt;/em&gt; salads.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://www.trycuppacoffee.com/location/"&gt;Cuppacoffee&lt;/a&gt; provided coffee, tea,  and breakfast items. In the morning, that was: 3 gallons coffee, 1 gallon brewed black tea,  16 bagels, 12 muffins, and 10 croissants. In the afternoon, that was: 2 gallons coffee and 1 gallon brewed green tea. We were able to pick up everything &amp;mdash; the order + napkins, milk, cream cheese,  butter, and knives &amp;mdash; ourselves because Cuppacoffee is very close to MTW.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://www.cmartboston.com/"&gt;CMart&lt;/a&gt; sold us water and juices. (There is also a Whole Foods near MTW.)&lt;/p&gt;
+
+&lt;p&gt;At the end of the day, the leftovers included ~2 gallons of coffee and ~8  sweet potato sandwiches. People asked for more meat sandwiches, more blueberry muffins,  and Flour&amp;rsquo;s &lt;a href="https://youtu.be/kIbhckqanHI"&gt;sticky buns&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="event-program"&gt;Event Program&lt;/h3&gt;
+
+&lt;p&gt;The following assumptions/goals constrained the schedule for the day:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;give all 17 on-campus Ph.D. students a talk slot;  talks must &lt;strong&gt;either&lt;/strong&gt; communicate one technical idea from recent  work &lt;strong&gt;or&lt;/strong&gt; say what led the speaker to apply to a PL Ph.D. program&lt;/li&gt;
+ &lt;li&gt;allow at least 10 minutes per talk  (because the audience may have trouble following a day of 5-minute talks,  and the speakers may have trouble preparing informative 8-minute talks)&lt;/li&gt;
+ &lt;li&gt;do not make the audience sit for more than 1 hour at a time&lt;/li&gt;
+ &lt;li&gt;maximize the number and length of breaks (to encourage discussions)&lt;/li&gt;
+ &lt;li&gt;include a relevant and fun welcome activity&lt;/li&gt;
+ &lt;li&gt;save time for a panel discussion at the end, with everyone sitting around  a room able to freely ask questions&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;We decided to start with an hour-long activity, split the day into  hour-long blocks of three 15-minute talks (10 min. talk, 5 min. Q/A)  and one 15-minute break, and end with a 1.5-hour panel discussion. In total, we started the activity at 9:25am and ended the panel at 6:40pm.&lt;/p&gt;
+
+&lt;p&gt;The activity was &lt;em&gt;codewalks&lt;/em&gt;. Before the offsite, we (the organizers) picked a few short and interesting programs  (for example, the &lt;a href="https://github.com/EnterpriseQualityCoding/FizzBuzzEnterpriseEdition/blob/master/src/main/java/com/seriouscompany/business/java/fizzbuzz/packagenamingpackage/impl/math/arithmetics/IntegerDivider.java"&gt;IntegerDivider&lt;/a&gt;  class from a silly FizzBuzz implementation and a solution to the  &lt;a href="https://en.wikipedia.org/wiki/Dutch_national_flag_problem"&gt;Dutch national flag problem&lt;/a&gt;). During breakfast, we made 2-person teams and gave each team a  printed copy of one program. Then, for the activity, we selected one team to present the code and three  panelists from the audience to lead a discussion. Discussions ran for about 10 minutes, and then we picked another team;  half the teams did not present. This activity ended up being fun (thanks to the great participants) and  definitely met its serious goals; namely, to practice reading, speaking, critical thinking, and  &lt;a href="https://blog.codinghorror.com/the-ten-commandments-of-egoless-programming/"&gt;egoless programming&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The talks ran conference-style. One organizer played &amp;ldquo;session chair&amp;rdquo; to help each speaker set up and  to announce each talk. Questions mid-talk were allowed, but most questions arrived after the speaker  finished.&lt;/p&gt;
+
+&lt;p&gt;For the panel discussion, we put chairs around the room and asked people to  sit more-or-less comfortably. The panel moderator started by asking one question to the faculty, and  we took things from there as answers arrived and inspired new questions.&lt;/p&gt;
+
+&lt;h2 id="looking-back-at-the-details"&gt;Looking Back at the Details&lt;/h2&gt;
+
+&lt;p&gt;Reading Day in the Spring may be a good, free date for future retreats.&lt;/p&gt;
+
+&lt;p&gt;We planned a 15-minute breakfast/welcome slot, but wound up needing 25 minutes  to give people time to prepare for the activity.&lt;/p&gt;
+
+&lt;p&gt;The planned 15-minute breaks often had to be cut short because talks  ran longer. Next time, we&amp;rsquo;d keep the morning breaks short &amp;mdash; just enough to use the  restroom and grab a coffee &amp;mdash; and aim for 30-min breaks in the afternoon.&lt;/p&gt;
+
+&lt;p&gt;Groups of three 15-minute talks worked well, but groups of four talks might  be equally good.&lt;/p&gt;
+
+&lt;p&gt;Perhaps each speaker should get the chance to pick a talk length. &lt;a href="https://nepls.org/"&gt;NEPLS&lt;/a&gt;, for example, allows a choice between 5-min.  and 30-min. talks.&lt;/p&gt;
+
+&lt;p&gt;The panel ended up too chaotic. People often had lots to say and it was difficult to queue questions during a  speech. One idea for next time is to seat the professors together and give each a time  limit to answer; this would organize the discussion, but may not improve the  quality. Another idea is to pick &amp;ldquo;topics&amp;rdquo; beforehand and have the moderator enforce a  time limit on each topic. Or maybe we should drop the panel unless we have a clear goal for what to discuss.&lt;/p&gt;
+&lt;!-- to future organizers: the panel began asking faculty for a mistake in their career and wound up with a defensive flavor--&gt;
+
+&lt;h2 id="looking-back-overall"&gt;Looking Back, Overall&lt;/h2&gt;
+
+&lt;p&gt;This was a good offsite. Organizing was mostly easy and straightforward. We very much enjoyed hearing what everyone had been working on.&lt;/p&gt;
+
+&lt;p&gt;There were two rough parts to the organizing. First, we faced some difficult initial choices about the date, venue, and program. Second, we feel that we put undue pressure on students to prepare talks  with short notice. Both challenges could easily be avoided next time &amp;mdash;  keep the same date &amp;amp; program, and announce the plan early! Maybe though, a different program could lead to a more effective use of time.&lt;/p&gt;
+
+&lt;p&gt;With all that in mind, we recommend having a similar meeting next year or next  semester. It was extremely useful to sync up with the whole lab,  good practice to make a 10-minute talk,  and overall a rewarding (though stressful) day.&lt;/p&gt;</content></entry></feed>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Aaron Weiss'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Aaron-Weiss.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Aaron-Weiss.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Aaron-Weiss-html</id>
+ <updated>2017-06-09T13:36:56Z</updated>
+ <entry>
+  <title type="text">[Bridging the System Configuration Gap (Cross-Post)](https://aaronweiss.us/posts/2017-06-05-bridging-the-system-configuration-gap.html)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/06/09/-bridging-the-system-configuration-gap-cross-post-https-aaronweiss-us-posts-2017-06-05-bridging-the-system-configuration-gap-html/?utm_source=Author-Aaron-Weiss&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-06-09-bridging-the-system-configuration-gap-cross-post-https-aaronweiss-us-posts-2017-06-05-bridging-the-system-configuration-gap-html</id>
+  <published>2017-06-09T13:36:56Z</published>
+  <updated>2017-06-09T13:36:56Z</updated>
+  <author>
+   <name>Aaron Weiss</name></author>
+  <content type="html"></content></entry></feed>
