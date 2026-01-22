@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Tutorial: Racket FFI, Part 2</title>
+    <meta name="description" content="This is part 2 of my tutorial on using the Racket FFI. If you haven't read part 1 yet, you can find it here. Update: part 3 is also now available here.  Part 2 will continue with more Cairo examples. In this installment, I plan to go over some more advanc...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Racket, FFI, tutorial, Author: Asumu Takikawa">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/06/29/tutorial-racket-ffi-part-2/">
+    <link rel="next" href="/blog/2016/06/27/tutorial-using-racket-s-ffi/">
+    <link rel="prev" href="/blog/2016/07/11/tutorial-racket-ffi-part-3/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Tutorial: Racket FFI, Part 2</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-06-29" pubdate="true">2016-06-29</time> :: <span class="tags"><a href="/blog/tags/Racket.html">Racket</a>, <a href="/blog/tags/FFI.html">FFI</a>, <a href="/blog/tags/tutorial.html">tutorial</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Asumu-Takikawa.html">Asumu Takikawa</a></span></p>
+  </header>
+
+<p>This is part 2 of my tutorial on using the Racket FFI. If you haven&rsquo;t read
+part 1 yet, you can find it
+<a href="http://prl.ccs.neu.edu/blog/2016/06/27/tutorial-using-racket-s-ffi/">here</a>.
+<span style="font-weight: bold">Update:</span> part 3 is also now available
+<a href="http://prl.ccs.neu.edu/blog/2016/07/11/tutorial-racket-ffi-part-3/">here</a>.</p>
+
+<p>Part 2 will continue with more Cairo examples. In this installment, I plan to
+go over some more advanced FFI hacking such as handling computed argument
+values, custom return arguments, and using C structs.</p>
+<!--more-->
+
+<p>First, here&rsquo;s the core code from part 1 condensed and re-arranged into an
+example that you can copy and paste into your definitions area:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/guide/Module_Syntax.html#%28part._hash-lang%29"><span class="RktMod">#lang</span></a><span class="hspace">&nbsp;</span><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/index.html"><span class="RktSym">racket</span></a></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._require%29%29">require</a></span><span class="hspace">&nbsp;</span><span class="RktSym">racket/draw</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">ffi/unsafe</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">ffi/unsafe/define</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">pict</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">bitmap magic</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">make-bitmap</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">send</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="hspace">&nbsp;</span><span class="RktSym">get-handle</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">C types</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cpointer-type%29%29">define-cpointer-type</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cpointer-type%29%29">define-cpointer-type</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_surface_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_line_cap_t</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Enumerations_and_Masks.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__enum%29%29">_enum</a></span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">(</span><span class="RktVal">butt</span><span class="hspace">&nbsp;</span><span class="RktVal">round</span><span class="hspace">&nbsp;</span><span class="RktVal">square</span><span class="RktVal">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._ffi-lib%29%29">ffi-lib</a></span><span class="hspace">&nbsp;</span><span class="RktVal">#f</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-ffi-definer</span><span class="hspace">&nbsp;</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">the foreign functions</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-create</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_surface_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_create</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-move-to</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_move_to</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-line-to</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_line_to</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-line-width</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_line_width</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-stroke</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_stroke</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-line-cap</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_line_cap_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_line_cap</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">Bitmap -&gt; Pict</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a helper for displaying the bitmap</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">show</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">linewidth</span><span class="hspace">&nbsp;</span><span class="RktVal">2</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">frame</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">bitmap</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<h1><a name="(part._.Dashes_and_array_arguments)"></a>Dashes and array arguments</h1>
+
+<p>To start off, let&rsquo;s look at another C example from the Cairo
+<a href="https://www.cairographics.org/samples/">samples page</a>.
+This time we will look at the "dash" example, which has a
+use of an input array:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">dashes</span><span class="RktPn">[</span><span class="RktPn">]</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">=</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">{</span><span class="RktVal">50.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">ink</span><span class="hspace">&nbsp;</span><span class="RktCmt">*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">10.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">skip</span><span class="hspace">&nbsp;</span><span class="RktCmt">*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">10.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">ink</span><span class="hspace">&nbsp;</span><span class="RktCmt">*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">10.0</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">skip*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">}</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">int</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">ndash</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">=</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">sizeof</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">dashes</span><span class="RktPn">)</span><span class="RktMeta">/sizeof</span><span class="RktPn">(</span><span class="RktMeta">dashes</span><span class="RktPn">[</span><span class="RktVal">0</span><span class="RktPn">]</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">offset</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">=</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">-</span><span class="RktVal">50.0</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_set_dash</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">dashes,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">ndash,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">offset</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_set_line_width</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">10.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_move_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">128.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">25.6</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">230.4</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">230.4</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_rel_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">-</span><span class="RktVal">102.4</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">0.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_curve_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">51.2</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">230.4</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">51.2</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">128.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">128.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">128.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_stroke</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>The most interesting function here is <span class="stt">cairo_set_dash</span>, which takes an
+array argument. The only other new functions are <span class="stt">cairo_rel_line_to</span>
+and <span class="stt">cairo_curve_to</span> which have very straightforward C types:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-rel-line-to</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_rel_line_to</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-curve-to</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_curve_to</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>Meanwhile, the C type signature for <span class="stt">cairo_set_dash</span> from the Cairo
+docs looks like this:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_set_dash</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">const</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*dashes,</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">int</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">num_dashes,</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">offset</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>Something to note about the arguments is that <span class="stt">num_dashes</span>
+encodes the length of the array <span class="stt">dashes</span>. This will come up later when
+we want to make the C type for this function more convenient.</p>
+
+<p>On the Racket side, it&rsquo;s natural to represent the array of dashes as either a
+list or <a class="techoutside Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/vectors.html#%28tech._vector%29"><span class="techinside">vector</span></a> of numbers. Given that, a fairly literal translation of
+the C type above might look like the following:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-dash</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__list%29%29">_list</a></span><span class="hspace">&nbsp;</span><span class="RktSym">i</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__int%29%29">_int</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_dash</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>This type includes a type constructor we haven&rsquo;t seen yet: <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__list%29%29">_list</a></span></span>.
+This is a so-called <a class="techoutside Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28tech._custom._function._type%29"><span class="techinside">custom function type</span></a> that has special meaning
+inside of a <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span></span> type. It lets you convert between a Racket list and
+a C array. Since arrays are often used for both input and output of a C function,
+the constructor requires you to specify the mode in which you are using the
+array.</p>
+
+<p>Since we only want to provide a list from the Racket side to C, we&rsquo;ll use
+the <span class="RktWrap"><span class="RktSym">i</span></span> input mode. We can then call the function like this:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-dash</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list%29%29">list</a></span><span class="hspace">&nbsp;</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktVal">4</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktVal"><span class="nobreak">-5</span>0.0</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>Note that because of how we defined the type of <span class="RktWrap"><span class="RktSym">cairo-set-dash</span></span> we had to
+provide the length of the input list as a separate argument! This seems pretty
+silly since it&rsquo;s very easy to get the length of a Racket list and because this
+is a likely source of mistakes. It would be preferable to compute the length
+argument automatically.</p>
+
+<p>Luckily, the <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span></span> type constructor actually lets you do this with the
+<span class="RktWrap"><span class="RktPn">(</span><span class="RktSym">name</span><span class="stt"> </span><span class="RktSym">:</span><span class="stt"> </span><span class="RktSym">type</span><span class="RktPn">)</span></span> syntax for naming arguments in combination with the
+<span class="RktWrap"><span class="RktPn">(</span><span class="RktSym">type</span><span class="stt"> </span><span class="RktVar">=</span><span class="stt"> </span><span class="RktSym">expr</span><span class="RktPn">)</span></span> syntax for supplying computed arguments:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-dash</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">name this argument for later uses in the type</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">dashes</span><span class="hspace">&nbsp;</span><span class="RktSym">:</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__list%29%29">_list</a></span><span class="hspace">&nbsp;</span><span class="RktSym">i</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">)</span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a computed argument position</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__int%29%29">_int</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._~3d%29%29">=</a></span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._length%29%29">length</a></span><span class="hspace">&nbsp;</span><span class="RktSym">dashes</span><span class="RktPn">)</span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_dash</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>When a computed argument is specified with a <span class="RktWrap"><span class="RktVar">=</span></span>, it&rsquo;s not necessary to provide
+the argument on the Racket side. So <span class="RktWrap"><span class="RktSym">cairo-set-dash</span></span> is now an arity 3
+function that can be called like this:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-dash</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/pairs.html#%28def._%28%28quote._~23~25kernel%29._list%29%29">list</a></span><span class="hspace">&nbsp;</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktVal"><span class="nobreak">-5</span>0.0</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>This means we&rsquo;ll never make a mistake in passing the length argument to Cairo.
+Just as an aside, it&rsquo;s also possible to use Racket vectors instead of lists by using
+the <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__vector%29%29">_vector</a></span></span> type constructor.</p>
+
+<p>Putting it all together, we can reproduce the dashes example like this:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">dashes</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">(</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="RktVal">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">offset</span><span class="hspace">&nbsp;</span><span class="RktVal"><span class="nobreak">-5</span>0.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-dash</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktSym">dashes</span><span class="hspace">&nbsp;</span><span class="RktSym">offset</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-line-width</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">10.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-move-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">128.0</span><span class="hspace">&nbsp;</span><span class="RktVal">25.6</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-line-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">230.4</span><span class="hspace">&nbsp;</span><span class="RktVal">230.4</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-rel-line-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal"><span class="nobreak">-1</span>02.4</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="RktPn">(</span><span class="RktSym">cairo-curve-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">51.2</span><span class="hspace">&nbsp;</span><span class="RktVal">230.4</span><span class="hspace">&nbsp;</span><span class="RktVal">51.2</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktVal">128.0</span><span class="hspace">&nbsp;</span><span class="RktVal">128.0</span><span class="hspace">&nbsp;</span><span class="RktVal">128.0</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-stroke</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">show</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><img src="/blog/img/posts/2016-06-29-tutorial-racket-ffi-part-2/pict.png" alt="image" height="262" style="vertical-align: 0px; margin: -3px -3px -3px -3px;" width="262" /></p></td></tr></tbody></table></div>
+
+<h1><a name="(part._.Result_arguments_and_.C_structs)"></a>Result arguments and C structs</h1>
+
+<p>For some more advanced FFI hacking, let&rsquo;s consider the problem of drawing some
+text into a predetermined space. In particular, we have our usual 256x256
+bitmap that we want to draw some text into:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">txt-bt</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">make-bitmap</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">txt-surface</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">send</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-bt</span><span class="hspace">&nbsp;</span><span class="RktSym">get-handle</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-surface</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>Our challenge is to make a Racket function that takes a string (let&rsquo;s
+assume we can draw it in one line) and draws it into this bitmap.
+Since we are taking an arbitrary string, we will need to figure out
+how to scale the text to fit. To make it simple, let&rsquo;s just scale the
+text to fit the width and assume the height will be okay.</p>
+
+<p>To implement the key step of measuring the text size, we can use the
+<a href="https://www.cairographics.org/manual/cairo-text.html#cairo-text-extents"><span class="stt">cairo_text_extents</span></a>
+function. Its type signature is as follows:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_text_extents</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">const</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">char</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*utf8,</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_text_extents_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*extents</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>The interesting part of this signature is that
+<a href="https://www.cairographics.org/manual/cairo-cairo-scaled-font-t.html#cairo-text-extents-t"><span class="stt">cairo_text_extents_t</span></a>
+is a struct type:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">from</span><span class="hspace">&nbsp;</span><span class="RktCmt">the</span><span class="hspace">&nbsp;</span><span class="RktCmt">Cairo</span><span class="hspace">&nbsp;</span><span class="RktCmt">docs</span><span class="hspace">&nbsp;</span><span class="RktCmt">*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">typedef</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">struct</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">{</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">x_bearing</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">y_bearing</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">width</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">height</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">x_advance</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">y_advance</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktPn">}</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_text_extents_t</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>We haven&rsquo;t yet seen how to handle C structs with the FFI, but it&rsquo;s not
+too tricky. Support for C structs comes built-in and will look familiar
+if you&rsquo;re used to Racket structs. We can directly translate the documented
+definition above into a <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/C_Struct_Types.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cstruct%29%29">define-cstruct</a></span></span> declaration:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">the leading underscore is mandatory</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/C_Struct_Types.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cstruct%29%29">define-cstruct</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_text_extents_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktPn">[</span><span class="RktSym">x-bearing</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">y-bearing</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">width</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">height</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">x-advance</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">y-advance</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="RktPn">]</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>This declaration does a couple of things. First, it defines a bunch of handy C types
+related to the struct for us:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">_cairo_text_extents_t</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;ctype&gt;</span></p></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">pointer to struct</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">_cairo_text_extents_t-pointer</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;ctype&gt;</span></p></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">allows NULL pointer</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">_cairo_text_extents_t-pointer/null</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;ctype&gt;</span></p></td></tr></tbody></table></div>
+
+<p>Along with functions that look like regular Racket struct operations:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a struct constructor</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">make-cairo_text_extents_t</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;procedure:make-cairo_text_extents_t&gt;</span></p></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a field selector</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">cairo_text_extents_t-width</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;procedure:cairo_text_extents_t-width&gt;</span></p></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a predicate for the struct</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">cairo_text_extents_t?</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;procedure:^TYPE?&gt;</span></p></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a field mutation function</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">set-cairo_text_extents_t-width!</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;procedure:set-cairo_text_extents_t-width!&gt;</span></p></td></tr></tbody></table></div>
+
+<p>With the struct type defined, it&rsquo;s easy to come up with a rudimentary
+interface for <span class="RktWrap"><span class="RktSym">cairo-text-extents</span></span>:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-text-extents</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/String_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__string%29%29">_string</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">_cairo_text_extents_t-pointer</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_text_extents</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>In order to actually use this function, we need to create a text extents struct
+and provide it as a pointer. Conveniently, the FFI treats instances of C structs
+as pointers so this is pretty straightforward:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">extents</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">make-cairo_text_extents_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktVal">0.0</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="hspace">&nbsp;</span><span class="RktVal">0.0</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">cairo-text-extents</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">"hello world"</span><span class="hspace">&nbsp;</span><span class="RktSym">extents</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">cairo_text_extents_t-width</span><span class="hspace">&nbsp;</span><span class="RktSym">extents</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">54.0</span></p></td></tr></tbody></table></div>
+
+<p>This style of programming feels awfully imperative though. Since we&rsquo;re in a
+functional language, it would be nice to avoid the manual creation of the struct.
+We can define an alternate version of the <span class="RktWrap"><span class="RktSym">cairo-text-extents</span></span> FFI wrapper
+by combining named arguments, a new <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__ptr%29%29">_ptr</a></span></span> type constructor,
+and a neat feature of <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span></span> that lets you customize
+the return result:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-text-extents*</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/String_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__string%29%29">_string</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">named args and _ptr</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">[</span><span class="RktSym">ext</span><span class="hspace">&nbsp;</span><span class="RktSym">:</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__ptr%29%29">_ptr</a></span><span class="hspace">&nbsp;</span><span class="RktSym">o</span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_text_extents_t</span><span class="RktPn">)</span><span class="RktPn">]</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">the return result of the C function</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">custom return result for the wrapper</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym">ext</span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_text_extents</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>The <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__ptr%29%29">_ptr</a></span></span> constructor works like the <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__list%29%29">_list</a></span></span> constructor we saw
+earlier in this blog post but typically for a single object. Since we are passing
+in a value to use as an output, we specify the <span class="RktWrap"><span class="RktSym">o</span></span> mode to <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__ptr%29%29">_ptr</a></span></span>.
+In output mode, this type will automatically allocate a new instance of the type
+(using the <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_pointer-funcs.html#%28def._%28%28quote._~23~25foreign%29._malloc%29%29">malloc</a></span></span> function) and arrange for it to be passed in as
+a pointer.</p>
+
+<p>The strangest part of this example is that there are now two uses of the
+<span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span></span> form! By providing a second arrow, we can customize what the FFI wrapper
+returns. The expression to the right of the second arrow is just Racket code that can
+reference previously named arguments. The result of evaluating this
+expression is used instead of the normal return result for calls to the
+wrapped function. In this case, we just return the struct that was allocated for us.</p>
+
+<p>Using this new version of the wrapper is much simpler:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">cairo_text_extents_t-width</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-text-extents*</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">"hello world"</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">54.0</span></p></td></tr></tbody></table></div>
+
+<p>With that in hand, it&rsquo;s pretty easy to write the function we set out to write:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-show-text</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/String_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__string%29%29">_string</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_show_text</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-scale</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_scale</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">String -&gt; Void</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">draws a string scaled horizontally</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">fit-text</span><span class="hspace">&nbsp;</span><span class="RktSym">str</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">padding</span><span class="hspace">&nbsp;</span><span class="RktVal">20</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-move-to</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._%2F%29%29">/</a></span><span class="hspace">&nbsp;</span><span class="RktSym">padding</span><span class="hspace">&nbsp;</span><span class="RktVal">2.0</span><span class="RktPn">)</span><span class="hspace">&nbsp;</span><span class="RktVal">128.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">extents</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-text-extents*</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktSym">str</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">x-bearing</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo_text_extents_t-x-bearing</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">extents</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">width</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo_text_extents_t-width</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktSym">extents</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">scale</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._%2F%29%29">/</a></span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._-%29%29"><span class="nobreak">-</span></a></span><span class="hspace">&nbsp;</span><span class="RktVal">256.0</span><span class="hspace">&nbsp;</span><span class="RktSym">padding</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/generic-numbers.html#%28def._%28%28quote._~23~25kernel%29._%2B%29%29">+</a></span><span class="hspace">&nbsp;</span><span class="RktSym">x-bearing</span><span class="hspace">&nbsp;</span><span class="RktSym">width</span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-scale</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktSym">scale</span><span class="hspace">&nbsp;</span><span class="RktSym">scale</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-show-text</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-ctx</span><span class="hspace">&nbsp;</span><span class="RktSym">str</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>And to conclude part 2 of this tutorial, here&rsquo;s an example use
+of the new <span class="RktWrap"><span class="RktSym">fit-text</span></span> function:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">fit-text</span><span class="hspace">&nbsp;</span><span class="RktVal">"Saluton, Mondo / Hallo, mundo"</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">show</span><span class="hspace">&nbsp;</span><span class="RktSym">txt-bt</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><img src="/blog/img/posts/2016-06-29-tutorial-racket-ffi-part-2/pict_2.png" alt="image" height="262" style="vertical-align: 0px; margin: -3px -3px -3px -3px;" width="262" /></p></td></tr></tbody></table></div>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/06/29/tutorial-racket-ffi-part-2/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/07/11/tutorial-racket-ffi-part-3/">&larr; <em>Tutorial: Racket FFI, part 3</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2016/06/27/tutorial-using-racket-s-ffi/"><em>Tutorial: Using Racket&rsquo;s FFI</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

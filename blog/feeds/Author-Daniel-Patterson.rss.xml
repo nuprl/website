@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Author: Daniel Patterson'</title>
+  <description>PRL Blog: Posts tagged 'Author: Daniel Patterson'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Author-Daniel-Patterson.html</link>
+  <lastBuildDate>Mon, 23 Apr 2018 10:07:48 UT</lastBuildDate>
+  <pubDate>Mon, 23 Apr 2018 10:07:48 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>[How to prove a compiler fully abstract (cross-post)](https://dbp.io/essays/2018-04-19-how-to-prove-a-compiler-fully-abstract.html)</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/04/23/-how-to-prove-a-compiler-fully-abstract-cross-post-https-dbp-io-essays-2018-04-19-how-to-prove-a-compiler-fully-abstract-html/?utm_source=Author-Daniel-Patterson&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-04-23-how-to-prove-a-compiler-fully-abstract-cross-post-https-dbp-io-essays-2018-04-19-how-to-prove-a-compiler-fully-abstract-html</guid>
+   <pubDate>Mon, 23 Apr 2018 10:07:48 UT</pubDate>
+   <author>Daniel Patterson</author>
+   <description></description></item>
+  <item>
+   <title>[How to prove a compiler correct (cross-post)](https://dbp.io/essays/2018-01-16-how-to-prove-a-compiler-correct.html)</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/01/17/-how-to-prove-a-compiler-correct-cross-post-https-dbp-io-essays-2018-01-16-how-to-prove-a-compiler-correct-html/?utm_source=Author-Daniel-Patterson&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-01-17-how-to-prove-a-compiler-correct-cross-post-https-dbp-io-essays-2018-01-16-how-to-prove-a-compiler-correct-html</guid>
+   <pubDate>Wed, 17 Jan 2018 20:58:48 UT</pubDate>
+   <author>Daniel Patterson</author>
+   <description></description></item>
+  <item>
+   <title>Artifacts for Semantics</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/05/15/artifacts-for-semantics/?utm_source=Author-Daniel-Patterson&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-05-15-artifacts-for-semantics</guid>
+   <pubDate>Mon, 15 May 2017 10:08:31 UT</pubDate>
+   <author>Daniel Patterson</author>
+   <description>
+&lt;p&gt;&lt;a href="http://gallium.inria.fr/~scherer/"&gt;Gabriel Scherer&lt;/a&gt; and I recently wrote an &lt;a href="https://dbp.io/artifacts/funtal"&gt;artifact&lt;/a&gt; for a semantics &lt;a href="https://dbp.io/pubs/2017/funtal.pdf"&gt;paper&lt;/a&gt; on a typed assembly language interoperating with a high-level functional language.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;We wrote a interpreter, typechecker, and parser in OCaml, compiled it to Javascript using &lt;a href="http://ocsigen.org/js_of_ocaml/"&gt;js_of_ocaml&lt;/a&gt;, and then put it on a webpage (with an editor with syntax highlighting and error reporting) that allows people to step through examples from the paper or write their own. (Feel free to start by playing a bit with &lt;a href="https://dbp.io/artifacts/funtal"&gt;our artifact&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;This post will summarize the different parts to make it easier for others to repeat this process. We think it was a total success, and have gotten feedback that it makes understanding the (somewhat complex) language from the paper much easier. We argue that building such interpreters / typecheckers is easy enough that all papers should do this. Further, while our interpreter / typechecker is completely unverified, since we wrote it in OCaml, this approach should work equally well for semantics verified in Coq and then extracted to OCaml.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;The paper in question, &lt;a href="https://dbp.io/pubs/2017/funtal.pdf"&gt;FunTAL: Reasonably Mixing a Functional Language with Assembly&lt;/a&gt; (to appear in PLDI17), presents a multi-language that incorporates a typed assembly language (TAL) and a simple functional language where each can be embedded within the other. The paper then develops a logical relation that can be used to reason about the equivalence of such mixed programs. For example in the paper we show an imperative register-based factorial and a functional factorial equivalent.&lt;/p&gt;
+
+&lt;p&gt;Both the static and dynamic semantics are relatively complex. The typed assembly has registers (which store word-sized values), a heap (which stores code-blocks and tuples), and a stack (not a call-stack, simply a place where word-sized values can be pushed and popped). Code-blocks have pre-conditions on the state of the registers and the stack, and allow the tail of the stack to be abstracted over polymorphically. This allows values to be protected on the stack before jumping to blocks that otherwise could change them. This is used, along with a novel notion of &lt;strong&gt;return markers&lt;/strong&gt;, to ensure well-bracketing in the control flow of the typed assembly. The return markers indicate the location that points to the block that will eventually be returned to (assuming it doesn&amp;rsquo;t loop infinitely). At the top level, the return marker &lt;code&gt;end&lt;/code&gt; indicates that, assuming it does not loop, eventually the program will stop, rather than returning somewhere else.&lt;/p&gt;
+
+&lt;p&gt;Understanding the dynamic semantics requires tracking how values flow through the registers, the heap, and the stack, and rather than a call-stack, the user has to track the control flow through the statically-enforced return markers. This allows a good deal of low-level control-flow while still ensuring that calls will eventually return to the right place. This well-bracketing is vital to be able to reason about &amp;ldquo;components&amp;rdquo; that eventually return a value of a particular type, a necessity when embedding these components in a typed high-level program! However, it does mean that understanding the static and dynamic semantics from a few rules alone is a tall order. Our functional language is more standard, though we use (iso)-recursive types to allow recursion, which can easily trip up people, especially when you don&amp;rsquo;t have a type-checker to catch typos!&lt;/p&gt;
+
+&lt;p&gt;For that reason, when working through examples for the paper I implemented a simple interpreter for the multi-language. I did this in OCaml, in the most straightforward way possible: by translating the definitions from the paper into type definitions (&lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L835"&gt;for F&lt;/a&gt; and &lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1209"&gt;for TAL&lt;/a&gt;), and the reduction relation into a &lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L1155"&gt;&amp;ldquo;step&amp;rdquo; function&lt;/a&gt; that (assuming it wasn&amp;rsquo;t stuck or a value), did one step of evaluation. Later, I did the same thing for the type-checker, translating rules into a &lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/ftal.ml#L282"&gt;type-checking function&lt;/a&gt;. The latter had to deviate from the rules in the paper in a few minor ways, as the typing rules we had in the paper were slightly not syntax directed.&lt;/p&gt;
+
+&lt;p&gt;Having the interpreter and type-checker was very useful for me, as I could check that the examples from the paper did not contain typos, but it was much less useful as an artifact for a reader of the paper. To use it the reader would have to download the source, install OCaml, write out examples as OCaml data constructors in a test file, compile it, run it, and then interpret the (quite overwhelming) output of every step of evaluation. At each step, I printed the current registers, current stack, current heap, what the evaluation context was (as you might be evaluating TAL instructions that were embedded inside a functional program that, in turn, was embedded in further TAL instructions), and what the current reduction was.&lt;/p&gt;
+
+&lt;p&gt;To get from that useful-for-the-authors artifact to a useful-to-readers artifact requires doing three things:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Allow reading/writing programs in a notation as close to the paper as  possible. In our paper we use superscripts, subscripts, and a few greek  letters, but ended up with a syntax otherwise very close to the paper &amp;mdash; the biggest  differences were a few extra delimiters introduced to reduce ambiguity.&lt;/li&gt;
+ &lt;li&gt;Present an interface that highlights type errors at the location they  occurred in, and allow a reader to step forward and backwards through the  evaluation. Printing console output traces is fine for authors, but adds too  much effort for readers.&lt;/li&gt;
+ &lt;li&gt;Put it online! Don&amp;rsquo;t require installing any software! Conveniently,  implementing 2 is also made easier once done online, as we could use existing  editor tooling to present the code, highlight errors, etc. By using OCaml, we  were able to easily use the  excellent &lt;a href="http://ocsigen.org/js_of_ocaml/"&gt;js_of_ocaml&lt;/a&gt;.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;The first was done by Gabriel, who wrote a grammar using &lt;a href="http://gallium.inria.fr/~fpottier/menhir/"&gt;Menhir&lt;/a&gt;, and then equipped it with custom parsing error messages that provide much better feedback when there are typos in what people are trying. We also wrote a pretty-printer using the &lt;a href="http://gallium.inria.fr/blog/first-release-of-pprint/"&gt;PPrint&lt;/a&gt; library, so we could show intermediate program states through the UI. After writing this, we were able to convert our existing suite of test cases and examples to be written textually, which was a huge improvement for us as well! These and other tests were used to ensure that the parser/pretty-printer would round-trip properly.&lt;/p&gt;
+
+&lt;p&gt;For the interface, I built a simple web page that had the &lt;a href="https://codemirror.net/"&gt;CodeMirror&lt;/a&gt; editor equipped with a very simple syntax highlighter (&lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L247"&gt;8 lines of code&lt;/a&gt; to highlight keywords &amp;amp; atoms, plus a CodeMirror extension to highlight matching brackets) and error highlighting (which is triggered by the OCaml code). I then made a simple &amp;ldquo;machine state&amp;rdquo; UI that showed, in pretty-printed format, the heap, stack, registers, context, and redex. On the OCaml side, when the &amp;ldquo;run&amp;rdquo; button is clicked, we parse and typecheck and, assuming no errors occur, store the current state as our &amp;ldquo;history&amp;rdquo;. As the user clicks forward or backwards, we run the step function and append to the history of states or pop states off of the history. In total, there are &lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/artifact/index.html#L246"&gt;50 lines of Javascript&lt;/a&gt; and about &lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/web.ml"&gt;150 lines of OCaml&lt;/a&gt; that handle the logic for this interactive UI.&lt;/p&gt;
+
+&lt;p&gt;Putting it online was very easy, based on the choice of tools used earlier. We compile the main file (&lt;a href="https://github.com/dbp/funtal/blob/032be70f33f77e80f4fab7e62016bfabf96476f3/web.ml"&gt;web.ml&lt;/a&gt;) to Javascript using &lt;a href="http://ocsigen.org/js_of_ocaml/"&gt;js_of_ocaml&lt;/a&gt;, and it pulls in the parser, type-checker, interpreter, examples, etc. The rest of the artifact is a single html file, a CSS file, and a few javascript files for CodeMirror. It requires no server backend, is easy to archive and save, and will even run on smartphones!&lt;/p&gt;
+
+&lt;p&gt;The total time spent implementing the artifact was a small fraction of the time spent on the paper (probably 15 days of person-time), and while it was not in any critical way essential for the success of the paper, it does make the paper much easier to read, and we would argue that all semantics papers would be better off with easy to use artifacts for experimentation. Also, while implementing the artifact we found a few mistakes in the typing judgments for the language. The most interesting one was for our &lt;code&gt;protect&lt;/code&gt; TAL instruction, which exists to protect the tail of the stack in a fresh type variable. We had written this as a typing rule that type-checked the rest of the instruction sequence with the abstracted tail, but this never allowed the tail to be accessed again. By translating the typing judgments exactly into code, we realized that there was a problem, because examples that should have worked did not type-check! We were then able to fix the typing rule to conform to what we originally thought it achieved &amp;mdash; locally abstracting, but not abstracting from outside the component. What is interesting is that this did not come up in our proofs because the typing rule was perfectly valid &amp;mdash; it just did not allow non-trivial programs that used the &lt;code&gt;protect&lt;/code&gt; instruction. It&amp;rsquo;s quite possible we would have noticed this without implementing the artifact, but the artifact certainly made it easier!&lt;/p&gt;
+
+&lt;p&gt;To see the artifact online, visit:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://dbp.io/artifacts/funtal"&gt;https://dbp.io/artifacts/funtal&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The source code is at:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://github.com/dbp/funtal/tree/032be70f33f77e80f4fab7e62016bfabf96476f3"&gt;https://github.com/dbp/funtal&lt;/a&gt;&lt;/p&gt;</description></item>
+  <item>
+   <title>Linear Types for Low-level Languages</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/02/28/linear-types-for-low-level-languages/?utm_source=Author-Daniel-Patterson&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-02-28-linear-types-for-low-level-languages</guid>
+   <pubDate>Tue, 28 Feb 2017 09:51:55 UT</pubDate>
+   <author>Daniel Patterson</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;p&gt;In this talk, we covered early papers (primarily, by Girard, Lafont, and Abramsky) on linear logic and its reflections into computation. The goal was to understand why linearity is often turned to as a principled way to control resource usage, as shows up in a language like Rust. From the very beginning, researchers realized the implications for &amp;ldquo;low-level&amp;rdquo; languages - that linear resources would eliminate the need for garbage collection, allow in-place mutation, and enable safe parallel computation. However, pure implementations of linearity incur lots of copying, doing away with any efficiency gained, and we covered a survey of papers that attempted to reconcile this contradiction by weakening linearity in controlled ways.&lt;/p&gt;
+
+&lt;p&gt;Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-02-14.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;02&amp;ndash;14.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Just after the talk, over lunch, we had a lab discussion about the phrase &amp;ldquo;low level&amp;rdquo;. Here are some thoughts:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the phrase is relative, both over time and depending on the programming  task at hand&lt;/li&gt;
+ &lt;li&gt;a &amp;ldquo;low level&amp;rdquo; task is &amp;ldquo;one that you shouldn&amp;rsquo;t need to worry about&amp;rdquo; while  solving your current task&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;And here are some example &amp;ldquo;low-level&amp;rdquo; tasks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Time and space management is &amp;ldquo;low level&amp;rdquo; when designing a new algorithm  (the first question is correctness)&lt;/li&gt;
+ &lt;li&gt;Calling conventions and endian-ness (facets of the damn machine running  the programs) are almost always low-level&lt;/li&gt;
+ &lt;li&gt;Whether a given value is serializable is usually low-level&lt;/li&gt;
+ &lt;li&gt;Possible side effects, thrown exceptions, and optional arguments can all  be considered &amp;ldquo;low level&amp;rdquo; aspects of library functions. This is low-level  in the sense that &amp;ldquo;I&amp;rsquo;d rather use a simpler type to think about this library&amp;rdquo;&lt;/li&gt;
+ &lt;li&gt;Managing type annotations is a low-level detail in ML programs&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>

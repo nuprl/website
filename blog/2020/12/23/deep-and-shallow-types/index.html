@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Deep and Shallow Types</title>
+    <meta name="description" content="I successfully defended my Ph.D. dissertation. You can find the document, a talk recording, and much more here:   http://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020  To the PRL: thanks for a wonderful 6.5 years....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="dissertation, migratory typing, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2020/12/23/deep-and-shallow-types/">
+    <link rel="next" href="/blog/2020/11/12/transient-for-optional-and-keyword-functions/">
+    <link rel="prev" href="/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Deep and Shallow Types</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-12-23" pubdate="true">2020-12-23</time> :: <span class="tags"><a href="/blog/tags/dissertation.html">dissertation</a>, <a href="/blog/tags/migratory-typing.html">migratory typing</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>I successfully defended my Ph.D. dissertation. You can find the document, a talk recording, and much more here:</p>
+
+<ul>
+ <li><a href="http://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020">http://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020</a></li></ul>
+
+<p>To the PRL: thanks for a wonderful 6.5 years.</p>
+<!-- more-->
+
+<h3 id="abstract">Abstract</h3>
+
+<blockquote>
+ <p>The design space of mixed-typed languages is lively but disorganized. On one hand, researchers across academia and industry have contributed language  designs that allow typed code to interoperate with untyped code. These design efforts explore a range of goals;  some improve the expressiveness of a typed language, and  others strengthen untyped code with a tailor-made type system. On the other hand, experience with type-sound designs has revealed major challenges. We do not know how to measure the performance costs of sound interaction. Nor do we have criteria that distinguish ``truly sound&rsquo;&rsquo; mixed-typed languages  from others that enforce type obligations locally rather than globally.</p>
+ <p>In this dissertation, I introduce methods for assessing  mixed-typed languages and bring order to the design space. My first contribution is a performance-analysis method that allows language  implementors to systematically measure the cost of mixed-typed interaction.</p>
+ <p>My second contribution is a design-analysis method that allows language designers  to understand implications of the type system. The method addresses two central questions: whether typed code can cope with  untyped values, and whether untyped code can trust static types. Further distinctions arise by asking whether error outputs can  direct a programmer to potentially-faulty interactions.</p>
+ <p>I apply the methods to several designs and discover limitations that motivate  a synthesis of two ideas from the literature:  deep types and shallow types. Deep types offer strong guarantees but impose a high interaction cost. Shallow types offer weak guarantees and better worst-case costs. This dissertation proves that deep and shallow types can interoperate  and measures the benefits of a three-way mix.</p></blockquote>
+
+<p>Next year, I&rsquo;ll be a <a href="https://cifellows2020.org">CI Fellow</a> at Brown.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2020/12/23/deep-and-shallow-types/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/">&larr; <em>Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2020/11/12/transient-for-optional-and-keyword-functions/"><em>Transient for Optional and Keyword Functions</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

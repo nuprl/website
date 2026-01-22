@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Author: William J. Bowman'</title>
+  <description>PRL Blog: Posts tagged 'Author: William J. Bowman'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Author-William-J-Bowman.html</link>
+  <lastBuildDate>Fri, 19 Jan 2018 17:05:00 UT</lastBuildDate>
+  <pubDate>Fri, 19 Jan 2018 17:05:00 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>[Untyped Programs Don't Exist (cross-post)](https://williamjbowman.com/blog/2018/01/19/untyped-programs-don-t-exist/)</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/01/19/-untyped-programs-don-t-exist-cross-post-https-williamjbowman-com-blog-2018-01-19-untyped-programs-don-t-exist/?utm_source=Author-William-J-Bowman&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-01-19-untyped-programs-don-t-exist-cross-post-https-williamjbowman-com-blog-2018-01-19-untyped-programs-don-t-exist</guid>
+   <pubDate>Fri, 19 Jan 2018 17:05:00 UT</pubDate>
+   <author>William J. Bowman</author>
+   <description></description></item>
+  <item>
+   <title>[Why am I going to ICFP 2017? (cross-post)](https://williamjbowman.com/blog/2017/08/29/why-am-i-going-to-icfp-2017/)</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/?utm_source=Author-William-J-Bowman&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-08-29-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017</guid>
+   <pubDate>Tue, 29 Aug 2017 13:33:21 UT</pubDate>
+   <author>William J. Bowman</author>
+   <description></description></item>
+  <item>
+   <title>Type-Directed Compilation, Parts I and II</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/04/17/type-directed-compilation-parts-i-and-ii/?utm_source=Author-William-J-Bowman&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-04-17-type-directed-compilation-parts-i-and-ii</guid>
+   <pubDate>Mon, 17 Apr 2017 12:00:17 UT</pubDate>
+   <author>Leif Andersen, William J. Bowman</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;h3 id="part-i-type-directed-compilation-by-leif-andersen"&gt;Part I: &lt;em&gt;Type-Directed Compilation&lt;/em&gt;, by Leif Andersen.&lt;/h3&gt;
+
+&lt;p&gt;In this talk we discuss the history of type directed compilation. We start with Xavier Leroy&amp;rsquo;s seminal paper: &lt;a href="http://gallium.inria.fr/~xleroy/publi/unboxed-polymorphism.pdf"&gt;&lt;em&gt;Unboxed Objects and Polymorphic Typing&lt;/em&gt;&lt;/a&gt;, continue to &lt;a href="https://www.cs.cmu.edu/~rwh/papers/til/pldi96.pdf"&gt;TIL&lt;/a&gt; (Typed Intermediate Language), and finish up with &lt;a href="https://dash.harvard.edu/handle/1/2797451"&gt;TAL&lt;/a&gt; (Typed Assembly Language). We talk about what it means for a compiler to be typed preserving, and give examples of optimizations that are enabled by types.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-24.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;24.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="part-ii-dependent-type-directed-compilation-by-william-j-bowman"&gt;Part II: &lt;em&gt;Dependent Type-Directed Compilation&lt;/em&gt;, by William J. Bowman&lt;/h3&gt;
+
+&lt;p&gt;A certifying compiler is not verified, but it produces a proof of correctness for each binary. This proof can be independently checked to show that the binary was compiled correctly, removing the compiler from the trusted code base. Certifying compilation has its roots in preserving type-preserving compilation, and in particular in preserving dependent types. We start the history of dependent-type-preserving compilation with a compiler from C to Assembly. We&amp;rsquo;ll see a result showing that preserving dependent types isn&amp;rsquo;t possible, and then we&amp;rsquo;ll do it anyway.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-28.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;28.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Notes (to appear here, eventually):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation"&gt;https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description></item>
+  <item>
+   <title>[What even is compiler correctness? (cross-post)](https://williamjbowman.com/blog/2017/03/24/what-even-is-compiler-correctness/)</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/03/24/-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness/?utm_source=Author-William-J-Bowman&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-03-24-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness</guid>
+   <pubDate>Fri, 24 Mar 2017 23:11:17 UT</pubDate>
+   <author>William J. Bowman</author>
+   <description></description></item>
+  <item>
+   <title>[Toward Type-Preserving Compilation of Coq, at POPL17 SRC (cross-post)](https://williamjbowman.com/blog/2017/01/03/toward-type-preserving-compilation-of-coq-at-popl17-src/)</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/01/03/-toward-type-preserving-compilation-of-coq-at-popl17-src-cross-post-https-williamjbowman-com-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src/?utm_source=Author-William-J-Bowman&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src-cross-post-https-williamjbowman-com-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src</guid>
+   <pubDate>Tue, 03 Jan 2017 15:15:57 UT</pubDate>
+   <author>William J. Bowman</author>
+   <description></description></item></channel></rss>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'PI meeting'</title>
+  <description>PRL Blog: Posts tagged 'PI meeting'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/PI-meeting.html</link>
+  <lastBuildDate>Tue, 22 Aug 2017 15:54:06 UT</lastBuildDate>
+  <pubDate>Tue, 22 Aug 2017 15:54:06 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Gradual Typing Across the Spectrum, part II</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/?utm_source=PI-meeting&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-08-22-gradual-typing-across-the-spectrum-part-ii</guid>
+   <pubDate>Tue, 22 Aug 2017 15:54:06 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;Last week, Northeastern hosted a PI meeting for the &lt;a href="http://prl.ccs.neu.edu/gtp/"&gt;Gradual Typing Across the  Spectrum&lt;/a&gt; NSF grant. The meeting was made of 20+ researchers from four institutions,  and 12 technical talks. Schedule:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html"&gt;http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A common thread among the talks was the question:  &lt;em&gt;how to convert a research idea into a tool for software developers?&lt;/em&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;In my mind, gradual typing &lt;em&gt;is&lt;/em&gt; an answer to one instance of this question. The research idea is strong static type systems, and the software developers  are the millions using dynamically typed languages. I know that static typing can make programs easier to write and maintain. The developers know that dynamic typing has benefits; moreover they know better  than to migrate their code from one language to another on a whim. Gradual typing is a linguistic solution to the problem of &lt;em&gt;adding&lt;/em&gt; the benefits  of static typing to a dynamically typed language.&lt;/p&gt;
+
+&lt;p&gt;Enough opinions, let&amp;rsquo;s talk about the talks.&lt;/p&gt;
+
+&lt;p&gt;The morning session consisted of four talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://www.cs.umd.edu/people/milod"&gt;Milod Kazerounian&lt;/a&gt; (&lt;a href="https://www.cs.umd.edu/"&gt;UMD&lt;/a&gt;)  spoke about upgrading the &lt;a href="https://github.com/plum-umd/rdl"&gt;RDL&lt;/a&gt; type checker  for Ruby with support for refinement types.  The idea is to compile Ruby code and types to &lt;a href="https://emina.github.io/rosette/"&gt;Rosette&lt;/a&gt;,  and profit from &lt;a href="http://yices.csl.sri.com/papers/cav2007.pdf"&gt;SMT&lt;/a&gt;-assisted type checking.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://ambrosebs.com/"&gt;Ambrose Bonnaire-Sergeant&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;, &lt;a href="http://ambrosebs.com/talks/squash-work-boston-pi-2017.pdf"&gt;slides&lt;/a&gt;)  has been inferring &lt;em&gt;useful&lt;/em&gt; &lt;a href="http://typedclojure.org/"&gt;Typed Clojure&lt;/a&gt; types through dynamic analysis of  Clojure programs. His tool observes how values flow through a program at run-time,  then lifts these observations into possibly-recursive, possibly-incorrect type  annotations. The surprising result is that the tool quickly (1&amp;ndash;2 seconds per  unit test, I think) infers types that can help a developer start annotating a program.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://ccs.neu.edu/~types/"&gt;Ben Greenman&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;, &lt;a href="http://homedirs.ccs.neu.edu/types/resources/talks/preservation-types.pdf"&gt;slides&lt;/a&gt;)  explained why he is implementing a semantics for &lt;a href="https://github.com/racket/typed-racket"&gt;Typed Racket&lt;/a&gt;  inspired by Michael Vitousek&amp;rsquo;s work on &lt;a href="http://homes.soic.indiana.edu/mvitouse/papers/popl17.pdf"&gt;Reticulated Python&lt;/a&gt;.  The &amp;ldquo;why&amp;rdquo; is &amp;ldquo;performance&amp;rdquo;. The Reticulated semantics will enforce a  notion of tag soundness in kind of &lt;a href="https://en.wikipedia.org/wiki/Deal_with_the_Devil"&gt;devils contract&lt;/a&gt;  to improve performance.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://cs.brown.edu/~ptunnell/"&gt;Preston Tunnell-Wilson&lt;/a&gt; (&lt;a href="http://cs.brown.edu/"&gt;Brown&lt;/a&gt;, &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tpk-crowdsource-lang-design/"&gt;ONWARD 2017&lt;/a&gt;)  recently sent questions about programming language design to  &lt;a href="https://www.mturk.com/mturk/welcome"&gt;Mechanical Turk&lt;/a&gt; workers.  Survey says, developers have extremely diverse opinions about what they &lt;em&gt;expect&lt;/em&gt;  and what they &lt;em&gt;want&lt;/em&gt; regarding scope, inheritance, and infix operators.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;In the early afternoon, we had two talks on similar themes as the morning session:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://github.com/akuhlens"&gt;Andre Kuhlenschmidt&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  is exploring the design space of efficient implementations for run-time type checks.  The main challenge is how to &lt;em&gt;monitor&lt;/em&gt; higher-order data in a way that efficiently  performs type checks and can help the programmer debug any failed checks.  This talk presented data comparing two approaches to the program; I believe  the latter, improved approach is based on &lt;a href="http://homepages.inf.ed.ac.uk/wadler/papers/coercions/coercions.pdf"&gt;coercions&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://zeinamigeed.com/"&gt;Zeina Migeed&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;)  explained that there are many ways to adapt type soundness to a gradually  typed language, and presented some data comparing Typed Racket&amp;rsquo;s &lt;em&gt;generalized soudness&lt;/em&gt;  to Reticulated Python&amp;rsquo;s &lt;em&gt;tag soundness&lt;/em&gt;. The data suggests that tag soundness  never adds an order-of-magnitude slowdown.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Next on the schedule were two talks about implementing advanced type systems  in Racket&amp;rsquo;s macro expander (think: meta-level linguistic re-use, capture-avoiding  substitution for free!)&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://github.com/iitalics"&gt;Milo Turner&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;)  first showed how to implement &lt;a href="https://gankro.github.io/blah/linear-rust/#definitions-and-the-state-of-rust"&gt;linear and affine&lt;/a&gt;  type systems using &lt;a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html"&gt;syntax-parse&lt;/a&gt;,  and second presented a simpler implementation using the &lt;a href="http://docs.racket-lang.org/turnstile/index.html"&gt;Turnstile&lt;/a&gt; library.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://www.davidchristiansen.dk/"&gt;David Christiansen&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  is building &lt;a href="https://github.com/david-christiansen/pudding"&gt;a proof assistant&lt;/a&gt;  in Racket. This talk focused on the design and implementation of proof  tactics.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;After a short break, we heard about something completely different:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://justinpombrio.net/"&gt;Justin Pombrio&lt;/a&gt; (&lt;a href="http://cs.brown.edu/"&gt;Brown&lt;/a&gt;, &lt;a href="http://cs.brown.edu/research/plt/dl/icfp2017/"&gt;ICFP 2017&lt;/a&gt;)  taught us to interpet the scoping rules of a &amp;ldquo;core&amp;rdquo; language as a preorder.  Using the preorder, he then showed how to &lt;em&gt;infer&lt;/em&gt; the scoping rules of  any &amp;ldquo;surface&amp;rdquo; language based on its translation to the &amp;ldquo;core&amp;rdquo;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Last summer and fall, Jeremy Siek hosted two REUs (&lt;a href="https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=5517&amp;amp;from=fund"&gt;research experience for undergraduates&lt;/a&gt;) at Indiana University. The two students gave the next talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Di Zhong (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  talked about implementing interpreters in Racket, Python, and Haskell.  As I understand, this was a hands-on experience through &lt;a href="https://www.cis.upenn.edu/~bcpierce/tapl/"&gt;TAPL&lt;/a&gt;  and &lt;a href="https://redex.racket-lang.org/"&gt;the Redex book&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://zeinamigeed.com/"&gt;Zeina Migeed&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  demonstrated her implementation of &lt;a href="http://theory.stanford.edu/~aiken/publications/papers/popl94.pdf"&gt;conditional types&lt;/a&gt;  for &lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Finally,&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://nikivazou.github.io/"&gt;Niki Vazou&lt;/a&gt; (&lt;a href="https://www.cs.umd.edu/"&gt;UMD&lt;/a&gt;)  presented a theory of gradual refinement types.  Any &amp;ldquo;holes&amp;rdquo; in the refinements introduce a search problem; type checking  attempts to solve the problem by finding a predicate that unifies a function  definition and its callers.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;This meeting was a great opportunity to reflect on the recent past and  share opinions on what&amp;rsquo;s worth pursuing in the future. Many thanks to the participants, and to the NSF for the support!&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;If you want to know about the future, you need to ask the young people who will create it. Young people don&amp;rsquo;t know what can&amp;rsquo;t be done, and so they go ahead and do it. &amp;mdash; &lt;a href="https://www.youtube.com/watch?v=sM1bNR4DmhU"&gt;Ivan Sutherland&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;</description></item>
+  <item>
+   <title>Gradual Typing Across the Spectrum</title>
+   <link>http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/?utm_source=PI-meeting&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2016-05-18-gradual-typing-across-the-spectrum</guid>
+   <pubDate>Wed, 18 May 2016 07:58:56 UT</pubDate>
+   <author>Asumu Takikawa</author>
+   <description>
+&lt;blockquote&gt;
+ &lt;p&gt;Instead of being Pythonistas, Rubyists, or Racketeers we have to be scientists. &amp;mdash; Matthias Felleisen&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Yesterday we hosted a PI meeting for the &lt;a href="http://prl.ccs.neu.edu/gtp/"&gt;Gradual Typing Across the Spectrum&lt;/a&gt; NSF grant, gathering researchers from a number of institutions who work on gradual typing (the meeting program can be found &lt;a href="http://prl.ccs.neu.edu/gtp/pi2016/pi2016.html"&gt;here&lt;/a&gt;). In case you aren&amp;rsquo;t familiar with gradual typing, the idea is to augment dynamically typed languages (think Python or Ruby) with static type annotations (as documentation, for debugging, or for tool support) that are guaranteed to be sound.&lt;/p&gt;
+
+&lt;p&gt;Gradual typing is these days a fairly popular area, but the research can seem fragmentary because of the need to support idiosyncratic language features. One of the points of the meeting was to encourage the cross-pollination of the key scientific ideas of gradual typing&amp;mdash;the ideas that cross language and platform barriers.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;There were a good number of both institutions and programming languages represented at the meeting, with researchers from all of &lt;a href="http://cs.brown.edu/research/plt/"&gt;Brown University&lt;/a&gt;, &lt;a href="https://wonks.github.io/"&gt;Indiana University&lt;/a&gt;, &lt;a href="http://prl.ccs.neu.edu/"&gt;Northeastern University&lt;/a&gt;, and the &lt;a href="http://www.cs.umd.edu/projects/PL/"&gt;University of Maryland&lt;/a&gt;. The languages that we work on cover a broad subset of the dynamically-typed languages: Clojure, JavaScript, R, Racket, Ruby, Pyret, and Python.&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-4.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;The specific research artifacts that were represented include &lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated Python&lt;/a&gt;, &lt;a href="https://github.com/plum-umd/rdl"&gt;RDL&lt;/a&gt; (contracts for Ruby), &lt;a href="http://plg.uwaterloo.ca/~dynjs/strongscript/"&gt;StrongScript&lt;/a&gt;, &lt;a href="http://typedclojure.org/"&gt;Typed Clojure&lt;/a&gt;, and &lt;a href="http://docs.racket-lang.org/ts-guide/index.html"&gt;Typed Racket&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I&amp;rsquo;ll summarize some of the key research themes that were brought up at the meeting. Since I can&amp;rsquo;t go into too much detail about every topic, I will link to the relevant research papers and other resources.&lt;/p&gt;
+
+&lt;p&gt;At a high level, the talks covered four major facets of gradual typing: expressiveness, performance, usability, and implementation techniques.&lt;/p&gt;
+
+&lt;h2 id="expressiveness"&gt;Expressiveness&lt;/h2&gt;
+
+&lt;p&gt;By expressiveness, I mean what kinds of language features a gradual type system supports and the richness of the reasoning that the type system provides. Since gradual typing is about augmenting existing dynamically-typed languages, a gradual type system should support the language features that programmers actually use.&lt;/p&gt;
+
+&lt;p&gt;This is why recent implementations of gradual typing have focused on enabling object-oriented programming, since objects are widely used in nearly all dynamically-typed languages in use today. Unfortunately, since different languages have wildly different object systems, it&amp;rsquo;s hard to compare research on gradual OO languages. Ben Chung is working to address this by coming up with a formal model that tries to unify various accounts of objects in order to better explain the design tradeoffs. His goal is to cover the core ideas in Reticulated Python, StrongScript, and Typed Racket.&lt;/p&gt;
+
+&lt;p&gt;Of course, dynamically-typed languages have a lot more than OO features. Along these lines, I gave a talk on how at NU we&amp;rsquo;re working to extend Typed Racket to cover everything from objects (my thesis topic), first-class modules (Dan Feltey&amp;rsquo;s MS project), and higher-order contracts (Brian LaChance&amp;rsquo;s MS project).&lt;/p&gt;
+
+&lt;p&gt;On the other side, as programs get more complex, programmers may wish to write richer type specifications that provide even more guarantees. This makes gradual typing a wide spectrum that goes from completely untyped, fully typed, and then beyond to dependently typed. Andrew Kent and David Christiansen both presented work that takes gradual typing beyond ordinary typed reasoning with dependent types.&lt;/p&gt;
+
+&lt;p&gt;Andrew presented an extension of Typed Racket that adds type refinements that can check rich properties (like vector bounds) that are found in real Racket code (see his RacketCon &lt;a href="https://www.youtube.com/watch?v=ejFJIAsvdEg"&gt;talk&lt;/a&gt; and recent &lt;a href="http://arxiv.org/pdf/1511.07033.pdf"&gt;PLDI paper&lt;/a&gt;). David Christiansen followed with a talk about adding dependent type theory to Typed Racket, which would allow correct-by-construction programming using a Nuprl-like proof system (he had a very cool GUI proof assistant demo in his slides!).&lt;/p&gt;
+
+&lt;h2 id="performance"&gt;Performance&lt;/h2&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-8.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;One of the key practical concerns about gradual typing is its performance overhead. It&amp;rsquo;s a concern because in order to ensure type safety, a gradually-typed language implementation needs to install dynamic checks between the typed and untyped parts of a program. This catches any inconsistencies between the typed interfaces and how the untyped code may call into them.&lt;/p&gt;
+
+&lt;p&gt;Ben Greenman gave an upbeat talk that set the stage for this topic, pointing out some key lessons that we&amp;rsquo;ve learned about performance from building Typed Racket. The main idea he presented (also the topic of our &lt;a href="http://www.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;POPL 2016 paper&lt;/a&gt;) is that to evaluate a gradual type system, you want to explore different ways of adding types to a program and see how much it costs. This evaluation effort started with Typed Racket, but he and Zeina Migeed are working on expanding it to Reticulated Python.&lt;/p&gt;
+
+&lt;p&gt;From IU, Andre Kuhlenschmidt and Deyaaeldeen Almahallawi are exploring how ahead-of-time (AOT) compilation strategies could help reduce the cost of gradual typing. In particular, they are working on implementing &lt;a href="https://github.com/deyaaeldeen/Schml"&gt;Schml&lt;/a&gt;: a compiler from the gradually-typed lambda calculus to C.&lt;/p&gt;
+
+&lt;p&gt;In addition to AOT compilation, the folks at IU are exploring tracing JIT compilation as a means to make gradual typing faster. More specifically, Spenser Bauman talked about Pycket, an alternative implementation of Racket that uses RPython/PyPy to dramatically lower the overhead of gradual typing (also see the &lt;a href="https://www.youtube.com/watch?v=GOfIY8NHAqg"&gt;recording&lt;/a&gt; of Spenser&amp;rsquo;s talk on the topic at RacketCon and his &lt;a href="http://homes.soic.indiana.edu/samth/pycket-draft.pdf"&gt;ICFP paper&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h2 id="usability"&gt;Usability&lt;/h2&gt;
+
+&lt;p&gt;On the usability side, both Shriram Krishnamurthi and Ambrose Bonnaire-Sergeant made observations on what it takes to get gradual typing in the hands of real software developers.&lt;/p&gt;
+
+&lt;p&gt;Shriram approached the topic from the angle of CS education, which is the focus of the &lt;a href="http://www.pyret.org"&gt;Pyret&lt;/a&gt; language, and shared what the Brown language group is working on. While Pyret doesn&amp;rsquo;t exactly fit the mold of gradual typing, it&amp;rsquo;s a close cousin since it&amp;rsquo;s a dynamically-typed language that explicitly takes design cues from the best parts of statically-typed languages. That approach lets CS beginners think in terms of types (the approach spearheaded by &lt;a href="http://www.ccs.neu.edu/home/matthias/HtDP2e/index.html"&gt;HtDP&lt;/a&gt; and &lt;a href="http://www.bootstrapworld.org/"&gt;Bootstrap&lt;/a&gt;) without having to battle a typechecker from the start.&lt;/p&gt;
+
+&lt;p&gt;For professional software developers, a major concern with gradual typing is that writing type annotations may be a tedious and time intensive task. Ambrose, who is the creator of Typed Clojure, shared some preliminary work on how to cut down on the tedium by inferring gradual type annotations by instrumenting programs for a dynamic analysis. The hope is to be able to infer both recursive and polymorphic type annotations automatically from tests (you may also be interested in Ambrose&amp;rsquo;s recent &lt;a href="http://frenchy64.github.io/papers/esop16-short.pdf"&gt;ESOP paper&lt;/a&gt; on Typed Clojure).&lt;/p&gt;
+
+&lt;h2 id="implementation-techniques"&gt;Implementation Techniques&lt;/h2&gt;
+
+&lt;p&gt;Finally, several talks focused on alternative implementation techniques for gradual typing that provide a variety of software engineering benefits for implementers.&lt;/p&gt;
+
+&lt;p&gt;From Maryland, Brianna Ren gave a talk on Hummingbird, a just-in-time typechecker for Ruby programs (also see the upcoming &lt;a href="http://www.cs.umd.edu/~jfoster/papers/pldi16.pdf"&gt;PLDI paper&lt;/a&gt; by Brianna and Jeff Foster). The basic idea is that it&amp;rsquo;s hard to implement a traditional static typechecker for a language that heavily relies on metaprogramming, in which the fields/methods of classes may be rewritten at run-time. This is particularly tricky for frameworks like Ruby on Rails. Instead of checking types at compile-time, Hummingbird actually executes the typechecker at run-time in order to be able to accurately check programs that use run-time metaprogramming. To reduce overheads, she uses a cache for typechecking that is invalidated when classes are modified.&lt;/p&gt;
+
+&lt;p&gt;Stephen Chang gave a very different view on metaprogramming in his talk, which focused on &lt;em&gt;implementing&lt;/em&gt; typecheckers using metaprogramming (the &lt;a href="http://docs.racket-lang.org/trivial/index.html"&gt;trivial&lt;/a&gt; Typed Racket library is an offshoot of this work). His key idea is that typecheckers share many aspects with macro-based metaprogramming systems, such as the need to traverse syntax and annotate it with information. Since they share so much in common, why not just implement the typechecker as a macro? Stephen demonstrates that not only is this possible, but that it&amp;rsquo;s possible to implement a wide variety of type system features this way including (local) type inference. The connection to gradual typing is that even a gradual type system can be implemented as a metaprogram by integrating the generation of dynamic checks into the macro transformation process.&lt;/p&gt;
+
+&lt;p&gt;The last talk of the day (but certainly not the least), was by Michael Vitousek, who focused on the &lt;em&gt;transient&lt;/em&gt; implementation of gradual typing (first described in his &lt;a href="http://homes.soic.indiana.edu/mvitouse/papers/dls14.pdf"&gt;DLS paper&lt;/a&gt;). Traditionally, gradual type systems have implemented their dynamic checks using &lt;a href="https://en.wikipedia.org/wiki/Proxy_pattern"&gt;proxy&lt;/a&gt; objects that wrap method implementations with both pre- and post-checks. Unfortunately, this implementation technique often conflicts with the underlying language. Since proxying changes the identity of an object it can interfere with object equality tests. Instead, the transient approach bakes the dynamic checks into and throughout the typed code to implement a &amp;ldquo;defense in depth&amp;rdquo; against inconsistencies with untyped code. The great thing about this implementation technique is that it doesn&amp;rsquo;t demand any specialized support from the underlying language runtime and is therefore easy to port to other languages (like JavaScript).&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-3.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;Hopefully this blog post helps provide a better picture of the state of gradual typing research. The exciting thing about gradual typing is that it contains both interesting theoretical problems and also connects to the practical needs of software developers.&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'windows'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/windows.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/windows.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-windows-html</id>
+ <updated>2017-05-26T17:00:28Z</updated>
+ <entry>
+  <title type="text">Racket 6.9 and Windows 10 Creators Update</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/26/racket-6-9-and-windows-10-creators-update/?utm_source=windows&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-26-racket-6-9-and-windows-10-creators-update</id>
+  <published>2017-05-26T17:00:28Z</published>
+  <updated>2017-05-26T17:00:28Z</updated>
+  <author>
+   <name>Leif Andersen</name></author>
+  <content type="html">
+&lt;p&gt;&lt;a href="http://racket-lang.org/"&gt;Racket&lt;/a&gt; 6.9 was released in April and it has been smooth sailing for many people. However, some people using the &lt;a href="https://blogs.windows.com/windowsexperience/2017/04/11/whats-new-in-the-windows-10-creators-update/"&gt;Windows 10 Creators Update&lt;/a&gt; have been experiencing &lt;a href="https://github.com/racket/racket/issues/1671"&gt;crashes&lt;/a&gt;, not just for Racket, but for the whole operating system. This is due to a bug in Windows. We have contacted Microsoft; they have classified the bug as (1) a stack overflow and (2) not a security hazard, and intend to add a fix in a future version of Windows.&lt;/p&gt;
+
+&lt;p&gt;The next version of Racket will include a patch to help avoid triggering the bug. Until then, one work-around is to run Racket in a virtual machine (VM). This blog post is a step-by-step guide on how to install a VM for Racket.&lt;/p&gt;
+
+&lt;p&gt;A VirtualBox image with Racket preinstalled can be downloaded here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/website/releases/download/racket69vm/Racket_6_9.ova"&gt;https://github.com/nuprl/website/releases/download/racket69vm/Racket_6_9.ova&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The username and password for this machine are both &lt;code&gt;racket&lt;/code&gt;.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;
+  &lt;p&gt;The first thing you need to install is virtualization software. In principle it doesn&amp;rsquo;t matter what you install, but for this tutorial, we will use &lt;a href="https://www.virtualbox.org/"&gt;VirtualBox&lt;/a&gt;. Go to their &lt;a href="https://www.virtualbox.org/wiki/Downloads"&gt;downloads&lt;/a&gt; page and download and install the version for your platform (most likely Windows).&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Once installed, you need to download a virtual image and install Racket on it. We have prepared an image that comes with Racket pre-installed, which &lt;a href="https://github.com/nuprl/website/releases/download/racket69vm/Racket_6_9.ova"&gt;you can download here&lt;/a&gt;. The rest of this tutorial will assume you are using this image.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;Start up VirtualBox and import the virtual machine. You can do this by clicking on &lt;code&gt;File -&amp;gt; Import Appliance&lt;/code&gt;. In the dialog, select the image you downloaded and hit &lt;code&gt;Continue&lt;/code&gt;. The next window lets you change the specs for your virtual machine. Feel free to make any changes you want, but the defaults work fine for this image. Once you are satisfied click &lt;code&gt;Import&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;After import finishes, you should now see your new VM in the list on the left of the VirtualBox manager. Select it and hit &lt;code&gt;Start&lt;/code&gt;. Once started up, you will see DrRacket and Firefox on the VM&amp;rsquo;s desktop.&lt;/p&gt;&lt;/li&gt;&lt;/ol&gt;</content></entry></feed>

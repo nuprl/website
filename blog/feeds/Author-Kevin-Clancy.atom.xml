@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Kevin Clancy'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Kevin-Clancy.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Kevin-Clancy.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Kevin-Clancy-html</id>
+ <updated>2017-10-22T11:59:06Z</updated>
+ <entry>
+  <title type="text">Monotonicity Types: Towards A Type System for Eventual Consistency</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/10/22/monotonicity-types-towards-a-type-system-for-eventual-consistency/?utm_source=Author-Kevin-Clancy&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-10-22-monotonicity-types-towards-a-type-system-for-eventual-consistency</id>
+  <published>2017-10-22T11:59:06Z</published>
+  <updated>2017-10-22T11:59:06Z</updated>
+  <author>
+   <name>Kevin Clancy</name></author>
+  <content type="html">
+&lt;p&gt;A few weeks back, we published a draft of an article entitled &lt;a href="https://infoscience.epfl.ch/record/231867"&gt;&lt;em&gt;Monotonicity Types&lt;/em&gt;&lt;/a&gt;. In it, we describe a type system which we hope can aid the design of distributed systems by tracking monotonicity with types.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;But first, what, precisely, do we mean by &lt;em&gt;monotonicity&lt;/em&gt;? Here&amp;rsquo;s a short definition:&lt;/p&gt;
+
+&lt;p&gt;A partially ordered set is a set \(P\) endowed with a relation \(\leq\) such that for all \(p, q, r \in P\) we have:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;\(p \leq p\) (reflexivity)&lt;/li&gt;
+ &lt;li&gt;\(p \leq  q\) and \(q \leq r\) implies \(p \leq r\) (transitivity)&lt;/li&gt;
+ &lt;li&gt;\(p \leq q\) and \(q \leq p\) implies \(p = q\) (anti-symmetry)&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;If \(P\) and \(Q\) are partially ordered sets, we say that a function \(f : P \to Q\) between them is &lt;em&gt;monotone&lt;/em&gt; if for all \(p_1, p_2 \in P\) with \(p_1 \leq p_2\), we have \(f(p_1) \leq f(p_2)\).&lt;/p&gt;
+
+&lt;p&gt;So, said another way, increasing the input to a monotone function causes an increase to its output.&lt;/p&gt;
+
+&lt;p&gt;Particularly in the context of concurrent and distributed programming, monotonicity has arisen time and time again as an important property. Designers of languages for coordination-free distributed programming such as Lasp [&lt;a href="#ref1"&gt;Meiklejohn et al. (2015)&lt;/a&gt;] and BloomL [&lt;a href="#ref1"&gt;Conway et al. (2012)&lt;/a&gt;], as well as designers of data types and abstractions for eventual consistency or determinism such as CRDTs [&lt;a href="#ref3"&gt;Shapiro et al. (2011)&lt;/a&gt;] and LVars [&lt;a href="#ref4"&gt;Kuper et al. (2013)&lt;/a&gt;] have noticed that monotonic evolution of program state over time is a necessary property in their designs. Lasp and BloomL in particular require the use of monotone functions as primitives of program composition.&lt;/p&gt;
+
+&lt;p&gt;Thus if a user would like to make use of such a language for concurrent and distributed programming, they&amp;rsquo;re required to write monotonic program functions, which can actually be quite tricky, in order to get the consistency or determinism guarantees that the given language/abstraction was designed to provide.&lt;/p&gt;
+
+&lt;p&gt;To get a better idea of how monotonicity might be important in the context of data replicated over a distributed system, let&amp;rsquo;s look at an example. Suppose we need a function to determine whether a replicated counter&amp;rsquo;s current value is odd or even, and further suppose that this counter can only be incremented. To accomplish this, we might apply the following function to the counter&amp;rsquo;s value:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fun IsOdd(x : Nat) = x % 2 == 1&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However, the counter replica from which the argument x is obtained may not currently have an up-to-date count of the total number of increments performed in the entire system. We can&amp;rsquo;t rule out the possibility that exactly one remote increment has been performed, in which case IsOdd produces the wrong answer. With this in mind, the value returned by IsOdd does not seem to tell us anything useful. In contrast, consider an application of the following function to the same replicated counter.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;fun MoreThanTen(x : Nat) = x &amp;gt; 10&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The boolean values \(true\) and \(false\) form one of the simplest partially ordered sets of all. We consider \(false \leq false\), \(false \leq true \), and \( true \leq true \). Under this ordering, the MoreThanTen function is monotone: an increase in x can cause the value of \(x &amp;gt; 10\) to flip from false to true, but not vice versa. When we observe that the local counter replica P&amp;rsquo;s value is greater than 10, we don&amp;rsquo;t know that the same observation would be drawn from remote replicas. Nonetheless, we assume that all replicas in the system will eventually become aware of all increments that P is currently aware of, at which point their values will be greater than P&amp;rsquo;s current value. This is where MoreThanTen&amp;rsquo;s monotonicity becomes useful. At the point when all replicas have received P&amp;rsquo;s current information, every replica in the system will agree that MoreThanTen applied to the counter&amp;rsquo;s value returns true.&lt;/p&gt;
+
+&lt;p&gt;We believe that a type system for proving functions monotone could push the development of coordination-free distributed and concurrent applications outside of the realm of distributed systems experts, by enabling customization and extension of such systems by non-experts.&lt;/p&gt;
+
+&lt;p&gt;Towards this aim, we have been designing a typed lambda calculus in which types track monotonicity. Our approach allows the programmer to write a special kind of function definition, called an &lt;em&gt;sfun&lt;/em&gt;, the body of which is type checked using a richer type system, one which reasons about function composition rather than application. Such a function can be proven monotone by utilizing, among other principles, the fact that the composition of two monotone functions is itself monotone. Monotonicity is a relational property; that is, its a property involving multiple applications of the same function. Such properties are blind spot for traditional type systems, so our design requires some unusual and interesting features.&lt;/p&gt;
+
+&lt;p&gt;Reasoning about pointwise orderings on function spaces seems a bit heavy-weight and hasn’t been necessary for any of my use cases. An sfun is therefore first order; that is, both its return type and all of its argument types must be data types rather than function types. We would like to be able to prove that a multi-argument function is monotone &lt;em&gt;separately&lt;/em&gt; in each of its arguments; that is, for \(i \in 1..n\), if \(p_i \leq p_i'\) then \(f(p_1, \ldots, p_i, \ldots, p_n) \leq f(p_1, \ldots p_i', \ldots p_n)\).&lt;/p&gt;
+
+&lt;p&gt;The monotonicity of an sfun is typically derived from the monotonicity of the primitives used to implement it, which are also sfuns. Here are some example sfun primitives, addition and subtraction on integers:&lt;/p&gt;
+
+&lt;p&gt;1.) plus : \( (x : Int, y : Int) \Rightarrow Int[\uparrow x, \uparrow y] \)&lt;/p&gt;
+
+&lt;p&gt;2.) minus : \( (x : Int, y : Int) \Rightarrow Int[\uparrow x, \downarrow y] \)&lt;/p&gt;
+
+&lt;p&gt;An &lt;em&gt;sfun type&lt;/em&gt;, written with \(\Rightarrow\) rather than \(\rightarrow\), names its formal arguments and also &lt;em&gt;qualifies&lt;/em&gt; each one. A qualifier is an argument-specific constraint on the behavior of the function. In the above types, the qualifier \(\uparrow\) is associated with arguments that are separately monotone and \(\downarrow\) is associated with arguments that are separately antitone. The second argument of a binary function \(f\) is separately antitone if \(p_2 \leq p_2'\) implies \(f(p_1, p_2) \geq f(p_1, p_2')\).&lt;/p&gt;
+
+&lt;p&gt;Terms outside of sfun abstractions are typed using a &lt;em&gt;global&lt;/em&gt; typing relation, which, aside from an sfun abstraction typing rule, is not different from the typing relations we are familiar with. A global typing judgment has the following form.&lt;/p&gt;
+
+&lt;p&gt;\( \Gamma \vdash t : T \)&lt;/p&gt;
+
+&lt;p&gt;A typing judgment of the lifted type system, used to type check the body of an sfun, has the following form:&lt;/p&gt;
+
+&lt;p&gt;\( \Gamma;\Omega;\Phi \vdash t : T \)&lt;/p&gt;
+
+&lt;p&gt;Here the &lt;em&gt;global type environment&lt;/em&gt; \( \Gamma \) contains all of the variables bound outside of the sfun, the &lt;em&gt;ambient type environment&lt;/em&gt; \( \Omega \) contains the list of the sfun’s formal arguments, and the &lt;em&gt;lifted type environment&lt;/em&gt; \( \Phi \) contains those variables in \( t \)’s context which are bound inside the sfun. Before getting into the significance of lifted typing judgments, let&amp;rsquo;s look at a specific application of the global typing rule for sfun abstractions, which uses a single lifted premise.&lt;/p&gt;
+
+&lt;p&gt;$$\frac{\Gamma;x:Int;x:Int[=~x] \vdash plus(x,x) : Int[\uparrow~x]}  {\Gamma \vdash \tilde{\lambda} x : Int. plus(x,x) : ( x : Int ) \Rightarrow Int[\uparrow~x]}$$&lt;/p&gt;
+
+&lt;p&gt;Here we type a single-argument sfun abstraction \(\tilde{\lambda} x:Int. plus(x,x)\). As you might have guessed, \(\tilde{\lambda}\) is used rather that \(\lambda\) to distinguish this as an sfun abstraction rather than a standard one. Examine the ambient and lifted type environments used in the premise. Perhaps surprisingly, the abstraction&amp;rsquo;s bound variable \(x\) is entered into both environments. When variables occur in types, they are considered references to formal arguments rather than actual arguments; that is, an occurrence of \(x\) in a type (for example \(Int[\uparrow x]\)) does not refer to some integer, but instead a &amp;ldquo;slot&amp;rdquo; named \(x\) which expects to receive some integer from an external source. Inside the scope of the sfun abstraction, we would like the ability to refer to the abstraction&amp;rsquo;s formal argument \(x\), and therefore we add \(x : Int\) to the ambient environment. We would also like to include occurrences of \(x\) as terms in the body of the abstraction; for these, we add the entry \(x : Int[=~x]\) into the lifted type environment, to be used as a placeholder for the actual argument supplied to the formal argument \(x\). Because references to formal arguments occur only in types, and references to actual arguments occur only in terms, we can add entries with the same name to both the ambient and lifted environments without creating any ambiguity. In particular, this means that the occurrence of \(x\) in Int[\(\uparrow x\)] refers to the entry for \(x\) in the ambient type environment rather than the one in the lifted type environment.&lt;/p&gt;
+
+&lt;p&gt;The premise of the above rule application includes the strange looking types \(Int[=~x]\) and \(Int[\uparrow~x]\). Normally, we would expect occurrences of x, which serve as placeholders for the actual argument of the the function, to have type \(Int\), and we would expect our abstraction&amp;rsquo;s body \(plus(x,x)\) to have type \(Int\) as well. This traditional approach to typing a function abstraction characterizes the operational behavior of a single function &lt;em&gt;after&lt;/em&gt; it has been applied. Unfortunately, this isn&amp;rsquo;t adequate for reasoning about properties such as monotonicity, which involve multiple calls to the same function. My approach instead takes the perspective of inside of a function, &lt;em&gt;before&lt;/em&gt; it has been applied. Lifted typing then characterizes the structure of a function as the composition of its constituent parts. In the above example, an occurrence of the variable \(x\) in the term \(plus(x,x)\) has type \(Int[=~x]\), meaning that it is a function which takes the value provided to \(x\) (the enclosing sfun&amp;rsquo;s formal argument) as an input, and produces that value unchanged as a result. We ultimately care about the input/output relation of this function, and so the concrete values which inhabit this type are set-of-pairs function representations, called &lt;em&gt;ambient maps&lt;/em&gt;. The type \(Int[=~x]\) happens to be a singleton type, containing the set of pairs \(\{ (0,0), (1,1), (-1,-1), (2,2), (-2-2), \ldots \}\).&lt;/p&gt;
+
+&lt;p&gt;The sfun application \(plus(x,x)\) is viewed as a function composition, where the outputs of the functions represented by the two occurrences of \(x\) are forwarded into the left and right arguments of the sfun \(plus\). The domain of this composite function matches the domain \(x:Int\) of the enclosing sfun, which it inherits from the two occurrences of \(x\). Since \(plus\) returns an \(Int\), so does the composite function \(plus(x,x)\). The premise of the above typing rule application tells us that \(plus(x,x)\) has type \(Int[\uparrow~x]\), but this premise must be derived. We previously hinted that such a derivation may utilize the fact that the composition of two monotone functions is itself monotone, and indeed that is one aspect of the premise&amp;rsquo;s derivation, but a full treatment is outside the scope of this post.&lt;/p&gt;
+
+&lt;p&gt;Since lifted typing is all about function composition, one might wonder how we treat occurrences of \( \Gamma \)&amp;rsquo;s variables within the body of an sfun. Such a variable might have the type \( Int \), representing a data value rather than a function. In fact, a piece of data can be viewed as a degenerate, constant-valued function, which produces the same result regardless of which actual arguments any particular sfun is applied to. Subtyping rules enable the flexible use of terminal variables within the body of an sfun, permitting a variable of type \( Int \), for example, to occur in a context where terms of type \( Int[ \uparrow x ] \) are expected. A constant function \(f\), after all, is monotone: \( v_1 \leq v_2 \) implies \( f(v_1) = c \leq c = f(v_2) \).&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;re not building lifted typing derivations just for fun. Typically, a type system comes with a soundness theorem stating that whenever a typing judgment of the form \( \Gamma \vdash t : T \) is derivable, the execution of the term \(t\) (a program) under some well-defined model of computation (typically defined along with the type system) satisfies some desirable property. In our system, a terminal typing derivation \( \Gamma \vdash t : T \) implies that when the free variables of t are substituted with appropriately-typed values, the execution of the term \( t \) is guaranteed to terminate, producing a value of type \(T\) as its result. This is not a terribly unusual soundness guarantee. However, to provide semantics for lifted typing judgments, we introduced a new reduction relation (or &amp;ldquo;computation model&amp;rdquo;) which can be viewed in one of two ways:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;The simultaneous reduction of an sfun, under terminal reduction, when applied to all sets of arguments in its domain.&lt;/li&gt;
+ &lt;li&gt;The composition of an sfun&amp;rsquo;s components, before the sfun is ever applied.&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;Point 1 is essentially the motivation for having lifted typing and lifted reduction in the first place. We want to know how the sfun behaves under terminal reduction, across multiple applications&amp;mdash;specifically two applications in the case of monotonicity. If the lifted reduction of an sfun&amp;rsquo;s body faithfully simulates the terminal reduction of all possible applications simultaneously, then the body of a well-typed sfun should normalize to an ambient map that is extensionally equivalent to the sfun&amp;rsquo;s applicative behavior under terminal reduction. Therefore, if our soundness theorem guarantees that the derivability of \( \cdot;x:Int;x:Int[=~x] \vdash plus(x,x) : Int[\uparrow~x] \) implies that \( plus(\{ (0,0), (1,1), \ldots \},\{ (0,0), (1,1), \ldots \} ) \) normalizes under lifted reduction to a monotone ambient map, we then know that the sfun \( \tilde{\lambda} x : Int. plus(x,x) \) behaves monotonically under terminal reduction. It&amp;rsquo;s important to note that our model never requires us to actually perform lifted reduction; lifted reduction matters because not because we actual want to perform it, but instead because lifted typing derivations guarantee the existence of certain lifted reduction sequences which have implications for terminal reduction.&lt;/p&gt;
+
+&lt;p&gt;Point 2 inspires our lifted type system. If an sfun is composed of monotone functions, we can use facts about preservation of monotonicity across function composition to prove the sfun itself monotone. The difference between terminal reduction and lifted reduction is demonstrated by the two mathematical expressions \( f(g(v)) \) and \( (f \circ g) (v) \).  The expression \( f(g(v)) \) presents function composition as viewed by a standard type systems: to apply the composition of \(f\) and \(g\) to a value \(v\), we first apply \(g\) to \(v\), and then apply \(f\) to the result. This isn&amp;rsquo;t wrong, but if \( f \) and \( g \) are both monotone, the monotonicity of the composite function as a whole becomes self-evident if we first perform the &amp;ldquo;lifted reduction step&amp;rdquo; \( f(g(v)) \to (f \circ g) (v) \).&lt;/p&gt;
+
+&lt;p&gt;We&amp;rsquo;ll leave you with an aspirational example, which demonstrates the need for a type system, rather than a more monolithic form of analysis, for proving functions monotone. Recall our replicated counter example from the introduction. It isn&amp;rsquo;t sufficient to store this counter as an integer. The problem is that replicas cannot synchronize properly without knowing which how many increments were performed at each replica. Suppose that replicas X and Y each start with a count of zero. The following actions are then performed:&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;X increments, resulting in a count of 1&lt;/li&gt;
+ &lt;li&gt;X sends a synchronization message to Y, containing X&amp;rsquo;s count 1&lt;/li&gt;
+ &lt;li&gt;X receives a synchronization message from Y containing a count of 1&lt;/li&gt;&lt;/ol&gt;
+
+&lt;p&gt;At stage 3, X does not know if the received message was sent from Y before or after Y received the synchronization message from stage 2. Replica X therefore does not know whether to set its count to 1 or 2. To avoid this problem, a replicated counter is commonly represented as a map, which maps each replica identifier (a natural number) to the number of increments that replica has performed (also a natural number). It is assumed that any replica id not contained in the map&amp;rsquo;s finite representation maps to 0. Such counters are called GCounters, and described in detail by [&lt;a href="#ref3"&gt;Shapiro et al. (2011)&lt;/a&gt;].&lt;/p&gt;
+
+&lt;p&gt;GCounters are partially ordered componentwise. We write \( v[a] \) for the natural number to which the GCounter \(v\) maps the replica identifier \(a\), and we write \( \leq \) for the standard ordering on natural numbers. The partial order \( \leq' \) on GCounters is then defined such that \( v \leq' w \) whenever for all replica identifiers \(a\) we have \( v[a] \leq w[a] \).&lt;/p&gt;
+
+&lt;p&gt;[&lt;a href="#ref1"&gt;Meiklejohn et al. (2015)&lt;/a&gt;] motivates combinators for replicated data types such as the GCounter, but requires that such combinators are monotone separately in each argument. Below is psuedocode for a monotone GCounter addition combinator, annotated with monotonicity types. NatMap is used as the type of maps from natural numbers to natural numbers. Several primitives are defined for working with NatMap. getAt retrieves the kth element of a NatMap m. joinAt returns a new NatMap which is equal to the argument m, except that it maps k to the maximum of m[k] and n. span returns the greatest key mapping to a non-zero value. emptyMap is a NatMap which maps every natural number to 0. + and &amp;gt; are standard arithmetic operators for working with natural numbers.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;getAt :: (m : NatMap, k : Nat) ⇒ Nat[↑ m, ? k]
+joinAt :: (m : NatMap, k : Nat, n : Nat) ⇒ NatMap[↑ m, ? k, ↑ n]
+span :: (m:NatMap) ⇒ Nat[↑ m]
+max :: (a : Nat, b : Nat) ⇒ Nat[↑ a, ↑ b]
+emptyMap :: NatMap
++ :: (x:Nat, y:Nat) ⇒ Nat[↑ x, ↑ y]
+&amp;gt; :: (x:Nat, y:Nat) ⇒ Bool[↑ x, ↓ y]
+
+type GCounter = { map : NatMap }
+
+sfun sumCounters(x : GCounter, y : GCounter) 
+ : GCounter[↑ x, ↑ y] =
+ let xMap : NatMap[↑ x, ↑ y] = x.map
+ let yMap : NatMap[↑ x, ↑ y] = y.map
+ let maxSpan : Nat[↑ x, ↑ y] = max (span xMap) (span yMap)
+ fun sumCell(k : Nat, acc : NatMap[↑ x, ↑ y]) 
+  : NatMap[↑ x, ↑ y] =
+  let cond : Bool[↑ x, ↓ y] = k &amp;gt; maxSpan
+   if cond then
+    acc
+   else
+    let acc' = joinAt acc k ((getAt xMap k) + (getAt yMap k))
+    sumCell (k+1) acc'
+ let initMap : IntArray[↑ x, ↑ y] = emptyMap
+ GCounter { map = sumCell 0 initMap }&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;While our system can handle much of this example, it can&amp;rsquo;t handle everything yet, for several reasons. First, it involves an if condition which depends on the arguments of the enclosing sfun. To handle this, we would need to incorporate the notion of domain restriction into lifted reduction. Second, it involves recursion. This is problematic for us, because our system utilizes the fact that all well-typed programs terminate. We could partially address this by adding terminating fixpoint combinators, which allow recursion given some well-founded termination metric, as in [&lt;a href="#ref5"&gt;Vazou et al. (2014)&lt;/a&gt;]. However, that would not be adequate for this particular function. Since it could require arbitrarily many levels of recursion depending on which values are supplied as arguments, lifted reduction, which simulates an application to all arguments simultaneously, would diverge.&lt;/p&gt;
+
+&lt;p&gt;So there&amp;rsquo;s still much to do! If you&amp;rsquo;re interested in more details behind the type system, have a look at Kevin&amp;rsquo;s blog article, &lt;a href="https://kevinclancy.github.io/2017/11/09/monotonicity-through-types.html"&gt;Monotonicity Through Types&lt;/a&gt;, or have a look at the full &lt;a href="https://infoscience.epfl.ch/record/231867"&gt;Monotonicity Types&lt;/a&gt; preprint for more.&lt;/p&gt;
+
+&lt;h3 id="references"&gt;References&lt;/h3&gt;
+
+&lt;p&gt;&lt;span id="ref1"&gt;C. Meiklejohn and P. Van Roy. &lt;em&gt;Lasp: A language for distributed, coordination-free programming.&lt;/em&gt; In Proceedings of the 17th International Symposium on Principles and Practice of Declarative Programming, PPDP ’15, pages 184–195, New York, NY, USA, 2015. ACM.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span id="ref2"&gt;N. Conway, W. R. Marczak, P. Alvaro, J. M. Hellerstein, and D. Maier. &lt;em&gt;Logic and lattices for distributed programming&lt;/em&gt;. In Proceedings of the Third ACM Symposium on Cloud Computing, SoCC ’12, pages 1:1–1:14, New York, NY, USA, 2012. ACM.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span id="ref3"&gt;M. Shapiro, N. Preguiça, C. Baquero, and M. Zawirski. &lt;em&gt;Conflict-Free replicated data types&lt;/em&gt;. In Stabilization, Safety, and Security of Distributed Systems, Lecture Notes in Computer Science, pages 386–400. Springer, Berlin, Heidelberg, Oct. 2011.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span class="ref4"&gt;L. Kuper and R. R. Newton. &lt;em&gt;LVars: Lattice-based data structures for deterministic parallelism&lt;/em&gt;. In Proceedings of the 2nd ACM SIGPLAN Workshop on Functional High-performance Computing, FHPC ’13, pages 71–84, New York, NY, USA, 2013. ACM.&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;span class="ref5"&gt;N. Vazou, E. L. Seidel, R. Jhala, D. Vytiniotis, and S. Peyton-Jones. &lt;em&gt;Refinement types for Haskell&lt;/em&gt;. SIGPLAN Not. 49, 9 (August 2014), 269&amp;ndash;282.&lt;/span&gt;&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Refinement Types</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/20/refinement-types/?utm_source=Author-Kevin-Clancy&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-20-refinement-types</id>
+  <published>2017-04-20T23:38:23Z</published>
+  <updated>2017-04-20T23:38:23Z</updated>
+  <author>
+   <name>Kevin Clancy</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Roughly, a refinement type system is an extra layer of precision, enforced through subtyping, added onto an existing type system. A base type is decomposed into a set of &lt;em&gt;base refinements&lt;/em&gt;, each of which denotes a subset of the values belonging to the base type. A subtyping relation respecting set inclusion can then be defined among the refinements of the base type. These subtyping relations can be lifted onto a subtyping relation for compound types using a standard arrow subtyping rule.&lt;/p&gt;
+
+&lt;p&gt;Extra type-checking precision sounds great, but what in practical terms does this precision look like? Freeman and Pfenning&amp;rsquo;s &amp;rsquo;92 paper &lt;em&gt;Refinement Types for ML&lt;/em&gt; proposes extending ML&amp;rsquo;s type definition language with constructs for decomposing a discriminated union type into a lattice of subtypes. For example, it allows the decomposition of a list type into a lattice including base refinements for empty lists, non-empty lists, and singletons. Those with experience in functional programming will realize this alleviates the dreaded and inescapable “non-exhaustive pattern match” warning, which tends to crop up in situations where the programmer understands that an exhaustive pattern match is not necessary.&lt;/p&gt;
+
+&lt;p&gt;In the late 90&amp;rsquo;s Xi and Pfenning advanced the state of refinement types by introducing a dependent refinement type system, implemented as a tool called Dependent ML. Their approach identifies a base refinement using a tuple of terms drawn from some computationally tractable constraint language called an &lt;em&gt;index language&lt;/em&gt;. A list datatype can then be refined with a term of the &lt;em&gt;linear integer arithmetic&lt;/em&gt; index language, denoting the subset of all lists having a specific length. One list refinement is then considered a subtype of another when a constraint solver can prove their index terms equal. Vazou et. al.&amp;rsquo;s recent project Liquid Haskell is another dependent refinement type system which decides subtyping among base types by invoking an SMT solver under a context-dependent set of constraints. It differs significantly from Dependent ML in that it refines base types with certain well-behaved program terms rather than indices.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Resources:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/refinement_types_lecture.pdf"&gt;Full Notes&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/blog/static/refinement_types_bib.pdf"&gt;Annotated Bibliography&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/refinement-types"&gt;GitHub&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry></feed>

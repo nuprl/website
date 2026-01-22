@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Sampling Gradual Typing Performance</title>
+    <meta name="description" content="This post explains the sampling method introduced in the paper _On the Cost of Type-Tag Soundness_...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="gradual typing, migratory typing, performance, statistics, Takikawa constant, Author: Ben Greenman, Author: Zeina Migeed">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2018/05/08/sampling-gradual-typing-performance/">
+    <link rel="next" href="/blog/2018/04/27/the-racket-school-2018-create-your-own-language/">
+    <link rel="prev" href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Sampling Gradual Typing Performance</h1>
+    <p class='date-and-tags'>
+<time datetime="2018-05-08" pubdate="true">2018-05-08</time> :: <span class="tags"><a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/performance.html">performance</a>, <a href="/blog/tags/statistics.html">statistics</a>, <a href="/blog/tags/Takikawa-constant.html">Takikawa constant</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a>, <a href="/blog/tags/Author-Zeina-Migeed.html">Zeina Migeed</a></span></p>
+  </header>
+
+<p>This post explains the sampling method introduced in the paper <a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"><em>On the Cost of Type-Tag Soundness</em></a></p>
+<!-- more-->
+
+<h2 id="quick-reference-how-to-apply-the-method">Quick Reference: How to apply the method</h2>
+
+<ol>
+ <li>Find an untyped program, measure its running time.</li>
+ <li>Define a <em>granularity</em> for type annotations (by-function, by-module, by-program, &hellip;.).</li>
+ <li>Define a sample size <strong>s</strong> and number of samples <strong>r</strong>.</li>
+ <li>Randomly select <strong>s</strong> <em>configurations</em> uniformly at random, measure their running time.</li>
+ <li>Repeat the previous step <strong>r</strong> times.</li>
+ <li>Pick a positive real number <strong>D</strong>.</li>
+ <li>Count the proportion of configurations in each sample with running time less-than-or-equal-to <strong>D</strong></li>
+ <li>Build a 95% confidence interval for the <strong>r</strong> proportions computed in the previous step</li>
+ <li>Conclusion: there is a good chance that your interval contains the true proportion of configurations with running time less-than-or-equal-to <strong>D</strong></li></ol>
+
+<h2 id="background-what-to-measure">Background: what to measure</h2>
+
+<p>A migratory typing system adds static typing to a dynamically-typed (or, untyped) language. The recipe for &ldquo;adding static typing&rdquo; has a few steps:</p>
+
+<ul>
+ <li>add a syntax for type annotations</li>
+ <li>add a static type checker</li>
+ <li>add a semantics for statically-typed parts of the program</li></ul>
+
+<p>If the semantics for statically-typed parts of the program is <strong>not</strong> the same  as the semantics for dynamically-typed parts, then it is important to measure  performance.</p>
+
+<p>The key question is: how does adding type annotations affect the  running time of a working program? We do not know how to answer this question directly.</p>
+
+<p>An easier question, that we can answer, is: for a few programs each with  one full set of type annotations, how does adding or removing the chosen type  annotations affect the running time of these programs?</p>
+
+<p>The next two sections give two methods for answering this question.</p>
+
+<h2 id="exhaustive-method">Exhaustive Method</h2>
+
+<p>One way to answer our easier question is to remove type annotations one  &ldquo;unit&rdquo; at a time and measure the running time of all these partially-typed  programs. We call the &ldquo;unit&rdquo; the <em>granularity</em> of the performance evaluation. For example, some choices for granularity are to remove types one module  at a time, to remove types one function at a time, or to remove types  one variable at a time. We call the &ldquo;partially-typed programs&rdquo; the <em>configurations</em> of the original  dynamically-typed program. Note that the number of configurations depends on the choice of granularity  &mdash; I can&rsquo;t just use the word <em>configurations</em> without telling you the  granularity I have in mind.</p>
+
+<p>After measuring the running time of all configurations, we can summarize the  results. One way to summarize is to pick a number <strong>D</strong> and count the number of configurations  that run at most <strong>D</strong> times slower than the original dynamically-typed program. If this number is large, then the takeaway is:  if <em>you</em> are willing to accept at most a <strong>D</strong>x slowdown, and you add your  own type annotations to your own program, then there&rsquo;s some hope that your  configuration runs at most <strong>D</strong> times slower than your original program.</p>
+
+<blockquote>
+ <p>Credit for the exhaustive method: <a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"><em>Is Sound Gradual Typing Dead?</em></a> and <a href="https://www2.ccs.neu.edu/racket/pubs/ecoop2015-takikawa-et-al.pdf"><em>Toward Practical Gradual Typing</em></a></p></blockquote>
+
+<h2 id="simple-random-approximation-method">Simple Random Approximation Method</h2>
+
+<p>The method above does not scale to large programs or fine granularities  because it asks for an exponential number of measurements. E.g., if there are 20 units to add or remove types from, then there are 1 million  configurations to measure. Exponentials are bad.</p>
+
+<p><a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"><em>On the Cost of Type-Tag Soundness</em></a>,  suggests a method based on simple random sampling that answers a similar question. Instead of measuring the true proportion of configurations that run at most  <strong>D</strong> times slower than the original dynamically-typed program, we:</p>
+
+<ul>
+ <li>pick a sample size <strong>s</strong> (in the paper, we used <strong>s = 10M</strong> where <strong>M</strong> is the number of units),</li>
+ <li>pick a number of samples <strong>r</strong> (in the paper, we used <strong>r = 10</strong>),</li>
+ <li>and build a 95% confidence interval for the true proportion of configurations  that run at most <strong>D</strong> times slower than the original program (from the  <strong>r</strong> proportions of configurations that run at most <strong>D</strong> times slower than the  original program in each of the <strong>r</strong> samples).</li></ul>
+
+<p>The method is outlined above, described in the paper, and validated in that paper&rsquo;s appendix. Please let us know if you have more questions.</p>
+
+<blockquote>
+ <p>Maybe you&rsquo;re wondering, &ldquo;gee why do they keep writing out &lsquo;configurations that  run at most &hellip;.&rsquo; instead of something shorter?&rdquo;. Well, the short version is <em><strong>D</strong>-deliverable</em> and it was introduced in the <a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"><em>Is Sound Gradual Typing Dead?</em></a> paper. Unfortunately, (1) that paper instantiated <strong>D</strong> to <strong>3</strong>-deliverable in order to  explain a few graphs and (2) at least two published papers (<a href="https://dl.acm.org/citation.cfm?id=3009849">paper 1</a>, <a href="https://dl.acm.org/citation.cfm?id=3133878">paper 2</a>)  now cite us as saying <strong>3</strong>x overhead is the cutoff between a good migratory  typing system and a bad one.</p>
+ <p>&hellip;</p>
+ <p>If we can&rsquo;t trust scientists to understand, then we <em>definitely</em> can&rsquo;t trust  you folks on the internet.</p></blockquote>
+
+<h2 id="faq">FAQ</h2>
+
+<h3 id="q-what-is-the-sampling-method-useful-for">Q. What is the sampling method useful for?</h3>
+
+<ul>
+ <li>Making a confidence interval for the true proportion of configurations that  run at most <strong>D</strong> times slower than some baseline, for your favorite value of <strong>D</strong>.</li></ul>
+
+<h3 id="q-what-is-the-sampling-method-not-useful-for">Q. What is the sampling method <strong>not</strong> useful for?</h3>
+
+<ul>
+ <li>Finding the slowest configuration.</li>
+ <li>Finding the average running time of all configurations.</li>
+ <li>Evaluations where &ldquo;removing types&rdquo; might involve changing <strong>List[Int]</strong> to <strong>List[Dyn]</strong>, etc.</li>
+ <li>Situations where its wrong to assume that a programmer will start from untyped and pick a configuration uniformly at random</li>
+ <li>&hellip;. many more &hellip;.</li></ul>
+
+<h3 id="q-why-is-it-okay-to-choose-d-after-collecting-the-samples">Q. Why is it okay to choose <strong>D</strong> after collecting the samples?</h3>
+
+<p>The &ldquo;quick reference&rdquo; at the top of this post suggests choosing a value for <strong>D</strong>  (the cutoff between good and bad performance) after sampling configurations  and measuring their running time. This may sound strange, because (1) the value of <strong>D</strong> affects our bottom-line  judgment about the proportion of configurations with good performance, and (2)  shouldn&rsquo;t and value that affects the bottom line be fixed before taking samples? (To avoid accidental <a href="https://en.wikipedia.org/wiki/Data_dredging">data dredging</a>.)</p>
+
+<p>The reason it is ok to pick <strong>D</strong> after taking the sample is that the  running times in the sample are independent of the choice of <strong>D</strong>.</p>
+
+<p>For example, if one person chose <strong>D=3</strong> and a second person chose <strong>D=9</strong>,  both would follow the same protocol independent of <strong>D</strong> to take samples.</p>
+
+<h3 id="q-how-does-migratory-typing-relate-to-gradual-typing">Q. How does migratory typing relate to gradual typing?</h3>
+
+<p>Gradual typing is not just about adding a type system to an existing programming  language. See <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"><em>Refined Criteria for Gradual Typing</em></a>  and <a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/"><em>Migratory Typing: 10 Years Later</em></a>  for details.</p>
+
+<h3 id="q-do-you-have-code-i-can-use-to-plot-sampling-data">Q. Do you have code I can use to plot sampling data?</h3>
+
+<p>Yes, start here:</p>
+
+<ul>
+ <li><a href="http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29">http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29</a></li></ul>
+
+<p>Please ask questions and open issues if you have trouble. The source is here:</p>
+
+<ul>
+ <li><a href="https://github.com/bennn/gtp-plot">https://github.com/bennn/gtp-plot</a></li></ul>
+
+<h3 id="q-where-is-code-for-the-sampling-paper">Q. Where is code for the sampling paper?</h3>
+
+<p>Start here:</p>
+
+<ul>
+ <li><a href="https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018">https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018</a></li></ul>
+
+<p>Source is here:</p>
+
+<ul>
+ <li><a href="https://github.com/nuprl/retic_performance">https://github.com/nuprl/retic_performance</a></li></ul>
+
+<h2 id="closing-thoughts">Closing Thoughts</h2>
+
+<p>Statistics is easy to do wrong. Please let us know if you think our method is doing bad statistics.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2018/05/08/sampling-gradual-typing-performance/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/">&larr; <em>A Spectrum of Type Soundness and Performance</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2018/04/27/the-racket-school-2018-create-your-own-language/"><em>The Racket School 2018: Create your own language</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

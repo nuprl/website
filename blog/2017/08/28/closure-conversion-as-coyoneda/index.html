@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Closure Conversion as CoYoneda</title>
+    <meta name="description" content="The continuation-passing style transform (cps) and closure conversion (cc) are two techniques widely employed by compilers for functional languages, and have been studied extensively in the compiler correctness literature. Interestingly, _typed_ versions ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Yoneda, coYoneda, category theory, compilers, closure conversion, math, Author: Max New">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/08/28/closure-conversion-as-coyoneda/">
+    <link rel="next" href="/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/">
+    <link rel="prev" href="/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Closure Conversion as CoYoneda</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-08-28" pubdate="true">2017-08-28</time> :: <span class="tags"><a href="/blog/tags/Yoneda.html">Yoneda</a>, <a href="/blog/tags/coYoneda.html">coYoneda</a>, <a href="/blog/tags/category-theory.html">category theory</a>, <a href="/blog/tags/compilers.html">compilers</a>, <a href="/blog/tags/closure-conversion.html">closure conversion</a>, <a href="/blog/tags/math.html">math</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Max-New.html">Max New</a></span></p>
+  </header>
+
+<p>The continuation-passing style transform (cps) and closure conversion (cc) are two techniques widely employed by compilers for functional languages, and have been studied extensively in the compiler correctness literature. Interestingly, <em>typed</em> versions of each can be proven to be equivalence preserving using polymorphic types and parametric reasoning, as shown by my advisor Amal Ahmed and Matthias Blume (<a href="http://www.ccs.neu.edu/home/amal/papers/epc.pdf">cps</a>,<a href="http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf">cc</a>).</p>
+
+<p>In fact, there is something like a duality between the two proofs, cps uses a universal type, closure-conversion uses an existential type and the isomorphism proofs use analogous reasoning. It turns out that both are instances of general theorems in category theory: the polymorphic cps isomorphism can be proven using the Yoneda lemma, and the polymorphic closure-conversion isomorphism can be proven using a less well known theorem often called the <a href="https://ncatlab.org/nlab/show/co-Yoneda+lemma">*co*Yoneda lemma</a>.</p>
+
+<p>The connection between cps and the Yoneda embedding/lemma is detailed elsewhere in the <a href="http://www.cs.ox.ac.uk/people/daniel.james/iso/iso.pdf">literature</a> and blogosphere (<a href="https://golem.ph.utexas.edu/category/2008/01/the_continuation_passing_trans.html">ncafe</a>, <a href="https://bartoszmilewski.com/2015/09/01/the-Yoneda-lemma/">Bartosz</a>), so I&rsquo;ll focus on closure conversion here. Also, I&rsquo;ll try to go into some detail in showing how the &ldquo;usual&rdquo; version of Yoneda/coYoneda (using the category of sets) relates to the appropriate version for compilers.</p>
+
+<p>I&rsquo;ll assume some background knowledge on closure conversion and parametricity below. Fortunately, Matt Might has a <a href="http://matt.might.net/articles/closure-conversion/">nice blog post explaining untyped closure conversion</a>.</p>
+<!-- more-->
+
+<p>\(
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Hom}{\mathsf{Hom}}
+\)</p>
+
+<h2 id="polymorphic-closure-conversion">Polymorphic Closure Conversion</h2>
+
+<p>Closure conversion is a way of compiling a language with closures (i.e., basically any modern high-level language) to one that only has function pointers/labels like C or machine code. Closure conversion compiles high-level functions (aka closures) to a pair of an environment that will contain the values of all the functions&rsquo; free variables and a code pointer to a block that takes as inputs all the inputs to the function and values for all of the free variables.</p>
+
+<p>For instance</p>
+
+<pre><code>let x = 3 in λ y. x + y</code></pre>
+
+<p>would be converted to something like</p>
+
+<pre><code>let x = 3 in ([x: 3], λ env, y. let x = env.x in x + y)</code></pre>
+
+<p>Can we give a type to the resulting code? The source program has type <code>Number -&gt; Number</code>, but the target has a type more like</p>
+
+<pre><code>{ x: Number} × ({x : Number} × Number -&gt; Number).</code></pre>
+
+<p>In addition to being ugly, this type is leaking irrelevant details of the function&rsquo;s implementation: all of its free variables are there in its type, so two terms with the same function type but different free variables would be translated to different types. Also high-level program equivalences like \(\beta\)-reducing the term to just <code>λ y. 3 + y</code> would not even preserve typing. Not only that, but some bad code could now supply a <em>different</em>, well-typed value for <code>x</code> than allowed which could break invariants the programmer had about the function.</p>
+
+<p>We could fix the type preservation issue by just using a dynamic type for our environment, but this would still leak details in the values. Fortunately, there is a nice solution to the other problems using existential types. The idea is that the type of the environment of free variables is <em>irrelevant</em> to anyone that calls the function, only the function itself should know what the environment looks like; the type of the environment should be <em>abstract</em> to the caller and <em>concrete</em> to the callee. Existential types capture this.</p>
+
+<p>We can translate functions in the source of type <code>A -&gt; B</code> to pairs of an environment and a code pointer, but now making the environment type existentially quantified:</p>
+
+<pre><code>∃ Γ. Γ × (Γ × A -&gt; B).</code></pre>
+
+<p>Then the syntax of existential types ensure that all any consumer can do with the <code>env : Γ</code> in the pair is pass it to the code pointer with an <code>A</code> argument.</p>
+
+<p>How do we prove that this is correct? And what does correct even mean? We&rsquo;ll focus on a property called <em>full abstraction</em> which says that if two programs are equal in the source language, then their translations are equal. Here, equal in the source language will just mean \(\beta,\eta \) equivalence, so things like as above:</p>
+
+<pre><code>let x = 3 in λ y. x + y
+≡
+λ y. 3 + y</code></pre>
+
+<p>To prove this we&rsquo;ll show that in a language with existential types the types <code>∃ Γ. Γ × (Γ × A -&gt; B)</code> and <code>A \to B</code> are isomorphic. The usual proof is by parametricity, instead we&rsquo;ll use a closely related category-theoretic argument: the coYoneda lemma.</p>
+
+<h2 id="the-coyoneda-lemma">The CoYoneda Lemma</h2>
+
+<p>The coYoneda lemma is a generalization of the equivalence described above. I&rsquo;ll start with the ordinary version which uses <em>coends</em> and <em>presheaves</em>.</p>
+
+<p>The coYoneda lemma says that for any category \( C \), presheaf \( Q : C^{op} \to \Set \), and object \(A \in C \), \(Q(A) \) is isomorphic to the coend: \[ \exists B. (A \to B) \times Q(B) \] Let&rsquo;s break that down.</p>
+
+<h3 id="coends">Coends</h3>
+
+<p>A coend is a construction that is very similar to the parametric existential quantifier. If you&rsquo;re familiar with parametricity, a good intuition is that coends have the same definition as existential types but where the only relations are functional relations.</p>
+
+<p>You can take the coend of a functor of type \(M : C^{op} \times C \to
+\Set \). We can get such an \(M \) from a type with a free type variable like \( X \times A \to X \) by splitting the \(X \) into positive and negative occurrences: \(X^- \times A \to X^+ \). Then the coend \(\exists X. M(X,X) \in \Set \) is like the union of all \(M(X,X) \), but where the \(X \) is ensured to be &ldquo;irrelevant&rdquo;.</p>
+
+<p>So for any object \(A \in C \) there is a map \(pack_A : M(A,A) \to
+\exists X. M(X,X) \), we can &ldquo;hide the A&rdquo;. To make sure the \(X \) is treated opaquely, we add an invariance condition that says if you have an \(mA : M(A,A) \) and an \(mB :
+M(B,B) \) such that the \(A, B\) positions are related by some function \(f : A \to B \), then \(pack_A(mA) = pack_B(mB)\). More formally, this means that if you have a \(m' : M(B,A) \), then</p>
+
+<p>\[ pack_B(M(B,f)(m')) = pack_A(M(f,A)(m'))\] or in a point-free style: \[ pack_B \circ M(B,f) = pack_A \circ M(f,A) : M(B,A) \to \exists X. M(X,X) \]</p>
+
+<p>A function parameterized by types like \(pack \) that has this property is called a <em>co-wedge</em> from \(M \).</p>
+
+<p>A coend is an object \(\exists X. M(X,X) \) and a co-wedge \(\forall
+A. pack_A : M(A,A) \to \exists X. M(X,X) \) that are <em>universal</em>, i.e. any other co-wedge \(\forall A. f_A : M(A,A) \to C\) factors through \(pack_A \). This gives us the syntax for existential elimination.</p>
+
+<p>If you are familiar with parametricity, it is a good exercise to see why the usual condition for invariance wrt all <em>relations</em> implies that a parametric \(pack, \exists X. M(X,X) \) will form a cowedge. It seems that in general it would not be a universal co-wedge because a parametric exists is invariant under all relations and there are many relations that don&rsquo;t act like functions.</p>
+
+<h3 id="presheaves">Presheaves</h3>
+
+<p>Next, a presheaf is just a functor \( Q : C^{op} \to
+\Set \). Think of this as a set that is parameterised by a type of &ldquo;inputs&rdquo;, so if you have a map in \(C, f : A \to B\) you get a function \(Q(f) :
+Q(B) \to Q(A) \) that &ldquo;preprocesses&rdquo; the inputs using \(f
+\). Functoriality ensures that preprocessing with the identity is just the identity and that composition of preprocessers is the preprocessor from the composite function.</p>
+
+<p>So the informal explanation of the coYoneda lemma is that for any presheaf \(Q \), if we have an \( \exists X. (A \to X) \times Q(X)
+\), then since we can&rsquo;t inspect the \(X \) in any way, all we can really do is compose the \(Q(X) \) with the preprocesser from the function \(A \to X \), giving us a \(Q(A) \).</p>
+
+<h3 id="enriched-categories-and-enriched-coyoneda">Enriched Categories and Enriched CoYoneda</h3>
+
+<p>But there&rsquo;s a gap from here to applying this to a programming language, the coYoneda lemma as presented says that \(Q(A) \) and \(\exists B. (A \to B) \times Q(B) \) are isomorphic as <em>sets</em>, but we wanted an isomorphism of <em>types</em> in our programming language. We can reconcile this by considering <em>enriched</em> category theory and the <em>enriched</em> coYoneda lemma. Let \(V \) be a category, then if \( V
+\) is sufficiently like the category of sets, then we can do a lot of category theory by replacing the word &ldquo;set&rdquo; with &ldquo;object of \(V \)&rdquo;.</p>
+
+<p>Specifically, a \(V \)-enriched category (or just \(V\)-category) has a set of objects \(Ob \), but for each pair of objects \(A,B
+\in Ob \) we get a \( V\)-object \(\Hom(A,B) \) of morphisms from \(A \) to \( B \). If \(V \) is a closed category, we can see \(V \) <em>itself</em> as a \(V\)-enriched category with the same objects and just making \(\Hom(A,B) = A \to B \) i.e. the <em>internal</em> hom aka exponential.</p>
+
+<p>Then we can reinterpret the coYoneda lemma above by saying \(C \) is a \(V\)-category and \(Q \) is a \(V\)-presheaf i.e., just a contravariant functor from \(V \) to itself: \(Q : V^{op} \to V\) where the preprocessing function is now a morphism in \(C \). Haskelletons just call this a <a href="https://hackage.haskell.org/package/contravariant-1.4/docs/Data-Functor-Contravariant.html">contravariant functor</a>. Furthermore, since existential types provide at least as strong of a reasoning principle as coends, the proof of the coYoneda lemma goes through with existential types instead. Finally, the point-free description above for coend can be interpreted in any category.</p>
+
+<p>Now that we&rsquo;re working all inside our language, let&rsquo;s look at what the isomorphism looks like in Haskellish/Agdaish syntax. We want mutually inverse functions</p>
+
+<pre><code>f : (Contravariant Q) =&gt; (∃ Γ. (Δ -&gt; Γ) × (Q Γ)) -&gt; Q Δ
+g : (Contravariant Q) =&gt; Q Δ -&gt; ∃ Γ. (Δ -&gt; Γ) × (Q Γ)</code></pre>
+
+<p>If you try to implement them you won&rsquo;t be able to get it wrong, but here they are:</p>
+
+<pre><code>f (k, qΓ) = contramap k qΓ
+g qΔ = (id, qΔ)</code></pre>
+
+<p>where we just instantiate \(\Gamma = \Delta \) in the second case. You can prove \( f \circ g = id \) using just \(\beta \) and the Contravariant laws, but to prove \(g \circ f = id \) you need to use the coend reasoning. For those of you that know about the Yoneda lemma, note the similarity to that proof in using the identity function and instantiating a type variable in a trivial way.</p>
+
+<h2 id="closure-version-as-coyoneda">Closure Version as CoYoneda</h2>
+
+<p>Now it&rsquo;s time to bring it all together. Let \(V \) be our programming language viewed as a category in the usual way.</p>
+
+<p>We want to prove the closure conversion isomorphism:</p>
+
+<p>\[ A \to B \cong \exists \Gamma. \Gamma \times (\Gamma \times A \to B)
+\]</p>
+
+<p>using the \(V \)-coYoneda lemma which says for any contravariant functor \(Q : V^{op} \to V \), and object \(\Delta \in V\)</p>
+
+<p>\[ Q(\Delta) \cong \exists \Gamma. (\Delta \to \Gamma) \times Q(\Gamma)
+\]</p>
+
+<p>Clearly based on the right hand side, \(Q \) should be \( - \times
+A \to B \) which gives us for any \(\Delta \in V\):</p>
+
+<p>\[ \Delta \times A \to B \cong \exists \Gamma. (\Delta \to \Gamma) \times (\Gamma \times A \to B)
+\]</p>
+
+<p>Next we pick \(\Delta = 1\), the unit type. Then we use some basic facts about the unit type: \(1 \times A \cong
+A \) and \(1 \to \Gamma \cong \Gamma\) (at least in a pure language) to get the desired result by composition:</p>
+
+<p>\[ A \to B \cong 1 \times A \to B \cong \exists \Gamma. (1 \to
+\Gamma) \times (\Gamma \times A \to B) \cong \exists \Gamma. \Gamma
+\times (\Gamma \times A \to B)\]</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Since closure conversion is an instance of the CoYoneda lemma, this might be a nice example to give intuition for CoYoneda for programmers. While not as famous as its cousin Yoneda, CoYoneda is used in <a href="https://hackage.haskell.org/package/kan-extensions-5.0.2/docs/Data-Functor-Coyoneda.html">Haskell</a> and is also central to the <a href="https://ncatlab.org/nlab/show/Day+convolution">Day Convolution</a>, which can be used to give semantics to <a href="atkey-thesis">separation logic</a>.</p>
+
+<p>Also in researching for this post, I was surprised at how little I could find on the relationship between ends/coends and relational parametricity. This seems very unfortunate as it looks like we&rsquo;re reproving some of the same theorems (Yoneda, coYoneda) using very similar, but incompatible formalisms.</p>
+
+<h2 id="you-might-also-like">You might also like</h2>
+
+<ul>
+ <li>
+  <p><a href="http://prl.ccs.neu.edu/blog/2017/06/05/syntactic-parametricity-strikes-again/">Syntactic Parametricity Strikes Again</a></p></li>
+ <li>
+  <p><a href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/">Categorical Semantics for Dynamically Typed Programming  Languages</a></p></li>
+ <li>
+  <p><a href="http://prl.ccs.neu.edu/blog/2016/11/16/understanding-constructive-galois-connections/">Understanding Constructive Galois  Connections</a>.</p></li></ul>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/08/28/closure-conversion-as-coyoneda/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/">&larr; <em><a href="https://williamjbowman.com/blog/2017/08/29/why-am-i-going-to-icfp-2017/">Why am I going to ICFP 2017? (cross-post)</a></em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/"><em>Gradual Typing Across the Spectrum, part II</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Posts tagged 'visr'</title>
+    <meta name="description" content="Posts tagged 'visr'">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="visr">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/tags/visr.html">
+
+
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+              <h1>Posts tagged <em>visr</em></h1>
+
+              <article>
+  <header>
+    <h2><a href='/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/'>Introducing Visual and Interactive-Syntax realized (VISr) for ClojureScript (and JavaScript)</a></h2>
+    <p class='date-and-tags'>
+<time datetime="2022-01-06" pubdate="true">2022-01-06</time> :: <span class="tags"><a href="/blog/tags/visr.html">visr</a>, <a href="/blog/tags/clojure.html">clojure</a>, <a href="/blog/tags/clojurescript.html">clojurescript</a>, <a href="/blog/tags/interactive-syntax.html">interactive syntax</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Leif-Andersen.html">Leif Andersen</a></span></p>
+  </header>
+
+<p>
+ <style>.caption {  display: none; }</style></p>
+
+<p>Visual and interactive-syntax is a type of language-oriented programming that allows developers to use, view, and edit portions of a textual program with graphics. Using interactive-syntax provides the benefits of a graphical programming language, while keeping all of the benefits of a purely textual language. For example, the following is an example of a small network embedded in a program:</p>
+
+<div class="figure"><img src="/img/intro-visr/visr-and-text.png" alt="Graphical network embedded in text" />
+ <p class="caption">Graphical network embedded in text</p></div>
+
+<p>Interactive-syntax is backed by human readable code; the visual components exists purely when writing and editing code. This backing means all of the tools involved in software development work with interactive-syntax extensions. For example:</p>
+
+<ul>
+ <li>version control, such as git, works with interactive-syntax;</li>
+ <li>programs using interactive-syntax can be written and edited with your favorite  text editor or IDE;</li>
+ <li>cut/copy/paste works with interactive-syntax using your operating system&rsquo;s  native clipboard;</li>
+ <li>code analysis tools, like diff and refactor, still work with  interactive-syntax; and</li>
+ <li>you can use interactive-syntax in any language or environment that supports  language-oriented programming.</li></ul>
+
+<p>To learn more about interactive-syntax, watch <a href="https://www.youtube.com/watch?v=8htgAxJuK5c">this video</a> or read <a href="https://dl.acm.org/doi/10.1145/3428290">the accompanying paper</a>.</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/8htgAxJuK5c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="allowfullscreen"></iframe>
+
+<p><a href="https://visr.pl">VISr (Visual and Interactive-Syntax realized) for ClojureScript</a> is a practical implementation of interactive-syntax in web browsers. The VISr environment is a full-featured IDE that supports interactive-syntax components called VISrs. Additionally, the VISr environment comes with a package manager that supports <a href="https://www.npmjs.com/">NPM packages</a>.</p>
+
+<p>This article is a brief introduction to both the VISr environment and the components that make up a VISrs. It discusses how to insert a VISr into code, how to manipulate a VISr, and how to create a new types of VISr. Future articles will discuss more advanced uses such as integrating NPM packages and using VISrs in other languages.</p>
+  <footer>
+    <a href='/blog/2022/01/06/introducing-visual-and-interactive-syntax-realized-visr-for-clojurescript-and-javascript/'>&hellip; more &hellip;</a>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

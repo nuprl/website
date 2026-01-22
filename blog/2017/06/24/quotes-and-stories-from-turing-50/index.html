@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Quotes and Stories from "Turing 50"</title>
+    <meta name="description" content="The ACM recently hosted a celebration of 50 years of the A.M. Turing award. These are some notes and thoughts from the event, including how Fred Brooks once rented a bus, Don Knuth's outrageous implementation of batch processing, and Judea Pearl's theory ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="dear diary, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/06/24/quotes-and-stories-from-turing-50/">
+    <link rel="next" href="/blog/2017/06/16/spring-2017-pl-junior-retrospective/">
+    <link rel="prev" href="/blog/2017/07/17/continuations/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Quotes and Stories from &ldquo;Turing 50&rdquo;</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-06-24" pubdate="true">2017-06-24</time> :: <span class="tags"><a href="/blog/tags/dear-diary.html">dear diary</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>The ACM recently hosted <a href="https://www.acm.org/turing-award-50">a celebration of 50 years of the A.M. Turing award</a>. These are some notes and thoughts from the event, including how Fred Brooks once rented a bus, Don Knuth&rsquo;s outrageous implementation of batch processing, and Judea Pearl&rsquo;s theory of homo sapiens.</p>
+<!-- more-->
+
+<script>document.createElement('dialog');</script>
+
+<p><strong>Conventions / Disclaimers:</strong></p>
+
+<ul>
+ <li>
+  <p>The blockquotes below are paraphrased, may be incorrect, and may be incorrectly attributed.  Make sure to watch the ACM&rsquo;s live stream before quoting anything here!!!</p></li>
+ <li>
+  <p>Section-breaks are labeled as &ldquo;panel&rdquo;, &ldquo;talk&rdquo;, &ldquo;question&rdquo;, etc.</p></li>
+ <li>
+  <p>This is intentionally &ldquo;bad writing&rdquo; in the Peter Lee sense (see below)  &mdash; primarily &ldquo;what I saw&rdquo;, very little about &ldquo;what I thought and felt&rdquo;.  A summary in my own words just wouldn&rsquo;t do justice to the panelists.</p></li>
+ <li>
+  <p>The &ldquo;Augmented Reality&rdquo; session was my favorite.</p></li></ul>
+
+<h3 id="opening-remarks">Opening Remarks</h3>
+
+<h4 id="alan-turing-is-with-us-today"><em>Alan Turing is with us today</em></h4>
+
+<p>At the start of the event, the <a href="http://users.ecs.soton.ac.uk/wh/">emcee</a> unveiled a bronze bust of Alan Turing. This statue was on display at center stage during the whole event.</p>
+
+<p>It&rsquo;s a good sculpture and it&rsquo;s good we remember Alan Turing, but I&rsquo;m sad  that the ACM would encourage this kind of idol-worship. Let&rsquo;s not forget Turing&rsquo;s excellent teachers and colleagues!</p>
+
+<h3 id="talk-impact-of-turing-recipients-work">talk: Impact of Turing Recipients&rsquo; Work</h3>
+
+<h5 id="barbara-liskov">Barbara Liskov</h5>
+
+<blockquote>
+ <p><em>the first awards recognized achievements in the standard fields of theory, AI, and systems</em></p>
+ <p><em>hostile environment around the first awards, trepidation about future awards</em></p>
+ <p><em>with Unix, Ritchie and Thompson got the design right</em></p>
+ <p><em>Niklaus Wirth: &ldquo;If I understood how important Pcode was, I would have spent more time designing it&rdquo;</em></p></blockquote>
+
+<h4 id="thoughts">thoughts</h4>
+
+<p>What is &ldquo;systems&rdquo; &mdash; does that even have a definition? And Unix is definitely NOT an example of a &ldquo;right design&rdquo;; rather it&rsquo;s a  landmark of <a href="https://www.dreamsongs.com/WorseIsBetter.html">worse is better</a> design.</p>
+
+<h3 id="panel-advances-in-deep-neural-networks">panel: Advances in Deep Neural Networks</h3>
+
+<h4 id="stuart-russell">Stuart Russell</h4>
+
+<blockquote>
+ <p> <em>I work in all areas of AI except for deep learning</em></p></blockquote>
+
+<h4 id="judea-pearl">Judea Pearl</h4>
+
+<blockquote>
+ <p><em>I am a foreigner in this field &hellip; left because human beings are not good at handling information &hellip; people are very good with causal inference, not with statistical inference &hellip; deep learning is statistical</em></p>
+ <p><em>there is a very old existence proof, homo sapiens took over the planet &hellip; I believe because they had an internal model of their environment &hellip; a drawing of a lion with wings is evidence of this model, you have  to have such a model before you can experiment with it and imagine &hellip; snakes have superb optics, result of a long  evolution process &hellip; very specific but they cannot build eyeglasses &hellip; humans have an internal model, can build a market based on promises  and build large communities based on promises</em></p>
+ <p><em>I see four levels &hellip; second level is predicting events, if I do X then what? &hellip; third level is counterfactual, if I did things differently then how would the outcome change &hellip; very hard to advance between levels, are we working to help machine learning &lsquo;level up&rsquo;?</em></p>
+ <p><em>data science is about the relation between data and reality &hellip; data alone is not data science</em></p></blockquote>
+
+<h5 id="michael-jordan">Michael Jordan</h5>
+
+<blockquote>
+ <p><em>today we can&rsquo;t think without holding a piece of metal</em></p>
+ <p><em>machine learning is part of computer science rather than AI &hellip; AI is about how to make human &hellip; machine learning is about allocating resources &hellip; matrices are not all of human intelligence &hellip; neural nets are part of a wider toolbox &hellip; too much hype in NLP its just syntax</em></p>
+ <p><em>huge gap between syntax and semantics &hellip; chat bots are just syntax, don&rsquo;t learn &hellip; faking intelligence with neural nets, so well that you can build a company &hellip;</em></p>
+ <p><em>real metric is task completion</em></p>
+ <p><em>if I say &lsquo;a GLEEB walked across the airport&rsquo; then true intelligence can make a lot of educated guesses about a &lsquo;GLEEB&rsquo; without any other context</em></p></blockquote>
+
+<h5 id="fei-fei-li">Fei-Fei Li</h5>
+
+<blockquote>
+ <p><em>I disagree, ML is part of AI &hellip; understanding intelligence and making intelligent methods for solving AI problems</em></p>
+ <p><em>to quote Churchhill &lsquo;its not beginning of end, not end, not beginning of end, probably end of beginning&rsquo;</em></p>
+ <p><em>todays AI powered by hardware and data</em></p>
+ <p><em>AI cannot yet find our keys</em></p>
+ <p><em>quote: &lsquo;todays AI is making a perfect chess move while the world is on fire&rsquo; &hellip; ignores context</em></p></blockquote>
+
+<h5 id="stuart-russell">Stuart Russell</h5>
+
+<blockquote>
+ <p><em>Turing &hellip; a program is a mathematical object &hellip; math community did not recognize this</em></p>
+ <p><em>lots of grad student descent &hellip; tuning to get performance &hellip; deep learning is neglecting the problem of exponential data &hellip; deep learning is just circuits, circuits lack expressive power &hellip; a human can process data from CERN but a neural net cannot, need to know physics</em></p>
+ <p><em>probabilistic programming, somewhat under the radar, maybe on the right track &hellip; 10-line program running/generating/updating a large network of possibilities &hellip; more composable and flexible</em></p></blockquote>
+
+<h5 id="ilya-sutskever">Ilya Sutskever</h5>
+
+<blockquote>
+ <p><em>why I like deep learning &hellip; philosophically satisfying &hellip; the hypothesis class is a circuit &hellip; powerful hypothesis class not too many parameters &hellip; can actually find circuits &hellip; &lsquo;violates all theory&rsquo; &hellip; really amazing &hellip; humans can see and hear pretty fast, even though our neurons are pretty slow, perhaps because we do a massively parallel process that doesn&rsquo;t take many steps &hellip; works well enough to be useful</em></p>
+ <p><em>models e.g. for vision are very hard to understand &hellip; fight fire with fire &hellip; incomprehensible solution to incomprehensible problem</em></p></blockquote>
+
+<h5 id="raquel-urtasun">Raquel Urtasun</h5>
+
+<blockquote>
+ <p><em>the breakthrough in neural nets is not algorithms &hellip; it is tricks, hardware, and grad students</em></p>
+ <p><em>with neural nets we forget about modeling, uncertainty, and prior knowledge &hellip; perception is a canonical example</em></p></blockquote>
+
+<h4 id="question-boundaries">question: boundaries</h4>
+
+<h5 id="judea-pearl">Judea Pearl:</h5>
+
+<blockquote>
+ <p><em>glad to see people in deep learning understand its limitations &hellip; is there a clearer definition of the boundaries? Are you worried about bridging the levels factual/inferential/counterfactural?</em></p></blockquote>
+
+<h5 id="michael-jordan">Michael Jordan</h5>
+
+<blockquote>
+ <p><em>the big problem is decision making under uncertainty</em></p></blockquote>
+
+<h5 id="fei-fei-li">Fei-Fei Li</h5>
+
+<blockquote>
+ <p><em>cognition is a hard problem</em></p></blockquote>
+
+<h5 id="judea-pearl">Judea Pearl</h5>
+
+<blockquote>
+ <p><em>do you have a clear idea of the boundaries?</em></p></blockquote>
+
+<h5 id="michael-jordan">Michael Jordan</h5>
+
+<blockquote>
+ <p><em>neural nets use back-propagation &hellip; its non-modular, sad fact &hellip; performance and explainability is the tradeoff &hellip; then again people are non-modular</em></p></blockquote>
+
+<h5 id="stuart-russell">Stuart Russell</h5>
+
+<blockquote>
+ <p><em>AlphaGo is not deep learning &hellip; basically an improved version of the machines Arthur Samuel made in the late 1950s &hellip; the interesting code is in C++ &hellip; rules of go, next moves, searching future states &hellip; depends on transitive closure</em></p></blockquote>
+
+<h5 id="judea-pearl">Judea Pearl</h5>
+
+<blockquote>
+ <p><em>can AlphaGo take advice from a human?</em></p></blockquote>
+
+<h5 id="michael-jordan">Michael Jordan</h5>
+
+<blockquote>
+ <p><em>not currently, but that would be a new policy to add to the toolbox &hellip; just as neural nets are one tool within AlphaGo</em></p></blockquote>
+
+<h5 id="raquel-urtasun">Raquel Urtasun</h5>
+
+<blockquote>
+ <p><em>no reason to ask if deep learning is going to solve all problems</em></p></blockquote>
+
+<h4 id="question-education">question: education?</h4>
+
+<h5 id="judea-pearl">Judea Pearl</h5>
+
+<blockquote>
+ <p><em>indeed, what DO you teach in your neural networks classes?</em></p></blockquote>
+
+<h5 id="fei-fei-li">Fei-Fei Li</h5>
+
+<blockquote>
+ <p><em>&hellip; chain rule, Taylor expansion</em></p></blockquote>
+
+<h5 id="judea-pearl">Judea Pearl</h5>
+
+<blockquote>
+ <p><em>teaching is communicating truths &hellip; what is true about neural nets? what are some things that will definitely not happen?</em></p></blockquote>
+
+<h5 id="stuart-russell">Stuart Russell</h5>
+
+<blockquote>
+ <p><em>Peter Norvig and I have a problem with our AI book &hellip; chapter on vision, chapter on speech, will probably post just point to the neural nets chapter &hellip; we don&rsquo;t really understand! &hellip; really selling students short</em></p></blockquote>
+
+<h5 id="fei-fei-li">Fei-Fei Li</h5>
+
+<blockquote>
+ <p><em>in labs we talk about what we cannot do &hellip; we all have open problems</em></p>
+ <p><em>Stuart I hope you have a very good author for the chapters. There are so many open problems to communicate to students!</em></p></blockquote>
+
+<h5 id="michael-jordan">Michael Jordan</h5>
+
+<blockquote>
+ <p><em>CS cirriculum needs more statistics, inferential thinking &hellip; revise the whole cirriculum bottom-up to weave this in</em></p></blockquote>
+
+<h4 id="question-could-a-neural-net-fix-my-phone-without-breaking-it">question: could a neural net fix my phone without breaking it?</h4>
+
+<h5 id="judea-pearl">Judea Pearl</h5>
+
+<blockquote>
+ <p><em>right! big problem that neural nets have no internal model to manipulate</em></p></blockquote>
+
+<h4 id="question-generalizability">question: generalizability?</h4>
+
+<h5 id="ilya-sutskever">Ilya Sutskever</h5>
+
+<blockquote>
+ <p><em>special-purpose vs. general purpose solution depends on the problem &hellip; most things we give special-purpose solutions &hellip; I guess if you wanted to automate a mathematician that would need to be general</em></p></blockquote>
+
+<h5 id="stuart-russell">Stuart Russell</h5>
+
+<blockquote>
+ <p><em>always argue with your self &hellip; try to break what you&rsquo;ve built &hellip; there&rsquo;s a system that plays video games just using the pixels on screen as hints &hellip; it&rsquo;s very good at mazes; if a newborn baby learned to play maze games in 2 hours that would be amazing! &hellip; does the system scale? absolutely not</em></p></blockquote>
+
+<h4 id="thoughts">thoughts</h4>
+
+<p>When Michael Jordan said &ldquo;people are non-modular&rdquo;, I think he means that people are able  to break abstraction barriers when needed.</p>
+
+<h3 id="panel-restoring-personal-privacy-without-compromising-national-security">panel: Restoring Personal Privacy without Compromising National Security</h3>
+
+<h5 id="joan-feigenbaum">Joan Feigenbaum</h5>
+
+<blockquote>
+ <p><em>&hellip; wikileaks &hellip; russian hackers &hellip; social emergency &hellip;</em></p></blockquote>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>everything I say today is copyleft</em></p>
+ <p><em>its a misunderstanding to talk about a conflict between security and privacy &hellip; two aspects &hellip; problem goes back to feudalism &hellip; the right to build a castle was granted by the king &hellip; on one hand a castle improves national security &hellip; on the other hand a castle can be used to attack the king &hellip; technology is upsetting the basic notion of private vs. public security &hellip; governments cannot protect citizens and cannot protect themselves &hellip; extremely difficult to prove that a small process is secure</em></p>
+ <p><em>exceptional access makes it more complex</em></p></blockquote>
+
+<h5 id="paul-syverson">Paul Syverson</h5>
+
+<blockquote>
+ <p><em>major concern are national security threats and ability of authorities to confound threats &hellip; analogy to printing press &hellip; proclimation of 1635 that only state messengers can carry letters &hellip; 1663 treatise by the national censor, no printing house can have a back door &hellip; the general topic is very old &hellip; title of this session isn&rsquo;t very good, the real dilemma is investigation vs privacy</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>code is law for better or worse, tech is not a tool like a watch &hellip; tech can monitor us and decide when it works &hellip; tech is government, not obedient tools &hellip; the mind is a warrant-proof space &hellip; 5th amendment rights should extend to wearables</em></p></blockquote>
+
+<h5 id="nadia-heninger">Nadia Heninger</h5>
+
+<blockquote>
+ <p><em>cannot divorce the security/privacy issues from the current political context &hellip; the serious vulnerabilities are not in math &hellip; they are in users and implementors</em></p></blockquote>
+
+<h4 id="question-back-doors">question: back doors</h4>
+
+<h5 id="joan-feigenbaum">Joan Feigenbaum</h5>
+
+<blockquote>
+ <p><em>perhaps we should explain what a back door is</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>agency keeps a master key in escrow</em></p>
+ <p><em>non-lawyers can and should take a stand on basic issues</em></p>
+ <p><em>there are legitimate warrant-proof spaces &hellip; electronic extensions of the mind need to be recognized as warrant-proof spaces</em></p>
+ <p><em>the set of authorities with backdoor access should change as I travel between countries &hellip; but this will lead to a global race to the bottom</em></p></blockquote>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>germany has a law against sex tourism (committed by German citizens visiting other countries) &hellip; neither government will be willing to lose backdoor access</em></p></blockquote>
+
+<h5 id="nadia-heninger">Nadia Heninger</h5>
+
+<blockquote>
+ <p><em>technical reasons against backdoors &hellip; (1) &lsquo;weak crypto&rsquo; was implemented, nobody turned it off, is now breakable by anyone in 2015 &hellip; (2) Juniper used non-default crypto parameters, someone (inside?) changed the parameters &hellip; (3) attackers exploit back doors</em></p></blockquote>
+
+<h5 id="paul-syverson">Paul Syverson</h5>
+
+<blockquote>
+ <p><em>quote &lsquo;you can put a man on the moon, surely you can put a man on the sun&rsquo;</em></p></blockquote>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>trouble is getting him back safely</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>I think back doors are okay, but not for personal devices &hellip; need public lab and transparent processes, need separation of powers &hellip; prosecutors are getting cases thrown out because courts do not accept their backdoors &hellip; there is a place for transparent back door tools</em></p></blockquote>
+
+<h5 id="nadia-heninger">Nadia Heninger</h5>
+
+<blockquote>
+ <p><em>politicians are rarely technical people</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>tech is not a set of policy-neutral tools, need to address gap of understanding</em></p></blockquote>
+
+<h4 id="question-">question: ???</h4>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>we don&rsquo;t know how to build good crypto programs &hellip; opponents are debugging our programs with different goals &hellip; we&rsquo;re trying for-all-paths safety (universal) &hellip; they&rsquo;re trying exists-bad-path (existential)</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>cybersecurity market is a lemon market</em></p></blockquote>
+
+<h4 id="question-how-to-advise">question: how to advise</h4>
+
+<h5 id="joan-feigenbaum">Joan Feigenbaum</h5>
+
+<blockquote>
+ <p><em>question from audience &lsquo;I am an advisor to a company working with nuclear energy, they are terrified of being attacked, how should I advise them?&rsquo;</em></p></blockquote>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>a network like that is probably separated enough to be safe &hellip; the problem is being safe AND connected to the web</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>because the internet of things</em></p></blockquote>
+
+<h4 id="question-what-should-the-acm-do">question: what should the ACM do?</h4>
+
+<h5 id="nadia-heninger">Nadia Heninger</h5>
+
+<blockquote>
+ <p><em>maybe we need increased regulation, the ACM could help bring experts together</em></p></blockquote>
+
+<h4 id="question-what-is-true-security">question: what is true security</h4>
+
+<h5 id="paul-syverson">Paul Syverson</h5>
+
+<blockquote>
+ <p><em>it&rsquo;s all the same thing &hellip; gets labeled differently &hellip; just trying to control which bits can go where and who gets to read them</em></p></blockquote>
+
+<h5 id="nadia-heninger">Nadia Heninger</h5>
+
+<blockquote>
+ <p><em>security is the absense of being violated</em></p></blockquote>
+
+<h5 id="paul-syverson-no-true--security-need-to-consider-context">Paul Syverson: <em>no true &gt; security, need to consider context</em></h5>
+
+<h5 id="joan-feigenbaum">Joan Feigenbaum</h5>
+
+<blockquote>
+ <p><em>problem of our community, have strict standards, may be unrealistic &hellip; maybe a lot more tolerance in practice than our model accepts</em></p></blockquote>
+
+<h5 id="paul-syverson">Paul Syverson</h5>
+
+<blockquote>
+ <p><em>security and privacy are environmental problems</em></p></blockquote>
+
+<h4 id="question-can-we-stop-the-needle-in-haystack-search-for-vulnerabilities">question: can we stop the needle-in-haystack search for vulnerabilities?</h4>
+
+<h5 id="paul-syverson">Paul Syverson</h5>
+
+<blockquote>
+ <p><em>need to build in security from the start</em></p></blockquote>
+
+<h5 id="bryan-ford">Bryan Ford</h5>
+
+<blockquote>
+ <p><em>need rule of law, transparency, separation of powers</em></p></blockquote>
+
+<h5 id="whitfield-diffie">Whitfield Diffie</h5>
+
+<blockquote>
+ <p><em>stop delaying, instead of spending $$$ on fixing problems, we should invest in solving the fundamental issues</em></p></blockquote>
+
+<h3 id="panel-preserving-our-past-for-the-future">panel: Preserving our Past for the Future</h3>
+
+<p>Note: I was volunteering during this session; quotes are sparse</p>
+
+<h5 id="mahadev-satyanarayanan">Mahadev Satyanarayanan</h5>
+
+<blockquote>
+ <p><em>the running system is the total documentation &hellip; there are too many details for prose to capture</em></p></blockquote>
+
+<h5 id="">??</h5>
+
+<blockquote>
+ <p><em>running old code has a danger of running old bugs</em></p></blockquote>
+
+<h5 id="">??:</h5>
+
+<blockquote>
+ <p><em>what not to save? &hellip; it&rsquo;s very hard to tell in advance</em></p></blockquote>
+
+<h5 id="mahadev-satyanarayanan">Mahadev Satyanarayanan:</h5>
+
+<blockquote>
+ <p><em>there is no absolute censor in a world with caching</em></p></blockquote>
+
+<h5 id="brewster-kahle">Brewster Kahle</h5>
+
+<blockquote>
+ <p><em>asking UNESCO to solve the problem is unrealistic &hellip; need to empower the fanatics, given them tools to preserve data</em></p></blockquote>
+
+<h4 id="thoughts">thoughts</h4>
+
+<p>I totally agree with the &ldquo;empower the fanatics&rdquo; sentiment. Today, because of &ldquo;volunteer librarians&rdquo;, I think we&rsquo;re doing pretty well about preserving  the past. Suppose I found an old PowerPoint file. I&rsquo;m sure I could find a way to read it with help from the internet &mdash; either  by searching Google, pirating an old version of PowerPoint, or asking online forums. So personally I&rsquo;m not worried about losing data we have currently; I&rsquo;m more  worried about the future, the internet becoming &ldquo;less chaotic&rdquo;.</p>
+
+<p>The panel raised a good question about how to preserve research and encourage reproducibility. A <code>.pdf</code> or <code>.tex</code> document is not enough; a virtual machine is okay. Really I think we need a stronger cultural emphasis on literate programming  and a mature library like TeX to help authors store and share their work. <a href="https://thegamma.net/">The Gamma</a> seems on the right track.</p>
+
+<p>I was surprised that the panel did not discuss search, version control, and  the ACM&rsquo;s open-access policy.</p>
+
+<h3 id="panel-moores-law-is-really-dead-whats-next">panel: Moore&rsquo;s Law is Really Dead: What&rsquo;s Next?</h3>
+
+<p>Note: I was volunteering during this session</p>
+
+<h5 id="butler-lampson">Butler Lampson</h5>
+
+<blockquote>
+ <p><em>there&rsquo;s plenty of room at the top &hellip; with Moore&rsquo;s Law we got improvements at the bottom of the software stack, everything above got to benefit and it was easy to integrate the changes &hellip; there&rsquo;s lots of opportunities to trim fat in the middle/top of the software stack &hellip; these improvements will be harder to integrate, but there&rsquo;s lots of opportunities</em></p></blockquote>
+
+<h5 id="margaret-martonosi">Margaret Martonosi</h5>
+
+<blockquote>
+ <p><em>By the way, don&rsquo;t believe the brochure that says I&rsquo;m at Google. My affiliation is Princeton, Google and I are just friends.</em></p></blockquote>
+
+<h5 id="butler-lampson">Butler Lampson</h5>
+
+<blockquote>
+ <p><em>important to distinguish approximate vs. precise software &hellip; precise software has a specification and the customer cares about that specification &hellip; approximate software doesn&rsquo;t have a hard spec, just needs to approximately work &hellip; the web is approximate, it doesn&rsquo;t work and it doesn&rsquo;t need to! &hellip; windows is precise, definitely has a spec and users definitely care</em></p></blockquote>
+
+<h4 id="thoughts">thoughts</h4>
+
+<p>The recording of this panel should be good; it was very lively, very practical. And the first audience question (by <a href="https://people.eecs.berkeley.edu/~pattrsn/">David Patterson</a>) was &ldquo;an A+ question&rdquo;.</p>
+
+<p>The panel reminded me of a talk by <a href="http://users.ece.utexas.edu/~patt/">Yale Patt</a>  about &ldquo;the end&rdquo; of the Von Neumann architecture. His opinion is future computers will be Von Neumann machines that rely  on &ldquo;accelerators&rdquo; like a GPU &mdash; computer organization is not going to change,  but will expand to have a bigger toolbox. So sure, Moore&rsquo;s Law is dead, but there are many opportunities to make  computers faster at places other than the bottom of the software stack.</p>
+
+<h3 id="panel-challenges-in-ethics-and-computing">panel: Challenges in Ethics and Computing</h3>
+
+<p>Note: I was volunteering during this session</p>
+
+<h5 id="raj-reddy">Raj Reddy</h5>
+
+<blockquote>
+ <p><em>there are more slaves in the world currently than there were in the US during the civil war &hellip; here is one way technology could help, by giving everone a device to record their location &hellip; if someone&rsquo;s time and location is constant, they may be held against their will</em></p></blockquote>
+
+<h5 id="">??</h5>
+
+<blockquote>
+ <p><em>do you believe every problem has a technological solution?</em></p></blockquote>
+
+<h5 id="noel-sharkey">Noel Sharkey</h5>
+
+<blockquote>
+ <p><em>yes the training set may be biased against people similar to me, but I want you to consider my case as an individual</em></p></blockquote>
+
+<h5 id="">??</h5>
+
+<blockquote>
+ <p><em>a very nice Washington Post article</em></p></blockquote>
+
+<h5 id="">??</h5>
+
+<blockquote>
+ <p><em>whether to encrypt the back hall</em></p></blockquote>
+
+<h5 id="raj-reddy">Raj Reddy</h5>
+
+<blockquote>
+ <p><em>we can sit here and wring our hands, but nothing will come of it unless it is written in the US constitution</em></p></blockquote>
+
+<h4 id="thoughts">thoughts</h4>
+
+<p>I did not enjoy this panel. This is an ACM event, not a United Nations event. An ACM-sponsored panel about social and political problems should  look for constructive ways that computer science can address these problems. Raj Reddy tried to give constructive solutions, but the panel seemed more  interested in complaining about how hopeless things are.</p>
+
+<p>The comment by Noel Sharkey about &ldquo;consider me as an individual&rdquo; was something  I hadn&rsquo;t thought about. Instead of worrying about biased datasets, let&rsquo;s use technology to  collect data on an individual instead of abstracting a person by their  race, age, or neighborhood.</p>
+
+<h3 id="talk-computer-science-as-a-major-body-of-accumulated-knowledge">talk: Computer Science as a Major Body of Accumulated Knowledge</h3>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p> <em>don&rsquo;t applaud me, just read my books</em></p>
+ <p><em>at the time, computer science was AI, numerical analysis, and programming languages</em></p>
+ <p><em>a colleague said &lsquo;I will believe that computer science is a science when it has 1000 deep theorems&rsquo; &hellip; I am not sure what a deep theorem is but I think its different from what&rsquo;s proven by deep learning</em></p>
+ <p><em>great privilege that we can invent the problems we work on &hellip; imagination &hellip; physicists can only guess the size of the sun</em></p>
+ <p><em>I&rsquo;ve always believed computer science and math are two parallel subjects &hellip; sometimes you hear people wondering if one subsumes the other</em></p>
+ <p><em>when I won the Turing Award, the prize money was about $1,000,000 less than it is today &hellip; I did get a nice Tiffany bowl that my wife and I use to serve strawberries &hellip; strawberries actually taste better &hellip;</em></p>
+ <p><em>very fortunate in this field &hellip; I&rsquo;m completely worthless as an economic advisor &hellip; it&rsquo;s a game I&rsquo;ve been able to take advantage of</em></p></blockquote>
+
+<h4 id="question-how-could-you-offer-to-pay-for-tex-bug-reports">question: how could you offer to pay for TeX bug reports?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>well there were many, many bugs &hellip; I stopped doubling at 32768 &hellip; brought people out of nowhere &hellip; next time I check the bug reports will be 2021 &hellip; someone is queueing the bugs reports &hellip; I believe strongly in batch rather than swap-in/swap-out &hellip; last time I checked reports was 2014 so 2021 will be next</em></p>
+ <p><em>TeX was a literate program, and it helped that I wrote &lsquo;The Errors of TeX&rsquo; about the first N bugs</em></p></blockquote>
+
+<h4 id="question-do-you-think-computers-will-become-good-composers-of-music-do-you-see-a-role-for-computer-assisted-proving">question: do you think computers will become good composers of music? do you see a role for computer-assisted proving?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>Yes in part, assisted is the key word &hellip; I have a program running now that I hope will help me prove a theorem</em></p></blockquote>
+
+<h4 id="question-favorite-algorithm">question: favorite algorithm?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>Tarjan&rsquo;s strong components &hellip; short deep useful</em></p></blockquote>
+
+<h4 id="question-thoughts-on-ai-computers-taking-over">question: thoughts on AI, computers taking over?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>I get scared when I see Stuart Russell making assumptions based on people acting rationally &hellip; then you look at election results</em></p></blockquote>
+
+<h4 id="question-if-you-could-start-over-and-do-things-differently-what-would-you-change">question: if you could start over and do things differently, what would you change?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>I would use decimal internally in TeX instead of binary</em></p></blockquote>
+
+<h4 id="question-how-to-record-history">question: how to record history?</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>a video &lsquo;Lets not dumb down the history of CS&rsquo; &hellip; used to be history of algorithms &hellip; trouble with funding &hellip; the history is nothing that a non-CS person could not understand &hellip; the whole field of history changed from internal to external &hellip; historians need to be external to get published in journals &hellip; no CS department supports a historian &hellip; recently read a dissertation about the ALGOL 60 copmiler &hellip; very careful, describes data structures and organization &hellip; this kind of thing is what deserves to be called history</em></p></blockquote>
+
+<h4 id="question-teachers">question: teachers</h4>
+
+<h5 id="donald-knuth">Donald Knuth</h5>
+
+<blockquote>
+ <p><em>hardest thing for me is choosing between two hypotheses (1) could teach this to anyone (2) only 2% of the world is geeks &hellip; suppose the second is true then you can&rsquo;t talk about how to teach if the teacher is not in the 2% &hellip;</em></p>
+ <p><em>the newest issue of CACM has a fun typo, &lsquo;deep earning&rsquo;</em></p></blockquote>
+
+<h3 id="panel-quantum-computing-far-away-around-the-corner-or-maybe-both-at-the-same-time">panel: Quantum Computing: Far Away? Around the Corner? Or Maybe Both at the Same Time?</h3>
+
+<h5 id="john-martinis">John Martinis</h5>
+
+<blockquote>
+ <p><em>goal to have a 45&ndash;50 qbit machine &hellip; 1 error per 1000 operations &hellip; to test, run sample algorithm, chart output vs. a classical supercomputer &hellip; got to be a supercomputer to finish the computation in time</em></p></blockquote>
+
+<h5 id="andrew-yao">Andrew Yao</h5>
+
+<blockquote>
+ <p><em>I&rsquo;m a believer &hellip; one suggested benchmark is to factor 1000-digit numbers &hellip; impossible to attain &hellip; need to expore new possibilities, take physics attitute</em></p>
+ <p><em>CS did well attracting attention to quantum &hellip; science should be more open &hellip; share results between physics chemistry CS &hellip; don&rsquo;t just stick to your specialized conferences</em></p>
+ <p><em>CS departments reception to quantum is less than satisfactory &hellip; 15 years ago, maybe 4 or 5 universities &hellip; now, maybe 7 or 8 .. China doing much better in this regard</em></p></blockquote>
+
+<h5 id="jay-gambetta">Jay Gambetta</h5>
+
+<blockquote>
+ <p><em>not useful to make analogy to anything classical &hellip; universal fault tolerance? or computation in the presence of error &hellip; either would be excellent, still a long way off</em></p>
+ <p><em>IBM put quantum on the cloud &hellip; picked an instruction set that tries to abstract away &hellip; have been 19 published papers on the behavior of this quantum hardware</em></p></blockquote>
+
+<h5 id="dorit-aharonov">Dorit Aharonov</h5>
+
+<blockquote>
+ <p><em>two paths &hellip; finding algorithms, besides Shor&rsquo;s algorithm &hellip; make quantum computer to realize the algorithms &hellip; finding algorithms is very difficult &hellip; information-processing point-of-view</em></p>
+ <p><em>error correction still small scale &hellip; can we use entanglement between probes to improve accuracy?</em></p></blockquote>
+
+<h5 id="umesh-vazirani">Umesh Vazirani</h5>
+
+<blockquote>
+ <p>_different goals &hellip; maybe you want perfect Qbits for a perfect Hilbert space &hellip; reality is a noisy space &hellip; short run, how to compute with noise &hellip; how to correct errors &hellip;</p></blockquote>
+
+<h5 id="jay-gambetta">Jay Gambetta:</h5>
+
+<blockquote>
+ <p>_those 2 paths are the same to me &hellip; we want larger devices with fidelity</p>
+ <p><em>lets build hardware see where goes &hellip; exciting prospect, computer scientists will explore what they can do with these erroneous qbits &hellip; that&rsquo;s why IBM has the instruction set open to the community</em></p></blockquote>
+
+<h4 id="question-why-isnt-adding-10-qbits-only-10x-harder">question: why isn&rsquo;t adding 10 qbits only 10x harder?</h4>
+
+<h5 id="john-martinis">John Martinis:</h5>
+
+<blockquote>
+ <p><em>building infrastructure to scale &hellip; not just grad student code &hellip; we&rsquo;re all good coders using standard industry practices for coding</em></p></blockquote>
+
+<h5 id="jay-gambetta">Jay Gambetta</h5>
+
+<blockquote>
+ <p><em>fidelity is hard to achieve</em></p></blockquote>
+
+<h4 id="question-both-ibm-and-google-use-superconducting-storage">question: both IBM and Google use superconducting storage?</h4>
+
+<h5 id="john-martinis">John Martinis</h5>
+
+<blockquote>
+ <p><em>superconducting scales &hellip; ion traps harder to scale, but we still watch, keep eye on data</em></p></blockquote>
+
+<h4 id="question-education">question: education</h4>
+
+<h5 id="john-martinis">John Martinis</h5>
+
+<blockquote>
+ <p><em>I like talking to engineering colleges &hellip; physics and engineering need to work together</em></p></blockquote>
+
+<h4 id="question-is-quantum-going-to-change-programing-languages">question: is quantum going to change programing languages?</h4>
+
+<h5 id="jay-gambetta">Jay Gambetta</h5>
+
+<blockquote>
+ <p><em>yes very different to handle errors &hellip; current challenge is building an abstraction over the superconducting hardware</em></p></blockquote>
+
+<h5 id="john-martinis">John Martinis</h5>
+
+<blockquote>
+ <p><em>hoping to first expose hardware, then get a model, eventually a language</em></p></blockquote>
+
+<h5 id="dorit-aharonov">Dorit Aharonov</h5>
+
+<blockquote>
+ <p><em>need to start with more algorithms</em></p></blockquote>
+
+<h4 id="question-what-would-feynman-do">question: what would Feynman do?</h4>
+
+<h5 id="john-martinis">John Martinis</h5>
+
+<blockquote>
+ <p><em>experiments!</em></p></blockquote>
+
+<h5 id="dorit-aharonov">Dorit Aharonov</h5>
+
+<blockquote>
+ <p><em>yes he&rsquo;d tell us to keep playing, and play with us</em></p></blockquote>
+
+<h3 id="panel-augmented-reality-from-gaming-to-cognitive-aids-and-beyond">panel: Augmented Reality: From Gaming to Cognitive Aids and Beyond</h3>
+
+<p>Peter Lee starts off wearing a headset.</p>
+
+<h5 id="ivan-sutherland">Ivan Sutherland:</h5>
+
+<blockquote>
+ <p><em>I can tell you how VR started. Bell Helicopter company wanted to land at night &hellip; put an infrared camera on the landing site and a display in the cockpit &hellip; to test they used the roof of their building &hellip; one day an observer in a Bell office is watching, though the camera, two men playing catch on the roof &hellip; one player threw the ball at the camera and the observer ducked &hellip; he had identified his position with the camera &hellip; my observation was that you didn&rsquo;t need a camera, could substitute a computer &hellip; the rest is history</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>my goal is to augment people &hellip; <a href="https://en.wikipedia.org/wiki/The_Mother_of_All_Demos">Englebart</a> very inspiring &hellip; ok 2 stories &hellip; (1) a student of mine wanted to help picky eaters &hellip; computer vision for when they tried to hide peas under the plate &hellip; projected colors onto the peas, called them &lsquo;disco peas&rsquo;, kids were distracted enough to get over their aversion &hellip; children and parents got involved, new social interaction &hellip; (2) opera makeup for schoolchildren, virtually getting into character &hellip; teenage boys in the classes got to try makeup for the first time &hellip; singers found it useful for rehearsals</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>I feel socially awkward wearing this headset, but I have some of my slides here &hellip; making a wearable headset requires huge effort &hellip; research prototypes can be uncomfortable &hellip; a product needs to be perfect and its very hard to do perfect &hellip; one goal, give Lowe&rsquo;s VR to demo a virtual kitchen &hellip; Case Western anatomy class used virtual cadaver, great collective experience</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>two stories &hellip; (1) Henry Fuchs 1998, working with breast surgeon, try augmented reality to improve the precision of biopsy probe insertion &hellip; 2 years to a working prototype, hard to track surgeon&rsquo;s eyes, display where probe is, where ultrasound is, provide low latency &hellip; one day trying on live patient, worked 100% perfect probe right on the mark, jubilation &hellip; then the doctor had to tell the patient &lsquo;yes it is really cancer&rsquo; &hellip; (2) a challenge, augmented reality EMT training &hellip; real teams, virtual patient, virtual surround &hellip; track real tools, 8 eyes, 8 images, team needs to interact</em></p></blockquote>
+
+<h4 id="question-what-are-current-uses-of-augmented-reality">question: what are current uses of augmented reality?</h4>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p><em>the pilot of a jumbo jet typically has 1 hour flight experience before he flies for the first time, but extensive training in a flight simulator</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>the <strong>best</strong> AR</em></p></blockquote>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p><em>once I was in a flight simulator with the chief pilot &hellip; and he turned to me and asked &lsquo;have you ever experienced a slow roll in a 747?&rsquo; &hellip; a slow roll is a twisting motion, a very benign maneuver, constant one-G pressure the plane doesn&rsquo;t know its upside down &hellip; &lsquo;here we go&rsquo; and suddenly the world inverted &hellip; I remarked that it was certainly impressive, but didn&rsquo;t you treat the simulator as a real experience, and never attempted anything you would not do in reality? &hellip; &lsquo;that is true, but I am the chief pilot&rsquo;</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>construction, architecture</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>where&rsquo;s the &lsquo;augmented&rsquo;?</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>whether augmented or virtual</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>yes we did my kitchen that way, made my wife sick when she tried it</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>surgical</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>still sounds virtual</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>displays on a car, superimposed directions on the tarmac &hellip; one of the users took a vacation and had to use the old GPS technology &hellip; found it very difficult to go back</em></p></blockquote>
+
+<h4 id="question-ar-tools-for-developers">question: AR tools for developers?</h4>
+
+<h5 id="blair-macintyre">Blair MacIntyre</h5>
+
+<blockquote>
+ <p><em>can developers write apps for the Microsoft <a href="https://www.microsoft.com/en-us/hololens">Hololens</a>?</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>we belive in experience, anything we can do to foster experiences is good</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>faking things &hellip; subtle and important &hellip; I remember using a flight simulator, navigating the runway, and I turned my head to see if my wing was going to clip a plane &hellip; turned and there was nothing there &hellip; emotional shock to leave the simulation, I had been flying for 1 hour</em></p></blockquote>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p><em>pilot training is an early adopter because the cost of real planes is so high, impossible to train for emergency situations</em></p>
+ <p><em>the ultimate goal, you can sit in a virtual chair &hellip; and if the chair has handcuffs you cannot get up &hellip; a virtual bullet is lethal &hellip; probably impossible because bits don&rsquo;t weigh anything &hellip; you know Ben Franklin invented augmented reality, eyeglasses &hellip; the desire outweighs cost &hellip; I cannot see the audience here, maybe it would be good if I had a headset! but Peter took his off</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>because of my slides I couldn&rsquo;t see the audience, but then without the headset I couldn&rsquo;t see them either</em></p></blockquote>
+
+<h4 id="question-any-challenges-to-suggest-to-the-audience">question: any challenges to suggest to the audience?</h4>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>if we had holographic transport, we wouldn&rsquo;t need planes!</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>maybe, but you need to give attendees a physical presence &hellip; smell, touch</em></p></blockquote>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p><em>what makes us willing to work together? I had a collaboration with three people &hellip; all in different locations .. communicated with a phone &hellip; worked perfectly, because we had worked in the same location first and knew one another so well &hellip; how to get to that point, where a simulation could be a useful tool &hellip; another good observation by Fred Brooks, given a domain X ask how good does the simulation need to be for X &hellip; Licklider told me, you&rsquo;d need damn good fiction to land someone on the moon, the simulation would need to provide every detail &hellip; for flight simulation the user&rsquo;s imagination can fill some gaps, a pilot can recognize an aircraft carrier from a rougher picture</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>at IBM I once hired buses to bring the Poughkeepsie secretaries to the main office &hellip; the secretaries at the two offices only knew one another from the phone &hellip; this one lunch did so much good &hellip; only $75 to rent a bus</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>how important is it to shake hands, to bump into a table?</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>for this conference, I think the live stream is getting a better experience because the cameras zoom in on us, the panelists &hellip; the audience in the back cannot see us, only a picture of us on the monitors</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p>_one excellent video game, starts in the dark, you hear a voice &hellip; turn around and there&rsquo;s a character sitting on a chair &hellip; if you rearrange your furniture he finds a new seat &hellip;</p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>games are a great example &hellip; Pokemon Go &hellip; Apple jusr released an app toolkit &hellip; need to get those in schools, in the hands of kids who can build with them</em></p></blockquote>
+
+<h4 id="question-ivan-about-your-ultimate-display-paper-what-has-since-surprised-or-frustrated-you">question: Ivan, about your &lsquo;ultimate display&rsquo; paper, what has since surprised or frustrated you?</h4>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p><em>I wasn&rsquo;t surprised because I never had any expectations &hellip; of course sticks are not real &hellip; no assumptions so no strong feelings</em></p></blockquote>
+
+<h4 id="question-people-already-distracted-by-cell-phones-how-to-manage-all-this-input">question: people already distracted by cell phones, how to manage all this input?</h4>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>good question, how much data you can present to people &hellip; and then the problem with google glass, your companions don&rsquo;t know what you are looking at &hellip; at least with snapchat glasses, you can trust the device is simpler</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>good writing defines reality, bad writing reports it &hellip; with the printing press, quickly went from 30,000 books to over 13,000,000 &hellip; novels evolved shortly after, a new form of expression</em></p></blockquote>
+
+<h4 id="question-peter-how-long-do-your-people-wear-the-hololens">question: Peter, how long do your people wear the hololens?</h4>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>hard to say &hellip; but often longer than the battery lasts</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>how long does it last?</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>depends what you&rsquo;re doing, 3 hours</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>that&rsquo;s encouraging, we had a 30-minute cutoff because participants had enough</em></p></blockquote>
+
+<h4 id="question-nausea">question: nausea</h4>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>I get nauseous in our minecraft VR &hellip; but there&rsquo;s a pop-out feature where you keep playing, but the game world is in a TV set instead of around you &hellip; can pop back in when you&rsquo;re feeling better</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>we&rsquo;ve seen about 20% of the population gets nauseous</em></p></blockquote>
+
+<h5 id="audience-member">audience member</h5>
+
+<blockquote>
+ <p><em>Dana Boyd conducted an experiment, found the nausea was worse for wemon</em></p></blockquote>
+
+<h5 id="yvonne-rogers">Yvonne Rogers</h5>
+
+<blockquote>
+ <p><em>oculus makes me feel sick, but the hololens has never given me trouble</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>have models to predict head motion, to keep the VR world steadier</em></p></blockquote>
+
+<h5 id="blair-macintyre">Blair MacIntyre</h5>
+
+<blockquote>
+ <p><em>I remember reading papers that measured framerate &hellip; would be interesting to revisit</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>framerate not important, its the latency that gets you &hellip; one colleague  of mine, we call her &lsquo;the canary&rsquo; because she&rsquo;s so sensitive, in fact &hellip;</em></p></blockquote>
+
+<h5 id="peter-lee">Peter Lee</h5>
+
+<blockquote>
+ <p><em>talking about nausea is part of the problem, people experience it more &hellip; every time I talk about it in public my co-workers tell me to stop!</em></p>
+ <p><em>another cool application, there&rsquo;s a hololens app to give blind people a tour of the Redmond office &hellip; you say a building and it takes you there</em></p></blockquote>
+
+<h5 id="fred-brooks">Fred Brooks</h5>
+
+<blockquote>
+ <p><em>one challenge, the relative brightness of the real and virtual worlds</em></p></blockquote>
+
+<h4 id="question-any-last-remarks">question: any last remarks</h4>
+
+<h5 id="ivan-sutherland">Ivan Sutherland</h5>
+
+<blockquote>
+ <p>_I hoped from the beginning that AR would be a teaching tool &hellip; I learned that <code>F = MA</code> not from a book but from a large flywheel in the school&rsquo;s basement &hellip; very substantial inertia &hellip; the greatest value for AR would be to show people things in a way that makes the underlying meaning clear &hellip; what color should the hydrogen atoms in a benzene ring be? the color will be fiction, but the quality of learning will depend on that fiction &hellip; challenge for content makers &hellip; what is the haptic experience of feeling bits?</p></blockquote>
+
+<h3 id="small-group-session">Small Group Session</h3>
+
+<p>After the last panel, I got to attend a small group session with other students,  Dick Karp, and Don Knuth. It doesn&rsquo;t feel right to summarize or quote from the  session, but there&rsquo;s one thing I want to write about.</p>
+
+<p>During the group session, I said something that I now regret. There was a brief silence as the group changed subjects, and someone suggested that we do a round of introductions. I objected, <em>this will take so long</em>,  but in fact the introductions were a very good idea.</p>
+
+<p>Normally, I don&rsquo;t like introductions because they focus on names, backgrounds,  and credentials. I don&rsquo;t care about any of these when I&rsquo;m meeting someone! Rather, I prefer to just talk and by-the-way learn about the other person(s). There&rsquo;s an anaology to double-blind reviewing &mdash; the focus should be content  and not credentials.</p>
+
+<p>These introductions were successful for two reasons. First, they gave everyone in the room a turn to speak, and this seemed  to help people join the actual discussion sooner. That was strange to me. I always feel a little nervous the first time I speak up in front  of a group, but if I really feel like speaking then I can always get over this  little barrier. I guess it&rsquo;s not right to assume the nervousness is &ldquo;little&rdquo; for everyone. Second, the introductions format was &ldquo;say your name and a funny fact&rdquo;. This prompt by itself led to some nice conversation topics:</p>
+
+<ul>
+ <li>Could a computer program decide whether a statement was funny or not funny?</li>
+ <li>What kind of humor works in a classroom? In a textbook?</li>
+ <li>Would this kind of introduction be acceptable in another era or culture,  for instance Victorian England?</li></ul>
+
+<p>&ldquo;Nice&rdquo; in the sense that everyone could contribute, which was a real challenge. Even the question &ldquo;does anyone have a favorite algorithm?&rdquo; didn&rsquo;t have much  success fostering discussion.</p>
+
+<p>Related: a useful greeting at the event was &ldquo;what SIG are you?&rdquo;. The answer was a good hint about what level of abstraction you two could best communicate at.</p>
+<!-- ### Misc.-->
+<!-- I noticed that some of the young people who served on panels and also gave-->
+<!-- long-and-not-very-insightful answers to questions were later on their laptops-->
+<!-- as other panels discussed things. I noticed some of the older people who-->
+<!-- served on panels falling asleep during other panels-->
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/06/24/quotes-and-stories-from-turing-50/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/07/17/continuations/">&larr; <em>Continuations</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/06/16/spring-2017-pl-junior-retrospective/"><em>Spring 2017 PL Junior Retrospective</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Author: Rob Kleffner'</title>
+  <description>PRL Blog: Posts tagged 'Author: Rob Kleffner'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Author-Rob-Kleffner.html</link>
+  <lastBuildDate>Fri, 10 Mar 2017 16:23:30 UT</lastBuildDate>
+  <pubDate>Fri, 10 Mar 2017 16:23:30 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Type Inference in Stack-Based Programming Languages</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/03/10/type-inference-in-stack-based-programming-languages/?utm_source=Author-Rob-Kleffner&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-03-10-type-inference-in-stack-based-programming-languages</guid>
+   <pubDate>Fri, 10 Mar 2017 16:23:30 UT</pubDate>
+   <author>Rob Kleffner</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;p&gt;Stack-based languages occupy a niche in today&amp;rsquo;s programming language environment. The predominant stack-based language in use by programmers is Forth, and is found mostly on embedded devices. These languages also find use as compile targets for more popular languages: the CIL and JVM are both stack-based. Less popular but highly interesting languages to mention include &lt;a href="http://www.kevinalbrecht.com/code/joy-mirror/joy.html"&gt;Joy&lt;/a&gt; and &lt;a href="http://factorcode.org/"&gt;Factor&lt;/a&gt;, known for their emphasis on higher-order stack-based programming.&lt;/p&gt;
+
+&lt;p&gt;The majority of stack-based languages are not statically typed, and it would be a stretch to call Forth even dynamically typed. As such, developing large projects in Forth or Factor can require great discipline on the part of the programmer to avoid type errors.&lt;/p&gt;
+
+&lt;p&gt;In this talk, I presented the development of type inference for stack-based languages as a linear sequence, divided into two overarching segments:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;An algebraic system known as &lt;em&gt;stack effects&lt;/em&gt;&lt;/li&gt;
+ &lt;li&gt;Systems that can be encoded as &lt;em&gt;nested pairs&lt;/em&gt; in standard functional  programming languages&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The thread of research on stack effects began with Jaanus Pöial in the early 1990&amp;rsquo;s, and is a formalization of a commenting style well-known in the Forth community. The nested tuple systems were first examined by Okasaki in 1993 in the context of Haskell, and were later applied to higher-order stack-based languages. At the end, I give some avenues for extending the research on these systems, and list some pitfalls to be avoided in further research.&lt;/p&gt;
+
+&lt;p&gt;Full notes (as PDF documents) &amp;mdash; see the &lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/type-inference-for-stack-languages"&gt;git repository&lt;/a&gt; for more documents:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="/blog/static/stack-languages-talk-notes.pdf"&gt;Talk notes&lt;/a&gt;&lt;/li&gt;
+ &lt;li&gt;&lt;a href="/blog/static/stack-languages-annotated-bib.pdf"&gt;Annotated bibliography&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>

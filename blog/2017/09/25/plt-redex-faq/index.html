@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>PLT Redex FAQ</title>
+    <meta name="description" content="A short guide to Redex concepts, conventions, and common mistakes....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="tutorial, PLT Redex, Author: Ben Greenman, Author: Sam Caldwell">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/09/25/plt-redex-faq/">
+    <link rel="next" href="/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/">
+    <link rel="prev" href="/blog/2017/09/27/final-algebra-semantics-is-observational-equivalence/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>PLT Redex FAQ</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-09-25" pubdate="true">2017-09-25</time> :: <span class="tags"><a href="/blog/tags/tutorial.html">tutorial</a>, <a href="/blog/tags/PLT-Redex.html">PLT Redex</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a>, <a href="/blog/tags/Author-Sam-Caldwell.html">Sam Caldwell</a></span></p>
+  </header>
+
+<p>A short guide to Redex concepts, conventions, and common mistakes.</p>
+<!-- more-->
+
+<hr />
+
+<p><em>To contribute to this FAQ, submit issues and pull requests to:  <a href="https://github.com/nuprl/website/">https://github.com/nuprl/website/</a></em></p>
+
+<h3 id="q-what-is-redex-useful-for">Q. What is Redex useful for?</h3>
+
+<ol>
+ <li>declaring <a href="https://en.wikipedia.org/wiki/Regular_tree_grammar">regular tree grammars</a></li>
+ <li>defining <em>pattern</em>-based judgments and relations on <em>terms</em></li>
+ <li>testing properties of the above</li></ol>
+
+<p>More generally, Redex is helpful for experimenting with a programming language  design, and helping you decide what you might want to prove about a language.</p>
+
+<h3 id="q-what-is-redex-not-useful-for">Q. What is Redex <strong>not</strong> useful for?</h3>
+
+<p>Proving theorems about a grammar, judgment, or relation.</p>
+
+<h3 id="q-what-is-a-term">Q. What is a <em>term</em>?</h3>
+
+<p>Informally, a term is:</p>
+
+<ul>
+ <li>a Redex &ldquo;atom&rdquo;, or</li>
+ <li>an object that represents a sequence of characters.</li></ul>
+
+<p>More formally, a term is the result of evaluating <strong>(term X)</strong>, where <strong>X</strong> is  any syntactically-correct Racket expression.</p>
+
+<p>Examples:</p>
+
+<pre><code>$ racket
+Welcome to Racket v6.10.0.3.
+&gt; (require redex/reduction-semantics)
+&gt; (term 42)
+42
+&gt; (term (+ 2 2))
+'(+ 2 2)
+&gt; (term ("hello" world (#false)))
+'("hello" world (#f))</code></pre>
+
+<p>Some terms may look strange. That&rsquo;s OK, because a term by itself has no meaning.</p>
+
+<p>Terms can refer to previously-defined values using the <strong>unquote</strong> escape.</p>
+
+<pre><code>&gt; (define x (term 42))
+&gt; (term (+ 2 x))
+'(+ 2 x)
+&gt; (term (+ ,x (unquote x)))
+'(+ 42 42)</code></pre>
+
+<h3 id="q-what-is-a-redex-model">Q. What is a <em>Redex model</em>?</h3>
+
+<p>A Redex model is collection of tools for working with terms. The tools may include:</p>
+
+<ul>
+ <li><em>languages</em>, to define a grammar for terms</li>
+ <li><em>judgments</em>, to describe properties of terms or relations between terms</li>
+ <li><em>metafunctions</em>, to transform terms</li>
+ <li><em>reduction relations</em>, to define a term rewriting system</li></ul>
+
+<p>The goal of these tools is to encode a &ldquo;real thing&rdquo; (maybe, a programming language)  using Redex terms.</p>
+
+<h3 id="q-what-is-a-language">Q. What is a language?</h3>
+
+<p>A Redex <em>language</em> is a named set of non-terminals, <em>patterns</em>, and <em>binding forms</em>. For example, a Redex model of the natural numbers might start with this language:</p>
+
+<pre><code>(define-language nat
+  [N ::= Zero
+         (Plus1 N)])</code></pre>
+
+<ul>
+ <li>the name of the language is <strong>nat</strong></li>
+ <li>the non-terminal <strong>N</strong> is associated with two patterns: <strong>Zero</strong> and <strong>(Plus1 N)</strong></li>
+ <li>there are no <em>binding forms</em></li></ul>
+
+<p>Each pattern describes a syntactic category of terms. Each non-terminal gives a name to the union of the patterns that follow it.</p>
+
+<p>The non-terminal <strong>N</strong> describes all terms that are either:</p>
+
+<ol>
+ <li>the symbol <strong>Zero</strong></li>
+ <li>lists of the form <strong>(Plus1 N)</strong>, where <strong>N</strong> is either <strong>Zero</strong> or another &ldquo;Plus1&rdquo;</li></ol>
+
+<p>For example,</p>
+
+<pre><code>(term Zero)
+(term (Plus1 Zero))
+(term (Plus1 (Plus1 Zero)))
+(term (Plus1 (Plus1 (Plus1 Zero))))
+;; .... and so on</code></pre>
+
+<p>If a language has binding forms, then some terms can introduce names. See the question on <em>binding forms</em> (below) for an example.</p>
+
+<h3 id="q-what-is-a-pattern">Q. What is a pattern?</h3>
+
+<p>A pattern is a sequence of characters and variables. If you have: (1) a language, and (2) a pattern that contains <em>named non-terminals</em> from the language,  then you can ask whether a Redex term matches the pattern.</p>
+
+<p>A <em>named non-terminal</em> for a language <strong>L</strong> is an identifier made of:  (1) a non-terminal from <strong>L</strong>, (2) an underscore (<strong>_</strong>), and (3) any other identifier. See the FAQ entry below.</p>
+
+<p>For example, <strong>(redex-match? L p t)</strong> returns <strong>#true</strong> if the term <strong>t</strong> matches  the pattern <strong>p</strong> relative to the language <strong>L</strong>.</p>
+
+<pre><code>(define-language nat
+  [N ::= Zero (Plus1 N)])
+
+(redex-match? nat N_some-name (term Zero))
+;; #true
+(redex-match? nat (Plus1 N_a) (term Zero))
+;; #false
+(redex-match? nat (Plus1 N_0) (term (Plus1 (Plus1 Zero))))
+;; #true</code></pre>
+
+<p>If <strong>(redex-match? L p t)</strong> is <strong>#true</strong>, then <strong>(redex-match L p t)</strong> shows how  named non-terminals in the pattern bind to subterms of <strong>t</strong>.</p>
+
+<pre><code>(redex-match nat N_0 (term Zero))
+;; (list (match (list (bind 'N_0 'Zero))))
+(redex-match nat (Plus1 N_0) (term Zero))
+;; #f
+(redex-match nat (Plus1 N_0) (term (Plus1 (Plus1 Zero))))
+;; (list (match (list (bind 'N_0 '(Plus1 Zero)))))</code></pre>
+
+<h3 id="q-what-is-a-named-non-terminal">Q. What is a named non-terminal?</h3>
+
+<p>A named non-terminal in a language <strong>L</strong> is an identifier of the form <strong>X_Y</strong>, where:</p>
+
+<ul>
+ <li><strong>X</strong> is a non-terminal from <strong>L</strong></li>
+ <li><strong>Y</strong> is any identifier</li></ul>
+
+<p>The name helps when one pattern contains multiple occurrences of the same non-terminal. If you want the two occurrences to bind the same term, then use the same name.</p>
+
+<pre><code>(define-language trees
+  [binary-tree ::= Leaf
+                   (Node binary-tree binary-tree)])
+
+(redex-match trees
+  (Node binary-tree_left binary-tree_right)
+  (term (Node Leaf (Node Leaf Leaf))))
+;; (list
+;;  (match
+;;   (list (bind 'binary-tree_left 'Leaf)
+;;         (bind 'binary-tree_right '(Node Leaf Leaf)))))</code></pre>
+
+<h3 id="q-what-else-can-patterns-express">Q. What else can patterns express?</h3>
+
+<p>Redex patterns may contain special identifiers to guide pattern-matching. For instance:</p>
+
+<ul>
+ <li>The <strong>_</strong> pattern matches any term (and does not bind).</li>
+ <li>A pattern <strong>(p &hellip;)</strong> matches any sequence whose elements match the pattern <strong>p</strong>.  If the pattern <strong>p</strong> is a named non-terminal, then the non-terminal binds  a sequence of subterms.</li></ul>
+
+<p>Examples:</p>
+
+<pre><code>(redex-match? nat (Plus1 _) (term (Plus1 9)))
+;; #true
+(redex-match? nat (N_0 ...) (term ()))
+;; #true
+(redex-match? nat (N_0 ...) (term (Zero)))
+;; #true
+(redex-match nat (N_0 ...) (term (Zero Zero Zero)))
+;; (list (match (list (bind 'N_0 '(Zero Zero Zero)))))</code></pre>
+
+<p>See <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._pattern%29">the Redex reference</a> for the full pattern language,  including the <em>named and unique non-terminals</em> of the form <strong>X_!_Y</strong>.</p>
+
+<h3 id="q-what-can-patterns-not-express">Q. What can patterns <strong>not</strong> express?</h3>
+
+<ul>
+ <li>Disjunctions of patterns, e.g., &ldquo;number or boolean&rdquo;.  (Use a language non-terminal.)</li>
+ <li>Negations of patterns. (Compose <strong>not</strong> with <strong>redex-match?</strong>.)</li>
+ <li>Some non-regular patterns. (Named  dots <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._pattern%29"><code>..._N</code></a>  or <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-language%29%29"><code>define-language</code></a>  with a side condition may be able to help.)</li></ul>
+
+<h3 id="q-what-is-a-judgment">Q. What is a judgment?</h3>
+
+<p>A Redex <em>judgment</em> form defines a relation on terms. The relation is defined by a set of inference rules.</p>
+
+<p>Programming languages papers use inference rules all the time. Redex can express many of the judgments in papers; for example:</p>
+
+<ul>
+ <li>well-formedness conditions (i.e., whether a term contains free variables)</li>
+ <li>type checking rules</li>
+ <li>type inference rules</li>
+ <li>evaluation relations</li></ul>
+
+<p>Every judgment needs (1) a language (2) a mode (3) a contract (4) a set of inference rules. For example, the following judgment defines an equality relation on natural numbers.</p>
+
+<pre><code>(define-language nat
+  [N ::= Zero (Plus1 N)])
+
+(define-judgment-form nat
+  #:mode (N= I I)
+  #:contract (N= N N)
+  [
+   --- Zero=
+   (N= Zero Zero)]
+  [
+   (where (Plus1 N_0--) N_0)
+   (where (Plus1 N_1--) N_1)
+   (N= N_0-- N_1--)
+   --- Plus1=
+   (N= N_0 N_1)])</code></pre>
+
+<ol>
+ <li>the language is <strong>nat</strong>; Redex uses the language to interpret patterns</li>
+ <li>the mode is <strong>(N= I I)</strong>; this means <strong>N=</strong> is the name of a judgment that  expects two input terms (or, <strong>N=</strong> is a binary relation on terms)</li>
+ <li>the contract is <strong>(N= N N)</strong>; in other words, <strong>N=</strong> expects two terms that  match the <strong>N</strong> non-terminal from the <strong>nat</strong> language</li>
+ <li>there are two inference rules, named <strong>Zero=</strong> and <strong>Plus1=</strong></li>
+ <li>the <strong>Zero=</strong> rule states that <strong>(N= Zero Zero)</strong> always holds</li>
+ <li>the <strong>Plus1=</strong> rule states that <strong>(N= N_0 N_1)</strong> holds if <strong>N_0</strong> and <strong>N_1</strong>  are both <strong>Plus1</strong> terms whose contents are related by <strong>N=</strong></li></ol>
+
+<p>The <strong>where</strong> clauses are <em>guards</em>. When Redex tries to apply a rule with premises of the form  <strong>(where pattern term)</strong>, it checks that each pattern matches the corresponding term. If not, Redex stops applying the rule. See <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-judgment-form%29%29">the Redex reference</a> for more.</p>
+
+<pre><code>(judgment-holds (N= Zero Zero))
+;; #true
+(judgment-holds (N= (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero))))
+;; #true
+(judgment-holds (N= (Plus1 Zero) (Plus1 (Plus1 Zero))))
+;; #false</code></pre>
+
+<p>Note: the inference rules form a <em>set</em>, not a <em>sequence</em>. So when you ask Redex whether <strong>(judgment-holds (N= Zero Zero))</strong>, it applies  all rules that match <strong>(N= Zero Zero)</strong>. For <strong>N=</strong> this is just one rule, but in general it could be many rules.</p>
+
+<h3 id="q-what-is-a-judgment-form-mode">Q. What is a judgment form <strong>#:mode</strong>?</h3>
+
+<p>A <strong>#:mode</strong> declaration expects a list of the form <strong>(id pos-use &hellip;)</strong>,  where <strong>id</strong> is an identifier and each <strong>pos-use</strong> is either  <strong>I</strong> or <strong>O</strong>. These declarations say four things:</p>
+
+<ol>
+ <li><strong>id</strong> is the name of a new judgment form</li>
+ <li><strong>id</strong> expects <strong>N</strong> arguments, where <strong>N</strong> is the number of <strong>pos-use</strong> symbols</li>
+ <li><strong>id</strong> expects an <em>input</em> at each position where the mode contains an <strong>I</strong></li>
+ <li><strong>id</strong> produces an <em>output</em> at each position where the mode contains an <strong>O</strong></li></ol>
+
+<p>For example, a type inference judgment may take an expression as input and output a type. Here&rsquo;s a fast and easy type inference judgment for arithmetic expressions. Given any term <strong>e_0</strong>, the judgment outputs the type <strong>Int</strong>.</p>
+
+<pre><code>(define-language Arith
+  (e ::= integer (e + e))
+  (τ ::= Int))
+
+(define-judgment-form Arith
+  #:mode (infer-type I O)
+  #:contract (infer-type e τ)
+  [
+   --- T-Int
+   (infer-type e_0 Int)])</code></pre>
+
+<h3 id="q-what-can-judgments-not-express">Q. What can judgments <strong>not</strong> express?</h3>
+
+<p>Redex does not support inference rules that require guessing.</p>
+
+<p>One example of this is a transitivity rule: "<strong>τ_0</strong> is related to <strong>τ_2</strong>  if there exists a <strong>τ_1</strong> such that <strong>τ_0</strong> is related to <strong>τ_1</strong> and <strong>τ_1</strong> is  related to <strong>τ_2</strong>". The following example tries to define a transitive subtyping (<strong>&lt;:</strong>) relation,  but Redex rejects the <strong>S-Trans</strong> rule.</p>
+
+<pre><code>(define-language SomeTypes
+  (τ ::= (→ τ τ) Integer))
+
+(define-judgment-form SomeTypes
+  #:mode (&lt;: I I)
+  #:contract (&lt;: τ τ)
+  [
+   (&lt;: τ_0 τ_1)
+   (&lt;: τ_1 τ_2)
+   --- S-Trans
+   (&lt;: τ_0 τ_2)]
+  [
+   --- S-Refl
+   (&lt;: τ_0 τ_0)]
+  [
+   (&lt;: τ_dom-1 τ_dom-0)
+   (&lt;: τ_cod-0 τ_cod-1)
+   --- S-Arrow
+   (&lt;: (→ τ_dom-0 τ_cod-0) (→ τ_dom-1 τ_cod-1))])</code></pre>
+
+<p>The error is that in the rule <strong>S-Trans</strong>,  the named non-terminal <strong>τ_1</strong> appears in an input position but is not bound to a term.</p>
+
+<h3 id="q-what-is-a-metafunction">Q. What is a metafunction?</h3>
+
+<p>A metafunction is a term-level function on terms.</p>
+
+<p>Every metafunction needs: (1) a language (2) a name (3) a contract (4) a sequence of guarded input/output cases.</p>
+
+<p>Here is a metafunction that returns <strong>#true</strong> when given two equal natural numbers. The definition is similar to the <strong>N=</strong> judgment form.</p>
+
+<pre><code>(define-metafunction nat
+  N=? : N N -&gt; boolean
+  [(N=? Zero Zero)
+   #true]
+  [(N=? N_0 N_1)
+   (N=? N_0-- N_1--)
+   (where (Plus1 N_0--) N_0)
+   (where (Plus1 N_1--) N_1)]
+  [(N=? N_0 N_1)
+   #false])</code></pre>
+
+<ul>
+ <li>the metafunction is named <strong>N=?</strong></li>
+ <li>its contract is <strong>N N -&gt; boolean</strong>, this means <strong>N=?</strong> expects 2 terms that  match the <strong>N</strong> pattern and returns a term that matches the pattern <strong>boolean</strong></li>
+ <li>there are three cases; the second case is guarded by two <strong>where</strong> clauses</li></ul>
+
+<p>Any occurrence of <strong>(N=? &hellip;.)</strong> in any term is evaluated.</p>
+
+<pre><code>(term (N=? (Plus1 (Plus1 Zero)) (Plus1 (Plus1 Zero))))
+;; #true
+(term ((N=? Zero Zero) Zero))
+;; '(#true Zero)
+(term (N=? (Plus1 Zero) (Plus1 (Plus1 Zero))))
+;; #false</code></pre>
+
+<p>Any occurrence of <strong>N=?</strong> outside a <strong>term</strong> is an error.</p>
+
+<p>Metafunction <strong>where</strong>-clauses are analogous to judgment form <strong>where</strong>-clauses. See <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28tech._metafunction%29">the Redex reference</a> for more.</p>
+
+<p>Note: the cases in a metafunction form a <em>sequence</em>, not a <em>set</em>. To evaluate a metafunction application, Redex tries each case in order  and returns the result of the first case that (1) matches the call-site (2)  for which all guards succeed.</p>
+
+<h3 id="q-should-i-use-a-metafunction-or-a-judgment-form">Q. Should I use a metafunction or a judgment form?</h3>
+
+<p>Use a judgment form.</p>
+
+<p>Metafunctions are handy, but judgments are easier to read and debug and maintain.</p>
+
+<h3 id="q-what-is-a-reduction-relation">Q. What is a reduction relation?</h3>
+
+<p>A reduction relation is a set of term-rewriting rules.</p>
+
+<p>Every reduction relation needs: (1) a language (2) a domain (3) a set of rewrite rules.</p>
+
+<ul>
+ <li>The language tells Redex how to interpret patterns.</li>
+ <li>The domain is a pattern.  Input to the reduction relation must match the pattern,  and output from the reduction relation must match the pattern.</li>
+ <li>The rewrite rules have the form <strong>(&mdash;&gt; term term guard &hellip;)</strong>.  The term on the left is the input, the term on the right is the output.</li></ul>
+
+<p>See <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._reduction-relation%29%29">the Redex reference</a> for a full description of the guards.</p>
+
+<p>The preferred way to define a reduction relation is to define a language that includes three non-terminals:</p>
+
+<ol>
+ <li>a non-terminal for the domain of the reduction relation</li>
+ <li>a non-terminal for a <em>subset</em> of the domain that cannot reduce further</li>
+ <li>a non-terminal for evaluation contexts</li></ol>
+
+<p>An evaluation context is a term that contains a <strong>hole</strong>. A reduction relation can match a term against an evaluation context to find  a sub-term to rewrite &mdash; in particular, the sub-term that matches the <strong>hole</strong>.</p>
+
+<p>In the following example, <strong>bexp</strong> is the domain of a reduction relation. A <strong>bexp</strong> term represents a boolean expression, which can be <strong>#true</strong> or  <strong>#false</strong> or a conjunction of expressions or a disjunction of expressions. The boolean expressions <strong>#true</strong> and <strong>#false</strong> are also values (<strong>val</strong>);  these cannot reduce further. The non-terminal <strong>E</strong> is for evaluation contexts.</p>
+
+<pre><code>(define-language Bool
+  (bexp ::= #true #false (bexp ∧ bexp) (bexp ∨ bexp))
+  (val ::= #true #false)
+  (E ::= hole (E ∧ bexp) (val ∧ E) (E ∨ bexp) (val ∨ E)))
+
+(define step
+  (reduction-relation Bool
+    #:domain bexp
+    [--&gt; (in-hole E (val_lhs ∧ val_rhs))
+         (in-hole E val_new)
+         ∧-step
+         (where val_new ,(and (term val_lhs) (term val_rhs)))]
+    [--&gt; (in-hole E (val_lhs ∨ val_rhs))
+         (in-hole E val_new)
+         ∨-step
+         (where val_new ,(or (term val_lhs) (term val_rhs)))]))</code></pre>
+
+<p>The function <strong>apply-reduction-relation</strong> applies a reduction relation to a  term and returns a list of ways that the term can step.</p>
+
+<pre><code>(apply-reduction-relation step (term #true))
+;; '()
+(apply-reduction-relation step (term (#true ∧ #true)))
+;; '(#true)
+(apply-reduction-relation step (term (#true ∧ #false)))
+;; '(#false)
+(apply-reduction-relation step (term ((#true ∨ #false) ∧ #true)))
+;; '((#true ∧ #true))</code></pre>
+
+<p>Three things about the reduction relation <strong>step</strong>:</p>
+
+<ol>
+ <li>Using <strong>in-hole</strong> on the first argument of <strong>&mdash;&gt;</strong> searches a term  for a subterm that Redex can apply a reduction rule to.</li>
+ <li>Using <strong>in-hole</strong> on the second argument of <strong>&mdash;&gt;</strong> puts a new value  back into the <strong>hole</strong> in the evaluation context.</li>
+ <li>The unquote operator (<strong>,</strong>) escapes to &ldquo;Racket mode&rdquo; (see below) to evaluate  a conjunction or disjunction.</li></ol>
+
+<p>A judgment or metafunction is a formal alternative to &ldquo;escaping to Racket&rdquo;,  but escaping can be convenient.</p>
+
+<p>Note: the cases in a reduction relation form a <em>set</em>, not a <em>sequence</em>. If more than one case matches, Redex applies them all.</p>
+
+<h3 id="q-what-is-racket-mode-what-is-redex-mode">Q. What is &ldquo;Racket mode&rdquo;? What is &ldquo;Redex mode&rdquo;?</h3>
+
+<p>Code in a Redex model is sometimes evaluated in &ldquo;Racket mode&rdquo; and  sometimes evaluated in &ldquo;Redex mode&rdquo;. Racket mode evaluates Racket syntax to Racket values. Redex mode evaluates Racket syntax (possibly containing metafunction names) to terms.</p>
+
+<p>Key points:</p>
+
+<ol>
+ <li>A Redex program starts in Racket mode.</li>
+ <li>The <strong>X</strong> in <strong>(term X)</strong> is evaluated in Redex mode &hellip;</li>
+ <li>&hellip; unless <strong>X</strong> contains unquoted sub-expressions. Unquoting escapes to Racket mode &hellip;</li>
+ <li>&hellip; and <strong>term</strong>s inside an unquoted sub-expression are evaluated in Redex mode.</li></ol>
+
+<p>In other words, <strong>term</strong> enters Redex mode and <strong>unquote</strong> (<strong>,</strong>) escapes back to Racket.</p>
+
+<p>Redex implicitly switches to Redex mode in a few other places, for example:</p>
+
+<ul>
+ <li>the right-side of a <strong>where</strong> clause is in Redex mode</li>
+ <li>the result of a metafunction is in Redex mode</li></ul>
+
+<p>When in doubt, try using an <strong>unquote</strong>. Redex will raise an exception if it finds an unquote in Racket mode.</p>
+
+<h3 id="q-are-side-conditions-evaluated-in-racket-mode-or-redex-mode">Q. Are <strong>side-condition</strong>s evaluated in &ldquo;Racket mode&rdquo; or &ldquo;Redex mode&rdquo;?</h3>
+
+<p>A <strong>(side-condition e)</strong> sometimes evaluates <strong>e</strong> as a Racket expression  and sometimes evaluates <strong>e</strong> as a Redex expression.</p>
+
+<ul>
+ <li>reduction relations and metafunctions expect a <strong>Racket</strong> expression</li>
+ <li>judgments expect a <strong>Redex</strong> expression</li></ul>
+
+<h3 id="q-what-is-a-binding-form">Q. What is a binding form?</h3>
+
+<p>In the lambda calculus, <strong>λ</strong>-terms bind variables. A term <strong>(λ x M)</strong> means that any free occurrence of <strong>x</strong> in the sub-term <strong>M</strong>  refers to the <strong>x</strong> from the <strong>λ</strong>-term.</p>
+
+<p>Redex can express this idea with a binding form.</p>
+
+<pre><code>(define-language Λ
+  [e ::= (e e) x (λ x e)]
+  [x ::= variable-not-otherwise-mentioned]
+  #:binding-forms
+  (λ x_0 e_0 #:refers-to x_0))</code></pre>
+
+<p>Note: all the non-terminals in a language must be defined before the <strong>#:binding-forms</strong> keyword. If a non-terminal definition appears after the <strong>#:binding-forms</strong> keyword, then Redex will interpret the &ldquo;definition&rdquo; as a binding form.</p>
+
+<p>Binding forms work together with Redex&rsquo;s functions for substitution and  alphabetic equivalence.</p>
+
+<pre><code>(alpha-equivalent? Λ
+  (term (λ x x))
+  (term (λ y y))))
+;; #true
+
+(define-metafunction Λ
+  test-substitute : e -&gt; e
+  [(test-substitute (λ x_0 e_0))
+   (substitute e_0 x_0 y)])
+(term (test-substitute (λ z (z z))))
+;; '(y y)</code></pre>
+
+<h3 id="q-what-is--what-is-">Q. What is <strong>&hellip;</strong>? What is <strong>&hellip;.</strong>?</h3>
+
+<p>Three dots (<strong>&hellip;</strong>) is for building patterns. If <strong>p</strong> is a pattern then <strong>(p &hellip;)</strong> matches any list whose elements all  match <strong>p</strong>.</p>
+
+<pre><code>(define-language L)
+(redex-match? L (number ... boolean ...) (term (1 2 #true #true)))
+;; #true</code></pre>
+
+<p>Four dots (<strong>&hellip;.</strong>) may be used in <a href="http://docs.racket-lang.org/redex/The_Redex_Reference.html#%28form._%28%28lib._redex%2Freduction-semantics..rkt%29._define-extended-language%29%29"><strong>define-extended-language</strong></a>  to extend a previously-defined non-terminal.</p>
+
+<pre><code>(define-language C
+  (keyword ::= auto break case))
+(define-extended-language C++
+  C
+  (keyword ::= .... class))
+
+(redex-match? C keyword (term auto))
+;; #true
+(redex-match? C keyword (term class))
+;; #false
+(redex-match? C++ keyword (term auto))
+;; #true
+(redex-match? C++ keyword (term class))
+;; #true</code></pre>
+
+<h3 id="q-where-to-learn-more-about-redex">Q. Where to learn more about Redex?</h3>
+
+<p>&ldquo;Critical path&rdquo; resources:</p>
+
+<ul>
+ <li>Code examples for this post: <a href="https://github.com/nuprl/website/blob/master/blog/static/redex-faq.rkt">https://github.com/nuprl/website/blob/master/blog/static/redex-faq.rkt</a></li>
+ <li>Redex documentation: <a href="http://docs.racket-lang.org/redex/index.html">http://docs.racket-lang.org/redex/index.html</a></li>
+ <li><a href="https://dvanhorn.github.io/redex-aam-tutorial/"><em>An Introduction to Redex with Abstracting Abstract Machines</em></a> by David Van Horn</li>
+ <li><a href="https://www.leafac.com/playing-the-game-with-plt-redex/"><em>Playing the Game with PLT Redex</em></a> by Leandro Facchinetti</li>
+ <li><a href="https://williamjbowman.com/doc/experimenting-with-redex/index.html"><em>Experimenting with Languages in Redex</em></a> by William J. Bowman</li></ul>
+
+<p>&ldquo;Procrastination&rdquo; resources:</p>
+
+<ul>
+ <li><a href="http://tata.gforge.inria.fr/"><em>Tree Automata Techniques and Applications</em></a></li>
+ <li><a href="http://lamport.azurewebsites.net/pubs/lamport-types.pdf"><em>Should your Specification Language be Typed?</em></a></li>
+ <li>Redex source code (see <code>redex-lib/</code>): <a href="https://github.com/racket/redex">https://github.com/racket/redex</a></li></ul>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/09/25/plt-redex-faq/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/09/27/final-algebra-semantics-is-observational-equivalence/">&larr; <em>Final Algebra Semantics is Observational Equivalence</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/"><em><a href="https://williamjbowman.com/blog/2017/08/29/why-am-i-going-to-icfp-2017/">Why am I going to ICFP 2017? (cross-post)</a></em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

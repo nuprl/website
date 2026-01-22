@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: William J. Bowman'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-William-J-Bowman.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-William-J-Bowman.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-William-J-Bowman-html</id>
+ <updated>2018-01-19T17:05:00Z</updated>
+ <entry>
+  <title type="text">[Untyped Programs Don't Exist (cross-post)](https://williamjbowman.com/blog/2018/01/19/untyped-programs-don-t-exist/)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/01/19/-untyped-programs-don-t-exist-cross-post-https-williamjbowman-com-blog-2018-01-19-untyped-programs-don-t-exist/?utm_source=Author-William-J-Bowman&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-01-19-untyped-programs-don-t-exist-cross-post-https-williamjbowman-com-blog-2018-01-19-untyped-programs-don-t-exist</id>
+  <published>2018-01-19T17:05:00Z</published>
+  <updated>2018-01-19T17:05:00Z</updated>
+  <author>
+   <name>William J. Bowman</name></author>
+  <content type="html"></content></entry>
+ <entry>
+  <title type="text">[Why am I going to ICFP 2017? (cross-post)](https://williamjbowman.com/blog/2017/08/29/why-am-i-going-to-icfp-2017/)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/08/29/-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017/?utm_source=Author-William-J-Bowman&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-08-29-why-am-i-going-to-icfp-2017-cross-post-https-williamjbowman-com-blog-2017-08-29-why-am-i-going-to-icfp-2017</id>
+  <published>2017-08-29T13:33:21Z</published>
+  <updated>2017-08-29T13:33:21Z</updated>
+  <author>
+   <name>William J. Bowman</name></author>
+  <content type="html"></content></entry>
+ <entry>
+  <title type="text">Type-Directed Compilation, Parts I and II</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/04/17/type-directed-compilation-parts-i-and-ii/?utm_source=Author-William-J-Bowman&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-04-17-type-directed-compilation-parts-i-and-ii</id>
+  <published>2017-04-17T12:00:17Z</published>
+  <updated>2017-04-17T12:00:17Z</updated>
+  <author>Leif Andersen</author>
+  <author>William J. Bowman</author>
+  <author>
+   <name>Leif Andersen, William J. Bowman</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;h3 id="part-i-type-directed-compilation-by-leif-andersen"&gt;Part I: &lt;em&gt;Type-Directed Compilation&lt;/em&gt;, by Leif Andersen.&lt;/h3&gt;
+
+&lt;p&gt;In this talk we discuss the history of type directed compilation. We start with Xavier Leroy&amp;rsquo;s seminal paper: &lt;a href="http://gallium.inria.fr/~xleroy/publi/unboxed-polymorphism.pdf"&gt;&lt;em&gt;Unboxed Objects and Polymorphic Typing&lt;/em&gt;&lt;/a&gt;, continue to &lt;a href="https://www.cs.cmu.edu/~rwh/papers/til/pldi96.pdf"&gt;TIL&lt;/a&gt; (Typed Intermediate Language), and finish up with &lt;a href="https://dash.harvard.edu/handle/1/2797451"&gt;TAL&lt;/a&gt; (Typed Assembly Language). We talk about what it means for a compiler to be typed preserving, and give examples of optimizations that are enabled by types.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-24.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;24.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="part-ii-dependent-type-directed-compilation-by-william-j-bowman"&gt;Part II: &lt;em&gt;Dependent Type-Directed Compilation&lt;/em&gt;, by William J. Bowman&lt;/h3&gt;
+
+&lt;p&gt;A certifying compiler is not verified, but it produces a proof of correctness for each binary. This proof can be independently checked to show that the binary was compiled correctly, removing the compiler from the trusted code base. Certifying compilation has its roots in preserving type-preserving compilation, and in particular in preserving dependent types. We start the history of dependent-type-preserving compilation with a compiler from C to Assembly. We&amp;rsquo;ll see a result showing that preserving dependent types isn&amp;rsquo;t possible, and then we&amp;rsquo;ll do it anyway.&lt;/p&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-03-28.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;03&amp;ndash;28.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Notes (to appear here, eventually):&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation"&gt;https://github.com/nuprl/hopl-s2017/blob/master/dependent-type-preserving-compilation&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">[What even is compiler correctness? (cross-post)](https://williamjbowman.com/blog/2017/03/24/what-even-is-compiler-correctness/)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/03/24/-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness/?utm_source=Author-William-J-Bowman&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-03-24-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness</id>
+  <published>2017-03-24T23:11:17Z</published>
+  <updated>2017-03-24T23:11:17Z</updated>
+  <author>
+   <name>William J. Bowman</name></author>
+  <content type="html"></content></entry>
+ <entry>
+  <title type="text">[Toward Type-Preserving Compilation of Coq, at POPL17 SRC (cross-post)](https://williamjbowman.com/blog/2017/01/03/toward-type-preserving-compilation-of-coq-at-popl17-src/)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/01/03/-toward-type-preserving-compilation-of-coq-at-popl17-src-cross-post-https-williamjbowman-com-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src/?utm_source=Author-William-J-Bowman&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src-cross-post-https-williamjbowman-com-blog-2017-01-03-toward-type-preserving-compilation-of-coq-at-popl17-src</id>
+  <published>2017-01-03T15:15:57Z</published>
+  <updated>2017-01-03T15:15:57Z</updated>
+  <author>
+   <name>William J. Bowman</name></author>
+  <content type="html"></content></entry></feed>

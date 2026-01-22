@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Tony Garnock-Jones'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Tony-Garnock-Jones.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Tony-Garnock-Jones.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Tony-Garnock-Jones-html</id>
+ <updated>2019-05-11T00:03:16Z</updated>
+ <entry>
+  <title type="text">[Conversational Concurrency (cross-post)](https://eighty-twenty.org/2018/01/24/conversational-concurrency)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/05/11/-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency/?utm_source=Author-Tony-Garnock-Jones&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-05-11-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency</id>
+  <published>2019-05-11T00:03:16Z</published>
+  <updated>2019-05-11T00:03:16Z</updated>
+  <author>
+   <name>Tony Garnock-Jones</name></author>
+  <content type="html"></content></entry>
+ <entry>
+  <title type="text">Conversational Context and Concurrency</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/15/conversational-context-and-concurrency/?utm_source=Author-Tony-Garnock-Jones&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-15-conversational-context-and-concurrency</id>
+  <published>2017-02-15T01:21:55Z</published>
+  <updated>2017-02-15T01:21:55Z</updated>
+  <author>
+   <name>Tony Garnock-Jones</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;When programs are written with concurrency in mind, the programmer reasons about the interactions between concurrent components or agents in the program. This includes exchange of information, as well as management of resources, handling of partial failure, collective decision-making and so on.&lt;/p&gt;
+
+&lt;p&gt;These components might be objects, or threads, or processes, or actors, or some more nebulous and loosely-defined concept; a group of callbacks, perhaps. The programmer has the notion of an agent in their mind, which translates into some representation of that agent in the program.&lt;/p&gt;
+
+&lt;p&gt;We think about the contexts (because there can be more than one) in which agents exist in two different ways. From each agent&amp;rsquo;s perspective, the important thing to think about is the boundary between the agent and everything else in the system. But from the system perspective, we often think about &lt;em&gt;conversations&lt;/em&gt; between agents, whether it&amp;rsquo;s just two having an exchange, or a whole group collaborating on some task. Agents in a conversation play different roles, join and leave the group, and build shared conversational state.&lt;/p&gt;
+
+&lt;p&gt;In this talk, I used the idea of these &lt;em&gt;conversational contexts&lt;/em&gt; as a lens through which to view the development of various metaphors and mechanisms of communication and coordination. I presented four &lt;em&gt;computational models&lt;/em&gt; for concurrent interaction:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;monitors, and shared memory concurrency generally&lt;/li&gt;
+ &lt;li&gt;the actor model&lt;/li&gt;
+ &lt;li&gt;channel-based communication&lt;/li&gt;
+ &lt;li&gt;tuplespaces&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;These aren&amp;rsquo;t full programming languages, but there are many &lt;em&gt;programming models&lt;/em&gt; that build upon them. In some cases, development of these ideas has progressed all the way up to &lt;em&gt;system models&lt;/em&gt; including user interaction and so forth.&lt;/p&gt;
+
+&lt;p&gt;The linked lecture notes include informal sketches of reduction semantics for each of the four models, plus a handful of small examples to give a feel for them.&lt;/p&gt;
+
+&lt;p&gt;Lecture Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/tree/master/conversational-context-and-concurrency/index.md"&gt;https://github.com/nuprl/hopl-s2017/tree/master/conversational-context-and-concurrency/index.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Discussion summary:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-01-31.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017&amp;ndash;01&amp;ndash;31.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">History of Actors</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/10/19/history-of-actors/?utm_source=Author-Tony-Garnock-Jones&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-10-19-history-of-actors</id>
+  <published>2016-10-19T17:26:16Z</published>
+  <updated>2016-10-19T17:26:16Z</updated>
+  <author>
+   <name>Tony Garnock-Jones</name></author>
+  <content type="html">
+&lt;p&gt;Christos Dimoulas is currently teaching a &lt;a href="http://www.seas.harvard.edu/courses/cs252/2016fa/"&gt;&amp;ldquo;History of Programming Languages&amp;rdquo; class at Harvard&lt;/a&gt;. The class is, as Christos writes, &amp;ldquo;definitely not about &lt;a href="https://www.levenez.com/lang/lang_letter.pdf"&gt;this&lt;/a&gt;&amp;rdquo;; instead, each meeting is a deep examination of a single, mature research topic, in terms of three to five key papers from the literature.&lt;/p&gt;
+
+&lt;p&gt;On Monday, I presented &amp;ldquo;the History of Actors&amp;rdquo; for the class. I&amp;rsquo;ve made the written-out talk notes and an annotated bibliography available &lt;a href="https://eighty-twenty.org/2016/10/18/actors-hopl"&gt;here&lt;/a&gt;.&lt;/p&gt;</content></entry></feed>

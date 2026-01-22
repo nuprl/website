@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Zeina Migeed'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Zeina-Migeed.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Zeina-Migeed.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Zeina-Migeed-html</id>
+ <updated>2018-05-08T15:37:37Z</updated>
+ <entry>
+  <title type="text">Sampling Gradual Typing Performance</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/05/08/sampling-gradual-typing-performance/?utm_source=Author-Zeina-Migeed&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-05-08-sampling-gradual-typing-performance</id>
+  <published>2018-05-08T15:37:37Z</published>
+  <updated>2018-05-08T15:37:37Z</updated>
+  <author>Ben Greenman</author>
+  <author>Zeina Migeed</author>
+  <author>
+   <name>Ben Greenman, Zeina Migeed</name></author>
+  <content type="html">
+&lt;p&gt;This post explains the sampling method introduced in the paper &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="quick-reference-how-to-apply-the-method"&gt;Quick Reference: How to apply the method&lt;/h2&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Find an untyped program, measure its running time.&lt;/li&gt;
+ &lt;li&gt;Define a &lt;em&gt;granularity&lt;/em&gt; for type annotations (by-function, by-module, by-program, &amp;hellip;.).&lt;/li&gt;
+ &lt;li&gt;Define a sample size &lt;strong&gt;s&lt;/strong&gt; and number of samples &lt;strong&gt;r&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;Randomly select &lt;strong&gt;s&lt;/strong&gt; &lt;em&gt;configurations&lt;/em&gt; uniformly at random, measure their running time.&lt;/li&gt;
+ &lt;li&gt;Repeat the previous step &lt;strong&gt;r&lt;/strong&gt; times.&lt;/li&gt;
+ &lt;li&gt;Pick a positive real number &lt;strong&gt;D&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;Count the proportion of configurations in each sample with running time less-than-or-equal-to &lt;strong&gt;D&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;Build a 95% confidence interval for the &lt;strong&gt;r&lt;/strong&gt; proportions computed in the previous step&lt;/li&gt;
+ &lt;li&gt;Conclusion: there is a good chance that your interval contains the true proportion of configurations with running time less-than-or-equal-to &lt;strong&gt;D&lt;/strong&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;h2 id="background-what-to-measure"&gt;Background: what to measure&lt;/h2&gt;
+
+&lt;p&gt;A migratory typing system adds static typing to a dynamically-typed (or, untyped) language. The recipe for &amp;ldquo;adding static typing&amp;rdquo; has a few steps:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;add a syntax for type annotations&lt;/li&gt;
+ &lt;li&gt;add a static type checker&lt;/li&gt;
+ &lt;li&gt;add a semantics for statically-typed parts of the program&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;If the semantics for statically-typed parts of the program is &lt;strong&gt;not&lt;/strong&gt; the same  as the semantics for dynamically-typed parts, then it is important to measure  performance.&lt;/p&gt;
+
+&lt;p&gt;The key question is: how does adding type annotations affect the  running time of a working program? We do not know how to answer this question directly.&lt;/p&gt;
+
+&lt;p&gt;An easier question, that we can answer, is: for a few programs each with  one full set of type annotations, how does adding or removing the chosen type  annotations affect the running time of these programs?&lt;/p&gt;
+
+&lt;p&gt;The next two sections give two methods for answering this question.&lt;/p&gt;
+
+&lt;h2 id="exhaustive-method"&gt;Exhaustive Method&lt;/h2&gt;
+
+&lt;p&gt;One way to answer our easier question is to remove type annotations one  &amp;ldquo;unit&amp;rdquo; at a time and measure the running time of all these partially-typed  programs. We call the &amp;ldquo;unit&amp;rdquo; the &lt;em&gt;granularity&lt;/em&gt; of the performance evaluation. For example, some choices for granularity are to remove types one module  at a time, to remove types one function at a time, or to remove types  one variable at a time. We call the &amp;ldquo;partially-typed programs&amp;rdquo; the &lt;em&gt;configurations&lt;/em&gt; of the original  dynamically-typed program. Note that the number of configurations depends on the choice of granularity  &amp;mdash; I can&amp;rsquo;t just use the word &lt;em&gt;configurations&lt;/em&gt; without telling you the  granularity I have in mind.&lt;/p&gt;
+
+&lt;p&gt;After measuring the running time of all configurations, we can summarize the  results. One way to summarize is to pick a number &lt;strong&gt;D&lt;/strong&gt; and count the number of configurations  that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the original dynamically-typed program. If this number is large, then the takeaway is:  if &lt;em&gt;you&lt;/em&gt; are willing to accept at most a &lt;strong&gt;D&lt;/strong&gt;x slowdown, and you add your  own type annotations to your own program, then there&amp;rsquo;s some hope that your  configuration runs at most &lt;strong&gt;D&lt;/strong&gt; times slower than your original program.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Credit for the exhaustive method: &lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;&lt;em&gt;Is Sound Gradual Typing Dead?&lt;/em&gt;&lt;/a&gt; and &lt;a href="https://www2.ccs.neu.edu/racket/pubs/ecoop2015-takikawa-et-al.pdf"&gt;&lt;em&gt;Toward Practical Gradual Typing&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="simple-random-approximation-method"&gt;Simple Random Approximation Method&lt;/h2&gt;
+
+&lt;p&gt;The method above does not scale to large programs or fine granularities  because it asks for an exponential number of measurements. E.g., if there are 20 units to add or remove types from, then there are 1 million  configurations to measure. Exponentials are bad.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;&lt;/a&gt;,  suggests a method based on simple random sampling that answers a similar question. Instead of measuring the true proportion of configurations that run at most  &lt;strong&gt;D&lt;/strong&gt; times slower than the original dynamically-typed program, we:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;pick a sample size &lt;strong&gt;s&lt;/strong&gt; (in the paper, we used &lt;strong&gt;s = 10M&lt;/strong&gt; where &lt;strong&gt;M&lt;/strong&gt; is the number of units),&lt;/li&gt;
+ &lt;li&gt;pick a number of samples &lt;strong&gt;r&lt;/strong&gt; (in the paper, we used &lt;strong&gt;r = 10&lt;/strong&gt;),&lt;/li&gt;
+ &lt;li&gt;and build a 95% confidence interval for the true proportion of configurations  that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the original program (from the  &lt;strong&gt;r&lt;/strong&gt; proportions of configurations that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the  original program in each of the &lt;strong&gt;r&lt;/strong&gt; samples).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The method is outlined above, described in the paper, and validated in that paper&amp;rsquo;s appendix. Please let us know if you have more questions.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Maybe you&amp;rsquo;re wondering, &amp;ldquo;gee why do they keep writing out &amp;lsquo;configurations that  run at most &amp;hellip;.&amp;rsquo; instead of something shorter?&amp;rdquo;. Well, the short version is &lt;em&gt;&lt;strong&gt;D&lt;/strong&gt;-deliverable&lt;/em&gt; and it was introduced in the &lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;&lt;em&gt;Is Sound Gradual Typing Dead?&lt;/em&gt;&lt;/a&gt; paper. Unfortunately, (1) that paper instantiated &lt;strong&gt;D&lt;/strong&gt; to &lt;strong&gt;3&lt;/strong&gt;-deliverable in order to  explain a few graphs and (2) at least two published papers (&lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;paper 1&lt;/a&gt;, &lt;a href="https://dl.acm.org/citation.cfm?id=3133878"&gt;paper 2&lt;/a&gt;)  now cite us as saying &lt;strong&gt;3&lt;/strong&gt;x overhead is the cutoff between a good migratory  typing system and a bad one.&lt;/p&gt;
+ &lt;p&gt;&amp;hellip;&lt;/p&gt;
+ &lt;p&gt;If we can&amp;rsquo;t trust scientists to understand, then we &lt;em&gt;definitely&lt;/em&gt; can&amp;rsquo;t trust  you folks on the internet.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="faq"&gt;FAQ&lt;/h2&gt;
+
+&lt;h3 id="q-what-is-the-sampling-method-useful-for"&gt;Q. What is the sampling method useful for?&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Making a confidence interval for the true proportion of configurations that  run at most &lt;strong&gt;D&lt;/strong&gt; times slower than some baseline, for your favorite value of &lt;strong&gt;D&lt;/strong&gt;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-what-is-the-sampling-method-not-useful-for"&gt;Q. What is the sampling method &lt;strong&gt;not&lt;/strong&gt; useful for?&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Finding the slowest configuration.&lt;/li&gt;
+ &lt;li&gt;Finding the average running time of all configurations.&lt;/li&gt;
+ &lt;li&gt;Evaluations where &amp;ldquo;removing types&amp;rdquo; might involve changing &lt;strong&gt;List[Int]&lt;/strong&gt; to &lt;strong&gt;List[Dyn]&lt;/strong&gt;, etc.&lt;/li&gt;
+ &lt;li&gt;Situations where its wrong to assume that a programmer will start from untyped and pick a configuration uniformly at random&lt;/li&gt;
+ &lt;li&gt;&amp;hellip;. many more &amp;hellip;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-why-is-it-okay-to-choose-d-after-collecting-the-samples"&gt;Q. Why is it okay to choose &lt;strong&gt;D&lt;/strong&gt; after collecting the samples?&lt;/h3&gt;
+
+&lt;p&gt;The &amp;ldquo;quick reference&amp;rdquo; at the top of this post suggests choosing a value for &lt;strong&gt;D&lt;/strong&gt;  (the cutoff between good and bad performance) after sampling configurations  and measuring their running time. This may sound strange, because (1) the value of &lt;strong&gt;D&lt;/strong&gt; affects our bottom-line  judgment about the proportion of configurations with good performance, and (2)  shouldn&amp;rsquo;t and value that affects the bottom line be fixed before taking samples? (To avoid accidental &lt;a href="https://en.wikipedia.org/wiki/Data_dredging"&gt;data dredging&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;The reason it is ok to pick &lt;strong&gt;D&lt;/strong&gt; after taking the sample is that the  running times in the sample are independent of the choice of &lt;strong&gt;D&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, if one person chose &lt;strong&gt;D=3&lt;/strong&gt; and a second person chose &lt;strong&gt;D=9&lt;/strong&gt;,  both would follow the same protocol independent of &lt;strong&gt;D&lt;/strong&gt; to take samples.&lt;/p&gt;
+
+&lt;h3 id="q-how-does-migratory-typing-relate-to-gradual-typing"&gt;Q. How does migratory typing relate to gradual typing?&lt;/h3&gt;
+
+&lt;p&gt;Gradual typing is not just about adding a type system to an existing programming  language. See &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;&lt;em&gt;Refined Criteria for Gradual Typing&lt;/em&gt;&lt;/a&gt;  and &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/"&gt;&lt;em&gt;Migratory Typing: 10 Years Later&lt;/em&gt;&lt;/a&gt;  for details.&lt;/p&gt;
+
+&lt;h3 id="q-do-you-have-code-i-can-use-to-plot-sampling-data"&gt;Q. Do you have code I can use to plot sampling data?&lt;/h3&gt;
+
+&lt;p&gt;Yes, start here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29"&gt;http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Please ask questions and open issues if you have trouble. The source is here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/bennn/gtp-plot"&gt;https://github.com/bennn/gtp-plot&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-where-is-code-for-the-sampling-paper"&gt;Q. Where is code for the sampling paper?&lt;/h3&gt;
+
+&lt;p&gt;Start here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018"&gt;https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Source is here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/retic_performance"&gt;https://github.com/nuprl/retic_performance&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="closing-thoughts"&gt;Closing Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Statistics is easy to do wrong. Please let us know if you think our method is doing bad statistics.&lt;/p&gt;</content></entry></feed>

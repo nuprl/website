@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'pliss'</title>
+  <description>PRL Blog: Posts tagged 'pliss'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/pliss.html</link>
+  <lastBuildDate>Mon, 05 Jun 2017 15:47:59 UT</lastBuildDate>
+  <pubDate>Mon, 05 Jun 2017 15:47:59 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Report: PLISS 2017</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/06/05/report-pliss-2017/?utm_source=pliss&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-06-05-report-pliss-2017</guid>
+   <pubDate>Mon, 05 Jun 2017 15:47:59 UT</pubDate>
+   <author>Ming-Ho Yee</author>
+   <description>
+&lt;p&gt;Two weeks ago, I attended the first &lt;a href="https://pliss2017.github.io/"&gt;Programming Language Implementation Summer School&lt;/a&gt;, held in beautiful Bertinoro, Italy.&lt;/p&gt;
+
+&lt;p&gt;The goal of PLISS was &amp;ldquo;to prepare early graduate students and advanced undergraduates for research in the field,&amp;rdquo; and I think it successfully accomplished that. There were many talks in a variety of areas, such as just-in-time compilers, garbage collection, static analysis, and distributed systems. But PLISS was more than just a series of talks: PLISS provided an environment for interacting with other students as well as senior researchers.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="the-talks"&gt;The Talks&lt;/h2&gt;
+
+&lt;p&gt;With the amount of technical content at PLISS, there was easily something for everyone. &lt;a href="http://janvitek.org/"&gt;Jan Vitek&lt;/a&gt; and &lt;a href="http://tratt.net/laurie/"&gt;Laurence Tratt&lt;/a&gt; gave lectures that included hands-on exercises where we worked on JITs. &lt;a href="https://www.cs.purdue.edu/homes/suresh/"&gt;Suresh Jagannathan&lt;/a&gt; dived into the operational semantics of a distributed system, so we could reason about different weak consistency models. Francesco Logozzo gave us a whirlwind tour of abstract interpretation.&lt;/p&gt;
+
+&lt;p&gt;Most of my favorite talks included some form of extra content, such as exercises, live-coding presentations, or demos. I found it really helpful to write actual code and apply what I had just learned, or to look at some concrete examples. The examples and exercises also helped with the pacing, as actively listening to four 90-minute talks every day is exhausting!&lt;/p&gt;
+
+&lt;p&gt;Off the top of my head, these were some of my favorite talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Dynamic Programming Language Implementation with LLVM&lt;/strong&gt;, by Petr Maj, Oli  Flückiger, and &lt;a href="http://janvitek.org/"&gt;Jan Vitek&lt;/a&gt;. As the first talk of the summer school, this  was a gentle introduction for the rest of the week. We had &lt;a href="https://github.com/PRL-PRG/pliss-rift/"&gt;exercises&lt;/a&gt;  (with intentional bugs to make us think!), and also brief overviews of  intermediate languages, static analysis, and garbage collection. These three  topics would later show up in more detail.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Micro Virtual Machines&lt;/strong&gt;, by &lt;a href="http://users.cecs.anu.edu.au/~steveb/"&gt;Steve Blackburn&lt;/a&gt;. This talk covered  background information on virtual machines, and also the &lt;a href="http://microvm.github.io/"&gt;Micro VM&lt;/a&gt;  project that Steve&amp;rsquo;s group has been working on. A lot of the material was  already familiar to me, but I still enjoyed the talk, and even got a few  ideas for the project I&amp;rsquo;m working on!&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Static Analysis&lt;/strong&gt;, by &lt;a href="http://matt.might.net/"&gt;Matt Might&lt;/a&gt;. Matt&amp;rsquo;s talk was based on one of  his &lt;a href="http://matt.might.net/articles/intro-static-analysis/"&gt;articles&lt;/a&gt; and an older talk he&amp;rsquo;s given. Impressively, the entire  example was live-coded, with only a single mistake!&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Testing Language Implementations&lt;/strong&gt;, by &lt;a href="http://multicore.doc.ic.ac.uk/"&gt;Alastair Donaldson&lt;/a&gt;. This was  an entertaining talk, since Ally showed multiple examples of crashing  compilers, and causing other kinds of mischief by triggering compiler bugs.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;If you&amp;rsquo;re disappointed that you couldn&amp;rsquo;t see these talks, don&amp;rsquo;t worry! The talks were recorded and will be posted very shortly.&lt;/p&gt;
+
+&lt;h2 id="the-people"&gt;The People&lt;/h2&gt;
+
+&lt;p&gt;But there&amp;rsquo;s more to PLISS than the talks. I&amp;rsquo;m referring to &lt;em&gt;networking&lt;/em&gt;, or the opportunity to get out and talk to other people about research.&lt;/p&gt;
+
+&lt;p&gt;As an early graduate student, I&amp;rsquo;ve been given a lot of advice about talking to people at conferences and the importance of the &amp;ldquo;hallway track.&amp;rdquo; I still have difficulty doing this at an actual conference, like &lt;a href="http://pldi17.sigplan.org/home"&gt;PLDI&lt;/a&gt; or &lt;a href="http://2017.ecoop.org/"&gt;ECOOP&lt;/a&gt;. When there are hundreds of attendees, or when people already know each other and are in conversation groups, I find it difficult to approach them.&lt;/p&gt;
+
+&lt;p&gt;This was not the case at PLISS. There were fewer attendees: about fifty students and a dozen speakers. There was a good mix of undergraduate, master&amp;rsquo;s, first-year PhD, and more senior PhD students. All our breakfasts, lunches, and breaks were together, so we would see the same people again and again, and inevitably start to learn each other&amp;rsquo;s names. The speakers would also be among us, and there was a good ratio of speakers to students for discussions and mealtime mentoring.&lt;/p&gt;
+
+&lt;p&gt;I had many opportunities to practice my &amp;ldquo;research pitch.&amp;rdquo; I talked to senior students and got advice. I talked to junior students and gave advice. Two different people I talked to about my research pointed me to the same paper to read. I found another student who was working with &lt;a href="http://research.cs.wisc.edu/wpis/papers/popl95.pdf"&gt;IFDS&lt;/a&gt;, an algorithm I have spent much time trying to understand. And, one day at lunch, my table discovered that we were all working on static analysis!&lt;/p&gt;
+
+&lt;p&gt;As much as I enjoyed the talks, I think the best part of PLISS was meeting and talking to other people. You can replace talks with videos (but you lose the speaker-audience interaction), and you can replace conversations with other forms of communication. But there isn&amp;rsquo;t really anything that can replace the serendipity of bumping into someone with a shared interest.&lt;/p&gt;
+
+&lt;h2 id="the-location"&gt;The Location&lt;/h2&gt;
+
+&lt;p&gt;Actually, the &lt;em&gt;other&lt;/em&gt; best part of PLISS was the location. Italy is a beautiful country with delicious food. And Bertinoro is a small town on the top of a hill, with a breathtaking view of the surrounding area. The lectures were held in a &lt;a href="https://pliss2017.github.io/images/pics/7.jpg"&gt;castle at the top of the hill&lt;/a&gt; (photo credit: Steve Blackburn). The speakers lived in the castle for the week, while the students lived in the former monastery (seems fitting), which has been renovated into a university residence.&lt;/p&gt;
+
+&lt;p&gt;Here are my two favorite pictures I took (click for full size):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/img/pliss2017-1.jpg"&gt;&lt;img src="/img/pliss2017-1-thumb.jpg" alt="View from the castle" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/img/pliss2017-2.jpg"&gt;&lt;img src="/img/pliss2017-2-thumb.jpg" alt="Panorama" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Steve Blackburn has more pictures posted on the &lt;a href="https://pliss2017.github.io/"&gt;PLISS website&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="final-thoughts"&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;PLISS was a wonderful event. Many thanks need to be given to the speakers, organizers, and sponsors, for making this possible!&lt;/p&gt;
+
+&lt;p&gt;If and when there is a second PLISS, I highly encourage students to apply! You will learn a lot from the lectures, from talking to the speakers, and meeting other students. And if it&amp;rsquo;s in Bertinoro again, you can enjoy the weather and nice view!&lt;/p&gt;</description></item></channel></rss>

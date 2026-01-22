@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'Author: Jan Vitek'</title>
+  <description>PRL Blog: Posts tagged 'Author: Jan Vitek'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/Author-Jan-Vitek.html</link>
+  <lastBuildDate>Tue, 28 Feb 2017 23:01:00 UT</lastBuildDate>
+  <pubDate>Tue, 28 Feb 2017 23:01:00 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>PLISS: Oregon without the greek</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/02/28/pliss-oregon-without-the-greek/?utm_source=Author-Jan-Vitek&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-02-28-pliss-oregon-without-the-greek</guid>
+   <pubDate>Tue, 28 Feb 2017 23:01:00 UT</pubDate>
+   <author>Jan Vitek</author>
+   <description>
+&lt;p&gt;What does every student interested in programming languages need to learn about the practical side of the field? That is the question that the first international summer school on programming language implementation (or &lt;a href="https://pliss2017.github.io"&gt;PLISS&lt;/a&gt; for short) has set out to answer.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;&lt;img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The school will feature &lt;a href="https://pliss2017.github.io/speakers.html"&gt;twelve speakers&lt;/a&gt; versed in programming language practicae ranging from abstract interpretation to garbage collection and from compiler implementation to language design. The lectures will feature hands on exercises as well as lessons learned from large scale industrial efforts.&lt;/p&gt;
+
+&lt;p&gt;Lectures cover current research and future trends in programming language design and implementation, including:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Writing Just-in-time Compilers with LLVM with Jan Vitek&lt;/li&gt;
+ &lt;li&gt;Performance Evaluation and Benchmarking with Laurie Tratt&lt;/li&gt;
+ &lt;li&gt;Designing a Commercial Actor Language with Sophia Drossopoulou and Heather Miller&lt;/li&gt;
+ &lt;li&gt;High-Performance Fully Concurrent Garbage Collection with Richard Jones&lt;/li&gt;
+ &lt;li&gt;Compiling Dynamic Languages with David Edelsohn&lt;/li&gt;
+ &lt;li&gt;Language-support for Distributed Datastores with Suresh Jagannathan&lt;/li&gt;
+ &lt;li&gt;Testing Programming Language Implementations with Alastair Donaldson&lt;/li&gt;
+ &lt;li&gt;Abstract Interpretation and Static Analysis with lectures by Francesco Logozzo and Matt Might&lt;/li&gt;
+ &lt;li&gt;The evolution of Scala with Martin Odersky&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;A summer school is also an opportunity to get know the speakers and get ideas for research problems. Students will have the opportunity to socialize with a peer group of other students in PL as well as professors and industrial researchers.&lt;/p&gt;
+
+&lt;p&gt;Thanks to generous funding from NSF, ONR and SIGPLAN, costs will be kept low and some fellowships are available to cover travel costs.&lt;/p&gt;
+
+&lt;p&gt;More information at:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://pliss2017.github.io"&gt;https://pliss2017.github.io&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;(Oregon is a reference to the &lt;a href="https://www.cs.uoregon.edu/research/summerschool/summer17/"&gt;OPLSS&lt;/a&gt;, in which you may also be interested.)&lt;/p&gt;</description></item></channel></rss>

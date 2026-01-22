@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Tutorial: Using Racket's FFI</title>
+    <meta name="description" content="Update: this post is now part of a series. Part 2 is here and part 3 is here.  I've seen several people ask for a tutorial on Racket's foreign function interface (FFI), which allows you to dynamically load C libraries for use in Racket code. While I think...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Racket, FFI, tutorial, Author: Asumu Takikawa">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/06/27/tutorial-using-racket-s-ffi/">
+    <link rel="next" href="/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/">
+    <link rel="prev" href="/blog/2016/06/29/tutorial-racket-ffi-part-2/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Tutorial: Using Racket&rsquo;s FFI</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-06-27" pubdate="true">2016-06-27</time> :: <span class="tags"><a href="/blog/tags/Racket.html">Racket</a>, <a href="/blog/tags/FFI.html">FFI</a>, <a href="/blog/tags/tutorial.html">tutorial</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Asumu-Takikawa.html">Asumu Takikawa</a></span></p>
+  </header>
+
+<p><span style="font-weight: bold">Update:</span> this post is now part of a series. Part 2 is
+<a href="http://prl.ccs.neu.edu/blog/2016/06/29/tutorial-racket-ffi-part-2/">here</a>
+and part 3 is
+<a href="http://prl.ccs.neu.edu/blog/2016/07/11/tutorial-racket-ffi-part-3/">here</a>.</p>
+
+<p>I&rsquo;ve seen several people ask for a tutorial on Racket&rsquo;s foreign
+function interface (FFI), which allows you to dynamically load
+C libraries for use in Racket code. While I think the
+<a href="http://docs.racket-lang.org/foreign/index.html">documentation</a>
+for the FFI is quite good, it is a lot of information to process and
+the overview examples may be tricky to run for a beginner.</p>
+
+<p>With that in mind, this blog post will provide a step-by-step tutorial
+for Racket&rsquo;s FFI that requires minimal setup. All that you will need to
+follow along is a copy of Racket and ideally a DrRacket window.</p>
+<!--more-->
+
+<p>Before getting into the details, I wanted to note that the FFI library
+is based on the work of Eli Barzilay and Dmitry Orlovsky. They have
+a Scheme Workshop <a href="http://www.ccs.neu.edu/racket/pubs/scheme04-bo.pdf">paper</a>
+that you can read if you&rsquo;re curious about the design.</p>
+
+<p>The tutorial will focus on using the <a href="https://www.cairographics.org/">Cairo</a>
+graphics library, mainly because it comes bundled with Racket.</p>
+
+<p>To start, let&rsquo;s aim to reproduce the output of the "multi segment caps"
+C sample code on Cairo&rsquo;s
+<a href="https://www.cairographics.org/samples/">samples page</a>:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_move_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">50.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">75.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">200.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">75.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_move_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">50.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">125.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">200.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">125.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_move_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">50.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">175.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">200.0</span><span class="RktMeta">,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">175.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">&#160;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_set_line_width</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktVal">30.0</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_set_line_cap</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">CAIRO_LINE_CAP_ROUND</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_stroke</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cr</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>In order to actually draw this example to the screen, we will need a Cairo
+surface to draw on. So here is some boilerplate for you to execute before we
+actually play with the FFI:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._require%29%29">require</a></span><span class="hspace">&nbsp;</span><span class="RktSym">racket/draw</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">make-bitmap</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="hspace">&nbsp;</span><span class="RktVal">256</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">send</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="hspace">&nbsp;</span><span class="RktSym">get-handle</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>This uses the Racket drawing library <span class="RktWrap"><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/draw/index.html"><span class="RktSym">racket/draw</span></a></span> to construct
+a bitmap object that we&rsquo;ll draw on. The <span class="RktWrap"><span class="RktSym">get-handle</span></span> method just extracts a
+low-level Cairo surface value that we can use.</p>
+
+<p>NB: these code snippets don&rsquo;t come with a <span class="stt">#lang</span> declaration because
+they simulate interactions at the REPL/interaction area in DrRacket.
+When following along, just copy &amp; paste the snippets into your REPL.</p>
+
+<p>Our first real step is to import the FFI itself:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._require%29%29">require</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ffi/unsafe</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>As the module name suggests, the FFI is <span class="emph">unsafe</span> and can cause your Racket process
+to segfault. If you&rsquo;re following along in DrRacket, you will want to save your file
+frequently.</p>
+
+<p>Next, we can load the Cairo library to obtain a <a class="techoutside Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28tech._foreign._library._value%29"><span class="techinside">foreign-library value</span></a>, which
+is a handle that we use to access C values and functions:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._ffi-lib%29%29">ffi-lib</a></span><span class="hspace">&nbsp;</span><span class="RktVal">#f</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>Since Cairo has already been loaded by the Racket process because of the
+<span class="RktWrap"><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/gui/index.html"><span class="RktSym">racket/gui</span></a></span> import earlier, we can supply <span class="RktWrap"><span class="RktVal">#f</span></span> here as an
+argument to <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._ffi-lib%29%29">ffi-lib</a></span></span>. Normally you supply the name of a shared
+library file such as <span class="RktWrap"><span class="RktVal">"libcairo"</span></span>:</p>
+
+<div class="SCodeFlow">
+ <p><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._ffi-lib%29%29">ffi-lib</a></span><span class="hspace">&nbsp;</span><span class="RktVal">"libcairo"</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">(</span><span class="RktVal">"2"</span><span class="hspace">&nbsp;</span><span class="RktVal">#f</span><span class="RktVal">)</span><span class="RktPn">)</span><span class="RktPn">)</span></p></div>
+
+<p>The last list argument specifies the accepted versions (<span class="RktWrap"><span class="RktVal">#f</span></span> allows
+a version-less library). For this post, those details aren&rsquo;t important but
+see the docs on <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._ffi-lib%29%29">ffi-lib</a></span></span> if you&rsquo;re curious.</p>
+
+<h1><a name="(part._.Extracting_functions)"></a>Extracting functions</h1>
+
+<p>Since the Racket FFI is a dynamic interface, we can pull out C functions
+at run-time using the <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._get-ffi-obj%29%29">get-ffi-obj</a></span></span> function. The <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._get-ffi-obj%29%29">get-ffi-obj</a></span></span>
+function takes three arguments:</p>
+
+<ul>
+ <li>
+  <p>The name of the value as a string (or symbol or bytestring)</p></li>
+ <li>
+  <p>a foreign library value, and</p></li>
+ <li>
+  <p>a <a class="techoutside Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/types.html#%28tech._c._type%29"><span class="techinside">C type</span></a>, which is a type description that tells
+the FFI how to marshall between Racket and C.</p></li></ul>
+
+<p>C types are a crucial concept for the FFI. They range from relatively
+simple types like <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__int%29%29">_int</a></span></span> and <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span></span> to more complicated
+type constructors such as <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Enumerations_and_Masks.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__enum%29%29">_enum</a></span></span> and <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span></span>. As you probably noticed,
+C types are prefixed with an underscore by convention. You can also define
+your own types by calling <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/ctype.html#%28def._%28%28quote._~23~25foreign%29._make-ctype%29%29">make-ctype</a></span></span> with two functions that
+handle marshalling between C and Racket code.</p>
+
+<p>To make progress with our Cairo code, we need to create a drawing context from
+the surface object <span class="RktWrap"><span class="RktSym">bt-surface</span></span> that we defined a while ago. The
+relevant function in the Cairo docs is
+<a href="https://www.cairographics.org/manual/cairo-cairo-t.html#cairo-create"><span class="stt">cairo_create</span></a>,
+which has the following type signature:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktCmt">/*</span><span class="hspace">&nbsp;</span><span class="RktCmt">NB:</span><span class="hspace">&nbsp;</span><span class="RktCmt">this</span><span class="hspace">&nbsp;</span><span class="RktCmt">is</span><span class="hspace">&nbsp;</span><span class="RktCmt">C</span><span class="hspace">&nbsp;</span><span class="RktCmt">code</span><span class="hspace">&nbsp;</span><span class="RktCmt">*/</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_create</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_surface_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*target</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p></p>
+
+<div class="SIntrapara">To use this function from Racket, we will need to create a C type that describes
+its behavior. As you can see, the function takes a pointer to a <span class="stt">cairo_surface_t</span> and
+returns a pointer to a <span class="stt">cairo_t</span>. Let&rsquo;s start with a very simple C type
+that matches up with this behavior: </div>
+
+<div class="SIntrapara">
+ <div class="SCodeFlow">
+  <p><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span><span class="RktPn">)</span></p></div></div>
+
+<div class="SIntrapara">This type provides very little safety (in particular, it lets you mix up different
+kinds of pointers), but it will work as a first step.
+Note that the FFI library uses infix arrow notation for its <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span></span> type.</div>
+
+<p>The following definition shows how to use this type to obtain a foreign
+function:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-create</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._get-ffi-obj%29%29">get-ffi-obj</a></span><span class="hspace">&nbsp;</span><span class="RktVal">"cairo_create"</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>Then we can use <span class="RktWrap"><span class="RktSym">cairo-create</span></span> as an ordinary racket function:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktSym">ctx</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#&lt;cpointer&gt;</span></p></td></tr></tbody></table></div>
+
+<h1><a name="(part._.Interlude__more_type_safety)"></a>Interlude: more type safety</h1>
+
+<p>Before we move on to completing the Cairo sample, lets consider the safety of the
+C type we used again. Since we only specified <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span></span> types, it is easy
+to accidentally misuse the function:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">You may not want to actually run this</span></td></tr>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">a cairo_t is not a cairo_surface_t</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>To prevent such bad uses, it is good practice to use <span class="emph">tagged</span> pointer types
+using <span class="RktWrap"><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cpointer-type%29%29">define-cpointer-type</a></span></span>. Here are two example definitions that
+correspond to the <span class="stt">cairo_t</span> and <span class="stt">cairo_surface_t</span> types from earlier:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktCmt">;</span><span class="RktCmt">&nbsp;</span><span class="RktCmt">The leading underscores are mandatory</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cpointer-type%29%29">define-cpointer-type</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._define-cpointer-type%29%29">define-cpointer-type</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_surface_t</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>We can then redefine <span class="RktWrap"><span class="RktSym">cairo-create</span></span> with a better type, which will
+prevent ill-typed calls:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-create</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._get-ffi-obj%29%29">get-ffi-obj</a></span><span class="hspace">&nbsp;</span><span class="RktVal">"cairo_create"</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_surface_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">cairo-create</span><span class="hspace">&nbsp;</span><span class="RktSym">bt-surface</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktErr">cairo_surface_t-&gt;C: argument is not non-null</span></p></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktErr">`cairo_surface_t' pointer</span></p></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktErr"></span><span class="hspace">&nbsp;&nbsp;</span><span class="RktErr">argument: #&lt;cpointer:cairo_t&gt;</span></p></td></tr></tbody></table></div>
+
+<p>Unfortunately our old definition of <span class="RktWrap"><span class="RktSym">ctx</span></span> doesn&rsquo;t have this tag:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._cpointer-has-tag~3f%29%29">cpointer-has-tag?</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#f</span></p></td></tr></tbody></table></div>
+
+<p>Which means we will see errors if we try to use it in future interactions with
+the more precise C type. To get around this, it&rsquo;s also possible to update
+existing pointers with a tag like this:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._cpointer-push-tag%21%29%29">cpointer-push-tag!</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_tagged-pointers.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._cpointer-has-tag~3f%29%29">cpointer-has-tag?</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">cairo_t</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><span class="RktRes">#t</span></p></td></tr></tbody></table></div>
+
+<p>Executing the tag push above is necessary to get some of the following snippets
+to work (if you are following along step-by-step).</p>
+
+<h1><a name="(part._.Macros_for_reducing_boilerplate)"></a>Macros for reducing boilerplate</h1>
+
+<p>Now let&rsquo;s start building the FFI bindings for the functions in the Cairo sample.
+First, let&rsquo;s go ahead and look at all of the types for the sample functions
+from the C API docs:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_move_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">x,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">y</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_line_to</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">x,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">y</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_set_line_width</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">double</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">width</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_set_line_cap</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr,</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_line_cap_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">line_cap</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr>
+   <tr>
+    <td><span class="RktMeta"></span><span class="RktMeta">void</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">cairo_stroke</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktPn">(</span><span class="RktMeta">cairo_t</span><span class="RktMeta"></span><span class="hspace">&nbsp;</span><span class="RktMeta"></span><span class="RktMeta">*cr</span><span class="RktPn">)</span><span class="RktMeta">;</span><span class="RktMeta"></span></td></tr></tbody></table></div>
+
+<p>Starting with <span class="stt">cairo_move_to</span>, we can set up a definition like we did
+with <span class="stt">cairo_create</span> before:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-move-to</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Loading_Foreign_Libraries.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29._get-ffi-obj%29%29">get-ffi-obj</a></span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktVal">"cairo_move_to"</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktSym">cairo-lib</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Pointer_Types.html#%28def._%28%28quote._~23~25foreign%29.__pointer%29%29">_pointer</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>This starts to look awfully verbose once you start writing more of these
+definitions. Luckily, the FFI library comes with some definition forms
+in the <span class="RktWrap"><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Defining_Bindings.html"><span class="RktSym">ffi/unsafe/define</span></a></span> library that help reduce the
+verbosity. Here&rsquo;s an alternative definition of <span class="RktWrap"><span class="RktSym">cairo-move-to</span></span>
+using the <span class="RktWrap"><span class="RktSym">define-ffi-definer</span></span> form from
+<span class="RktWrap"><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Defining_Bindings.html"><span class="RktSym">ffi/unsafe/define</span></a></span>.</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._require%29%29">require</a></span><span class="hspace">&nbsp;</span><span class="RktSym">ffi/unsafe/define</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-ffi-definer</span><span class="hspace">&nbsp;</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-lib</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-move-to</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_move_to</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>As you can see, the <span class="RktWrap"><span class="RktSym">define-ffi-definer</span></span> form lets you define a
+new macro that lets you avoid writing the library value over and over.
+If you stick to using C-style identifiers with underscores (e.g.,
+<span class="RktWrap"><span class="RktSym">cairo_move_to</span></span>) you also don&rsquo;t need to supply the C name either.</p>
+
+<p>The definitions for <span class="stt">cairo_line_to</span>, <span class="stt">cairo_set_line_width</span>, and
+<span class="stt">cairo_stroke</span> aren&rsquo;t very interesting, so I&rsquo;ll just include them
+below without comment:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-line-to</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_line_to</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-line-width</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Numeric_Types.html#%28def._%28%28quote._~23~25foreign%29.__double%29%29">_double</a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_line_width</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-stroke</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_stroke</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>The <span class="stt">cairo_set_line_cap</span> case is more interesting because the type
+<span class="stt">cairo_line_cap_t</span> is a C enumeration type. Racket&rsquo;s FFI comes with
+convenience forms for defining enumeration types&#8212;
+ <wbr />though it&rsquo;s possible
+to encode them yourself too. The general philosophy of the Racket FFI
+is to keep the C parts to a minimum and let you build abstractions
+in Racket libraries. Here&rsquo;s a quote from the Barzilay and Orlovsky
+paper on that:</p>
+
+<blockquote class="SubFlow">
+ <p>Our design follows a simple principle: keep C-level
+functionality to a minimum.</p></blockquote>
+
+<p>and specifically about enumerations:</p>
+
+<blockquote class="SubFlow">
+ <p>For example, the C level part of our interface does not commit to a
+specific implementation for enumerations &#8212; it simply exposes C integers.</p></blockquote>
+
+<p>To define an enumeration, we can use the <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Enumerations_and_Masks.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__enum%29%29">_enum</a></span></span> form. This procedure
+sets up a new C type which converts between Racket symbols and the underlying
+integer representations. For the <span class="stt">cairo_line_cap_t</span> type, it suffices to
+just supply the cases as a list of symbols:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/define.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._define%29%29">define</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_line_cap_t</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Enumerations_and_Masks.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__enum%29%29">_enum</a></span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">(</span><span class="RktVal">butt</span><span class="hspace">&nbsp;</span><span class="RktVal">round</span><span class="hspace">&nbsp;</span><span class="RktVal">square</span><span class="RktVal">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<p>The exact symbols that we specify are not important, since they just map to
+integers anyway. The choice depends on what is convenient for the Racket interface.
+It&rsquo;s also possible to specify how the symbols map to integers more precisely
+(see the docs on <span class="RktWrap"><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Enumerations_and_Masks.html#%28def._%28%28lib._ffi%2Funsafe..rkt%29.__enum%29%29">_enum</a></span></span> for those details).</p>
+
+<p>Given this type, we can specify the type for the line cap function:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td>
+     <table cellpadding="0" cellspacing="0" class="RktBlk">
+      <tbody>
+       <tr>
+        <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">define-cairo</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo-set-line-cap</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29.__fun%29%29">_fun</a></span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_t</span><span class="hspace">&nbsp;</span><span class="RktSym">_cairo_line_cap_t</span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/foreign_procedures.html#%28form._%28%28lib._ffi%2Funsafe..rkt%29._-~3e%29%29"><span class="nobreak">-&gt;</span></a></span><span class="hspace">&nbsp;</span><span class="RktSym"><a class="RktValLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/foreign/Other_Atomic_Types.html#%28def._%28%28quote._~23~25foreign%29.__void%29%29">_void</a></span><span class="RktPn">)</span></td></tr>
+       <tr>
+        <td><span class="hspace">&nbsp;&nbsp;</span><span class="hspace">&nbsp;&nbsp;</span><span class="RktPn">#:c-id</span><span class="hspace">&nbsp;</span><span class="RktSym">cairo_set_line_cap</span><span class="RktPn">)</span></td></tr></tbody></table></td></tr></tbody></table></div>
+
+<h1><a name="(part._.Putting_it_all_together)"></a>Putting it all together</h1>
+
+<p>Now that we have foreign function definitions for all of the relevant procedures,
+we can just transcribe the example from the beginning into Racket syntax:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-move-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">75.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-line-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">200.0</span><span class="hspace">&nbsp;</span><span class="RktVal">75.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-move-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">125.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-line-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">200.0</span><span class="hspace">&nbsp;</span><span class="RktVal">125.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-move-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">50.0</span><span class="hspace">&nbsp;</span><span class="RktVal">175.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-line-to</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">200.0</span><span class="hspace">&nbsp;</span><span class="RktVal">175.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="hspace">&nbsp;</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-line-width</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">30.0</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-set-line-cap</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="hspace">&nbsp;</span><span class="RktVal">'</span><span class="RktVal">round</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="RktPn">(</span><span class="RktSym">cairo-stroke</span><span class="hspace">&nbsp;</span><span class="RktSym">ctx</span><span class="RktPn">)</span></td></tr></tbody></table></div>
+
+<p>Executing these procedure calls will draw into the Cairo surface we set up earlier,
+which is connected to our original Racket bitmap object <span class="RktWrap"><span class="RktSym">bt</span></span>. To see the
+results of what we drew, we can just evaluate <span class="RktWrap"><span class="RktSym">bt</span></span> at the REPL. But it&rsquo;s
+a little nicer if we use the <span class="RktWrap"><a class="RktModLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/pict/index.html"><span class="RktSym">pict</span></a></span> library to draw a frame around
+it to distinguish it from the background:</p>
+
+<div class="SCodeFlow">
+ <table cellpadding="0" cellspacing="0" class="RktBlk">
+  <tbody>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym"><a class="RktStxLink Sq" data-pltdoc="x" href="https://docs.racket-lang.org/reference/require.html#%28form._%28%28lib._racket%2Fprivate%2Fbase..rkt%29._require%29%29">require</a></span><span class="hspace">&nbsp;</span><span class="RktSym">pict</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td><span class="stt">&gt; </span><span class="RktPn">(</span><span class="RktSym">linewidth</span><span class="hspace">&nbsp;</span><span class="RktVal">2</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">frame</span><span class="hspace">&nbsp;</span><span class="RktPn">(</span><span class="RktSym">bitmap</span><span class="hspace">&nbsp;</span><span class="RktSym">bt</span><span class="RktPn">)</span><span class="RktPn">)</span><span class="RktPn">)</span></td></tr>
+   <tr>
+    <td>
+     <p><img src="/blog/img/posts/2016-06-27-tutorial-using-racket-s-ffi/pict.png" alt="image" height="262" style="vertical-align: 0px; margin: -3px -3px -3px -3px;" width="262" /></p></td></tr></tbody></table></div>
+
+<p>And we&rsquo;re done! Of course, there is a lot more to the FFI. For example, I haven&rsquo;t
+covered how to handle C functions that return multiple results through pointer
+arguments. Or how to interoperate between Racket and C structs. I&rsquo;m hoping to
+cover these in a future blog post, but in the meantime happy FFI hacking!</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/06/27/tutorial-using-racket-s-ffi/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/06/29/tutorial-racket-ffi-part-2/">&larr; <em>Tutorial: Racket FFI, Part 2</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/"><em>Does anyone still care about printed proceedings? (Grab some at NEU this week!)</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

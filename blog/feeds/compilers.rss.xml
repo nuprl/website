@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'compilers'</title>
+  <description>PRL Blog: Posts tagged 'compilers'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/compilers.html</link>
+  <lastBuildDate>Mon, 28 Aug 2017 10:30:00 UT</lastBuildDate>
+  <pubDate>Mon, 28 Aug 2017 10:30:00 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Closure Conversion as CoYoneda</title>
+   <link>http://prl.ccs.neu.edu/blog/2017/08/28/closure-conversion-as-coyoneda/?utm_source=compilers&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2017-08-28-closure-conversion-as-coyoneda</guid>
+   <pubDate>Mon, 28 Aug 2017 10:30:00 UT</pubDate>
+   <author>Max New</author>
+   <description>
+&lt;p&gt;The continuation-passing style transform (cps) and closure conversion (cc) are two techniques widely employed by compilers for functional languages, and have been studied extensively in the compiler correctness literature. Interestingly, &lt;em&gt;typed&lt;/em&gt; versions of each can be proven to be equivalence preserving using polymorphic types and parametric reasoning, as shown by my advisor Amal Ahmed and Matthias Blume (&lt;a href="http://www.ccs.neu.edu/home/amal/papers/epc.pdf"&gt;cps&lt;/a&gt;,&lt;a href="http://www.ccs.neu.edu/home/amal/papers/tccpoe.pdf"&gt;cc&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;In fact, there is something like a duality between the two proofs, cps uses a universal type, closure-conversion uses an existential type and the isomorphism proofs use analogous reasoning. It turns out that both are instances of general theorems in category theory: the polymorphic cps isomorphism can be proven using the Yoneda lemma, and the polymorphic closure-conversion isomorphism can be proven using a less well known theorem often called the &lt;a href="https://ncatlab.org/nlab/show/co-Yoneda+lemma"&gt;*co*Yoneda lemma&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The connection between cps and the Yoneda embedding/lemma is detailed elsewhere in the &lt;a href="http://www.cs.ox.ac.uk/people/daniel.james/iso/iso.pdf"&gt;literature&lt;/a&gt; and blogosphere (&lt;a href="https://golem.ph.utexas.edu/category/2008/01/the_continuation_passing_trans.html"&gt;ncafe&lt;/a&gt;, &lt;a href="https://bartoszmilewski.com/2015/09/01/the-Yoneda-lemma/"&gt;Bartosz&lt;/a&gt;), so I&amp;rsquo;ll focus on closure conversion here. Also, I&amp;rsquo;ll try to go into some detail in showing how the &amp;ldquo;usual&amp;rdquo; version of Yoneda/coYoneda (using the category of sets) relates to the appropriate version for compilers.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ll assume some background knowledge on closure conversion and parametricity below. Fortunately, Matt Might has a &lt;a href="http://matt.might.net/articles/closure-conversion/"&gt;nice blog post explaining untyped closure conversion&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;\(
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\Hom}{\mathsf{Hom}}
+\)&lt;/p&gt;
+
+&lt;h2 id="polymorphic-closure-conversion"&gt;Polymorphic Closure Conversion&lt;/h2&gt;
+
+&lt;p&gt;Closure conversion is a way of compiling a language with closures (i.e., basically any modern high-level language) to one that only has function pointers/labels like C or machine code. Closure conversion compiles high-level functions (aka closures) to a pair of an environment that will contain the values of all the functions&amp;rsquo; free variables and a code pointer to a block that takes as inputs all the inputs to the function and values for all of the free variables.&lt;/p&gt;
+
+&lt;p&gt;For instance&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;let x = 3 in λ y. x + y&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;would be converted to something like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;let x = 3 in ([x: 3], λ env, y. let x = env.x in x + y)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Can we give a type to the resulting code? The source program has type &lt;code&gt;Number -&amp;gt; Number&lt;/code&gt;, but the target has a type more like&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{ x: Number} × ({x : Number} × Number -&amp;gt; Number).&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In addition to being ugly, this type is leaking irrelevant details of the function&amp;rsquo;s implementation: all of its free variables are there in its type, so two terms with the same function type but different free variables would be translated to different types. Also high-level program equivalences like \(\beta\)-reducing the term to just &lt;code&gt;λ y. 3 + y&lt;/code&gt; would not even preserve typing. Not only that, but some bad code could now supply a &lt;em&gt;different&lt;/em&gt;, well-typed value for &lt;code&gt;x&lt;/code&gt; than allowed which could break invariants the programmer had about the function.&lt;/p&gt;
+
+&lt;p&gt;We could fix the type preservation issue by just using a dynamic type for our environment, but this would still leak details in the values. Fortunately, there is a nice solution to the other problems using existential types. The idea is that the type of the environment of free variables is &lt;em&gt;irrelevant&lt;/em&gt; to anyone that calls the function, only the function itself should know what the environment looks like; the type of the environment should be &lt;em&gt;abstract&lt;/em&gt; to the caller and &lt;em&gt;concrete&lt;/em&gt; to the callee. Existential types capture this.&lt;/p&gt;
+
+&lt;p&gt;We can translate functions in the source of type &lt;code&gt;A -&amp;gt; B&lt;/code&gt; to pairs of an environment and a code pointer, but now making the environment type existentially quantified:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;∃ Γ. Γ × (Γ × A -&amp;gt; B).&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then the syntax of existential types ensure that all any consumer can do with the &lt;code&gt;env : Γ&lt;/code&gt; in the pair is pass it to the code pointer with an &lt;code&gt;A&lt;/code&gt; argument.&lt;/p&gt;
+
+&lt;p&gt;How do we prove that this is correct? And what does correct even mean? We&amp;rsquo;ll focus on a property called &lt;em&gt;full abstraction&lt;/em&gt; which says that if two programs are equal in the source language, then their translations are equal. Here, equal in the source language will just mean \(\beta,\eta \) equivalence, so things like as above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;let x = 3 in λ y. x + y
+≡
+λ y. 3 + y&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To prove this we&amp;rsquo;ll show that in a language with existential types the types &lt;code&gt;∃ Γ. Γ × (Γ × A -&amp;gt; B)&lt;/code&gt; and &lt;code&gt;A \to B&lt;/code&gt; are isomorphic. The usual proof is by parametricity, instead we&amp;rsquo;ll use a closely related category-theoretic argument: the coYoneda lemma.&lt;/p&gt;
+
+&lt;h2 id="the-coyoneda-lemma"&gt;The CoYoneda Lemma&lt;/h2&gt;
+
+&lt;p&gt;The coYoneda lemma is a generalization of the equivalence described above. I&amp;rsquo;ll start with the ordinary version which uses &lt;em&gt;coends&lt;/em&gt; and &lt;em&gt;presheaves&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The coYoneda lemma says that for any category \( C \), presheaf \( Q : C^{op} \to \Set \), and object \(A \in C \), \(Q(A) \) is isomorphic to the coend: \[ \exists B. (A \to B) \times Q(B) \] Let&amp;rsquo;s break that down.&lt;/p&gt;
+
+&lt;h3 id="coends"&gt;Coends&lt;/h3&gt;
+
+&lt;p&gt;A coend is a construction that is very similar to the parametric existential quantifier. If you&amp;rsquo;re familiar with parametricity, a good intuition is that coends have the same definition as existential types but where the only relations are functional relations.&lt;/p&gt;
+
+&lt;p&gt;You can take the coend of a functor of type \(M : C^{op} \times C \to
+\Set \). We can get such an \(M \) from a type with a free type variable like \( X \times A \to X \) by splitting the \(X \) into positive and negative occurrences: \(X^- \times A \to X^+ \). Then the coend \(\exists X. M(X,X) \in \Set \) is like the union of all \(M(X,X) \), but where the \(X \) is ensured to be &amp;ldquo;irrelevant&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;So for any object \(A \in C \) there is a map \(pack_A : M(A,A) \to
+\exists X. M(X,X) \), we can &amp;ldquo;hide the A&amp;rdquo;. To make sure the \(X \) is treated opaquely, we add an invariance condition that says if you have an \(mA : M(A,A) \) and an \(mB :
+M(B,B) \) such that the \(A, B\) positions are related by some function \(f : A \to B \), then \(pack_A(mA) = pack_B(mB)\). More formally, this means that if you have a \(m' : M(B,A) \), then&lt;/p&gt;
+
+&lt;p&gt;\[ pack_B(M(B,f)(m')) = pack_A(M(f,A)(m'))\] or in a point-free style: \[ pack_B \circ M(B,f) = pack_A \circ M(f,A) : M(B,A) \to \exists X. M(X,X) \]&lt;/p&gt;
+
+&lt;p&gt;A function parameterized by types like \(pack \) that has this property is called a &lt;em&gt;co-wedge&lt;/em&gt; from \(M \).&lt;/p&gt;
+
+&lt;p&gt;A coend is an object \(\exists X. M(X,X) \) and a co-wedge \(\forall
+A. pack_A : M(A,A) \to \exists X. M(X,X) \) that are &lt;em&gt;universal&lt;/em&gt;, i.e. any other co-wedge \(\forall A. f_A : M(A,A) \to C\) factors through \(pack_A \). This gives us the syntax for existential elimination.&lt;/p&gt;
+
+&lt;p&gt;If you are familiar with parametricity, it is a good exercise to see why the usual condition for invariance wrt all &lt;em&gt;relations&lt;/em&gt; implies that a parametric \(pack, \exists X. M(X,X) \) will form a cowedge. It seems that in general it would not be a universal co-wedge because a parametric exists is invariant under all relations and there are many relations that don&amp;rsquo;t act like functions.&lt;/p&gt;
+
+&lt;h3 id="presheaves"&gt;Presheaves&lt;/h3&gt;
+
+&lt;p&gt;Next, a presheaf is just a functor \( Q : C^{op} \to
+\Set \). Think of this as a set that is parameterised by a type of &amp;ldquo;inputs&amp;rdquo;, so if you have a map in \(C, f : A \to B\) you get a function \(Q(f) :
+Q(B) \to Q(A) \) that &amp;ldquo;preprocesses&amp;rdquo; the inputs using \(f
+\). Functoriality ensures that preprocessing with the identity is just the identity and that composition of preprocessers is the preprocessor from the composite function.&lt;/p&gt;
+
+&lt;p&gt;So the informal explanation of the coYoneda lemma is that for any presheaf \(Q \), if we have an \( \exists X. (A \to X) \times Q(X)
+\), then since we can&amp;rsquo;t inspect the \(X \) in any way, all we can really do is compose the \(Q(X) \) with the preprocesser from the function \(A \to X \), giving us a \(Q(A) \).&lt;/p&gt;
+
+&lt;h3 id="enriched-categories-and-enriched-coyoneda"&gt;Enriched Categories and Enriched CoYoneda&lt;/h3&gt;
+
+&lt;p&gt;But there&amp;rsquo;s a gap from here to applying this to a programming language, the coYoneda lemma as presented says that \(Q(A) \) and \(\exists B. (A \to B) \times Q(B) \) are isomorphic as &lt;em&gt;sets&lt;/em&gt;, but we wanted an isomorphism of &lt;em&gt;types&lt;/em&gt; in our programming language. We can reconcile this by considering &lt;em&gt;enriched&lt;/em&gt; category theory and the &lt;em&gt;enriched&lt;/em&gt; coYoneda lemma. Let \(V \) be a category, then if \( V
+\) is sufficiently like the category of sets, then we can do a lot of category theory by replacing the word &amp;ldquo;set&amp;rdquo; with &amp;ldquo;object of \(V \)&amp;rdquo;.&lt;/p&gt;
+
+&lt;p&gt;Specifically, a \(V \)-enriched category (or just \(V\)-category) has a set of objects \(Ob \), but for each pair of objects \(A,B
+\in Ob \) we get a \( V\)-object \(\Hom(A,B) \) of morphisms from \(A \) to \( B \). If \(V \) is a closed category, we can see \(V \) &lt;em&gt;itself&lt;/em&gt; as a \(V\)-enriched category with the same objects and just making \(\Hom(A,B) = A \to B \) i.e. the &lt;em&gt;internal&lt;/em&gt; hom aka exponential.&lt;/p&gt;
+
+&lt;p&gt;Then we can reinterpret the coYoneda lemma above by saying \(C \) is a \(V\)-category and \(Q \) is a \(V\)-presheaf i.e., just a contravariant functor from \(V \) to itself: \(Q : V^{op} \to V\) where the preprocessing function is now a morphism in \(C \). Haskelletons just call this a &lt;a href="https://hackage.haskell.org/package/contravariant-1.4/docs/Data-Functor-Contravariant.html"&gt;contravariant functor&lt;/a&gt;. Furthermore, since existential types provide at least as strong of a reasoning principle as coends, the proof of the coYoneda lemma goes through with existential types instead. Finally, the point-free description above for coend can be interpreted in any category.&lt;/p&gt;
+
+&lt;p&gt;Now that we&amp;rsquo;re working all inside our language, let&amp;rsquo;s look at what the isomorphism looks like in Haskellish/Agdaish syntax. We want mutually inverse functions&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;f : (Contravariant Q) =&amp;gt; (∃ Γ. (Δ -&amp;gt; Γ) × (Q Γ)) -&amp;gt; Q Δ
+g : (Contravariant Q) =&amp;gt; Q Δ -&amp;gt; ∃ Γ. (Δ -&amp;gt; Γ) × (Q Γ)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you try to implement them you won&amp;rsquo;t be able to get it wrong, but here they are:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;f (k, qΓ) = contramap k qΓ
+g qΔ = (id, qΔ)&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;where we just instantiate \(\Gamma = \Delta \) in the second case. You can prove \( f \circ g = id \) using just \(\beta \) and the Contravariant laws, but to prove \(g \circ f = id \) you need to use the coend reasoning. For those of you that know about the Yoneda lemma, note the similarity to that proof in using the identity function and instantiating a type variable in a trivial way.&lt;/p&gt;
+
+&lt;h2 id="closure-version-as-coyoneda"&gt;Closure Version as CoYoneda&lt;/h2&gt;
+
+&lt;p&gt;Now it&amp;rsquo;s time to bring it all together. Let \(V \) be our programming language viewed as a category in the usual way.&lt;/p&gt;
+
+&lt;p&gt;We want to prove the closure conversion isomorphism:&lt;/p&gt;
+
+&lt;p&gt;\[ A \to B \cong \exists \Gamma. \Gamma \times (\Gamma \times A \to B)
+\]&lt;/p&gt;
+
+&lt;p&gt;using the \(V \)-coYoneda lemma which says for any contravariant functor \(Q : V^{op} \to V \), and object \(\Delta \in V\)&lt;/p&gt;
+
+&lt;p&gt;\[ Q(\Delta) \cong \exists \Gamma. (\Delta \to \Gamma) \times Q(\Gamma)
+\]&lt;/p&gt;
+
+&lt;p&gt;Clearly based on the right hand side, \(Q \) should be \( - \times
+A \to B \) which gives us for any \(\Delta \in V\):&lt;/p&gt;
+
+&lt;p&gt;\[ \Delta \times A \to B \cong \exists \Gamma. (\Delta \to \Gamma) \times (\Gamma \times A \to B)
+\]&lt;/p&gt;
+
+&lt;p&gt;Next we pick \(\Delta = 1\), the unit type. Then we use some basic facts about the unit type: \(1 \times A \cong
+A \) and \(1 \to \Gamma \cong \Gamma\) (at least in a pure language) to get the desired result by composition:&lt;/p&gt;
+
+&lt;p&gt;\[ A \to B \cong 1 \times A \to B \cong \exists \Gamma. (1 \to
+\Gamma) \times (\Gamma \times A \to B) \cong \exists \Gamma. \Gamma
+\times (\Gamma \times A \to B)\]&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Since closure conversion is an instance of the CoYoneda lemma, this might be a nice example to give intuition for CoYoneda for programmers. While not as famous as its cousin Yoneda, CoYoneda is used in &lt;a href="https://hackage.haskell.org/package/kan-extensions-5.0.2/docs/Data-Functor-Coyoneda.html"&gt;Haskell&lt;/a&gt; and is also central to the &lt;a href="https://ncatlab.org/nlab/show/Day+convolution"&gt;Day Convolution&lt;/a&gt;, which can be used to give semantics to &lt;a href="atkey-thesis"&gt;separation logic&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Also in researching for this post, I was surprised at how little I could find on the relationship between ends/coends and relational parametricity. This seems very unfortunate as it looks like we&amp;rsquo;re reproving some of the same theorems (Yoneda, coYoneda) using very similar, but incompatible formalisms.&lt;/p&gt;
+
+&lt;h2 id="you-might-also-like"&gt;You might also like&lt;/h2&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2017/06/05/syntactic-parametricity-strikes-again/"&gt;Syntactic Parametricity Strikes Again&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/"&gt;Categorical Semantics for Dynamically Typed Programming  Languages&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/blog/2016/11/16/understanding-constructive-galois-connections/"&gt;Understanding Constructive Galois  Connections&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;</description></item></channel></rss>

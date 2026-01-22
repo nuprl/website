@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'dissertation'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/dissertation.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/dissertation.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-dissertation-html</id>
+ <updated>2020-12-23T18:21:55Z</updated>
+ <entry>
+  <title type="text">Deep and Shallow Types</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2020/12/23/deep-and-shallow-types/?utm_source=dissertation&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2020-12-23-deep-and-shallow-types</id>
+  <published>2020-12-23T18:21:55Z</published>
+  <updated>2020-12-23T18:21:55Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;I successfully defended my Ph.D. dissertation. You can find the document, a talk recording, and much more here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020"&gt;http://ccs.neu.edu/home/types/publications/publications.html#g-dissertation-2020&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;To the PRL: thanks for a wonderful 6.5 years.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h3 id="abstract"&gt;Abstract&lt;/h3&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;The design space of mixed-typed languages is lively but disorganized. On one hand, researchers across academia and industry have contributed language  designs that allow typed code to interoperate with untyped code. These design efforts explore a range of goals;  some improve the expressiveness of a typed language, and  others strengthen untyped code with a tailor-made type system. On the other hand, experience with type-sound designs has revealed major challenges. We do not know how to measure the performance costs of sound interaction. Nor do we have criteria that distinguish ``truly sound&amp;rsquo;&amp;rsquo; mixed-typed languages  from others that enforce type obligations locally rather than globally.&lt;/p&gt;
+ &lt;p&gt;In this dissertation, I introduce methods for assessing  mixed-typed languages and bring order to the design space. My first contribution is a performance-analysis method that allows language  implementors to systematically measure the cost of mixed-typed interaction.&lt;/p&gt;
+ &lt;p&gt;My second contribution is a design-analysis method that allows language designers  to understand implications of the type system. The method addresses two central questions: whether typed code can cope with  untyped values, and whether untyped code can trust static types. Further distinctions arise by asking whether error outputs can  direct a programmer to potentially-faulty interactions.&lt;/p&gt;
+ &lt;p&gt;I apply the methods to several designs and discover limitations that motivate  a synthesis of two ideas from the literature:  deep types and shallow types. Deep types offer strong guarantees but impose a high interaction cost. Shallow types offer weak guarantees and better worst-case costs. This dissertation proves that deep and shallow types can interoperate  and measures the benefits of a three-way mix.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Next year, I&amp;rsquo;ll be a &lt;a href="https://cifellows2020.org"&gt;CI Fellow&lt;/a&gt; at Brown.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">[Conversational Concurrency (cross-post)](https://eighty-twenty.org/2018/01/24/conversational-concurrency)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/05/11/-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency/?utm_source=dissertation&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-05-11-conversational-concurrency-cross-post-https-eighty-twenty-org-2018-01-24-conversational-concurrency</id>
+  <published>2019-05-11T00:03:16Z</published>
+  <updated>2019-05-11T00:03:16Z</updated>
+  <author>
+   <name>Tony Garnock-Jones</name></author>
+  <content type="html"></content></entry></feed>

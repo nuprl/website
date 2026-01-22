@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Welcome to the PRL blog</title>
+    <meta name="description" content="Greetings, ground rules, hopes, dreams, and notes for contributors. Welcome aboard....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="about, 1st blog post, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2016/04/29/welcome-to-the-prl-blog/">
+
+    <link rel="prev" href="/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Welcome to the PRL blog</h1>
+    <p class='date-and-tags'>
+<time datetime="2016-04-29" pubdate="true">2016-04-29</time> :: <span class="tags"><a href="/blog/tags/about.html">about</a>, <a href="/blog/tags/1st-blog-post.html">1st blog post</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Greetings, ground rules, hopes, dreams, and notes for contributors. Welcome aboard.</p>
+<!-- more-->
+
+<p>Earlier this year, the Programming Research Lab (PRL) was blessed with a new  postdoc: <a href="http://gallium.inria.fr/~scherer/">Gabriel Scherer</a> from INRIA  Paris-Rocquencourt, France. Ever since Gabriel arrived things have been changing here in Boston. We now have homemade bread on the first Tuesday of every month,  <a href="https://en.wikipedia.org/wiki/Orange_flower_water">orange water</a> crepes  after holidays, and someone new to go out for bubble tea with in between. All that and an enthusiastic colleague and researcher.</p>
+
+<p>In his spare time between lobbying the CS department for an espresso machine and  building multi-language compilers, Gabriel is also a champion of open access. Hence this blog, a window into the life and times of PRL students made  possible by Gabriel&rsquo;s tactical prodding and careful delegation of responsibilities. Anything you might read about in a rejected conference paper or hear over  coffee is fair game here: the goal is to give the wide world a glimpse of  our lab and people.</p>
+
+<h2 id="for-contributors">For Contributors</h2>
+
+<p>These pages are generated using Greg Hendershott&rsquo;s <a href="https://github.com/greghendershott/frog">frog</a>  static website generator. To create a new post:</p>
+
+<ol>
+ <li>Clone or fork the <a href="https://github.com/nuprl/nuprl.github.io">nuprl.github.io</a> repository</li>
+ <li>Check out a new git branch for your post</li>
+ <li>Run <code>cd blog; raco frog -n "TITLE"</code> to build a template for a new post</li>
+ <li>Add content to the new markdown file (under <code>_src/posts</code>)</li>
+ <li>Rebuild the blog with <code>raco frog -b</code></li>
+ <li>Run <code>cd ..; raco frog -p</code> to start a web server and view your changes at <a href="http://localhost:3000/">http://localhost:3000/</a></li>
+ <li>Send a pull request to the <a href="https://github.com/nuprl/nuprl.github.io">nuprl.github.io</a> repo</li></ol>
+
+<p>An open pull request is the best place to ask questions about the formatting or content of a post. We promise that within a few days of opening a PR someone with push access will reply with feedback or merge the request.</p>
+
+<p>Contributions are open to anyone: current labmates, alumni, friends from the  Racket mailing list, and even recovering C programmers. One should have a strong connection to Northeastern or our research, but  even that is not strictly necessary. Visitors are always welcome to the PRL.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2016/04/29/welcome-to-the-prl-blog/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2016/05/03/nepls-on-may-31st-at-umass-amherst/">&larr; <em>NEPLS on May 31st at UMass, Amherst</em></a>
+    </li>
+
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

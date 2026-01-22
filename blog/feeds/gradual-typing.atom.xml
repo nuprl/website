@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'gradual typing'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/gradual-typing.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/gradual-typing.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-gradual-typing-html</id>
+ <updated>2019-10-31T21:58:26Z</updated>
+ <entry>
+  <title type="text">Complete Monitors for Gradual Types</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-10-31-complete-monitors-for-gradual-types</id>
+  <published>2019-10-31T21:58:26Z</published>
+  <updated>2019-10-31T21:58:26Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;Syntactic type soundness is too weak to tell apart different ways of running  a program that mixes typed and untyped code. Complete monitoring is a stronger property that captures a meaningful  distinction &amp;mdash; a language satisfies complete monitoring iff it checks  all interactions between typed and untyped code.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;Complete Monitors for Gradual Types&lt;/em&gt; by Ben Greenman, Matthias Felleisen, and Christos Dimoulas. For the full paper, proofs, and slides, &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gfd-oopsla-2019"&gt;click here&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="example-clickable-plot"&gt;Example: Clickable Plot&lt;/h3&gt;
+
+&lt;p&gt;The program below has a subtle bug. Can you find it?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/img/complete-monitoring-0.png" alt="Untyped client code, a typed API, and untyped library code." /&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all, this pseudocode program combines three chunks of code:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the left, an &lt;strong&gt;untyped&lt;/strong&gt; client script defines a function &lt;code&gt;h&lt;/code&gt; that expects  a pair of numbers and returns an image. The client uses this function to  create a &lt;code&gt;ClickPlot&lt;/code&gt; object, and then displays the plot &amp;mdash; ideally in a new  GUI window.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;In the center, a &lt;strong&gt;typed&lt;/strong&gt; API file describes a &lt;code&gt;ClickPlot&lt;/code&gt; object as  something with one constructor and two methods. The constructor expects  a function; according to the type, such functions can expect a pair of  numbers and must compute an image. The &lt;code&gt;mouseHandler&lt;/code&gt; method expects  a &lt;code&gt;MouseEvt&lt;/code&gt; object and returns nothing. The &lt;code&gt;show&lt;/code&gt; method expects no arguments  and returns nothing. (Presumably, these methods have side effects.)&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the right, an &lt;strong&gt;untyped&lt;/strong&gt; library module implements a &lt;code&gt;ClickPlot&lt;/code&gt; object.  Most of the code is omitted (&lt;code&gt;...&lt;/code&gt;), but the &lt;code&gt;mouseHandler&lt;/code&gt; method sends  its input directly to the &lt;code&gt;onClick&lt;/code&gt; callback.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The &lt;strong&gt;bug&lt;/strong&gt; is in the API &amp;mdash; in the type &lt;code&gt;([N, N]) =&amp;gt; Image&lt;/code&gt;. This type promises that a given function can expect a pair of numbers,  and indeed the client function &lt;code&gt;h&lt;/code&gt; expects a pair. But the library code on the right sends a &lt;code&gt;MouseEvt&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;p&gt;What happens when we run this program in a type-sound mixed-typed language? Does &lt;code&gt;h&lt;/code&gt; receive the invalid input?&lt;/p&gt;
+
+&lt;p&gt;As it turns out, type soundness cannot say. A type sound language may choose to enforce or ignore the fact that the  API promises a pair of numbers to the client.&lt;/p&gt;
+
+&lt;h3 id="type-soundness-is-not-enough"&gt;Type Soundness is Not Enough&lt;/h3&gt;
+
+&lt;p&gt;Sound types are statements about the behavior of a program. A normal type soundness theorem for a typed language says that a well-typed  program can either compute a value of the same type, compute forever (diverge),  or stop with an acceptable error (perhaps division by zero). No other behaviors are possible.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Classic Type Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;A mixed-typed language needs two &amp;ldquo;type soundness&amp;rdquo; theorems:  one for typed code and one for untyped code. The &lt;strong&gt;typed&lt;/strong&gt; soundness theorem can resemble a classic theorem. The &lt;strong&gt;untyped&lt;/strong&gt; soundness theorem is necessarily a weaker statement due to  the lack of types:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Mixed-Typed Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+ &lt;p&gt;And if &lt;code&gt;e&lt;/code&gt; is untyped then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt; is an untyped value&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Now we can see why mixed-typed soundness is not strong enough to guarantee that  the callback &lt;code&gt;h&lt;/code&gt; in the code above receives a pair value. We have an &lt;strong&gt;untyped&lt;/strong&gt; function called from an &lt;strong&gt;untyped&lt;/strong&gt; context &amp;mdash; since  there are no types sitting right there, type soundness has nothing to say  except that the untyped code can expect an untyped value!&lt;/p&gt;
+
+&lt;p&gt;&lt;img height="200px" src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client." /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, this channel of communication between the library and client  arose through the typed API. One might expect the type &lt;code&gt;[N, N]&lt;/code&gt; to restrict the values that can flow across  the channel; indeed, if types really are statements about the behavior of a program,  then the channel needs to be protected.&lt;/p&gt;
+
+&lt;p&gt;The question is: what formal property separates languages thet check  all typed/untyped channels of communication (whether direct or derived)? One answer is complete monitoring.&lt;/p&gt;
+
+&lt;h3 id="complete-monitoring"&gt;Complete Monitoring&lt;/h3&gt;
+
+&lt;p&gt;A mixed-typed language satisfies complete monitoring iff evaluation never  lets a value flow un-checked across a type boundary. To make this idea precise, we need to enrich the syntax of the language  with a specification of &lt;em&gt;ownership&lt;/em&gt; to say what parts of the program are  responsible for different values, and to say how evalution changes  responsibilities. Relative to a specification, complete monitoring states that every expression  that arises during evaluation is made up of parts that each have a single  owner.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;em&gt;Complete Monitoring&lt;/em&gt;&lt;/p&gt;
+ &lt;p&gt;For all well-formed &lt;code&gt;e&lt;/code&gt; and all &lt;code&gt;e'&lt;/code&gt;, if &lt;code&gt;e --&amp;gt;* e'&lt;/code&gt; then every subexpression of &lt;code&gt;e'&lt;/code&gt; has a unique owner.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;This property separates our two behaviors for the Clickable Plot code. A language that satisfies complete monitoring enforces the API types with  a runtime check. A language that merely satisfies type soundness may skip these checks.&lt;/p&gt;
+
+&lt;h3 id="an-aid-to-debugging"&gt;An Aid to Debugging&lt;/h3&gt;
+
+&lt;p&gt;The question raised by the Clickable Plot example is whether a language can  &lt;strong&gt;detect&lt;/strong&gt; one mismatch between a type and a value. A language that satisfies complete monitoring detects all such mis-matches. But we can say more. If a mismatch occurs, then programmer knows exactly where to start debugging  &amp;mdash; either the type is an incorrect specification, or the given value is  flawed. In other words, complete monitoring implies a concise 2-party explanation  for every type mismatch.&lt;/p&gt;
+
+&lt;p&gt;The paper generalizes this goal of explaining a mismatch for languages  that fail to satisfy complete monitoring. There may be 2N parties to blame thanks to un-checked channels of communication,  and we want to be certain to report all these parties and no false positives.&lt;/p&gt;
+
+&lt;p&gt;Also in the paper, you can find:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;a model of ownership, clear &lt;em&gt;laws&lt;/em&gt; for how ownership changes during evaluation;&lt;/li&gt;
+ &lt;li&gt;examples of how to systematically add ownership to an operational semantics  to attempt a proof of complete monitoring;&lt;/li&gt;
+ &lt;li&gt;definitions for &lt;strong&gt;blame soundness&lt;/strong&gt; and &lt;strong&gt;blame completeness&lt;/strong&gt;;&lt;/li&gt;
+ &lt;li&gt;an analysis of three semantics, which correspond to &lt;a href="https://docs.racket-lang.org/ts-reference/index.html"&gt;Typed Racket&lt;/a&gt;,  &lt;a href="http://hdl.handle.net/2022/23172"&gt;Transient Reticulated&lt;/a&gt;, and a compromise;&lt;/li&gt;
+ &lt;li&gt;and discussion of an alternative, heap-based model of ownership.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Paper: &lt;a href="https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf"&gt;https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf&lt;/a&gt;&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">The Behavior of Gradual Types: A User Study</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-12-11-the-behavior-of-gradual-types-a-user-study</id>
+  <published>2018-12-11T19:50:33Z</published>
+  <updated>2018-12-11T19:50:33Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;The Behavior of Gradual Types: A User Study&lt;/em&gt; by Preston Tunnell&amp;mdash;Wilson, Ben Greenman, Justin Pombrio, and Shriram Krishnamurthi. For the full paper, datasets, and slides, &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#tgpk-dls-2018"&gt;click here&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The long-term goal of gradual typing is to build languages that offer the  &amp;ldquo;best&amp;rdquo; of both static and dynamic typing. Researchers disagree, however, on what the semantics of a mixed-typed language  should be; there are &lt;a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/"&gt;at least three competing proposals&lt;/a&gt;  for combining a dynamically-typed language with a similar statically-typed language.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;It&amp;rsquo;s an interesting situation. There are dozens of papers on the semantics of gradual types&amp;mdash;and &lt;a href="http://www.ccs.neu.edu/home/types/resources/talks/tgpk-dls-2018.pdf"&gt;many claim&lt;/a&gt; to have developers in mind&amp;mdash;but zero papers that ask developers what they think.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;To help inform the discussion, we recently designed a &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;survey&lt;/a&gt;  to see what programmers think of three mixed-typed semantics. The survey is based on 8 example programs; we selected these 8 programs because the set as a whole tells the three mixed-typed semantics apart. For each program, the survey presents a few possible outcomes of running the  program and asks participants for their opinion on each outcome.&lt;/p&gt;
+
+&lt;p&gt;The image below shows one program from the survey:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-program.png" alt="Figure 1: example program" /&gt;&lt;/p&gt;
+
+&lt;p&gt;This program creates an array, passes it between typed and untyped variables,  and performs write &amp;amp; read operations. What should happen when we run this program? One option is to ignore the type annotations and return the second element  of the array (&lt;code&gt;"bye"&lt;/code&gt;). A second option is to reject the write operation (on line 4) because it attempts  to write a number to a variable of type &lt;code&gt;Array(String)&lt;/code&gt;. A third option is to reject the assignment after the read operation (on line 5)  because it attempts to assign a string to a variable of type &lt;code&gt;Number&lt;/code&gt;. These are the three behaviors in the survey:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-behaviors.png" alt="Figure 2: behaviors for the example question" /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;A fourth option is to reject the assignment of an &lt;code&gt;Array(String)&lt;/code&gt; to a variable of type &lt;code&gt;Array(Number)&lt;/code&gt;. A few participants left comments asking for this behavior. See the &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;anonymized responses&lt;/a&gt; for their comments, and see &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for why we left that behavior out.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For each behavior, we asked for respondents&amp;rsquo; preference along two independent dimensions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Do you &lt;em&gt;like&lt;/em&gt; or &lt;em&gt;dislike&lt;/em&gt; this behavior?&lt;/li&gt;
+ &lt;li&gt;Does it match your &lt;em&gt;expectation&lt;/em&gt; as a programmer?&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Combined, the dimensions lead to four possible &lt;em&gt;attitudes&lt;/em&gt;: Like and Expected,  Like and Unexpected, Dislike and Expected, Dislike and Unexpected. The full example question, with attitudes and space for comments, is below.&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-question.png" alt="Figure 3: complete question" /&gt;&lt;/p&gt;
+
+&lt;p&gt;We administered the survey to three populations &amp;mdash; software engineers,  students, and Mechanical Turk workers &amp;mdash; and thereby collected three sets of  attitudes for each question. The results for the running example are below:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-data.png" alt="Figure 4: results for Question 7" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The figure is a matrix of three columns (one for each population)  and three rows (one for each behavior). Each cell of the matrix contains a bar chart showing the attitudes  that we collected.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Unlike the survey question, the behaviors in the results are labeled as &lt;strong&gt;Deep&lt;/strong&gt;, &lt;strong&gt;Erasure&lt;/strong&gt;, and &lt;strong&gt;Shallow&lt;/strong&gt;. These names describe the three mixed-typed semantics.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For this question, the software engineers (left column, green bars)  mostly picked the &amp;ldquo;Dislike and Unexpected&amp;rdquo; attitude for every behavior. The students (mid column, blue bars) also show consensus on &amp;ldquo;Dislike and  Unexpected&amp;rdquo; for the &lt;strong&gt;Deep&lt;/strong&gt; and &lt;strong&gt;Erasure&lt;/strong&gt; behaviors; however, they are split  for the &lt;strong&gt;Shallow&lt;/strong&gt; behavior. The Mechanical Turk workers are divided on every behavior.&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for the other questions and responses.&lt;/p&gt;
+
+&lt;p&gt;Overall, our main finding is that respondents preferred behaviors that enforced  full types and reported runtime mismatches as early as possible. The takeaway is thus:&lt;/p&gt;
+
+&lt;p style="margin-left: 40px; margin-right: 40px"&gt;if you are designing a mixed-typed language and choose &lt;strong&gt;not&lt;/strong&gt; to enforce full types, then make sure to explain this behavior to users!&lt;/p&gt;
+
+&lt;p&gt;Put lots of example programs in the language&amp;rsquo;s documentation. The programs in the survey can be adapted to explain how your chosen  behavior differs from alternatives.&lt;/p&gt;
+
+&lt;h2 id="questions"&gt;Questions&lt;/h2&gt;
+
+&lt;p&gt;Here are some good questions we&amp;rsquo;ve gotten that are not clearly answered in the paper.&lt;/p&gt;
+
+&lt;h4 id="q-did-any-respondents-expect-more-than-one-behavior"&gt;Q. Did any respondents &amp;ldquo;expect&amp;rdquo; more than one behavior?&lt;/h4&gt;
+
+&lt;p&gt;Yes, 59% &lt;!-- 20/34--&gt; of the software engineers and 82% &lt;!-- 14/17--&gt; of the students selected &amp;ldquo;Liked and Expected&amp;rdquo; and/or &amp;ldquo;Dislike and Expected&amp;rdquo; for different behaviors on the same program.&lt;/p&gt;
+&lt;!-- They probably interpreted "Expected" as--&gt;
+&lt;!--  "the program does something that makes sense", rather than--&gt;
+&lt;!--  "the program does the one thing that I believe it should do".--&gt;
+&lt;!-- ids for "double-expect" S.Es : R_24bz47lgcAOkCux R_2R4dZ1l0t3yx6fW R_b7yMVe7VtmmsrHb R_31MXSUfCyDE8FdG R_6LGXyOirYNtYWd3 R_2qyMZBAs74PrsSz R_2ASFRBh2jfuRgP1 R_1PUc0AUEzdXKGt8 R_2dL60N9oPIkbvWY R_1BXXqYyxH7R4r9l R_1ON2sxGalcODyAd R_1oyZasBudU5gKPS R_1FIHgkQbWGaxuHd R_b1s2YMBWCrCRvxf R_29t0zWxkQsfb9FT R_2fevZOrFGzS6JLf R_8Dn6NMjDyigT59n R_2pRG370z3cBUaKv R_2qDXTFI53ntWMu4 R_ZI8AwATueqyWwOR--&gt;
+&lt;!-- ids for "double-expect" students : R_9B6WHWEX5l0DskN R_22VAu37cGWQPQx1 R_3hgYSaGy2tbyY3G R_3rTbAqgn1rhQK4d R_r3HqAP1yGRXHaZX R_1l05qvQ1sYOCcCF R_3qaMT9xR7CRYg2Y R_1Li0sGHkxk1VfcA R_24ITtgvBzg9RpE3 R_3HzshHbDWkayp4t R_5mtEFLtSX0iPVOp R_1IR6vdpmVw4OCqV R_2XpWlkKjH9LQqln R_DoQrROe0dcb1YJz--&gt;
+
+&lt;h4 id="q-did-the-respondents-have-a-prior-preference-for-static-or-dynamic-typing"&gt;Q. Did the respondents have a prior preference for static or dynamic typing?&lt;/h4&gt;
+
+&lt;p&gt;Near the end of the survey we asked: &amp;ldquo;Which do you prefer, typed or untyped programming?&amp;rdquo;. See table 2 of &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for coded responses to this question,  or the &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;anonymized responses&lt;/a&gt; for the ground truth. Most preferred typed programming.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">A Spectrum of Type Soundness and Performance</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-10-06-a-spectrum-of-type-soundness-and-performance</id>
+  <published>2018-10-06T11:23:35Z</published>
+  <updated>2018-10-06T11:23:35Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The literature on mixed-typed languages presents (at least) three fundamentally different ways of thinking about the integrity of programs that combine  statically typed and dynamically typed code. Recently, we have been sorting them out.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;A Spectrum of Type  Soundness and Performance&lt;/em&gt; by Ben Greenman and Matthias Felleisen.  For the full paper, slides, code, and a video presentation, visit  &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018"&gt;http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;A dynamically-typed language runs any program that &amp;ldquo;looks good&amp;rdquo; (i.e.,  passes some basic syntactic criteria. In Python a program cannot mix  indentation levels. In Racket a program cannot refer to unbound variables). A statically-typed language runs any program that both &amp;ldquo;looks good&amp;rdquo; and  is well-typed according to a type checker.&lt;/p&gt;
+
+&lt;p&gt;A &lt;em&gt;mixed-typed&lt;/em&gt; language allows some combination of static and dynamic typing. There are many languages that fall in the mixed-typed category; figure 1 lists  a few, roughly arranged left-to-right by the year they first provided a way to  mix.&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/mixed-typed-systems-by-year.png" alt="Figure 1: Some mixed-typed languages" /&gt;
+ &lt;p class="caption"&gt;Figure 1: Some mixed-typed languages&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;These languages all try to combine static and dynamic typing in a useful way,  but they take VERY different approaches. For example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;strong&gt;MACLISP&lt;/strong&gt; defines a syntax for type annotations but does not say how a compiler  should interpret the types; see section 14.2 of the &lt;a href="http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf"&gt;Moonual&lt;/a&gt;.  For example, a compiler may use types to generate specialized code that assumes  the type annotations are correct (and has undefined behavior otherwise).&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Strongtalk&lt;/strong&gt; includes a static type checker and DOES NOT use types to change the  behavior of a program.  For rationale, see the &lt;a href="http://bracha.org/pluggableTypesPosition.pdf"&gt;Pluggable Type Systems&lt;/a&gt; position paper.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Typed Racket&lt;/strong&gt; lets a program combine statically-typed modules and dynamically-typed  modules. The compiler inserts run-time checks at the boundaries between such  modules to detect any mismatches between the static types and incoming dynamically-typed  values.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Thorn&lt;/strong&gt; requires that every value in a program has a type, but allows  dynamically-typed contexts to manipulate values. In other words, every Thorn  value is an instance of a statically-declared class and classes may contain  dynamically-typed methods.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Reticulated&lt;/strong&gt; lets a program combine static and dynamic &lt;em&gt;expressions&lt;/em&gt; and  guarantees that the combination has a well-defined semantics (Vitousek, Swords, and Siek &lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;POPL 2017&lt;/a&gt;).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;That makes five different systems. There are 15 other systems in the figure, and many more in the world. How can we make sense of this space? We claim: by understanding each system&amp;rsquo;s protocol for checking  dynamically-typed values at a &lt;em&gt;type boundary&lt;/em&gt; (between static and dynamic code).&lt;/p&gt;
+
+&lt;h3 id="main-contribution"&gt;Main Contribution&lt;/h3&gt;
+
+&lt;p&gt;In the paper &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;&lt;em&gt;A Spectrum of Type Soundness and Performance&lt;/em&gt;&lt;/a&gt;,  we define a tiny mixed-typed language and show three ways to define the  behavior of programs &amp;mdash; based on three protocols for checking  dynamically-typed values that cross a boundary into statically-typed code.&lt;/p&gt;
+
+&lt;p&gt;The three behaviors are inspired by existing languages. A &lt;strong&gt;higher order&lt;/strong&gt; behavior ensures that dynamically-typed  values match the static type at a boundary &amp;mdash; by checking the value when possible,  and by monitoring the value&amp;rsquo;s future interactions when necessary. A &lt;strong&gt;first order&lt;/strong&gt; behavior performs a yes-or-no check on dynamically-typed values  and never monitors their future behavior. An &lt;strong&gt;erasure&lt;/strong&gt; behavior does no checking whatsoever.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Example (monitors): if typed code expects a function from numbers to numbers and receives an untyped function &lt;code&gt;f&lt;/code&gt;, then one way to enforce the type boundary is to wrap &lt;code&gt;f&lt;/code&gt; in a proxy to assert that every future call to &lt;code&gt;f&lt;/code&gt; returns a number. In this case, the proxy monitors the behavior of &lt;code&gt;f&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Concretely, the paper defines three formal semantics with the same names. The &lt;strong&gt;higher-order&lt;/strong&gt; semantics enforces full types at the boundaries (Section 2.3). The &lt;strong&gt;first-order&lt;/strong&gt; semantics enforces type constructors at the boundaries, and  furthermore enforces type constructors on every &amp;ldquo;selector&amp;rdquo; operation in typed  code, e.g., function application, data structure access (Section 2.5). The &lt;strong&gt;erasure&lt;/strong&gt; semantics simply ignores the types (Section 2.4).&lt;/p&gt;
+
+&lt;p&gt;Each semantics satisfies a &lt;em&gt;different&lt;/em&gt; notion of soundness for mixed-typed  programs, and each notion is slightly weaker than soundness for fully-typed  programs. The paper states these theorems (Section 2) and the  &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;online supplement&lt;/a&gt;  gives full proofs.&lt;/p&gt;
+
+&lt;p&gt;The paper has more to say about the meta-theory. See section 2 and section 4.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;To the best of our knowledge, this paper is the first to explicitly acknowledge that different approaches to a mixed-typed language lead to different notions of soundness. Other papers state type soundness theorems for &lt;a href="https://dl.acm.org/citation.cfm?id=2676971"&gt;subset of the language&lt;/a&gt; (in the spirit of &lt;a href="http://soundiness.org/"&gt;soundiness&lt;/a&gt;) or use the name &amp;ldquo;type soundness&amp;rdquo; to describe &lt;a href="https://dl.acm.org/citation.cfm?id=2676971"&gt;a different property&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Next, we used the three semantics as a guide to arrive at three compilers for  Typed Racket. The higher-order compiler is the standard Typed Racket. The first-order compiler is something we built, based on the semantics. The erasure compiler simply ignores the type annotations &amp;mdash; similar to Typed Racket&amp;rsquo;s  &lt;a href="http://docs.racket-lang.org/ts-reference/Typed_Racket_Syntax_Without_Type_Checking.html"&gt;no-check&lt;/a&gt; language.&lt;/p&gt;
+
+&lt;p&gt;Using this set-up, we measured the performance of mixed-typed programs via  each compiler using the method suggested by Takikawa et. al (&lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;POPL 2016&lt;/a&gt;). The programs we measured are the non-object-oriented ones from our &lt;a href="http://docs.racket-lang.org/gtp-benchmarks/index.html"&gt;benchmark suite&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To some extent, the performance results confirm conjectures from the literature. The full results, however, include many surprises &amp;mdash; see section 3 of the paper,  section B of the &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;supplement&lt;/a&gt;,  and/or the &lt;a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf"&gt;slides&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="implications"&gt;Implications&lt;/h3&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;The model in the paper is one way to understand the different approaches  to mixed-typed languages. See section 5 of the paper,  section D of the &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;supplement&lt;/a&gt;,  or &lt;a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf"&gt;slide 114&lt;/a&gt;.&lt;/li&gt;
+ &lt;li&gt;Programmers using mixed-typed languages need to know what guarantees their  types provide.  (It is &lt;a href="https://twitter.com/jbandi/status/965005464638541825"&gt;not safe to assume that TypeScript types give the same guarantees as OCaml types&lt;/a&gt;!)  Section 4 of the paper contains many examples of how the different guarantees  may affect practice.&lt;/li&gt;
+ &lt;li&gt;The relative performance of different approaches is more nuanced than the  literature suggests. Our paper gives a first systematic comparison based on  implementations that have clear areas for improvement. The question is:  can we find improvements that lead to asymptotic differences, or is it a  battle for constant factors?&lt;/li&gt;&lt;/ol&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: in this post, a &lt;em&gt;mixed-typed language&lt;/em&gt; is one that allows any combination of static and dynamic typing. A &lt;em&gt;gradually-typed language&lt;/em&gt; is one that allows a certain kind of mixing that satisfies properties defined by Siek, Vitousek, Cimini, and Boyland (&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;SNAPL 2015&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;</content></entry>
+ <entry>
+  <title type="text">Sampling Gradual Typing Performance</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/05/08/sampling-gradual-typing-performance/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-05-08-sampling-gradual-typing-performance</id>
+  <published>2018-05-08T15:37:37Z</published>
+  <updated>2018-05-08T15:37:37Z</updated>
+  <author>Ben Greenman</author>
+  <author>Zeina Migeed</author>
+  <author>
+   <name>Ben Greenman, Zeina Migeed</name></author>
+  <content type="html">
+&lt;p&gt;This post explains the sampling method introduced in the paper &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="quick-reference-how-to-apply-the-method"&gt;Quick Reference: How to apply the method&lt;/h2&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;Find an untyped program, measure its running time.&lt;/li&gt;
+ &lt;li&gt;Define a &lt;em&gt;granularity&lt;/em&gt; for type annotations (by-function, by-module, by-program, &amp;hellip;.).&lt;/li&gt;
+ &lt;li&gt;Define a sample size &lt;strong&gt;s&lt;/strong&gt; and number of samples &lt;strong&gt;r&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;Randomly select &lt;strong&gt;s&lt;/strong&gt; &lt;em&gt;configurations&lt;/em&gt; uniformly at random, measure their running time.&lt;/li&gt;
+ &lt;li&gt;Repeat the previous step &lt;strong&gt;r&lt;/strong&gt; times.&lt;/li&gt;
+ &lt;li&gt;Pick a positive real number &lt;strong&gt;D&lt;/strong&gt;.&lt;/li&gt;
+ &lt;li&gt;Count the proportion of configurations in each sample with running time less-than-or-equal-to &lt;strong&gt;D&lt;/strong&gt;&lt;/li&gt;
+ &lt;li&gt;Build a 95% confidence interval for the &lt;strong&gt;r&lt;/strong&gt; proportions computed in the previous step&lt;/li&gt;
+ &lt;li&gt;Conclusion: there is a good chance that your interval contains the true proportion of configurations with running time less-than-or-equal-to &lt;strong&gt;D&lt;/strong&gt;&lt;/li&gt;&lt;/ol&gt;
+
+&lt;h2 id="background-what-to-measure"&gt;Background: what to measure&lt;/h2&gt;
+
+&lt;p&gt;A migratory typing system adds static typing to a dynamically-typed (or, untyped) language. The recipe for &amp;ldquo;adding static typing&amp;rdquo; has a few steps:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;add a syntax for type annotations&lt;/li&gt;
+ &lt;li&gt;add a static type checker&lt;/li&gt;
+ &lt;li&gt;add a semantics for statically-typed parts of the program&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;If the semantics for statically-typed parts of the program is &lt;strong&gt;not&lt;/strong&gt; the same  as the semantics for dynamically-typed parts, then it is important to measure  performance.&lt;/p&gt;
+
+&lt;p&gt;The key question is: how does adding type annotations affect the  running time of a working program? We do not know how to answer this question directly.&lt;/p&gt;
+
+&lt;p&gt;An easier question, that we can answer, is: for a few programs each with  one full set of type annotations, how does adding or removing the chosen type  annotations affect the running time of these programs?&lt;/p&gt;
+
+&lt;p&gt;The next two sections give two methods for answering this question.&lt;/p&gt;
+
+&lt;h2 id="exhaustive-method"&gt;Exhaustive Method&lt;/h2&gt;
+
+&lt;p&gt;One way to answer our easier question is to remove type annotations one  &amp;ldquo;unit&amp;rdquo; at a time and measure the running time of all these partially-typed  programs. We call the &amp;ldquo;unit&amp;rdquo; the &lt;em&gt;granularity&lt;/em&gt; of the performance evaluation. For example, some choices for granularity are to remove types one module  at a time, to remove types one function at a time, or to remove types  one variable at a time. We call the &amp;ldquo;partially-typed programs&amp;rdquo; the &lt;em&gt;configurations&lt;/em&gt; of the original  dynamically-typed program. Note that the number of configurations depends on the choice of granularity  &amp;mdash; I can&amp;rsquo;t just use the word &lt;em&gt;configurations&lt;/em&gt; without telling you the  granularity I have in mind.&lt;/p&gt;
+
+&lt;p&gt;After measuring the running time of all configurations, we can summarize the  results. One way to summarize is to pick a number &lt;strong&gt;D&lt;/strong&gt; and count the number of configurations  that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the original dynamically-typed program. If this number is large, then the takeaway is:  if &lt;em&gt;you&lt;/em&gt; are willing to accept at most a &lt;strong&gt;D&lt;/strong&gt;x slowdown, and you add your  own type annotations to your own program, then there&amp;rsquo;s some hope that your  configuration runs at most &lt;strong&gt;D&lt;/strong&gt; times slower than your original program.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Credit for the exhaustive method: &lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;&lt;em&gt;Is Sound Gradual Typing Dead?&lt;/em&gt;&lt;/a&gt; and &lt;a href="https://www2.ccs.neu.edu/racket/pubs/ecoop2015-takikawa-et-al.pdf"&gt;&lt;em&gt;Toward Practical Gradual Typing&lt;/em&gt;&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="simple-random-approximation-method"&gt;Simple Random Approximation Method&lt;/h2&gt;
+
+&lt;p&gt;The method above does not scale to large programs or fine granularities  because it asks for an exponential number of measurements. E.g., if there are 20 units to add or remove types from, then there are 1 million  configurations to measure. Exponentials are bad.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gm-pepm-2018"&gt;&lt;em&gt;On the Cost of Type-Tag Soundness&lt;/em&gt;&lt;/a&gt;,  suggests a method based on simple random sampling that answers a similar question. Instead of measuring the true proportion of configurations that run at most  &lt;strong&gt;D&lt;/strong&gt; times slower than the original dynamically-typed program, we:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;pick a sample size &lt;strong&gt;s&lt;/strong&gt; (in the paper, we used &lt;strong&gt;s = 10M&lt;/strong&gt; where &lt;strong&gt;M&lt;/strong&gt; is the number of units),&lt;/li&gt;
+ &lt;li&gt;pick a number of samples &lt;strong&gt;r&lt;/strong&gt; (in the paper, we used &lt;strong&gt;r = 10&lt;/strong&gt;),&lt;/li&gt;
+ &lt;li&gt;and build a 95% confidence interval for the true proportion of configurations  that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the original program (from the  &lt;strong&gt;r&lt;/strong&gt; proportions of configurations that run at most &lt;strong&gt;D&lt;/strong&gt; times slower than the  original program in each of the &lt;strong&gt;r&lt;/strong&gt; samples).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The method is outlined above, described in the paper, and validated in that paper&amp;rsquo;s appendix. Please let us know if you have more questions.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Maybe you&amp;rsquo;re wondering, &amp;ldquo;gee why do they keep writing out &amp;lsquo;configurations that  run at most &amp;hellip;.&amp;rsquo; instead of something shorter?&amp;rdquo;. Well, the short version is &lt;em&gt;&lt;strong&gt;D&lt;/strong&gt;-deliverable&lt;/em&gt; and it was introduced in the &lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;&lt;em&gt;Is Sound Gradual Typing Dead?&lt;/em&gt;&lt;/a&gt; paper. Unfortunately, (1) that paper instantiated &lt;strong&gt;D&lt;/strong&gt; to &lt;strong&gt;3&lt;/strong&gt;-deliverable in order to  explain a few graphs and (2) at least two published papers (&lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;paper 1&lt;/a&gt;, &lt;a href="https://dl.acm.org/citation.cfm?id=3133878"&gt;paper 2&lt;/a&gt;)  now cite us as saying &lt;strong&gt;3&lt;/strong&gt;x overhead is the cutoff between a good migratory  typing system and a bad one.&lt;/p&gt;
+ &lt;p&gt;&amp;hellip;&lt;/p&gt;
+ &lt;p&gt;If we can&amp;rsquo;t trust scientists to understand, then we &lt;em&gt;definitely&lt;/em&gt; can&amp;rsquo;t trust  you folks on the internet.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h2 id="faq"&gt;FAQ&lt;/h2&gt;
+
+&lt;h3 id="q-what-is-the-sampling-method-useful-for"&gt;Q. What is the sampling method useful for?&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Making a confidence interval for the true proportion of configurations that  run at most &lt;strong&gt;D&lt;/strong&gt; times slower than some baseline, for your favorite value of &lt;strong&gt;D&lt;/strong&gt;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-what-is-the-sampling-method-not-useful-for"&gt;Q. What is the sampling method &lt;strong&gt;not&lt;/strong&gt; useful for?&lt;/h3&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Finding the slowest configuration.&lt;/li&gt;
+ &lt;li&gt;Finding the average running time of all configurations.&lt;/li&gt;
+ &lt;li&gt;Evaluations where &amp;ldquo;removing types&amp;rdquo; might involve changing &lt;strong&gt;List[Int]&lt;/strong&gt; to &lt;strong&gt;List[Dyn]&lt;/strong&gt;, etc.&lt;/li&gt;
+ &lt;li&gt;Situations where its wrong to assume that a programmer will start from untyped and pick a configuration uniformly at random&lt;/li&gt;
+ &lt;li&gt;&amp;hellip;. many more &amp;hellip;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-why-is-it-okay-to-choose-d-after-collecting-the-samples"&gt;Q. Why is it okay to choose &lt;strong&gt;D&lt;/strong&gt; after collecting the samples?&lt;/h3&gt;
+
+&lt;p&gt;The &amp;ldquo;quick reference&amp;rdquo; at the top of this post suggests choosing a value for &lt;strong&gt;D&lt;/strong&gt;  (the cutoff between good and bad performance) after sampling configurations  and measuring their running time. This may sound strange, because (1) the value of &lt;strong&gt;D&lt;/strong&gt; affects our bottom-line  judgment about the proportion of configurations with good performance, and (2)  shouldn&amp;rsquo;t and value that affects the bottom line be fixed before taking samples? (To avoid accidental &lt;a href="https://en.wikipedia.org/wiki/Data_dredging"&gt;data dredging&lt;/a&gt;.)&lt;/p&gt;
+
+&lt;p&gt;The reason it is ok to pick &lt;strong&gt;D&lt;/strong&gt; after taking the sample is that the  running times in the sample are independent of the choice of &lt;strong&gt;D&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;For example, if one person chose &lt;strong&gt;D=3&lt;/strong&gt; and a second person chose &lt;strong&gt;D=9&lt;/strong&gt;,  both would follow the same protocol independent of &lt;strong&gt;D&lt;/strong&gt; to take samples.&lt;/p&gt;
+
+&lt;h3 id="q-how-does-migratory-typing-relate-to-gradual-typing"&gt;Q. How does migratory typing relate to gradual typing?&lt;/h3&gt;
+
+&lt;p&gt;Gradual typing is not just about adding a type system to an existing programming  language. See &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;&lt;em&gt;Refined Criteria for Gradual Typing&lt;/em&gt;&lt;/a&gt;  and &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2017/7120/"&gt;&lt;em&gt;Migratory Typing: 10 Years Later&lt;/em&gt;&lt;/a&gt;  for details.&lt;/p&gt;
+
+&lt;h3 id="q-do-you-have-code-i-can-use-to-plot-sampling-data"&gt;Q. Do you have code I can use to plot sampling data?&lt;/h3&gt;
+
+&lt;p&gt;Yes, start here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29"&gt;http://docs.racket-lang.org/gtp-plot/index.html#%28def._%28%28lib._gtp-plot%2Fplot..rkt%29._samples-plot%29%29&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Please ask questions and open issues if you have trouble. The source is here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/bennn/gtp-plot"&gt;https://github.com/bennn/gtp-plot&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h3 id="q-where-is-code-for-the-sampling-paper"&gt;Q. Where is code for the sampling paper?&lt;/h3&gt;
+
+&lt;p&gt;Start here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018"&gt;https://pkgd.racket-lang.org/pkgn/package/gm-pepm-2018&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Source is here:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/retic_performance"&gt;https://github.com/nuprl/retic_performance&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;h2 id="closing-thoughts"&gt;Closing Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Statistics is easy to do wrong. Please let us know if you think our method is doing bad statistics.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Gradual Typing Across the Spectrum, part II</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-08-22-gradual-typing-across-the-spectrum-part-ii</id>
+  <published>2017-08-22T15:54:06Z</published>
+  <updated>2017-08-22T15:54:06Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;Last week, Northeastern hosted a PI meeting for the &lt;a href="http://prl.ccs.neu.edu/gtp/"&gt;Gradual Typing Across the  Spectrum&lt;/a&gt; NSF grant. The meeting was made of 20+ researchers from four institutions,  and 12 technical talks. Schedule:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html"&gt;http://prl.ccs.neu.edu/gtp/pi2017/pi2017.html&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;A common thread among the talks was the question:  &lt;em&gt;how to convert a research idea into a tool for software developers?&lt;/em&gt;&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;In my mind, gradual typing &lt;em&gt;is&lt;/em&gt; an answer to one instance of this question. The research idea is strong static type systems, and the software developers  are the millions using dynamically typed languages. I know that static typing can make programs easier to write and maintain. The developers know that dynamic typing has benefits; moreover they know better  than to migrate their code from one language to another on a whim. Gradual typing is a linguistic solution to the problem of &lt;em&gt;adding&lt;/em&gt; the benefits  of static typing to a dynamically typed language.&lt;/p&gt;
+
+&lt;p&gt;Enough opinions, let&amp;rsquo;s talk about the talks.&lt;/p&gt;
+
+&lt;p&gt;The morning session consisted of four talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://www.cs.umd.edu/people/milod"&gt;Milod Kazerounian&lt;/a&gt; (&lt;a href="https://www.cs.umd.edu/"&gt;UMD&lt;/a&gt;)  spoke about upgrading the &lt;a href="https://github.com/plum-umd/rdl"&gt;RDL&lt;/a&gt; type checker  for Ruby with support for refinement types.  The idea is to compile Ruby code and types to &lt;a href="https://emina.github.io/rosette/"&gt;Rosette&lt;/a&gt;,  and profit from &lt;a href="http://yices.csl.sri.com/papers/cav2007.pdf"&gt;SMT&lt;/a&gt;-assisted type checking.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://ambrosebs.com/"&gt;Ambrose Bonnaire-Sergeant&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;, &lt;a href="http://ambrosebs.com/talks/squash-work-boston-pi-2017.pdf"&gt;slides&lt;/a&gt;)  has been inferring &lt;em&gt;useful&lt;/em&gt; &lt;a href="http://typedclojure.org/"&gt;Typed Clojure&lt;/a&gt; types through dynamic analysis of  Clojure programs. His tool observes how values flow through a program at run-time,  then lifts these observations into possibly-recursive, possibly-incorrect type  annotations. The surprising result is that the tool quickly (1&amp;ndash;2 seconds per  unit test, I think) infers types that can help a developer start annotating a program.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://ccs.neu.edu/~types/"&gt;Ben Greenman&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;, &lt;a href="http://homedirs.ccs.neu.edu/types/resources/talks/preservation-types.pdf"&gt;slides&lt;/a&gt;)  explained why he is implementing a semantics for &lt;a href="https://github.com/racket/typed-racket"&gt;Typed Racket&lt;/a&gt;  inspired by Michael Vitousek&amp;rsquo;s work on &lt;a href="http://homes.soic.indiana.edu/mvitouse/papers/popl17.pdf"&gt;Reticulated Python&lt;/a&gt;.  The &amp;ldquo;why&amp;rdquo; is &amp;ldquo;performance&amp;rdquo;. The Reticulated semantics will enforce a  notion of tag soundness in kind of &lt;a href="https://en.wikipedia.org/wiki/Deal_with_the_Devil"&gt;devils contract&lt;/a&gt;  to improve performance.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://cs.brown.edu/~ptunnell/"&gt;Preston Tunnell-Wilson&lt;/a&gt; (&lt;a href="http://cs.brown.edu/"&gt;Brown&lt;/a&gt;, &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tpk-crowdsource-lang-design/"&gt;ONWARD 2017&lt;/a&gt;)  recently sent questions about programming language design to  &lt;a href="https://www.mturk.com/mturk/welcome"&gt;Mechanical Turk&lt;/a&gt; workers.  Survey says, developers have extremely diverse opinions about what they &lt;em&gt;expect&lt;/em&gt;  and what they &lt;em&gt;want&lt;/em&gt; regarding scope, inheritance, and infix operators.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;In the early afternoon, we had two talks on similar themes as the morning session:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://github.com/akuhlens"&gt;Andre Kuhlenschmidt&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  is exploring the design space of efficient implementations for run-time type checks.  The main challenge is how to &lt;em&gt;monitor&lt;/em&gt; higher-order data in a way that efficiently  performs type checks and can help the programmer debug any failed checks.  This talk presented data comparing two approaches to the program; I believe  the latter, improved approach is based on &lt;a href="http://homepages.inf.ed.ac.uk/wadler/papers/coercions/coercions.pdf"&gt;coercions&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://zeinamigeed.com/"&gt;Zeina Migeed&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;)  explained that there are many ways to adapt type soundness to a gradually  typed language, and presented some data comparing Typed Racket&amp;rsquo;s &lt;em&gt;generalized soudness&lt;/em&gt;  to Reticulated Python&amp;rsquo;s &lt;em&gt;tag soundness&lt;/em&gt;. The data suggests that tag soundness  never adds an order-of-magnitude slowdown.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Next on the schedule were two talks about implementing advanced type systems  in Racket&amp;rsquo;s macro expander (think: meta-level linguistic re-use, capture-avoiding  substitution for free!)&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://github.com/iitalics"&gt;Milo Turner&lt;/a&gt; (&lt;a href="http://www.ccis.northeastern.edu/"&gt;NEU&lt;/a&gt;)  first showed how to implement &lt;a href="https://gankro.github.io/blah/linear-rust/#definitions-and-the-state-of-rust"&gt;linear and affine&lt;/a&gt;  type systems using &lt;a href="http://docs.racket-lang.org/syntax/Parsing_Syntax.html"&gt;syntax-parse&lt;/a&gt;,  and second presented a simpler implementation using the &lt;a href="http://docs.racket-lang.org/turnstile/index.html"&gt;Turnstile&lt;/a&gt; library.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="http://www.davidchristiansen.dk/"&gt;David Christiansen&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  is building &lt;a href="https://github.com/david-christiansen/pudding"&gt;a proof assistant&lt;/a&gt;  in Racket. This talk focused on the design and implementation of proof  tactics.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;After a short break, we heard about something completely different:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://justinpombrio.net/"&gt;Justin Pombrio&lt;/a&gt; (&lt;a href="http://cs.brown.edu/"&gt;Brown&lt;/a&gt;, &lt;a href="http://cs.brown.edu/research/plt/dl/icfp2017/"&gt;ICFP 2017&lt;/a&gt;)  taught us to interpet the scoping rules of a &amp;ldquo;core&amp;rdquo; language as a preorder.  Using the preorder, he then showed how to &lt;em&gt;infer&lt;/em&gt; the scoping rules of  any &amp;ldquo;surface&amp;rdquo; language based on its translation to the &amp;ldquo;core&amp;rdquo;.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Last summer and fall, Jeremy Siek hosted two REUs (&lt;a href="https://www.nsf.gov/funding/pgm_summ.jsp?pims_id=5517&amp;amp;from=fund"&gt;research experience for undergraduates&lt;/a&gt;) at Indiana University. The two students gave the next talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;Di Zhong (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  talked about implementing interpreters in Racket, Python, and Haskell.  As I understand, this was a hands-on experience through &lt;a href="https://www.cis.upenn.edu/~bcpierce/tapl/"&gt;TAPL&lt;/a&gt;  and &lt;a href="https://redex.racket-lang.org/"&gt;the Redex book&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;a href="https://zeinamigeed.com/"&gt;Zeina Migeed&lt;/a&gt; (&lt;a href="https://www.cs.indiana.edu/"&gt;IU&lt;/a&gt;)  demonstrated her implementation of &lt;a href="http://theory.stanford.edu/~aiken/publications/papers/popl94.pdf"&gt;conditional types&lt;/a&gt;  for &lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Finally,&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://nikivazou.github.io/"&gt;Niki Vazou&lt;/a&gt; (&lt;a href="https://www.cs.umd.edu/"&gt;UMD&lt;/a&gt;)  presented a theory of gradual refinement types.  Any &amp;ldquo;holes&amp;rdquo; in the refinements introduce a search problem; type checking  attempts to solve the problem by finding a predicate that unifies a function  definition and its callers.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;This meeting was a great opportunity to reflect on the recent past and  share opinions on what&amp;rsquo;s worth pursuing in the future. Many thanks to the participants, and to the NSF for the support!&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;If you want to know about the future, you need to ask the young people who will create it. Young people don&amp;rsquo;t know what can&amp;rsquo;t be done, and so they go ahead and do it. &amp;mdash; &lt;a href="https://www.youtube.com/watch?v=sM1bNR4DmhU"&gt;Ivan Sutherland&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;</content></entry>
+ <entry>
+  <title type="text">Categorical Semantics for Dynamically Typed Programming Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/01/categorical-semantics-for-dynamically-typed-programming-languages/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-01-categorical-semantics-for-dynamically-typed-programming-languages</id>
+  <published>2017-05-01T12:25:17Z</published>
+  <updated>2017-05-01T12:25:17Z</updated>
+  <author>
+   <name>Max New</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;In 1969, Dana Scott wrote an &lt;a href="/blog/static/scott-69-93-type-theoretical-alternative.pdf"&gt;unpublished manuscript&lt;/a&gt; in which he said untyped lambda calculus had no mathematical meaning, 11 years later he wrote &lt;a href="/blog/static/scott-80-relating-theories.pdf"&gt;a paper&lt;/a&gt; that organized many of the different semantics he and others had since found using the language of category theory.&lt;/p&gt;
+
+&lt;p&gt;This latter paper is really the first deserving of the title &amp;ldquo;categorical semantics of dynamic typing&amp;rdquo;, and so I&amp;rsquo;m going to present some of the theorems and &amp;ldquo;theorems&amp;rdquo; presented in that paper, but mingled with the history of the idea and the preceding papers that led to them.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/blog/static/dyn-cats.pdf"&gt;My Full Notes&lt;/a&gt; continue the story, and you might also be interested in the &lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-07.md"&gt;discussion during the lecture&lt;/a&gt;.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Gradual Typing Across the Spectrum</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/?utm_source=gradual-typing&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-05-18-gradual-typing-across-the-spectrum</id>
+  <published>2016-05-18T07:58:56Z</published>
+  <updated>2016-05-18T07:58:56Z</updated>
+  <author>
+   <name>Asumu Takikawa</name></author>
+  <content type="html">
+&lt;blockquote&gt;
+ &lt;p&gt;Instead of being Pythonistas, Rubyists, or Racketeers we have to be scientists. &amp;mdash; Matthias Felleisen&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Yesterday we hosted a PI meeting for the &lt;a href="http://prl.ccs.neu.edu/gtp/"&gt;Gradual Typing Across the Spectrum&lt;/a&gt; NSF grant, gathering researchers from a number of institutions who work on gradual typing (the meeting program can be found &lt;a href="http://prl.ccs.neu.edu/gtp/pi2016/pi2016.html"&gt;here&lt;/a&gt;). In case you aren&amp;rsquo;t familiar with gradual typing, the idea is to augment dynamically typed languages (think Python or Ruby) with static type annotations (as documentation, for debugging, or for tool support) that are guaranteed to be sound.&lt;/p&gt;
+
+&lt;p&gt;Gradual typing is these days a fairly popular area, but the research can seem fragmentary because of the need to support idiosyncratic language features. One of the points of the meeting was to encourage the cross-pollination of the key scientific ideas of gradual typing&amp;mdash;the ideas that cross language and platform barriers.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;There were a good number of both institutions and programming languages represented at the meeting, with researchers from all of &lt;a href="http://cs.brown.edu/research/plt/"&gt;Brown University&lt;/a&gt;, &lt;a href="https://wonks.github.io/"&gt;Indiana University&lt;/a&gt;, &lt;a href="http://prl.ccs.neu.edu/"&gt;Northeastern University&lt;/a&gt;, and the &lt;a href="http://www.cs.umd.edu/projects/PL/"&gt;University of Maryland&lt;/a&gt;. The languages that we work on cover a broad subset of the dynamically-typed languages: Clojure, JavaScript, R, Racket, Ruby, Pyret, and Python.&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-4.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;The specific research artifacts that were represented include &lt;a href="https://github.com/mvitousek/reticulated"&gt;Reticulated Python&lt;/a&gt;, &lt;a href="https://github.com/plum-umd/rdl"&gt;RDL&lt;/a&gt; (contracts for Ruby), &lt;a href="http://plg.uwaterloo.ca/~dynjs/strongscript/"&gt;StrongScript&lt;/a&gt;, &lt;a href="http://typedclojure.org/"&gt;Typed Clojure&lt;/a&gt;, and &lt;a href="http://docs.racket-lang.org/ts-guide/index.html"&gt;Typed Racket&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In this blog post, I&amp;rsquo;ll summarize some of the key research themes that were brought up at the meeting. Since I can&amp;rsquo;t go into too much detail about every topic, I will link to the relevant research papers and other resources.&lt;/p&gt;
+
+&lt;p&gt;At a high level, the talks covered four major facets of gradual typing: expressiveness, performance, usability, and implementation techniques.&lt;/p&gt;
+
+&lt;h2 id="expressiveness"&gt;Expressiveness&lt;/h2&gt;
+
+&lt;p&gt;By expressiveness, I mean what kinds of language features a gradual type system supports and the richness of the reasoning that the type system provides. Since gradual typing is about augmenting existing dynamically-typed languages, a gradual type system should support the language features that programmers actually use.&lt;/p&gt;
+
+&lt;p&gt;This is why recent implementations of gradual typing have focused on enabling object-oriented programming, since objects are widely used in nearly all dynamically-typed languages in use today. Unfortunately, since different languages have wildly different object systems, it&amp;rsquo;s hard to compare research on gradual OO languages. Ben Chung is working to address this by coming up with a formal model that tries to unify various accounts of objects in order to better explain the design tradeoffs. His goal is to cover the core ideas in Reticulated Python, StrongScript, and Typed Racket.&lt;/p&gt;
+
+&lt;p&gt;Of course, dynamically-typed languages have a lot more than OO features. Along these lines, I gave a talk on how at NU we&amp;rsquo;re working to extend Typed Racket to cover everything from objects (my thesis topic), first-class modules (Dan Feltey&amp;rsquo;s MS project), and higher-order contracts (Brian LaChance&amp;rsquo;s MS project).&lt;/p&gt;
+
+&lt;p&gt;On the other side, as programs get more complex, programmers may wish to write richer type specifications that provide even more guarantees. This makes gradual typing a wide spectrum that goes from completely untyped, fully typed, and then beyond to dependently typed. Andrew Kent and David Christiansen both presented work that takes gradual typing beyond ordinary typed reasoning with dependent types.&lt;/p&gt;
+
+&lt;p&gt;Andrew presented an extension of Typed Racket that adds type refinements that can check rich properties (like vector bounds) that are found in real Racket code (see his RacketCon &lt;a href="https://www.youtube.com/watch?v=ejFJIAsvdEg"&gt;talk&lt;/a&gt; and recent &lt;a href="http://arxiv.org/pdf/1511.07033.pdf"&gt;PLDI paper&lt;/a&gt;). David Christiansen followed with a talk about adding dependent type theory to Typed Racket, which would allow correct-by-construction programming using a Nuprl-like proof system (he had a very cool GUI proof assistant demo in his slides!).&lt;/p&gt;
+
+&lt;h2 id="performance"&gt;Performance&lt;/h2&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-8.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;One of the key practical concerns about gradual typing is its performance overhead. It&amp;rsquo;s a concern because in order to ensure type safety, a gradually-typed language implementation needs to install dynamic checks between the typed and untyped parts of a program. This catches any inconsistencies between the typed interfaces and how the untyped code may call into them.&lt;/p&gt;
+
+&lt;p&gt;Ben Greenman gave an upbeat talk that set the stage for this topic, pointing out some key lessons that we&amp;rsquo;ve learned about performance from building Typed Racket. The main idea he presented (also the topic of our &lt;a href="http://www.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;POPL 2016 paper&lt;/a&gt;) is that to evaluate a gradual type system, you want to explore different ways of adding types to a program and see how much it costs. This evaluation effort started with Typed Racket, but he and Zeina Migeed are working on expanding it to Reticulated Python.&lt;/p&gt;
+
+&lt;p&gt;From IU, Andre Kuhlenschmidt and Deyaaeldeen Almahallawi are exploring how ahead-of-time (AOT) compilation strategies could help reduce the cost of gradual typing. In particular, they are working on implementing &lt;a href="https://github.com/deyaaeldeen/Schml"&gt;Schml&lt;/a&gt;: a compiler from the gradually-typed lambda calculus to C.&lt;/p&gt;
+
+&lt;p&gt;In addition to AOT compilation, the folks at IU are exploring tracing JIT compilation as a means to make gradual typing faster. More specifically, Spenser Bauman talked about Pycket, an alternative implementation of Racket that uses RPython/PyPy to dramatically lower the overhead of gradual typing (also see the &lt;a href="https://www.youtube.com/watch?v=GOfIY8NHAqg"&gt;recording&lt;/a&gt; of Spenser&amp;rsquo;s talk on the topic at RacketCon and his &lt;a href="http://homes.soic.indiana.edu/samth/pycket-draft.pdf"&gt;ICFP paper&lt;/a&gt;).&lt;/p&gt;
+
+&lt;h2 id="usability"&gt;Usability&lt;/h2&gt;
+
+&lt;p&gt;On the usability side, both Shriram Krishnamurthi and Ambrose Bonnaire-Sergeant made observations on what it takes to get gradual typing in the hands of real software developers.&lt;/p&gt;
+
+&lt;p&gt;Shriram approached the topic from the angle of CS education, which is the focus of the &lt;a href="http://www.pyret.org"&gt;Pyret&lt;/a&gt; language, and shared what the Brown language group is working on. While Pyret doesn&amp;rsquo;t exactly fit the mold of gradual typing, it&amp;rsquo;s a close cousin since it&amp;rsquo;s a dynamically-typed language that explicitly takes design cues from the best parts of statically-typed languages. That approach lets CS beginners think in terms of types (the approach spearheaded by &lt;a href="http://www.ccs.neu.edu/home/matthias/HtDP2e/index.html"&gt;HtDP&lt;/a&gt; and &lt;a href="http://www.bootstrapworld.org/"&gt;Bootstrap&lt;/a&gt;) without having to battle a typechecker from the start.&lt;/p&gt;
+
+&lt;p&gt;For professional software developers, a major concern with gradual typing is that writing type annotations may be a tedious and time intensive task. Ambrose, who is the creator of Typed Clojure, shared some preliminary work on how to cut down on the tedium by inferring gradual type annotations by instrumenting programs for a dynamic analysis. The hope is to be able to infer both recursive and polymorphic type annotations automatically from tests (you may also be interested in Ambrose&amp;rsquo;s recent &lt;a href="http://frenchy64.github.io/papers/esop16-short.pdf"&gt;ESOP paper&lt;/a&gt; on Typed Clojure).&lt;/p&gt;
+
+&lt;h2 id="implementation-techniques"&gt;Implementation Techniques&lt;/h2&gt;
+
+&lt;p&gt;Finally, several talks focused on alternative implementation techniques for gradual typing that provide a variety of software engineering benefits for implementers.&lt;/p&gt;
+
+&lt;p&gt;From Maryland, Brianna Ren gave a talk on Hummingbird, a just-in-time typechecker for Ruby programs (also see the upcoming &lt;a href="http://www.cs.umd.edu/~jfoster/papers/pldi16.pdf"&gt;PLDI paper&lt;/a&gt; by Brianna and Jeff Foster). The basic idea is that it&amp;rsquo;s hard to implement a traditional static typechecker for a language that heavily relies on metaprogramming, in which the fields/methods of classes may be rewritten at run-time. This is particularly tricky for frameworks like Ruby on Rails. Instead of checking types at compile-time, Hummingbird actually executes the typechecker at run-time in order to be able to accurately check programs that use run-time metaprogramming. To reduce overheads, she uses a cache for typechecking that is invalidated when classes are modified.&lt;/p&gt;
+
+&lt;p&gt;Stephen Chang gave a very different view on metaprogramming in his talk, which focused on &lt;em&gt;implementing&lt;/em&gt; typecheckers using metaprogramming (the &lt;a href="http://docs.racket-lang.org/trivial/index.html"&gt;trivial&lt;/a&gt; Typed Racket library is an offshoot of this work). His key idea is that typecheckers share many aspects with macro-based metaprogramming systems, such as the need to traverse syntax and annotate it with information. Since they share so much in common, why not just implement the typechecker as a macro? Stephen demonstrates that not only is this possible, but that it&amp;rsquo;s possible to implement a wide variety of type system features this way including (local) type inference. The connection to gradual typing is that even a gradual type system can be implemented as a metaprogram by integrating the generation of dynamic checks into the macro transformation process.&lt;/p&gt;
+
+&lt;p&gt;The last talk of the day (but certainly not the least), was by Michael Vitousek, who focused on the &lt;em&gt;transient&lt;/em&gt; implementation of gradual typing (first described in his &lt;a href="http://homes.soic.indiana.edu/mvitouse/papers/dls14.pdf"&gt;DLS paper&lt;/a&gt;). Traditionally, gradual type systems have implemented their dynamic checks using &lt;a href="https://en.wikipedia.org/wiki/Proxy_pattern"&gt;proxy&lt;/a&gt; objects that wrap method implementations with both pre- and post-checks. Unfortunately, this implementation technique often conflicts with the underlying language. Since proxying changes the identity of an object it can interfere with object equality tests. Instead, the transient approach bakes the dynamic checks into and throughout the typed code to implement a &amp;ldquo;defense in depth&amp;rdquo; against inconsistencies with untyped code. The great thing about this implementation technique is that it doesn&amp;rsquo;t demand any specialized support from the underlying language runtime and is therefore easy to port to other languages (like JavaScript).&lt;/p&gt;
+
+&lt;h2 id="conclusion"&gt;Conclusion&lt;/h2&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/2016-day-slide-3.png" alt="" /&gt;
+ &lt;p class="caption"&gt;&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;Hopefully this blog post helps provide a better picture of the state of gradual typing research. The exciting thing about gradual typing is that it contains both interesting theoretical problems and also connects to the practical needs of software developers.&lt;/p&gt;</content></entry></feed>

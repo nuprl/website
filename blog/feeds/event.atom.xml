@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'event'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/event.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/event.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-event-html</id>
+ <updated>2019-03-09T14:40:16Z</updated>
+ <entry>
+  <title type="text">PLISS: Learn About PL Implementation in a Castle</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2019/03/09/pliss-learn-about-pl-implementation-in-a-castle/?utm_source=event&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2019-03-09-pliss-learn-about-pl-implementation-in-a-castle</id>
+  <published>2019-03-09T14:40:16Z</published>
+  <updated>2019-03-09T14:40:16Z</updated>
+  <author>
+   <name>Alexi Turcotte</name></author>
+  <content type="html">
+&lt;p&gt;We love programming languages (PLs), and we should all be in on the ins and outs of implementing them. If you&amp;rsquo;re interested in learning the tricks of the trade of PL design and implementation, what better opportunity than the second Programming Languages Implementation Summer School (&lt;a href="https://pliss2019.github.io/"&gt;PLISS&lt;/a&gt; for short).&lt;/p&gt;
+
+&lt;p&gt;PLISS will be held from May 19th to 24th 2019, and the deadline to express your interest is &lt;em&gt;March 29th, 2019&lt;/em&gt; at &lt;em&gt;17:00 GMT&lt;/em&gt;. More details can be found &lt;a href="https://pliss2019.github.io/registration.html"&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;&lt;img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The school will feature &lt;a href="https://pliss2019.github.io/speakers.html"&gt;ten speakers&lt;/a&gt; from both academia and industry, each well-versed in the practical side of programming languages. The lectures cover current research as well as future trends in programming language design and implementation, including:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Developing Security-Aware Languages with Cristina Cifuentes;&lt;/li&gt;
+ &lt;li&gt;Semantics-First Language Design with Sylvan Clebsch;&lt;/li&gt;
+ &lt;li&gt;Compiler Design Patterns for Machine Learning by Albert Cohen;&lt;/li&gt;
+ &lt;li&gt;Design and Analysis of Configuration Languages by Arjun Guha;&lt;/li&gt;
+ &lt;li&gt;A Survey of V8 and WebAssembly by Ben L. Titzer;&lt;/li&gt;
+ &lt;li&gt;Crafting User-Friendly Compilers by Nicholas Matsakis;&lt;/li&gt;
+ &lt;li&gt;Static Program Analysis by Anders Møller;&lt;/li&gt;
+ &lt;li&gt;How Industry Approaches Language and Compiler Design by Joe Pamer;&lt;/li&gt;
+ &lt;li&gt;What an End to Non-Volatile RAM Means for Researchers by Mario Wolczko.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Besides attending lectures, students will also be able to get to know the speakers and attendees and think of new research problems. A week-long stay in beautiful Bertinoro, Italy is an ideal setting for socializing with other PL enthusiasts and building lasting relationships.&lt;/p&gt;
+
+&lt;p&gt;If I may, I attended the first PLISS in 2017 and can&amp;rsquo;t recommend it enough. The atmosphere at summer schools is truly unparalleled, and I made friends there that have stood the test of time. For what it&amp;rsquo;s worth to any prospective graduate students, PLISS is also where I met my PhD advisor. Students will be surprised at how many faces they recognize at future conferences, and in a sense summer schools are nice introduction to the research community. You can read another attendee&amp;rsquo;s testimonial &lt;a href="http://prl.ccs.neu.edu/blog/2017/06/05/report-pliss-2017/"&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;More information can be found at:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://pliss2019.github.io"&gt;https://pliss2019.github.io&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;(No, really, it&amp;rsquo;s in a castle. Look at the pictures.)&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">The Racket School 2018: Create your own language</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2018/04/27/the-racket-school-2018-create-your-own-language/?utm_source=event&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2018-04-27-the-racket-school-2018-create-your-own-language</id>
+  <published>2018-04-27T21:35:22Z</published>
+  <updated>2018-04-27T21:35:22Z</updated>
+  <author>
+   <name>Ben Greenman</name></author>
+  <content type="html">
+&lt;p&gt;The Racket School 2018: Create your own language • 9–13 July • Salt Lake City&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;The Racket team has spent over thirty years developing and refining a coherent intellectual tradition for studying and building programming languages. This year’s school will introduce participants to Racket’s framework for language-oriented programming, which the summer school faculty recently spelled out in a a cover article in the &lt;a href="https://tinyurl.com/RacketCACM"&gt;Communications of the ACM&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Concretely, the 2018 Racket Summer School will cover the following topics:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;the spectrum of programming languages;&lt;/li&gt;
+ &lt;li&gt;modules and syntax, or languages as libraries;&lt;/li&gt;
+ &lt;li&gt;DrRacket’s support for language-oriented programming;&lt;/li&gt;
+ &lt;li&gt;a domain-specific language for adding types to languages;&lt;/li&gt;
+ &lt;li&gt;tools and techniques for implementing notational conveniences; and&lt;/li&gt;
+ &lt;li&gt;research challenges in language-oriented programming.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;If these topics intrigue you, attend the Racket Summer School:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="http://summer-school.racket-lang.org/2018/"&gt;http://summer-school.racket-lang.org/2018/&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;This is not your run-of-the-mill summer school. We will do our best to make it exciting, entertaining, and useful to a broad spectrum of attendees, both academic and industrial.&lt;/p&gt;
+
+&lt;p&gt;P.S. We will send you your first problem set in June, a month before the summer school to whet your appetite.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">Report: PLISS 2017</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/06/05/report-pliss-2017/?utm_source=event&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-06-05-report-pliss-2017</id>
+  <published>2017-06-05T15:47:59Z</published>
+  <updated>2017-06-05T15:47:59Z</updated>
+  <author>
+   <name>Ming-Ho Yee</name></author>
+  <content type="html">
+&lt;p&gt;Two weeks ago, I attended the first &lt;a href="https://pliss2017.github.io/"&gt;Programming Language Implementation Summer School&lt;/a&gt;, held in beautiful Bertinoro, Italy.&lt;/p&gt;
+
+&lt;p&gt;The goal of PLISS was &amp;ldquo;to prepare early graduate students and advanced undergraduates for research in the field,&amp;rdquo; and I think it successfully accomplished that. There were many talks in a variety of areas, such as just-in-time compilers, garbage collection, static analysis, and distributed systems. But PLISS was more than just a series of talks: PLISS provided an environment for interacting with other students as well as senior researchers.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="the-talks"&gt;The Talks&lt;/h2&gt;
+
+&lt;p&gt;With the amount of technical content at PLISS, there was easily something for everyone. &lt;a href="http://janvitek.org/"&gt;Jan Vitek&lt;/a&gt; and &lt;a href="http://tratt.net/laurie/"&gt;Laurence Tratt&lt;/a&gt; gave lectures that included hands-on exercises where we worked on JITs. &lt;a href="https://www.cs.purdue.edu/homes/suresh/"&gt;Suresh Jagannathan&lt;/a&gt; dived into the operational semantics of a distributed system, so we could reason about different weak consistency models. Francesco Logozzo gave us a whirlwind tour of abstract interpretation.&lt;/p&gt;
+
+&lt;p&gt;Most of my favorite talks included some form of extra content, such as exercises, live-coding presentations, or demos. I found it really helpful to write actual code and apply what I had just learned, or to look at some concrete examples. The examples and exercises also helped with the pacing, as actively listening to four 90-minute talks every day is exhausting!&lt;/p&gt;
+
+&lt;p&gt;Off the top of my head, these were some of my favorite talks:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Dynamic Programming Language Implementation with LLVM&lt;/strong&gt;, by Petr Maj, Oli  Flückiger, and &lt;a href="http://janvitek.org/"&gt;Jan Vitek&lt;/a&gt;. As the first talk of the summer school, this  was a gentle introduction for the rest of the week. We had &lt;a href="https://github.com/PRL-PRG/pliss-rift/"&gt;exercises&lt;/a&gt;  (with intentional bugs to make us think!), and also brief overviews of  intermediate languages, static analysis, and garbage collection. These three  topics would later show up in more detail.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Micro Virtual Machines&lt;/strong&gt;, by &lt;a href="http://users.cecs.anu.edu.au/~steveb/"&gt;Steve Blackburn&lt;/a&gt;. This talk covered  background information on virtual machines, and also the &lt;a href="http://microvm.github.io/"&gt;Micro VM&lt;/a&gt;  project that Steve&amp;rsquo;s group has been working on. A lot of the material was  already familiar to me, but I still enjoyed the talk, and even got a few  ideas for the project I&amp;rsquo;m working on!&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Static Analysis&lt;/strong&gt;, by &lt;a href="http://matt.might.net/"&gt;Matt Might&lt;/a&gt;. Matt&amp;rsquo;s talk was based on one of  his &lt;a href="http://matt.might.net/articles/intro-static-analysis/"&gt;articles&lt;/a&gt; and an older talk he&amp;rsquo;s given. Impressively, the entire  example was live-coded, with only a single mistake!&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;&lt;strong&gt;Testing Language Implementations&lt;/strong&gt;, by &lt;a href="http://multicore.doc.ic.ac.uk/"&gt;Alastair Donaldson&lt;/a&gt;. This was  an entertaining talk, since Ally showed multiple examples of crashing  compilers, and causing other kinds of mischief by triggering compiler bugs.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;If you&amp;rsquo;re disappointed that you couldn&amp;rsquo;t see these talks, don&amp;rsquo;t worry! The talks were recorded and will be posted very shortly.&lt;/p&gt;
+
+&lt;h2 id="the-people"&gt;The People&lt;/h2&gt;
+
+&lt;p&gt;But there&amp;rsquo;s more to PLISS than the talks. I&amp;rsquo;m referring to &lt;em&gt;networking&lt;/em&gt;, or the opportunity to get out and talk to other people about research.&lt;/p&gt;
+
+&lt;p&gt;As an early graduate student, I&amp;rsquo;ve been given a lot of advice about talking to people at conferences and the importance of the &amp;ldquo;hallway track.&amp;rdquo; I still have difficulty doing this at an actual conference, like &lt;a href="http://pldi17.sigplan.org/home"&gt;PLDI&lt;/a&gt; or &lt;a href="http://2017.ecoop.org/"&gt;ECOOP&lt;/a&gt;. When there are hundreds of attendees, or when people already know each other and are in conversation groups, I find it difficult to approach them.&lt;/p&gt;
+
+&lt;p&gt;This was not the case at PLISS. There were fewer attendees: about fifty students and a dozen speakers. There was a good mix of undergraduate, master&amp;rsquo;s, first-year PhD, and more senior PhD students. All our breakfasts, lunches, and breaks were together, so we would see the same people again and again, and inevitably start to learn each other&amp;rsquo;s names. The speakers would also be among us, and there was a good ratio of speakers to students for discussions and mealtime mentoring.&lt;/p&gt;
+
+&lt;p&gt;I had many opportunities to practice my &amp;ldquo;research pitch.&amp;rdquo; I talked to senior students and got advice. I talked to junior students and gave advice. Two different people I talked to about my research pointed me to the same paper to read. I found another student who was working with &lt;a href="http://research.cs.wisc.edu/wpis/papers/popl95.pdf"&gt;IFDS&lt;/a&gt;, an algorithm I have spent much time trying to understand. And, one day at lunch, my table discovered that we were all working on static analysis!&lt;/p&gt;
+
+&lt;p&gt;As much as I enjoyed the talks, I think the best part of PLISS was meeting and talking to other people. You can replace talks with videos (but you lose the speaker-audience interaction), and you can replace conversations with other forms of communication. But there isn&amp;rsquo;t really anything that can replace the serendipity of bumping into someone with a shared interest.&lt;/p&gt;
+
+&lt;h2 id="the-location"&gt;The Location&lt;/h2&gt;
+
+&lt;p&gt;Actually, the &lt;em&gt;other&lt;/em&gt; best part of PLISS was the location. Italy is a beautiful country with delicious food. And Bertinoro is a small town on the top of a hill, with a breathtaking view of the surrounding area. The lectures were held in a &lt;a href="https://pliss2017.github.io/images/pics/7.jpg"&gt;castle at the top of the hill&lt;/a&gt; (photo credit: Steve Blackburn). The speakers lived in the castle for the week, while the students lived in the former monastery (seems fitting), which has been renovated into a university residence.&lt;/p&gt;
+
+&lt;p&gt;Here are my two favorite pictures I took (click for full size):&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/img/pliss2017-1.jpg"&gt;&lt;img src="/img/pliss2017-1-thumb.jpg" alt="View from the castle" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="/img/pliss2017-2.jpg"&gt;&lt;img src="/img/pliss2017-2-thumb.jpg" alt="Panorama" /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Steve Blackburn has more pictures posted on the &lt;a href="https://pliss2017.github.io/"&gt;PLISS website&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id="final-thoughts"&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;PLISS was a wonderful event. Many thanks need to be given to the speakers, organizers, and sponsors, for making this possible!&lt;/p&gt;
+
+&lt;p&gt;If and when there is a second PLISS, I highly encourage students to apply! You will learn a lot from the lectures, from talking to the speakers, and meeting other students. And if it&amp;rsquo;s in Bertinoro again, you can enjoy the weather and nice view!&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">PLISS: Oregon without the greek</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/02/28/pliss-oregon-without-the-greek/?utm_source=event&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-02-28-pliss-oregon-without-the-greek</id>
+  <published>2017-02-28T23:01:00Z</published>
+  <updated>2017-02-28T23:01:00Z</updated>
+  <author>
+   <name>Jan Vitek</name></author>
+  <content type="html">
+&lt;p&gt;What does every student interested in programming languages need to learn about the practical side of the field? That is the question that the first international summer school on programming language implementation (or &lt;a href="https://pliss2017.github.io"&gt;PLISS&lt;/a&gt; for short) has set out to answer.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;&lt;img src="/img/pliss_summer_school_2017_logo.png" alt="PLISS logo" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The school will feature &lt;a href="https://pliss2017.github.io/speakers.html"&gt;twelve speakers&lt;/a&gt; versed in programming language practicae ranging from abstract interpretation to garbage collection and from compiler implementation to language design. The lectures will feature hands on exercises as well as lessons learned from large scale industrial efforts.&lt;/p&gt;
+
+&lt;p&gt;Lectures cover current research and future trends in programming language design and implementation, including:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Writing Just-in-time Compilers with LLVM with Jan Vitek&lt;/li&gt;
+ &lt;li&gt;Performance Evaluation and Benchmarking with Laurie Tratt&lt;/li&gt;
+ &lt;li&gt;Designing a Commercial Actor Language with Sophia Drossopoulou and Heather Miller&lt;/li&gt;
+ &lt;li&gt;High-Performance Fully Concurrent Garbage Collection with Richard Jones&lt;/li&gt;
+ &lt;li&gt;Compiling Dynamic Languages with David Edelsohn&lt;/li&gt;
+ &lt;li&gt;Language-support for Distributed Datastores with Suresh Jagannathan&lt;/li&gt;
+ &lt;li&gt;Testing Programming Language Implementations with Alastair Donaldson&lt;/li&gt;
+ &lt;li&gt;Abstract Interpretation and Static Analysis with lectures by Francesco Logozzo and Matt Might&lt;/li&gt;
+ &lt;li&gt;The evolution of Scala with Martin Odersky&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;A summer school is also an opportunity to get know the speakers and get ideas for research problems. Students will have the opportunity to socialize with a peer group of other students in PL as well as professors and industrial researchers.&lt;/p&gt;
+
+&lt;p&gt;Thanks to generous funding from NSF, ONR and SIGPLAN, costs will be kept low and some fellowships are available to cover travel costs.&lt;/p&gt;
+
+&lt;p&gt;More information at:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href="https://pliss2017.github.io"&gt;https://pliss2017.github.io&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;(Oregon is a reference to the &lt;a href="https://www.cs.uoregon.edu/research/summerschool/summer17/"&gt;OPLSS&lt;/a&gt;, in which you may also be interested.)&lt;/p&gt;</content></entry></feed>

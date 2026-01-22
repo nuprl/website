@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Reviews and author responses: we should stop asking for 500-word responses</title>
+    <meta name="description" content="This year I reviewed many ICFP submissions, and got to be on the receiving end of equally many author responses (also sometimes called, somewhat combatively, rebuttals). I found that there was a large difference between the official written advice on auth...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/">
+    <link rel="next" href="/blog/2017/07/19/trees-1973/">
+    <link rel="prev" href="/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Reviews and author responses: we should stop asking for 500-word responses</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-08-13" pubdate="true">2017-08-13</time> :: <span class="tags"></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>This year I reviewed many ICFP submissions, and got to be on the receiving end of equally many author responses (also sometimes called, somewhat combatively, rebuttals). I found that there was a large difference between the official written advice on author responses and what I, as a reviewer reading the responses, found effective. In particular, I now believe that limiting yourself to 500 words should strongly be avoided &mdash; we should even stop giving that advice.</p>
+<!-- more-->
+
+<p>This year, I had the honor (and accompanying load of work) of being a Program Committee (PC) member at the ICFP conference. It was my first time being a PC member at a conference, and I found it extremely pleasant and interesting, thanks to the authors who sent us articles to review, my fellow PC members, and the ever-smiling careful balancing work of our PC chair, Mark Jones. It was also a lot of work, starting with 18 reviews to do over a month and a half, an intense PC meeting, and the new &ldquo;second phase&rdquo; process with the opportunity for authors and reviewers to exchange feedback on changes requested by the program committee.</p>
+
+<p>There is little guidance on how to write author responses, although this <a href="http://www.pl-enthusiast.net/2014/09/17/advice-writing-author-response/">blog post</a> by Michael Hicks on pl-enthusiast is quite good. One thing that is obvious as a reviewer and is only slightly brushed in this post, however, is that author responses should <em>not</em> aim to fit a 500 words limit, and in fact I believe that it is a bad idea to do so.</p>
+
+<p>As for most conference, the ICFP review system recommends (in writing) to authors to keep their response to 500 words (some systems also highlight words after those in red to make the point clear). Don&rsquo;t do this! The least convincing responses I have seen are those that followed this recommendation.</p>
+
+<p>(I have also seen at least 18*2 other reviewers read the same responses I read, most of them well over 500 words, and <em>none</em> of them made any comment on the length of the author responses.)</p>
+
+<p>We have a frustrating situation where the explicit rule is different from the thing people do in practice. This is bad for newcomers that do not know the norms and cannot tell if ignoring the rule may hurt them. This is the point of this blog post:</p>
+
+<ul>
+ <li>
+  <p>If you are an author, please know that disrespecting the 500-words  limit is the <em>right thing</em> to do. You should also know, of course,  that people have limited time, so keep the main body of your  response reasonably long. (I spent a day and a half on your paper  already, I am willing to spend 10 additional minutes reading the  response.)</p></li>
+ <li>
+  <p>If you are a program committee chair or a Magical HotCRP Wizard,  please remove this silly recommendation to keep responses to 500  words. (See an alternative proposal at the end of this post.)</p></li></ul>
+
+<h2 id="my-personal-response-format">My personal response format</h2>
+
+<p>My author responses start with general comments that elaborate on the main point I want to tell all reviewers. Then, a second part contains per-reviewer comments (one section per reviewer); it is clearly marked as skippable. Here is the skeleton of the last response I wrote:</p>
+
+<blockquote>
+ <p>We thank the reviewers for their work on our article and their detailed feedback. We start with a general discussion that responds to the salient points raised by reviewers. In a second part, we provide detailed responses to the questions/remarks of each reviewer.</p>
+ <h3 id="general-discussion">General discussion</h3>
+ <p>[..]</p>
+ <h3 id="specific-questionscomments-review-a">Specific questions/comments: review #A</h3>
+ <p>[..]</p>
+ <h3 id="specific-questionscomments-review-b">Specific questions/comments: review #B</h3>
+ <p>[..]</p>
+ <h3 id="specific-questionscomments-review-c">Specific questions/comments: review #C</h3>
+ <p>[&hellip;]</p></blockquote>
+
+<p>For this particular response, the &ldquo;General discussion&rdquo; section used 1296 words according to <code>wc -w</code> (M-x shell-command-on-region). In the following sections, I quote the reviews to answer specific points, email-style (following the Markdown syntax that HotCRP renders properly).</p>
+
+<h2 id="suggested-wording-for-pc-chairs">Suggested wording for PC chairs</h2>
+
+<p>If you are a PC chair, you should remove the suggestion of respecting a 500 words limit for your conference. Here would be a suggested alternative wording:</p>
+
+<blockquote>
+ <p>Please remember, in writing your author response, that reviewers may stop reading the response at any point. We suggest having a reasonably-sized main section where you make your most important high-level comments, and clearly marked sections where you answer individual reviewer&rsquo;s questions. It is not useful nor productive to answer every point of each review, you should focus on the comments that you believe the reviewers are most interested in.</p></blockquote>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/08/13/reviews-and-author-responses-we-should-stop-asking-for-500-word-responses/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/08/22/gradual-typing-across-the-spectrum-part-ii/">&larr; <em>Gradual Typing Across the Spectrum, part II</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/07/19/trees-1973/"><em>Trees, 1973</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

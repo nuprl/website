@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Bullets are good for your Coq proofs</title>
+    <meta name="description" content="I believe that bullets are one of the most impactful features of recent versions of Coq, among those that non-super-expert users can enjoy. They had a big impact on the maintainability of my proofs. Unfortunately, they are not very well-known, due to the ...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="coq, Author: Gabriel Scherer">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/">
+    <link rel="next" href="/blog/2017/02/21/datalog-for-static-analysis/">
+    <link rel="prev" href="/blog/2017/02/28/linear-types-for-low-level-languages/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Bullets are good for your Coq proofs</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-02-21" pubdate="true">2017-02-21</time> :: <span class="tags"><a href="/blog/tags/coq.html">coq</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Gabriel-Scherer.html">Gabriel Scherer</a></span></p>
+  </header>
+
+<p>I believe that bullets are one of the most impactful features of recent versions of Coq, among those that non-super-expert users can enjoy. They had a big impact on the maintainability of my proofs. Unfortunately, they are not very well-known, due to the fact that some introductory documents have not been updated to use them.</p>
+
+<p>Bullets are a very general construction and there are several possible ways to use them; I have iterated through different styles. In this post I will give the general rules, and explain my current usage style.</p>
+<!-- more-->
+
+<h2 id="why-bullets">Why bullets</h2>
+
+<p>While you are doing a proof, Coq shows a list of subgoals that have to be proved before the whole proof is complete. Most proof steps will operate on the current active subgoal, changing the hypotheses or the goal to prove, but some proof steps will split it into several subgoals (growing the total list of goals), or may terminate the proof of the current subgoal and show you the next active subgoal.</p>
+
+<p>Before bullets, a typical proof script would contain the proofs of each subgoal, one after another.</p>
+
+<pre><code>induction foo. (* this creates many subgoal *)
+
+proof of first subgoal.
+
+proof of second subgoal.</code></pre>
+
+<p>There are many ways to structure this to make the structure more apparent: people would typically have a comment on each subgoal, or make disciplined use of indentation and blank lines. But, in my experience, a major problem with this style was maintainability in the face of changes to the definitions or parts of automation. It could be very hard of what was happening when a proof suddenly broke after a change before in the file:</p>
+
+<ul>
+ <li>
+  <p>If a proof step now proves <em>less</em> things, then what used to be the  end of a subgoal may not be anymore. Coq would then start reading  the proof of the next subgoal and try to apply it to the unfinished  previous goals, generating very confusing errors (you believe you  are in the second subgoal, but the context talks about a leaf case  of the first goal).</p></li>
+ <li>
+  <p>If a proof step now proves <em>more</em> things, it is also very bad! The  next proof steps, meant for the first subgoal (for example), would  then apply to the beginning of the second subgoal, and you get very  confusing errors again.</p></li></ul>
+
+<p>What we need for robustness is a way to indicate our <em>intent</em> to Coq, when we think that a subgoal is finished and that a new subgoal starts, so that Coq can fail loudly at the moment where it notices that this intent does not match reality, instead of at an arbitrary later time.</p>
+
+<p>(The <code>S*Case</code> tactics used in (older versions of) Software Foundations can solve this problem if used in a carefully, systematic way, and additionally provides naming. Alexandre Pilkiewicz implemented an even more powerful <a href="https://github.com/pilki/cases">cases</a> plugin. Bullets are available in standard Coq since 8.4 (released in 2012), and can be used with no effort.)</p>
+
+<p>There is not much discussion of bullets around; see the <a href="https://coq.inria.fr/distrib/8.6/refman/Reference-Manual009.html#sec326">documentation</a> in the Coq manual. I learned a lot from Arthur Azevedo de Amorim&rsquo;s <a href="https://github.com/arthuraa/poleiro/blob/master/theories/Bullets.v">Bullets.v</a> file.</p>
+
+<p>Finally, some people don&rsquo;t use bullets, because they systematically use so much automation that they never see subgoals &mdash; each lemma has a one-line proof. This is also a valid style. (I have been going to Adam Chlipala&rsquo;s <a href="https://frap.csail.mit.edu/main">Formal Reasoning about Programs</a> 2017 class, where Adam ignores bullets because that is his usual style.) Because I am not crushy enough to do this from the start, my proofs tend to start with cases and subgoals, and then I refine them to add more automation for robustness. I found bullets very useful for the first step, and during the refinement process.</p>
+
+<h2 id="bullets">Bullets</h2>
+
+<p>Bullets are actually a combination of two features, braces <code>{ ... }</code> and actual list bullets &mdash; <code>-</code>, <code>+</code>, <code>*</code>, or homogeneous repetitions of those, for example <code>--</code> or <code>***</code>.</p>
+
+<h3 id="braces">Braces</h3>
+
+<p>The opening brace <code>{</code> focuses the proof on the current subgoal. If you finish the proof of the subgoal, the following subgoal will not become accessible automatically; you have to use the closing brace <code>}</code> first. (If you finish the goal earlier than you think, you get an error.) Conversely, <code>}</code> fails if the subgoal is not complete. (If you fail to finish, you get an error.)</p>
+
+<p>The previous example can thus be written as follows, and will be more robust:</p>
+
+<pre><code>induction foo. (* this creates many subgoal *)
+{
+  proof of first subgoal.
+}
+{
+  proof of second subgoal.
+}</code></pre>
+
+<p>If you also want to make sure that an error occurs if the number of subgoals changes (for example if new constructors are added to the inductive type of <code>foo</code>), you can use an outer layer of braces:</p>
+
+<pre><code>{ induction foo. (* this creates many subgoal *)
+  {
+    proof of first subgoal.
+  }
+  {
+    proof of second subgoal.
+  }
+} (* would fail if a new subgoal appeared *)</code></pre>
+
+<h3 id="list-bullets">List bullets</h3>
+
+<p>A bullet, for example <code>--</code>, also focuses on the next subgoal. The difference is that when the subgoal is finished, you do not have a closing construction, you must use the same bullet to move to the next subgoal. (Again, this fails if the first proof step changes to prove too much or too little.) With bullets you would write</p>
+
+<pre><code>induction foo. (* this creates many subgoal *)
++ proof of first subgoal.
++ proof of second subgoal.</code></pre>
+
+<p>Bullets can be nested, but you must use different bullets for the different nesting levels. For example, if this proof is only one subgoal of a larger proof, you can use:</p>
+
+<pre><code>- induction foo. (* this creates many subgoal *)
+  + proof of first subgoal.
+  + proof of second subgoal.
+- (* would fail if a new subgoal appeared *)
+  rest of the proof</code></pre>
+
+<p>The natural ordering of bullets, I think, is by increasing number of lines: <code>-</code>, <code>+</code> then <code>*</code> (and then multi-character bullets, I guess). You can also mix bullets with braces: the opening brace resets the bullet scope, any bullet can be used again with the subgoal.</p>
+
+<p>This gives a large space of freedom in how you want to use these features. You can use only braces, only bullets, braces and only one level of bullets, etc. My own style evolved with experience using the feature, and I will present the current status below.</p>
+
+<h2 id="my-current-bullet-style">My current bullet style</h2>
+
+<p>When deciding how to use bullets, one distinguishes the commands that preserve the number of subgoals and those that may create new subgoals. I use some additional distinctions.</p>
+
+<p>Some tactics, for example <code>assert</code>, create a number of subgoals that is <em>statically</em> known, always the same for the tactic. I then use braces around each sub-proof, except the last one, which I think of as the &ldquo;rest&rdquo; of the current proof.</p>
+
+<pre><code>assert foo as H.
+{ proof of foo. }
+rest of the proof using H:foo.</code></pre>
+
+<p>(If the proof of <code>foo</code> takes several lines, I two-indent them, with the braces alone on their lines.)</p>
+
+<p>Most tactics create a <em>dynamic</em> number of subgoals, that depends on the specifics of the objects being operated on; this is the case of <code>case</code>, <code>destruct</code>, <code>induction</code> for example. In this case, I open a brace before the tactic, and use a bullet for each subgoal.</p>
+
+<pre><code>{ induction foo; simpl; auto.
+- proof of first remaining subgoal.
+- proof of second remaining subgoal.
+  rest of the proof of the second subgoal.
+}</code></pre>
+
+<p>(Notice that the subgoal-creating step is vertically aligned with the proof steps: I use both braces and bullets, but take only one indentation level each time.)</p>
+
+<p>As an exception, I may omit the braces if we are at the toplevel of the proof (<code>Proof .. Qed</code> serve as braces).</p>
+
+<p>Note that omitting the braces here and using different bullets when you nest is also just fine. In my experience it gives proofs that are a bit more pleasant to read but also a bit more cumbersome to edit and move around.</p>
+
+<p>Finally, a not-uncommon mode of use of &ldquo;dynamic&rdquo; tactics in the sense above is to expect all the cases, except one, to be discharged by direct automation (for example they are all absurd except one). When it is my intent that all cases but one be discharged (and not a coincidence), I express it by not using braces (this command preserves the number of subgoals), but marking the remaining subgoal with a new bullet <em>without</em> increasing the indentation level.</p>
+
+<pre><code>{ induction foo.
+- first subgoal.
+- second subgoal.
+  case blah; discharge all sub-subgoals but one.
++ remaining sub-subgoal of the second subgoal.
+  finish the sub-subgoal.
+- third subgoal.
+}</code></pre>
+
+<p>(This is the only time where I use several bullet levels.)</p>
+
+<p>If you are the kind of programmer that is passionate about indentation style, I should now have tricked you to use bullets to propose a different variant. Otherwise, please consider using bullets anyway, for example by following the style above, it will make your life easier in the face of changing developments.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/02/28/linear-types-for-low-level-languages/">&larr; <em>Linear Types for Low-level Languages</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/02/21/datalog-for-static-analysis/"><em>Datalog for Static Analysis</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

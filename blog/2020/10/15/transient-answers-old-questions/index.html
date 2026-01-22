@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Transient Answers Old Questions</title>
+    <meta name="description" content="Several old questions from the Typed Racket mailing list have new and simple answers under a &quot;transient&quot; Typed Racket....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="typed racket, transient, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2020/10/15/transient-answers-old-questions/">
+    <link rel="next" href="/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/">
+    <link rel="prev" href="/blog/2020/11/12/transient-for-optional-and-keyword-functions/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Transient Answers Old Questions</h1>
+    <p class='date-and-tags'>
+<time datetime="2020-10-15" pubdate="true">2020-10-15</time> :: <span class="tags"><a href="/blog/tags/typed-racket.html">typed racket</a>, <a href="/blog/tags/transient.html">transient</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Several old questions from the Typed Racket mailing list have new and simple answers under a &ldquo;transient&rdquo; Typed Racket.</p>
+<!-- more-->
+
+<hr />
+
+<p>For the past few months, I&rsquo;ve been adding a transient semantics to Typed Racket. The project is called Shallow Typed Racket. Details are in the <a href="https://github.com/racket/typed-racket/pull/952">RFC</a>  and <a href="https://github.com/racket/typed-racket/pull/948">pull request</a>.</p>
+
+<p>The short story is that the new Shallow Racket does less to enforce types  when typed code interacts with untyped code. Typed code is still type-sound, but that&rsquo;s about it. By contrast, types are much stronger in classic Typed Racket.</p>
+
+<p>Shallow Racket&rsquo;s weaker types allow more programs to run. While testing whether the new freedom is useful, I reviewed a few years of  Typed Racket questions on the <a href="https://groups.google.com/g/racket-users">Racket mailing list</a>. There were a surprising number of questions that went like this:</p>
+
+<blockquote>
+ <p><strong>Q.</strong> Hey, I ran a program expecting <em>X</em> to happen, but <em>Y</em> happened instead. Is this a bug?</p>
+ <p><strong>A.</strong> No, Typed Racket has to do <em>Y</em> because of its strong types.</p></blockquote>
+
+<p>&hellip; but changing to shallow types gives the <em>X</em> behavior! Here are their stories.</p>
+
+<p>Going forward, <strong>Deep</strong> refers to normal Typed Racket and <strong>Shallow</strong> refers to Shallow Typed Racket.</p>
+
+<hr />
+
+<h2 id="higher-order-value-as-any">Higher-Order Value as Any</h2>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ">groups.google.com/g/racket-users/c/cCQ6dRNybDg/m/CKXgX1PyBgAJ</a></p>
+
+<h4 id="on-20180416-mailoo-wrote">On 2018&ndash;04&ndash;16, <em>mailoo</em> wrote:</h4>
+
+<blockquote>
+ <p> I play a little with the &ldquo;Any&rdquo; type (due to &lsquo;dynamic-require&rsquo; which   return Any), and I&rsquo;m not able to cast them back in a function.</p>
+ <p> I (over) simplify my question with this little program :</p></blockquote>
+
+<pre><code>(: p Any) 
+(define (p i) (displayln i)) 
+
+; Here I want to get back my function 
+(define proc (cast p (-&gt; Integer Void))) 
+(proc 2) </code></pre>
+
+<blockquote>
+ <p> but I get this error when I try to execute the function :</p></blockquote>
+
+<pre><code>; contract violation 
+; Attempted to use a higher-order value passed as `Any` in untyped code: #&lt;procedure:p&gt; </code></pre>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p><strong>Deep</strong> raises an error because it must enforce the <code>Any</code> type with a contract that  rejects all interactions. Things would go badly if an Any-typed function expected a String but got an  Integer.</p>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> prints 2 and returns void. No error. Same goes for dynamic-require.</p>
+
+<hr />
+
+<h2 id="parametric-contract-affects-untyped-code">Parametric Contract Affects Untyped Code</h2>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ">groups.google.com/g/racket-users/c/ZbYRQCy93dY/m/kF_Ek0VvAQAJ</a></p>
+
+<h4 id="on-20191215-john-clements-wrote">On 2019&ndash;12&ndash;15, John Clements wrote:</h4>
+
+<blockquote>
+ <p> It looks like my quick attempt at importing index-of into TR is running into a problem. Here’s the program I ran:</p></blockquote>
+
+<pre><code>  #lang typed/racket 
+
+  (require/typed racket/list 
+  [index-of (All (T) ((Listof T) T -&gt; (U False Natural)))]) 
+
+  (index-of '(n s e w) 'n) ;; returns... #f? </code></pre>
+
+<blockquote>
+ <p> In typed/racket/no-check this returns 0, and also in racket (mutatis mutandis).</p>
+ <p> I thought this might be some kind of parametricity issue, but even when I instantiate index-of at Symbol which should pretty much clear the way for arbitrary equality checking, I still get False.</p></blockquote>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p><strong>Deep</strong> enforces parametricity for <code>All</code> types, and this throws off the equality  function that index-of uses internally.</p>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> returns 0.</p>
+
+<p>ps John, thanks very much for working on <a href="https://adventofcode.com">Advent of Code</a> and mailing the list!</p>
+
+<hr />
+
+<h2 id="unable-to-protect-opaque-value-as-any">Unable to Protect Opaque Value as Any</h2>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ">groups.google.com/g/racket-users/c/jtmVDFCGL28/m/jwl4hsjtBQAJ</a></p>
+
+<h4 id="on-20191211-marc-kaufmann-wrote">On 2019&ndash;12&ndash;11, Marc Kaufmann wrote:</h4>
+
+<blockquote>
+ <p>I have one file called <code>type-test.rkt</code> with the following</p></blockquote>
+
+<pre><code>#lang typed/racket
+
+(require (only-in typed/web-server/http response/xexpr response))
+
+(provide f2)
+
+(: f2 (-&gt; (U response Any)))
+(define (f2)
+  (define x '(body (h1 "Try it")))
+  (: resp response)
+  (define resp (response/xexpr x))
+  resp)</code></pre>
+
+<blockquote>
+ <p>Then I have another <em>untyped</em> file for a servlet:</p></blockquote>
+
+<pre><code>#lang racket
+
+(require "type-test.rkt"
+         web-server/servlet
+         web-server/servlet-env)
+
+(define (start req)
+  (f2))
+
+(serve/servlet start
+               #:servlet-regexp #rx""
+               #:launch-browser? #false
+               #:port 8080)</code></pre>
+
+<blockquote>
+ <p>Notice that I am telling [f2] that <code>resp</code> is of type <code>response</code>. Yet, when I run the server with <code>start</code> [&hellip;.] I get the following result:</p>
+ <p>(f2): Error, see below.</p>
+ <p>The error is:</p></blockquote>
+
+<pre><code>f2: broke its own contract
+  any-wrap/c: Unable to protect opaque value passed as `Any`
+  value: #&lt;response&gt;
+  in: the range of
+      (-&gt; Any)</code></pre>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p><strong>Deep</strong> tries to enforce the <code>Any</code> type with a contract that rejects all  interactions, but needs to know what interactions are possible in order  to make a reject-all contract. For many values, Deep can ask questions like procedure? and struct-info  to learn enough. But this program sends an opaque response struct across a boundary and  Deep does not have the right inspector to learn about the struct fields.</p>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> does nothing to enforce the Any type. This program runs, and in general Shallow never complains about opaque values.</p>
+
+<hr />
+
+<h2 id="type-inference-installs-a-precise-type">Type Inference Installs a Precise Type</h2>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ">groups.google.com/g/racket-users/c/2X5olKMV3C4/m/mJhsp9ZWBgAJ</a></p>
+
+<h4 id="on-20200214-john-clements-wrote">On 2020&ndash;02&ndash;14, John Clements wrote:</h4>
+
+<blockquote>
+ <p>I think I may understand what’s going on here, but a student and I worked on this for quite a while today before I found the problem.</p>
+ <p>Here’s a program:</p></blockquote>
+
+<pre><code>#lang typed/racket 
+
+(define-type Store (Mutable-HashTable Integer Value)) 
+(define-type Value (U Real Boolean String)) 
+
+(define top-store
+  (cast
+    (make-hash (list (cons -1 14) (cons 1 #t) (cons 2 #f)))
+    Store))
+
+(hash-set! top-store 5 1234)</code></pre>
+
+<blockquote>
+ <p>It fails with this error:</p></blockquote>
+
+<pre><code>contract violation
+expected: (or/c (and/c byte? positive?) #t #f)
+given: 1234
+in: the values of
+the 3rd conjunct of
+(and/c hash?
+       hash-mutable?
+       (hash/c exact-integer?
+               (or/c (and/c byte? positive?) #t #f)
+               #:immutable #f))</code></pre>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p>First off, <strong>Deep</strong> runs fine after swapping <code>cast</code> for <code>ann</code>.</p>
+
+<p>Second, Typed Racket does try to generalize inferred types for mutable data. If the only value in the hash is the byte 14 then Deep also runs.</p>
+
+<p>The problem is that Typed Racket does not generalize the inferred value type  (U Byte Boolean) and that cast is a run-time tool for enforcing types. Casts create contracts to protect mutable data. In this program, there are two contracts:  one based on the Store type to protect code that uses the hash,  and one based on the inferred type to protect the hash against bad writes. That second contract raises the error message.</p>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> runs successfully. The cast looks for a hash, does not make a contract, and ignores the inferred  type going forward.</p>
+
+<hr />
+
+<h2 id="same-arity-functions-in-a-case-lambda">Same-Arity Functions in a Case Lambda</h2>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ">groups.google.com/g/racket-users/c/BDrrgW0axGQ/m/P31NxeGHAAAJ</a></p>
+
+<h4 id="on-20190705-ryan-kramer-wrote">On 2019&ndash;07&ndash;05, Ryan Kramer wrote:</h4>
+
+<blockquote>
+ <p>In the code below, can <code>maybe-car</code> have the given type [&hellip;.]?</p></blockquote>
+
+<pre><code>#lang typed/racket
+
+(module untyped racket
+  (provide maybe-car)
+  (define (maybe-car x)
+    (cond
+      [(pair? x) (car x)]
+      [else x])))
+
+(require/typed
+ 'untyped
+ [maybe-car (All (a b) (case-&gt;
+                        (-&gt; (Pairof a b) a)
+                        (-&gt; a a)))])</code></pre>
+
+<blockquote>
+ <p>[Current error:]</p></blockquote>
+
+<pre><code>Type Checker:
+ Type (All (a b) (case-&gt; (-&gt; (Pairof a b) a) (-&gt; a a)))
+  could not be converted to a contract:
+   function type has two cases of arity 1</code></pre>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p><strong>Deep</strong> tries to enforce the type with a Racket <code>or/c</code> contract, but cannot. The problem is that or/c only has partial support for unions. If or/c ends up with two possible higher-order options at runtime, it halts. In this case, we end up with two function contracts that have the same arity  and don&rsquo;t know which to apply to an incoming function.</p>
+
+<p>Note, the &ldquo;Type Checker&rdquo; error message is much better than what or/c would  give on its own.</p>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> simply checks that maybe-car accepts both arities inside the  case-&gt; type. The code runs fine. Later, when the function gets applied in typed code, Shallow spot-checks the  results.</p>
+
+<hr />
+
+<h3 id="immutable-type-affects-untyped-code">Immutable Type Affects Untyped Code</h3>
+
+<p>Original message : <a href="https://groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ">groups.google.com/g/racket-users/c/UD20HadJ9Ec/m/Lmuw0U8mBwAJ</a></p>
+
+<h4 id="on-20200217-bertrand-augereau-wrote">On 2020&ndash;02&ndash;17, Bertrand Augereau wrote:</h4>
+
+<blockquote>
+ <p>Hello everybody, I&rsquo;m trying to gradually type my script to make it a proper app (yes I&rsquo;m a static-ish guy) and I have an issue (Racket 7.6 CS).</p></blockquote>
+
+<pre><code>; racket_mod.rkt:
+#lang racket
+
+(provide (struct-out s))
+(provide list-of-s)
+(provide set-list-of-s!)
+
+(struct s (a))
+(define list-of-s '())
+(define (set-list-of-s! los)
+  (set! list-of-s los))</code></pre>
+
+<pre><code>; racket_mod_typed.rkt:
+#lang typed/racket
+
+(provide (struct-out s2))
+(provide list-of-s2)
+(provide set-list-of-s2!)
+
+(struct s2 ([a : Natural]))
+(define list-of-s2 '())
+(define (set-list-of-s2! [los : (Listof s2)])
+  (set! list-of-s2 los))</code></pre>
+
+<pre><code>; racket_main.rkt:
+#lang racket
+
+(require "racket_mod.rkt")
+(require "racket_mod_typed.rkt")
+
+(define los (list (s 1) (s 2)))
+(set-list-of-s! los)
+(displayln list-of-s)
+
+(define los2 (list (s2 1) (s2 2)))
+(set-list-of-s2! los2)
+(displayln list-of-s2)</code></pre>
+
+<blockquote>
+ <p>list-of-s2 is empty and list-of-s is not, the only difference seems to be the type annotations. Can someone help me ? :)</p></blockquote>
+
+<h3 id="whats-going-on">What&rsquo;s going on?</h3>
+
+<p><strong>Deep</strong> enforces the type of <code>list-of-s2</code> with a listof contract, which  ends up making a copy of the original (empty) list as it traverses and  validates it. The original value does change in typed code, but the main module only has  access to the empty copy.</p>
+
+<p>Here&rsquo;s a step-by-step breakdown:</p>
+
+<ol>
+ <li>the typed module creates an empty list-of-s2</li>
+ <li>the main module imports the list and receives a new copy</li>
+ <li>the main module calls set-list-of-s2! and the typed module updates the original list-of-s2 variable</li>
+ <li>the main module reads from its copy &mdash; and it&rsquo;s still empty</li></ol>
+
+<h3 id="hows-transient">How&rsquo;s transient?</h3>
+
+<p><strong>Shallow</strong> lets the original list travel to untyped code. There are no contracts in the way.</p>
+
+<h2 id="discussion">Discussion</h2>
+
+<p>Wow! It&rsquo;s great to see that Shallow Racket works &ldquo;as expected&rdquo; on these examples. I hope the Shallow option makes types more accessible to more Racket programmers  in the future.</p>
+
+<p>If you have a similar experience with a deep-types error, let me know.</p>
+
+<p>Keep in mind, though, the freedoms of shallow types allow silent failures. A value can pass by a mis-matched type annotation without Shallow raising an  error &mdash; and if that happens, the end result may be really, really confusing. Of course you can always switch back to Deep Typed Racket for debugging.</p>
+
+<p>Shallow Typed Racket is coming soon. Follow the <a href="https://github.com/racket/typed-racket/pull/948">pull request</a>  or watch the Racket release notes for news.</p>
+
+<h3 id="links">Links</h3>
+
+<ul>
+ <li><a href="http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/">Larger example</a>  where Shallow misses an error that Deep catches</li>
+ <li>Michael M. Vitousek <a href="http://hdl.handle.net/2022/23172">invented</a>  the Transient semantics and implemented it in  <a href="https://github.com/mvitousek/reticulated">Reticulated Python</a>.</li>
+ <li>My <a href="https://ccs.neu.edu/home/types/publications/publications.html#g-thesis-2020">upcoming dissertation</a>  has lots more to say about Shallow Typed Racket.</li></ul>
+
+<p><em>Thanks to Artem Pelenitsyn for reading and criticizing an early version of this post.</em></p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2020/10/15/transient-answers-old-questions/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2020/11/12/transient-for-optional-and-keyword-functions/">&larr; <em>Transient for Optional and Keyword Functions</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2020/01/15/the-typed-racket-optimizer-vs-transient/"><em>The Typed Racket Optimizer vs. Transient</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

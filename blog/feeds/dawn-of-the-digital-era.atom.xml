@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'dawn of the digital era'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/dawn-of-the-digital-era.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/dawn-of-the-digital-era.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-dawn-of-the-digital-era-html</id>
+ <updated>2016-06-13T10:50:14Z</updated>
+ <entry>
+  <title type="text">Does anyone still care about printed proceedings? (Grab some at NEU this week!)</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2016/06/13/does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week/?utm_source=dawn-of-the-digital-era&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2016-06-13-does-anyone-still-care-about-printed-proceedings-grab-some-at-neu-this-week</id>
+  <published>2016-06-13T10:50:14Z</published>
+  <updated>2016-06-13T10:50:14Z</updated>
+  <author>
+   <name>Gabriel Scherer</name></author>
+  <content type="html">
+&lt;p&gt;Are you interested in printed conference Proceedings? We have a good stack of them left away at Northeastern University (Boston, MA) and it seems that nobody wants them!&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;If you are in the area and are interested, feel free to send me an email and come grab them. We have ASPLOS from XIII to XX, PLDI from 2005 to 2015 (but not 2014), and OOPSLA from 2002 to 2015. When I saw the stack, I grabbed the POPL ones from 2002 to 2015, but in fact I have no idea what to do with them and I&amp;rsquo;m a bit skeptical they would be of use to me; if you know you would use them, I would be glad to let you have them.&lt;/p&gt;
+
+&lt;p&gt;If you were to buy those proceedings at conference-subscription rates today, it would cost you a small fortune. Yet nobody seems to want them. An odd disconnect, that I found amusing and maybe worthy of a blog post.&lt;/p&gt;
+
+&lt;p&gt;But don&amp;rsquo;t get me wrong, the future of printed proceedings is not an important question. We should rather be asking ourselves: why are the products of the work of our communities not easily accessible in an Open Access long-term archive? Are you submitting your articles to arXiv, or another archive? Why not?&lt;/p&gt;
+
+&lt;p&gt;Not caring about printed proceedings is perfectly fine; but please care about people outside institutions that want to access your work &amp;mdash; for example, master student myself.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;em&gt;Update (August 2017):&lt;/em&gt; Gabriel returned to France and left the POPL proceedings  at his desk. The proceedings are sitting in the hallway at NEU, in case anyone  cares.&lt;/p&gt;</content></entry></feed>

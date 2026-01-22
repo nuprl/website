@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Datalog for Static Analysis</title>
+    <meta name="description" content="...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="HOPL, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/02/21/datalog-for-static-analysis/">
+    <link rel="next" href="/blog/2017/02/15/conversational-context-and-concurrency/">
+    <link rel="prev" href="/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Datalog for Static Analysis</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-02-21" pubdate="true">2017-02-21</time> :: <span class="tags"><a href="/blog/tags/HOPL.html">HOPL</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+  <!-- more-->
+
+<p>Datalog is an old DSL that frequently appears in work on static analysis. This edition of <a href="/blog/2017/02/15/introducing-hopl-2017/">HOPL 2017</a> explores the origins of Datalog in general, its early use in program analysis, and why Datalog remains a useful tool.</p>
+
+<p>Full notes:</p>
+
+<ul>
+ <li><a href="/blog/static/datalog-for-static-analysis.pdf">Local Copy</a></li>
+ <li><a href="https://github.com/nuprl/hopl-s2017/tree/master/datalog-for-static-analysis">Source of Truth</a></li></ul>
+
+<hr />
+
+<p>Datalog as a language was introduced by 1978 (its semantic foundations date back to 1976). It is <em>predicate logic</em> as a database query language. The traditional view of a Datalog program is a <em>time invariant</em> transformation over the <em>time varying</em> data stored in an external database.</p>
+
+<p>In the early 1990&rsquo;s, Uwe Aβmann designed a graph rewriting systems (EARS) that could:</p>
+
+<ol>
+ <li>Uniformly express various problems in static analysis</li>
+ <li>Systematically derive efficient solutions to such problems.</li></ol>
+
+<p>(Prior work had derived the same solutions with ad-hoc methods.) Aβmann&rsquo;s system is equivalent to Datalog.</p>
+
+<p>In 1993, Reps used the 
+ <tt>CORAL</tt> deductive database (an implementation of Datalog) to derive an on-demand (read: lazy) implementation of program slicing from a <em>specification</em> of the slicing problem.</p>
+
+<p>Both Aβmann&rsquo;s and Reps work appeared in 1994. This was the first time Datalog had been used to implement a static analysis.</p>
+
+<p>Researchers continue to use Datalog because:</p>
+
+<ul>
+ <li>predicate logic (specifically: Horn clauses without function symbols or negation)  is useful for expressing recursive relations &hellip; and static analyses are all about recursive relations</li>
+ <li>the language separates <em>specifications</em> from their <em>implementation</em></li>
+ <li>there are many techniques for efficiently serving a Datalog query</li>
+ <li>these techniques have been implemented in <a href="https://developer.logicblox.com/wp-content/uploads/2016/01/logicblox-sigmod15.pdf">at least one</a>  commercial Datalog engine</li></ul>
+
+<p>For an excellent description of how Datalog can benefit static analysis, see the introduction to <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.648.1834&amp;rep=rep1&amp;type=pdf">Rep&rsquo;s paper</a>.</p>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/02/21/datalog-for-static-analysis/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/02/21/bullets-are-good-for-your-coq-proofs/">&larr; <em>Bullets are good for your Coq proofs</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/02/15/conversational-context-and-concurrency/"><em>Conversational Context and Concurrency</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

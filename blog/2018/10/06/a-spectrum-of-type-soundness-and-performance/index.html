@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>A Spectrum of Type Soundness and Performance</title>
+    <meta name="description" content="The literature on mixed-typed languages presents (at least) three fundamentally different ways of thinking about the integrity of programs that combine  statically typed and dynamically typed code. Recently, we have been sorting them out....">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="migratory typing, gradual typing, extended abstract, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/">
+    <link rel="next" href="/blog/2018/05/08/sampling-gradual-typing-performance/">
+    <link rel="prev" href="/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>A Spectrum of Type Soundness and Performance</h1>
+    <p class='date-and-tags'>
+<time datetime="2018-10-06" pubdate="true">2018-10-06</time> :: <span class="tags"><a href="/blog/tags/migratory-typing.html">migratory typing</a>, <a href="/blog/tags/gradual-typing.html">gradual typing</a>, <a href="/blog/tags/extended-abstract.html">extended abstract</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>The literature on mixed-typed languages presents (at least) three fundamentally different ways of thinking about the integrity of programs that combine  statically typed and dynamically typed code. Recently, we have been sorting them out.</p>
+<!-- more-->
+
+<blockquote>
+ <p>Note: this post is an extended abstract for the paper <em>A Spectrum of Type  Soundness and Performance</em> by Ben Greenman and Matthias Felleisen.  For the full paper, slides, code, and a video presentation, visit  <a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018">http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018</a></p></blockquote>
+
+<p>A dynamically-typed language runs any program that &ldquo;looks good&rdquo; (i.e.,  passes some basic syntactic criteria. In Python a program cannot mix  indentation levels. In Racket a program cannot refer to unbound variables). A statically-typed language runs any program that both &ldquo;looks good&rdquo; and  is well-typed according to a type checker.</p>
+
+<p>A <em>mixed-typed</em> language allows some combination of static and dynamic typing. There are many languages that fall in the mixed-typed category; figure 1 lists  a few, roughly arranged left-to-right by the year they first provided a way to  mix.</p>
+
+<div class="figure"><img src="/img/mixed-typed-systems-by-year.png" alt="Figure 1: Some mixed-typed languages" />
+ <p class="caption">Figure 1: Some mixed-typed languages</p></div>
+
+<p>These languages all try to combine static and dynamic typing in a useful way,  but they take VERY different approaches. For example:</p>
+
+<ul>
+ <li><strong>MACLISP</strong> defines a syntax for type annotations but does not say how a compiler  should interpret the types; see section 14.2 of the <a href="http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf">Moonual</a>.  For example, a compiler may use types to generate specialized code that assumes  the type annotations are correct (and has undefined behavior otherwise).</li>
+ <li><strong>Strongtalk</strong> includes a static type checker and DOES NOT use types to change the  behavior of a program.  For rationale, see the <a href="http://bracha.org/pluggableTypesPosition.pdf">Pluggable Type Systems</a> position paper.</li>
+ <li><strong>Typed Racket</strong> lets a program combine statically-typed modules and dynamically-typed  modules. The compiler inserts run-time checks at the boundaries between such  modules to detect any mismatches between the static types and incoming dynamically-typed  values.</li>
+ <li><strong>Thorn</strong> requires that every value in a program has a type, but allows  dynamically-typed contexts to manipulate values. In other words, every Thorn  value is an instance of a statically-declared class and classes may contain  dynamically-typed methods.</li>
+ <li><strong>Reticulated</strong> lets a program combine static and dynamic <em>expressions</em> and  guarantees that the combination has a well-defined semantics (Vitousek, Swords, and Siek <a href="https://dl.acm.org/citation.cfm?id=3009849">POPL 2017</a>).</li></ul>
+
+<p>That makes five different systems. There are 15 other systems in the figure, and many more in the world. How can we make sense of this space? We claim: by understanding each system&rsquo;s protocol for checking  dynamically-typed values at a <em>type boundary</em> (between static and dynamic code).</p>
+
+<h3 id="main-contribution">Main Contribution</h3>
+
+<p>In the paper <a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"><em>A Spectrum of Type Soundness and Performance</em></a>,  we define a tiny mixed-typed language and show three ways to define the  behavior of programs &mdash; based on three protocols for checking  dynamically-typed values that cross a boundary into statically-typed code.</p>
+
+<p>The three behaviors are inspired by existing languages. A <strong>higher order</strong> behavior ensures that dynamically-typed  values match the static type at a boundary &mdash; by checking the value when possible,  and by monitoring the value&rsquo;s future interactions when necessary. A <strong>first order</strong> behavior performs a yes-or-no check on dynamically-typed values  and never monitors their future behavior. An <strong>erasure</strong> behavior does no checking whatsoever.</p>
+
+<blockquote>
+ <p>Example (monitors): if typed code expects a function from numbers to numbers and receives an untyped function <code>f</code>, then one way to enforce the type boundary is to wrap <code>f</code> in a proxy to assert that every future call to <code>f</code> returns a number. In this case, the proxy monitors the behavior of <code>f</code>.</p></blockquote>
+
+<p>Concretely, the paper defines three formal semantics with the same names. The <strong>higher-order</strong> semantics enforces full types at the boundaries (Section 2.3). The <strong>first-order</strong> semantics enforces type constructors at the boundaries, and  furthermore enforces type constructors on every &ldquo;selector&rdquo; operation in typed  code, e.g., function application, data structure access (Section 2.5). The <strong>erasure</strong> semantics simply ignores the types (Section 2.4).</p>
+
+<p>Each semantics satisfies a <em>different</em> notion of soundness for mixed-typed  programs, and each notion is slightly weaker than soundness for fully-typed  programs. The paper states these theorems (Section 2) and the  <a href="https://repository.library.northeastern.edu/files/neu:cj82rk279">online supplement</a>  gives full proofs.</p>
+
+<p>The paper has more to say about the meta-theory. See section 2 and section 4.</p>
+
+<blockquote>
+ <p>To the best of our knowledge, this paper is the first to explicitly acknowledge that different approaches to a mixed-typed language lead to different notions of soundness. Other papers state type soundness theorems for <a href="https://dl.acm.org/citation.cfm?id=2676971">subset of the language</a> (in the spirit of <a href="http://soundiness.org/">soundiness</a>) or use the name &ldquo;type soundness&rdquo; to describe <a href="https://dl.acm.org/citation.cfm?id=2676971">a different property</a>.</p></blockquote>
+
+<p>Next, we used the three semantics as a guide to arrive at three compilers for  Typed Racket. The higher-order compiler is the standard Typed Racket. The first-order compiler is something we built, based on the semantics. The erasure compiler simply ignores the type annotations &mdash; similar to Typed Racket&rsquo;s  <a href="http://docs.racket-lang.org/ts-reference/Typed_Racket_Syntax_Without_Type_Checking.html">no-check</a> language.</p>
+
+<p>Using this set-up, we measured the performance of mixed-typed programs via  each compiler using the method suggested by Takikawa et. al (<a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf">POPL 2016</a>). The programs we measured are the non-object-oriented ones from our <a href="http://docs.racket-lang.org/gtp-benchmarks/index.html">benchmark suite</a>.</p>
+
+<p>To some extent, the performance results confirm conjectures from the literature. The full results, however, include many surprises &mdash; see section 3 of the paper,  section B of the <a href="https://repository.library.northeastern.edu/files/neu:cj82rk279">supplement</a>,  and/or the <a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf">slides</a>.</p>
+
+<h3 id="implications">Implications</h3>
+
+<ol>
+ <li>The model in the paper is one way to understand the different approaches  to mixed-typed languages. See section 5 of the paper,  section D of the <a href="https://repository.library.northeastern.edu/files/neu:cj82rk279">supplement</a>,  or <a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf">slide 114</a>.</li>
+ <li>Programmers using mixed-typed languages need to know what guarantees their  types provide.  (It is <a href="https://twitter.com/jbandi/status/965005464638541825">not safe to assume that TypeScript types give the same guarantees as OCaml types</a>!)  Section 4 of the paper contains many examples of how the different guarantees  may affect practice.</li>
+ <li>The relative performance of different approaches is more nuanced than the  literature suggests. Our paper gives a first systematic comparison based on  implementations that have clear areas for improvement. The question is:  can we find improvements that lead to asymptotic differences, or is it a  battle for constant factors?</li></ol>
+
+<blockquote>
+ <p>Note: in this post, a <em>mixed-typed language</em> is one that allows any combination of static and dynamic typing. A <em>gradually-typed language</em> is one that allows a certain kind of mixing that satisfies properties defined by Siek, Vitousek, Cimini, and Boyland (<a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/">SNAPL 2015</a>).</p></blockquote>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2018/10/22/defining-local-bindings-in-turnstile-languages/">&larr; <em>Defining Local Bindings in Turnstile Languages</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2018/05/08/sampling-gradual-typing-performance/"><em>Sampling Gradual Typing Performance</em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0">
+ <channel>
+  <title>PRL Blog: Posts tagged 'extended abstract'</title>
+  <description>PRL Blog: Posts tagged 'extended abstract'</description>
+  <link>http://prl.ccs.neu.edu/blog/tags/extended-abstract.html</link>
+  <lastBuildDate>Thu, 31 Oct 2019 21:58:26 UT</lastBuildDate>
+  <pubDate>Thu, 31 Oct 2019 21:58:26 UT</pubDate>
+  <ttl>1800</ttl>
+  <item>
+   <title>Complete Monitors for Gradual Types</title>
+   <link>http://prl.ccs.neu.edu/blog/2019/10/31/complete-monitors-for-gradual-types/?utm_source=extended-abstract&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2019-10-31-complete-monitors-for-gradual-types</guid>
+   <pubDate>Thu, 31 Oct 2019 21:58:26 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;Syntactic type soundness is too weak to tell apart different ways of running  a program that mixes typed and untyped code. Complete monitoring is a stronger property that captures a meaningful  distinction &amp;mdash; a language satisfies complete monitoring iff it checks  all interactions between typed and untyped code.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;Complete Monitors for Gradual Types&lt;/em&gt; by Ben Greenman, Matthias Felleisen, and Christos Dimoulas. For the full paper, proofs, and slides, &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gfd-oopsla-2019"&gt;click here&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;h3 id="example-clickable-plot"&gt;Example: Clickable Plot&lt;/h3&gt;
+
+&lt;p&gt;The program below has a subtle bug. Can you find it?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src="/img/complete-monitoring-0.png" alt="Untyped client code, a typed API, and untyped library code." /&gt;&lt;/p&gt;
+
+&lt;p&gt;First of all, this pseudocode program combines three chunks of code:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the left, an &lt;strong&gt;untyped&lt;/strong&gt; client script defines a function &lt;code&gt;h&lt;/code&gt; that expects  a pair of numbers and returns an image. The client uses this function to  create a &lt;code&gt;ClickPlot&lt;/code&gt; object, and then displays the plot &amp;mdash; ideally in a new  GUI window.&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;In the center, a &lt;strong&gt;typed&lt;/strong&gt; API file describes a &lt;code&gt;ClickPlot&lt;/code&gt; object as  something with one constructor and two methods. The constructor expects  a function; according to the type, such functions can expect a pair of  numbers and must compute an image. The &lt;code&gt;mouseHandler&lt;/code&gt; method expects  a &lt;code&gt;MouseEvt&lt;/code&gt; object and returns nothing. The &lt;code&gt;show&lt;/code&gt; method expects no arguments  and returns nothing. (Presumably, these methods have side effects.)&lt;/p&gt;&lt;/li&gt;
+ &lt;li&gt;
+  &lt;p&gt;On the right, an &lt;strong&gt;untyped&lt;/strong&gt; library module implements a &lt;code&gt;ClickPlot&lt;/code&gt; object.  Most of the code is omitted (&lt;code&gt;...&lt;/code&gt;), but the &lt;code&gt;mouseHandler&lt;/code&gt; method sends  its input directly to the &lt;code&gt;onClick&lt;/code&gt; callback.&lt;/p&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;The &lt;strong&gt;bug&lt;/strong&gt; is in the API &amp;mdash; in the type &lt;code&gt;([N, N]) =&amp;gt; Image&lt;/code&gt;. This type promises that a given function can expect a pair of numbers,  and indeed the client function &lt;code&gt;h&lt;/code&gt; expects a pair. But the library code on the right sends a &lt;code&gt;MouseEvt&lt;/code&gt; object.&lt;/p&gt;
+
+&lt;p&gt;What happens when we run this program in a type-sound mixed-typed language? Does &lt;code&gt;h&lt;/code&gt; receive the invalid input?&lt;/p&gt;
+
+&lt;p&gt;As it turns out, type soundness cannot say. A type sound language may choose to enforce or ignore the fact that the  API promises a pair of numbers to the client.&lt;/p&gt;
+
+&lt;h3 id="type-soundness-is-not-enough"&gt;Type Soundness is Not Enough&lt;/h3&gt;
+
+&lt;p&gt;Sound types are statements about the behavior of a program. A normal type soundness theorem for a typed language says that a well-typed  program can either compute a value of the same type, compute forever (diverge),  or stop with an acceptable error (perhaps division by zero). No other behaviors are possible.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Classic Type Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;A mixed-typed language needs two &amp;ldquo;type soundness&amp;rdquo; theorems:  one for typed code and one for untyped code. The &lt;strong&gt;typed&lt;/strong&gt; soundness theorem can resemble a classic theorem. The &lt;strong&gt;untyped&lt;/strong&gt; soundness theorem is necessarily a weaker statement due to  the lack of types:&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;strong&gt;Mixed-Typed Soundness&lt;/strong&gt;&lt;/p&gt;
+ &lt;p&gt;If &lt;code&gt;e : T&lt;/code&gt; then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v : T&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;
+ &lt;p&gt;And if &lt;code&gt;e&lt;/code&gt; is untyped then one of the following holds:&lt;/p&gt;
+ &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* v&lt;/code&gt; and &lt;code&gt;v&lt;/code&gt; is an untyped value&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e&lt;/code&gt; diverges&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;e --&amp;gt;* OkError&lt;/code&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Now we can see why mixed-typed soundness is not strong enough to guarantee that  the callback &lt;code&gt;h&lt;/code&gt; in the code above receives a pair value. We have an &lt;strong&gt;untyped&lt;/strong&gt; function called from an &lt;strong&gt;untyped&lt;/strong&gt; context &amp;mdash; since  there are no types sitting right there, type soundness has nothing to say  except that the untyped code can expect an untyped value!&lt;/p&gt;
+
+&lt;p&gt;&lt;img height="200px" src="/img/complete-monitoring-1.png" alt="Untyped library sends input directly to untyped client." /&gt;&lt;/p&gt;
+
+&lt;p&gt;Nevertheless, this channel of communication between the library and client  arose through the typed API. One might expect the type &lt;code&gt;[N, N]&lt;/code&gt; to restrict the values that can flow across  the channel; indeed, if types really are statements about the behavior of a program,  then the channel needs to be protected.&lt;/p&gt;
+
+&lt;p&gt;The question is: what formal property separates languages thet check  all typed/untyped channels of communication (whether direct or derived)? One answer is complete monitoring.&lt;/p&gt;
+
+&lt;h3 id="complete-monitoring"&gt;Complete Monitoring&lt;/h3&gt;
+
+&lt;p&gt;A mixed-typed language satisfies complete monitoring iff evaluation never  lets a value flow un-checked across a type boundary. To make this idea precise, we need to enrich the syntax of the language  with a specification of &lt;em&gt;ownership&lt;/em&gt; to say what parts of the program are  responsible for different values, and to say how evalution changes  responsibilities. Relative to a specification, complete monitoring states that every expression  that arises during evaluation is made up of parts that each have a single  owner.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;&lt;em&gt;Complete Monitoring&lt;/em&gt;&lt;/p&gt;
+ &lt;p&gt;For all well-formed &lt;code&gt;e&lt;/code&gt; and all &lt;code&gt;e'&lt;/code&gt;, if &lt;code&gt;e --&amp;gt;* e'&lt;/code&gt; then every subexpression of &lt;code&gt;e'&lt;/code&gt; has a unique owner.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;This property separates our two behaviors for the Clickable Plot code. A language that satisfies complete monitoring enforces the API types with  a runtime check. A language that merely satisfies type soundness may skip these checks.&lt;/p&gt;
+
+&lt;h3 id="an-aid-to-debugging"&gt;An Aid to Debugging&lt;/h3&gt;
+
+&lt;p&gt;The question raised by the Clickable Plot example is whether a language can  &lt;strong&gt;detect&lt;/strong&gt; one mismatch between a type and a value. A language that satisfies complete monitoring detects all such mis-matches. But we can say more. If a mismatch occurs, then programmer knows exactly where to start debugging  &amp;mdash; either the type is an incorrect specification, or the given value is  flawed. In other words, complete monitoring implies a concise 2-party explanation  for every type mismatch.&lt;/p&gt;
+
+&lt;p&gt;The paper generalizes this goal of explaining a mismatch for languages  that fail to satisfy complete monitoring. There may be 2N parties to blame thanks to un-checked channels of communication,  and we want to be certain to report all these parties and no false positives.&lt;/p&gt;
+
+&lt;p&gt;Also in the paper, you can find:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;a model of ownership, clear &lt;em&gt;laws&lt;/em&gt; for how ownership changes during evaluation;&lt;/li&gt;
+ &lt;li&gt;examples of how to systematically add ownership to an operational semantics  to attempt a proof of complete monitoring;&lt;/li&gt;
+ &lt;li&gt;definitions for &lt;strong&gt;blame soundness&lt;/strong&gt; and &lt;strong&gt;blame completeness&lt;/strong&gt;;&lt;/li&gt;
+ &lt;li&gt;an analysis of three semantics, which correspond to &lt;a href="https://docs.racket-lang.org/ts-reference/index.html"&gt;Typed Racket&lt;/a&gt;,  &lt;a href="http://hdl.handle.net/2022/23172"&gt;Transient Reticulated&lt;/a&gt;, and a compromise;&lt;/li&gt;
+ &lt;li&gt;and discussion of an alternative, heap-based model of ownership.&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Paper: &lt;a href="https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf"&gt;https://www2.ccs.neu.edu/racket/pubs/oopsla19-gfd.pdf&lt;/a&gt;&lt;/p&gt;</description></item>
+  <item>
+   <title>The Behavior of Gradual Types: A User Study</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/12/11/the-behavior-of-gradual-types-a-user-study/?utm_source=extended-abstract&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-12-11-the-behavior-of-gradual-types-a-user-study</guid>
+   <pubDate>Tue, 11 Dec 2018 19:50:33 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;The Behavior of Gradual Types: A User Study&lt;/em&gt; by Preston Tunnell&amp;mdash;Wilson, Ben Greenman, Justin Pombrio, and Shriram Krishnamurthi. For the full paper, datasets, and slides, &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#tgpk-dls-2018"&gt;click here&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;The long-term goal of gradual typing is to build languages that offer the  &amp;ldquo;best&amp;rdquo; of both static and dynamic typing. Researchers disagree, however, on what the semantics of a mixed-typed language  should be; there are &lt;a href="/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/"&gt;at least three competing proposals&lt;/a&gt;  for combining a dynamically-typed language with a similar statically-typed language.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;It&amp;rsquo;s an interesting situation. There are dozens of papers on the semantics of gradual types&amp;mdash;and &lt;a href="http://www.ccs.neu.edu/home/types/resources/talks/tgpk-dls-2018.pdf"&gt;many claim&lt;/a&gt; to have developers in mind&amp;mdash;but zero papers that ask developers what they think.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;To help inform the discussion, we recently designed a &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;survey&lt;/a&gt;  to see what programmers think of three mixed-typed semantics. The survey is based on 8 example programs; we selected these 8 programs because the set as a whole tells the three mixed-typed semantics apart. For each program, the survey presents a few possible outcomes of running the  program and asks participants for their opinion on each outcome.&lt;/p&gt;
+
+&lt;p&gt;The image below shows one program from the survey:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-program.png" alt="Figure 1: example program" /&gt;&lt;/p&gt;
+
+&lt;p&gt;This program creates an array, passes it between typed and untyped variables,  and performs write &amp;amp; read operations. What should happen when we run this program? One option is to ignore the type annotations and return the second element  of the array (&lt;code&gt;"bye"&lt;/code&gt;). A second option is to reject the write operation (on line 4) because it attempts  to write a number to a variable of type &lt;code&gt;Array(String)&lt;/code&gt;. A third option is to reject the assignment after the read operation (on line 5)  because it attempts to assign a string to a variable of type &lt;code&gt;Number&lt;/code&gt;. These are the three behaviors in the survey:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-behaviors.png" alt="Figure 2: behaviors for the example question" /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;A fourth option is to reject the assignment of an &lt;code&gt;Array(String)&lt;/code&gt; to a variable of type &lt;code&gt;Array(Number)&lt;/code&gt;. A few participants left comments asking for this behavior. See the &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;anonymized responses&lt;/a&gt; for their comments, and see &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for why we left that behavior out.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For each behavior, we asked for respondents&amp;rsquo; preference along two independent dimensions:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;Do you &lt;em&gt;like&lt;/em&gt; or &lt;em&gt;dislike&lt;/em&gt; this behavior?&lt;/li&gt;
+ &lt;li&gt;Does it match your &lt;em&gt;expectation&lt;/em&gt; as a programmer?&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Combined, the dimensions lead to four possible &lt;em&gt;attitudes&lt;/em&gt;: Like and Expected,  Like and Unexpected, Dislike and Expected, Dislike and Unexpected. The full example question, with attitudes and space for comments, is below.&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-question.png" alt="Figure 3: complete question" /&gt;&lt;/p&gt;
+
+&lt;p&gt;We administered the survey to three populations &amp;mdash; software engineers,  students, and Mechanical Turk workers &amp;mdash; and thereby collected three sets of  attitudes for each question. The results for the running example are below:&lt;/p&gt;
+
+&lt;p&gt; &lt;img src="/img/gtsurvey-example-data.png" alt="Figure 4: results for Question 7" /&gt;&lt;/p&gt;
+
+&lt;p&gt;The figure is a matrix of three columns (one for each population)  and three rows (one for each behavior). Each cell of the matrix contains a bar chart showing the attitudes  that we collected.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Unlike the survey question, the behaviors in the results are labeled as &lt;strong&gt;Deep&lt;/strong&gt;, &lt;strong&gt;Erasure&lt;/strong&gt;, and &lt;strong&gt;Shallow&lt;/strong&gt;. These names describe the three mixed-typed semantics.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;For this question, the software engineers (left column, green bars)  mostly picked the &amp;ldquo;Dislike and Unexpected&amp;rdquo; attitude for every behavior. The students (mid column, blue bars) also show consensus on &amp;ldquo;Dislike and  Unexpected&amp;rdquo; for the &lt;strong&gt;Deep&lt;/strong&gt; and &lt;strong&gt;Erasure&lt;/strong&gt; behaviors; however, they are split  for the &lt;strong&gt;Shallow&lt;/strong&gt; behavior. The Mechanical Turk workers are divided on every behavior.&lt;/p&gt;
+
+&lt;p&gt;See &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for the other questions and responses.&lt;/p&gt;
+
+&lt;p&gt;Overall, our main finding is that respondents preferred behaviors that enforced  full types and reported runtime mismatches as early as possible. The takeaway is thus:&lt;/p&gt;
+
+&lt;p style="margin-left: 40px; margin-right: 40px"&gt;if you are designing a mixed-typed language and choose &lt;strong&gt;not&lt;/strong&gt; to enforce full types, then make sure to explain this behavior to users!&lt;/p&gt;
+
+&lt;p&gt;Put lots of example programs in the language&amp;rsquo;s documentation. The programs in the survey can be adapted to explain how your chosen  behavior differs from alternatives.&lt;/p&gt;
+
+&lt;h2 id="questions"&gt;Questions&lt;/h2&gt;
+
+&lt;p&gt;Here are some good questions we&amp;rsquo;ve gotten that are not clearly answered in the paper.&lt;/p&gt;
+
+&lt;h4 id="q-did-any-respondents-expect-more-than-one-behavior"&gt;Q. Did any respondents &amp;ldquo;expect&amp;rdquo; more than one behavior?&lt;/h4&gt;
+
+&lt;p&gt;Yes, 59% &lt;!-- 20/34--&gt; of the software engineers and 82% &lt;!-- 14/17--&gt; of the students selected &amp;ldquo;Liked and Expected&amp;rdquo; and/or &amp;ldquo;Dislike and Expected&amp;rdquo; for different behaviors on the same program.&lt;/p&gt;
+&lt;!-- They probably interpreted "Expected" as--&gt;
+&lt;!--  "the program does something that makes sense", rather than--&gt;
+&lt;!--  "the program does the one thing that I believe it should do".--&gt;
+&lt;!-- ids for "double-expect" S.Es : R_24bz47lgcAOkCux R_2R4dZ1l0t3yx6fW R_b7yMVe7VtmmsrHb R_31MXSUfCyDE8FdG R_6LGXyOirYNtYWd3 R_2qyMZBAs74PrsSz R_2ASFRBh2jfuRgP1 R_1PUc0AUEzdXKGt8 R_2dL60N9oPIkbvWY R_1BXXqYyxH7R4r9l R_1ON2sxGalcODyAd R_1oyZasBudU5gKPS R_1FIHgkQbWGaxuHd R_b1s2YMBWCrCRvxf R_29t0zWxkQsfb9FT R_2fevZOrFGzS6JLf R_8Dn6NMjDyigT59n R_2pRG370z3cBUaKv R_2qDXTFI53ntWMu4 R_ZI8AwATueqyWwOR--&gt;
+&lt;!-- ids for "double-expect" students : R_9B6WHWEX5l0DskN R_22VAu37cGWQPQx1 R_3hgYSaGy2tbyY3G R_3rTbAqgn1rhQK4d R_r3HqAP1yGRXHaZX R_1l05qvQ1sYOCcCF R_3qaMT9xR7CRYg2Y R_1Li0sGHkxk1VfcA R_24ITtgvBzg9RpE3 R_3HzshHbDWkayp4t R_5mtEFLtSX0iPVOp R_1IR6vdpmVw4OCqV R_2XpWlkKjH9LQqln R_DoQrROe0dcb1YJz--&gt;
+
+&lt;h4 id="q-did-the-respondents-have-a-prior-preference-for-static-or-dynamic-typing"&gt;Q. Did the respondents have a prior preference for static or dynamic typing?&lt;/h4&gt;
+
+&lt;p&gt;Near the end of the survey we asked: &amp;ldquo;Which do you prefer, typed or untyped programming?&amp;rdquo;. See table 2 of &lt;a href="http://cs.brown.edu/~sk/Publications/Papers/Published/tgpk-beh-grad-types-user-study"&gt;the paper&lt;/a&gt; for coded responses to this question,  or the &lt;a href="http://cs.brown.edu/research/plt/dl/dls2018"&gt;anonymized responses&lt;/a&gt; for the ground truth. Most preferred typed programming.&lt;/p&gt;</description></item>
+  <item>
+   <title>A Spectrum of Type Soundness and Performance</title>
+   <link>http://prl.ccs.neu.edu/blog/2018/10/06/a-spectrum-of-type-soundness-and-performance/?utm_source=extended-abstract&amp;utm_medium=RSS</link>
+   <guid isPermaLink="false">urn:http-prl-ccs-neu-edu:-blog-2018-10-06-a-spectrum-of-type-soundness-and-performance</guid>
+   <pubDate>Sat, 06 Oct 2018 11:23:35 UT</pubDate>
+   <author>Ben Greenman</author>
+   <description>
+&lt;p&gt;The literature on mixed-typed languages presents (at least) three fundamentally different ways of thinking about the integrity of programs that combine  statically typed and dynamically typed code. Recently, we have been sorting them out.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: this post is an extended abstract for the paper &lt;em&gt;A Spectrum of Type  Soundness and Performance&lt;/em&gt; by Ben Greenman and Matthias Felleisen.  For the full paper, slides, code, and a video presentation, visit  &lt;a href="http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018"&gt;http://www.ccs.neu.edu/home/types/publications/publications.html#gf-icfp-2018&lt;/a&gt;&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;A dynamically-typed language runs any program that &amp;ldquo;looks good&amp;rdquo; (i.e.,  passes some basic syntactic criteria. In Python a program cannot mix  indentation levels. In Racket a program cannot refer to unbound variables). A statically-typed language runs any program that both &amp;ldquo;looks good&amp;rdquo; and  is well-typed according to a type checker.&lt;/p&gt;
+
+&lt;p&gt;A &lt;em&gt;mixed-typed&lt;/em&gt; language allows some combination of static and dynamic typing. There are many languages that fall in the mixed-typed category; figure 1 lists  a few, roughly arranged left-to-right by the year they first provided a way to  mix.&lt;/p&gt;
+
+&lt;div class="figure"&gt;&lt;img src="/img/mixed-typed-systems-by-year.png" alt="Figure 1: Some mixed-typed languages" /&gt;
+ &lt;p class="caption"&gt;Figure 1: Some mixed-typed languages&lt;/p&gt;&lt;/div&gt;
+
+&lt;p&gt;These languages all try to combine static and dynamic typing in a useful way,  but they take VERY different approaches. For example:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;strong&gt;MACLISP&lt;/strong&gt; defines a syntax for type annotations but does not say how a compiler  should interpret the types; see section 14.2 of the &lt;a href="http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf"&gt;Moonual&lt;/a&gt;.  For example, a compiler may use types to generate specialized code that assumes  the type annotations are correct (and has undefined behavior otherwise).&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Strongtalk&lt;/strong&gt; includes a static type checker and DOES NOT use types to change the  behavior of a program.  For rationale, see the &lt;a href="http://bracha.org/pluggableTypesPosition.pdf"&gt;Pluggable Type Systems&lt;/a&gt; position paper.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Typed Racket&lt;/strong&gt; lets a program combine statically-typed modules and dynamically-typed  modules. The compiler inserts run-time checks at the boundaries between such  modules to detect any mismatches between the static types and incoming dynamically-typed  values.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Thorn&lt;/strong&gt; requires that every value in a program has a type, but allows  dynamically-typed contexts to manipulate values. In other words, every Thorn  value is an instance of a statically-declared class and classes may contain  dynamically-typed methods.&lt;/li&gt;
+ &lt;li&gt;&lt;strong&gt;Reticulated&lt;/strong&gt; lets a program combine static and dynamic &lt;em&gt;expressions&lt;/em&gt; and  guarantees that the combination has a well-defined semantics (Vitousek, Swords, and Siek &lt;a href="https://dl.acm.org/citation.cfm?id=3009849"&gt;POPL 2017&lt;/a&gt;).&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;That makes five different systems. There are 15 other systems in the figure, and many more in the world. How can we make sense of this space? We claim: by understanding each system&amp;rsquo;s protocol for checking  dynamically-typed values at a &lt;em&gt;type boundary&lt;/em&gt; (between static and dynamic code).&lt;/p&gt;
+
+&lt;h3 id="main-contribution"&gt;Main Contribution&lt;/h3&gt;
+
+&lt;p&gt;In the paper &lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;&lt;em&gt;A Spectrum of Type Soundness and Performance&lt;/em&gt;&lt;/a&gt;,  we define a tiny mixed-typed language and show three ways to define the  behavior of programs &amp;mdash; based on three protocols for checking  dynamically-typed values that cross a boundary into statically-typed code.&lt;/p&gt;
+
+&lt;p&gt;The three behaviors are inspired by existing languages. A &lt;strong&gt;higher order&lt;/strong&gt; behavior ensures that dynamically-typed  values match the static type at a boundary &amp;mdash; by checking the value when possible,  and by monitoring the value&amp;rsquo;s future interactions when necessary. A &lt;strong&gt;first order&lt;/strong&gt; behavior performs a yes-or-no check on dynamically-typed values  and never monitors their future behavior. An &lt;strong&gt;erasure&lt;/strong&gt; behavior does no checking whatsoever.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Example (monitors): if typed code expects a function from numbers to numbers and receives an untyped function &lt;code&gt;f&lt;/code&gt;, then one way to enforce the type boundary is to wrap &lt;code&gt;f&lt;/code&gt; in a proxy to assert that every future call to &lt;code&gt;f&lt;/code&gt; returns a number. In this case, the proxy monitors the behavior of &lt;code&gt;f&lt;/code&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Concretely, the paper defines three formal semantics with the same names. The &lt;strong&gt;higher-order&lt;/strong&gt; semantics enforces full types at the boundaries (Section 2.3). The &lt;strong&gt;first-order&lt;/strong&gt; semantics enforces type constructors at the boundaries, and  furthermore enforces type constructors on every &amp;ldquo;selector&amp;rdquo; operation in typed  code, e.g., function application, data structure access (Section 2.5). The &lt;strong&gt;erasure&lt;/strong&gt; semantics simply ignores the types (Section 2.4).&lt;/p&gt;
+
+&lt;p&gt;Each semantics satisfies a &lt;em&gt;different&lt;/em&gt; notion of soundness for mixed-typed  programs, and each notion is slightly weaker than soundness for fully-typed  programs. The paper states these theorems (Section 2) and the  &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;online supplement&lt;/a&gt;  gives full proofs.&lt;/p&gt;
+
+&lt;p&gt;The paper has more to say about the meta-theory. See section 2 and section 4.&lt;/p&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;To the best of our knowledge, this paper is the first to explicitly acknowledge that different approaches to a mixed-typed language lead to different notions of soundness. Other papers state type soundness theorems for &lt;a href="https://dl.acm.org/citation.cfm?id=2676971"&gt;subset of the language&lt;/a&gt; (in the spirit of &lt;a href="http://soundiness.org/"&gt;soundiness&lt;/a&gt;) or use the name &amp;ldquo;type soundness&amp;rdquo; to describe &lt;a href="https://dl.acm.org/citation.cfm?id=2676971"&gt;a different property&lt;/a&gt;.&lt;/p&gt;&lt;/blockquote&gt;
+
+&lt;p&gt;Next, we used the three semantics as a guide to arrive at three compilers for  Typed Racket. The higher-order compiler is the standard Typed Racket. The first-order compiler is something we built, based on the semantics. The erasure compiler simply ignores the type annotations &amp;mdash; similar to Typed Racket&amp;rsquo;s  &lt;a href="http://docs.racket-lang.org/ts-reference/Typed_Racket_Syntax_Without_Type_Checking.html"&gt;no-check&lt;/a&gt; language.&lt;/p&gt;
+
+&lt;p&gt;Using this set-up, we measured the performance of mixed-typed programs via  each compiler using the method suggested by Takikawa et. al (&lt;a href="https://www2.ccs.neu.edu/racket/pubs/popl16-tfgnvf.pdf"&gt;POPL 2016&lt;/a&gt;). The programs we measured are the non-object-oriented ones from our &lt;a href="http://docs.racket-lang.org/gtp-benchmarks/index.html"&gt;benchmark suite&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To some extent, the performance results confirm conjectures from the literature. The full results, however, include many surprises &amp;mdash; see section 3 of the paper,  section B of the &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;supplement&lt;/a&gt;,  and/or the &lt;a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf"&gt;slides&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id="implications"&gt;Implications&lt;/h3&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;The model in the paper is one way to understand the different approaches  to mixed-typed languages. See section 5 of the paper,  section D of the &lt;a href="https://repository.library.northeastern.edu/files/neu:cj82rk279"&gt;supplement&lt;/a&gt;,  or &lt;a href="http://www.ccs.neu.edu/home/types/publications/apples-to-apples/gf-icfp-2018-slides.pdf"&gt;slide 114&lt;/a&gt;.&lt;/li&gt;
+ &lt;li&gt;Programmers using mixed-typed languages need to know what guarantees their  types provide.  (It is &lt;a href="https://twitter.com/jbandi/status/965005464638541825"&gt;not safe to assume that TypeScript types give the same guarantees as OCaml types&lt;/a&gt;!)  Section 4 of the paper contains many examples of how the different guarantees  may affect practice.&lt;/li&gt;
+ &lt;li&gt;The relative performance of different approaches is more nuanced than the  literature suggests. Our paper gives a first systematic comparison based on  implementations that have clear areas for improvement. The question is:  can we find improvements that lead to asymptotic differences, or is it a  battle for constant factors?&lt;/li&gt;&lt;/ol&gt;
+
+&lt;blockquote&gt;
+ &lt;p&gt;Note: in this post, a &lt;em&gt;mixed-typed language&lt;/em&gt; is one that allows any combination of static and dynamic typing. A &lt;em&gt;gradually-typed language&lt;/em&gt; is one that allows a certain kind of mixing that satisfies properties defined by Siek, Vitousek, Cimini, and Boyland (&lt;a href="http://drops.dagstuhl.de/opus/volltexte/2015/5031/"&gt;SNAPL 2015&lt;/a&gt;).&lt;/p&gt;&lt;/blockquote&gt;</description></item></channel></rss>

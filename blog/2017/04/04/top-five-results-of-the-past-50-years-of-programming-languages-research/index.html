@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <title>Top Five Results of the Past 50 Years of Programming Languages Research</title>
+    <meta name="description" content="Over the past 50 years, which result from programming languages research has had the greatest impact on working programmers?...">
+    <meta name="author"      content="PRL">
+    <meta name="keywords"    content="HOPL, Author: Ben Greenman">
+    <meta name="viewport"    content="width=device-width, initial-scale=1.0">
+    <link rel="icon"      href="/img/favicon.ico">
+    <link rel="canonical" href="http://prl.ccs.neu.edu/blog/2017/04/04/top-five-results-of-the-past-50-years-of-programming-languages-research/">
+    <link rel="next" href="/blog/2017/03/24/-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness/">
+    <link rel="prev" href="/blog/2017/04/17/type-directed-compilation-parts-i-and-ii/">
+    <script type="text/javascript" async
+            src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/pygments.css">
+    <link rel="stylesheet" type="text/css" href="/css/custom.css">
+    <link rel="stylesheet" type="text/css" href="/css/racket.css">
+    <link rel="stylesheet" type="text/css" href="/css/scribble.css">
+    <!-- Feeds -->
+    <link rel="alternate" type="application/atom+xml"
+          href="/blog/feeds/all.atom.xml" title="Atom Feed">
+    <link rel="alternate" type="application/rss+xml"
+          href="/blog/feeds/all.rss.xml" title="RSS Feed">
+  </head>
+  <body id="pn-top" class="subpages">
+    <nav class="navbar navbar-inverse">
+      <div class="container">
+        <div class="row">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li role="presentation"><a href="/">Home</a></li>
+              <li role="presentation"><a href="/people.html">People</a></li>
+              <li role="presentation"><a href="/teaching.html">Teaching</a></li>
+              <li role="presentation"><a href="/seminars.html">Seminars</a></li>
+              <li role="presentation"><a href="/software.html">Software</a></li>
+              <li role="presentation"><a href="/publications.html">Publications</a></li>
+              <li role="presentation"><a href="/new-members.html">New Members</a></li>
+              <li role="presentation"><a href="/contact.html">Contact</a></li>
+              <li role="presentation" class="active"><a href="/blog/index.html">Blog</a></li>
+            </ul>
+          </div><!--/.navbar-collapse -->
+        </div>
+      </div>
+    </nav>
+    <div class="jumbotron subpages">
+      <div class="container">
+        <div class="row">
+          <a style="text-decoration:none; color:white" href="/blog/index.html">
+            <div class="col-md-12">
+              <h1>Inside PRL</h1>
+              <p>Reading between the parentheses</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="pn-main-wrapper">
+      <div class="content">
+        <div class="container">
+          <div class="row">
+
+            <!-- Main column -->
+            <div id="content" class="col-md-12">
+
+
+
+              <article>
+  <header>
+    <h1>Top Five Results of the Past 50 Years of Programming Languages Research</h1>
+    <p class='date-and-tags'>
+<time datetime="2017-04-04" pubdate="true">2017-04-04</time> :: <span class="tags"><a href="/blog/tags/HOPL.html">HOPL</a></span></p>
+    <p class='authors'>By: <span class="authors"><a href="/blog/tags/Author-Ben-Greenman.html">Ben Greenman</a></span></p>
+  </header>
+
+<p>Over the past 50 years, which result from programming languages research has had the greatest impact on working programmers?</p>
+<!-- more-->
+
+<p>The center of the universe for a working programmer is the language (or languages) they use. Fundamental results in programming languages (PL) research can re-shape this universe.</p>
+
+<p>In <a href="http://www.ccs.neu.edu/home/matthias/7480-s17/index.html">HOPL</a> two weeks ago, Matthias claimed that <em>type soundness</em> is the most useful and influential result to flow from PL research to PL practice in the last 50 years.</p>
+
+<p>But 50 years is a long time, and there are many serious contenders for the title of <em>greatest PL result</em>. Here are my (alphabetized) picks for the top five:</p>
+
+<h3 id="abstraction">Abstraction</h3>
+
+<blockquote>
+ <p>My goal in library design is this; I want to have a precise, elegant, re-usable abstraction &mdash;Conal Eliott, <a href="https://www.youtube.com/watch?v=zzCrZEil9iI">BayHac 2014 (00:01:55)</a></p></blockquote>
+
+<p>By <em>abstraction</em>, I mean anything whose interface is not just &ldquo;read the implementation&rdquo;. Could be a tuple, module, object, structure, semaphore, macro, etc. Even the memory hierarchy pyramid in your operating systems textbook is an abstraction. They are everywhere, and they are what separates computer science (it&rsquo;s about <em>ideas</em>) from electrical engineering (it&rsquo;s about <em>transistors</em>). Thank you <a href="/img/l-plp-1965.pdf">Peter Landin</a> and <a href="/img/m-thesis-1969.pdf">J.H. Morris</a>.</p>
+
+<h3 id="generational-garbage-collection">Generational Garbage Collection</h3>
+
+<p>I don&rsquo;t know much about garbage collection. I do know that I want it, and I&rsquo;m pretty sure that I wouldn&rsquo;t have it (outside of research languages) without generational garbage collection. Thank you <a href="/img/u-sde-1984.pdf">David Ungar</a>.</p>
+
+<h3 id="generic-programming">Generic Programming</h3>
+
+<p><em>a.k.a. the mainstream interpretations of parametric polymorphism</em></p>
+
+<p>The thought of programming in Java 1.4 is terrifying. Thank you <a href="/img/g-thesis-1972.pdf">Jean-Yves Girard</a> and <a href="/img/r-cp-1974.pdf">John C. Reynolds</a> and <a href="http://homepages.inf.ed.ac.uk/wadler/gj/">Gilad Bracha and Martin Odersky and David Stoutamire and Philip Wadler</a>.</p>
+
+<h3 id="modularization">Modularization</h3>
+
+<p>How can humans understand large software systems? By organizing the systems into smaller components (modules, objects) with well-defined interfaces. It&rsquo;s hard to imagine, but once upon a time the question of <em>how</em> to divide a system into modules was a new research problem. Thank you <a href="/img/p-tr-1971.pdf">D.L. Parnas</a>.</p>
+
+<h3 id="type-soundness">Type Soundness</h3>
+
+<p>Let me make two modest claims:</p>
+
+<ul>
+ <li>Soundness (with respect to a dynamic semantics) is a desirable property for a static type system.</li>
+ <li>A large number (at least, thousands) of working programmers agree that programming in a language with a sound, static type system is &ldquo;a good thing&rdquo;.</li></ul>
+
+<p>Neither of these claims were true 50 years ago. They are definitely true today. And the slogan &ldquo;well typed programs do not go wrong (up to a well-defined set of runtime errors)&rdquo; has become the catchphrase of PL research. Thank you <a href="/img/m-jcss-1978.pdf">Robin Milner</a>.</p>
+
+<h2 id="honorable-mentions">Honorable Mentions</h2>
+
+<ul>
+ <li><a href="http://www.paulgraham.com/thist.html">lexical scope</a></li>
+ <li><a href="/img/d-thesis-1984.pdf">type inference</a></li>
+ <li><a href="https://www.quora.com/Why-does-Kent-Beck-refer-to-the-rediscovery-of-test-driven-development">test-driven development</a></li>
+ <li><a href="https://en.wikipedia.org/wiki/Simula">object-oriented programming</a></li>
+ <li><a href="/img/ss-tr-1975.pdf">continuation passing style</a></li>
+ <li><a href="/img/kffd-tr-1986.pdf">hygienic macros</a></li></ul>
+
+<hr />
+
+<p><em>If you liked this post, you may also be interested in:</em></p>
+
+<ul>
+ <li><a href="http://prl.ccs.neu.edu/blog/2016/05/18/gradual-typing-across-the-spectrum/">Gradual Typing Across the Spectrum</a></li>
+ <li><a href="http://jschuster.org/blog/2016/11/29/getting-started-in-programming-languages/">Getting Started in Programming Languages</a></li>
+ <li><a href="https://williamjbowman.com/blog/2017/03/24/what-even-is-compiler-correctness/">What even is compiler correctness?</a></li></ul>
+  <br/><br/>
+  <p>
+  <div id="disqus_thread">
+    <a href="#" onclick="loadDisqus(); return false;">
+      <b>(Show comments / Powered by Disqus)</b>
+    </a>
+  </div>
+  </p>
+  <script>
+    function loadDisqus() {
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = 'https://neuprl.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] ||
+        document.getElementsByTagName('body')[0]).appendChild(dsq);
+    };
+  </script>
+  <br/>
+  <footer>
+    <script type="text/javascript">
+      !function(d,s,id){
+          var js,fjs=d.getElementsByTagName(s)[0];
+          if(!d.getElementById(id)){
+              js=d.createElement(s);
+              js.id=id;
+              js.src="//platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js,fjs);
+          }
+      }(document,"script","twitter-wjs");
+    </script>
+    <a href="https://twitter.com/share"
+       class="twitter-share-button"
+       data-url="http://prl.ccs.neu.edu/blog/2017/04/04/top-five-results-of-the-past-50-years-of-programming-languages-research/"
+       data-dnt="true">
+      "Tweet"</a>
+    <ul class="pager">
+    <li class="previous">
+      <a href="/blog/2017/04/17/type-directed-compilation-parts-i-and-ii/">&larr; <em>Type-Directed Compilation, Parts I and II</em></a>
+    </li>
+    <li class="next">
+      <a href="/blog/2017/03/24/-what-even-is-compiler-correctness-cross-post-https-williamjbowman-com-blog-2017-03-24-what-even-is-compiler-correctness/"><em><a href="https://williamjbowman.com/blog/2017/03/24/what-even-is-compiler-correctness/">What even is compiler correctness? (cross-post)</a></em> &rarr;</a>
+    </li>
+    </ul>
+  </footer>
+</article>
+            </div>
+          </div>
+        </div>
+        <footer class="footer">
+          <hr />
+          <p><a href="https://twitter.com/neu_prl"
+                class="twitter-follow-button"
+                data-show-count="false"
+                data-lang="en">
+               "Follow the PRL"
+             </a>
+             <script type="text/javascript">
+               !function(d,s,id){
+                   var js,fjs=d.getElementsByTagName(s)[0];
+                   if(!d.getElementById(id)){
+                       js=d.createElement(s);
+                       js.id=id;
+                       js.src="//platform.twitter.com/widgets.js";
+                       fjs.parentNode.insertBefore(js,fjs);
+                   }
+               }(document,"script","twitter-wjs");
+             </script></p>
+          <p>Blog generated
+          by <a href="https://github.com/greghendershott/frog">Frog</a>,
+          using <a href="http://twitter.github.com/bootstrap/index.html">Bootstrap</a>.</p>
+          <p>© Copyright Programming Research Laboratory 2015-2016 | made by Catchexception s.r.o. | source on <a href="https://github.com/nuprl/website">GitHub</a></p>
+        </footer>
+      </div>
+    </div>
+    <!-- </body> JS -->
+    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/custom.js"></script>
+    <script type="text/javascript" src="/js/analytics.js"></script>
+  </body>
+</html>

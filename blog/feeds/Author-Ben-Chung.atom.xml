@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+ <title type="text">PRL Blog: Posts tagged 'Author: Ben Chung'</title>
+ <link rel="self" href="http://prl.ccs.neu.edu/blog/feeds/Author-Ben-Chung.atom.xml" />
+ <link href="http://prl.ccs.neu.edu/blog/tags/Author-Ben-Chung.html" />
+ <id>urn:http-prl-ccs-neu-edu:-blog-tags-Author-Ben-Chung-html</id>
+ <updated>2017-06-16T11:38:25Z</updated>
+ <entry>
+  <title type="text">Spring 2017 PL Junior Retrospective</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/06/16/spring-2017-pl-junior-retrospective/?utm_source=Author-Ben-Chung&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-06-16-spring-2017-pl-junior-retrospective</id>
+  <published>2017-06-16T11:38:25Z</published>
+  <updated>2017-06-16T11:38:25Z</updated>
+  <author>Ben Chung</author>
+  <author>Milo Davis</author>
+  <author>Ming-Ho Yee</author>
+  <author>Matt Kolosick</author>
+  <author>Dustin Jamner</author>
+  <author>Artem Pelenitsyn</author>
+  <author>Julia Belyakova</author>
+  <author>Sam Caldwell</author>
+  <author>
+   <name>Ben Chung, Milo Davis, Ming-Ho Yee, Matt Kolosick, Dustin Jamner, Artem Pelenitsyn, Julia Belyakova, Sam Caldwell</name></author>
+  <content type="html">
+&lt;p&gt;The &lt;a href="http://prl.ccs.neu.edu/seminars.html"&gt;PL Junior Seminar&lt;/a&gt; is for beginning PhD and interested undergrad and masters students to understand the foundations of programming languages research. It serves to fill in background knowledge and get up to speed with different areas of PL research.&lt;/p&gt;
+
+&lt;p&gt;For the spring 2017 instance of PL Junior we chose program synthesis, the sequent calculus, and logic programming as topics we wanted to learn more about. We also did two group paper readings for Luca Cardelli&amp;rsquo;s &lt;a href="http://www.lucacardelli.name/Papers/TypefulProg.pdf"&gt;Typeful Programming&lt;/a&gt; and Alan Kay&amp;rsquo;s &lt;a href="http://worrydream.com/EarlyHistoryOfSmalltalk/"&gt;Early History of Smalltalk&lt;/a&gt;. At the same time, we changed up the format from the previous semester.&lt;/p&gt;
+&lt;!-- more--&gt;
+
+&lt;h2 id="format"&gt;Format&lt;/h2&gt;
+
+&lt;p&gt;As discussed in &lt;a href="http://prl.ccs.neu.edu/blog/2017/01/02/fall-2016-pl-junior-retrospective/"&gt;last fall&amp;rsquo;s retrospective&lt;/a&gt;, we wanted to move from group reading and discussion towards weekly presentations. Reading a paper to prepare a presentation is quite a different experience compared to the effort that goes in when it is just for a group discussion (in our experience). With any luck, the presentation will convey some of this deeper knowledge to the rest of the group, with the result being a deep understanding on the part of the presenter and an informed, if somewhat shallower, understanding in the rest of the group. Ideally, the end result should compare favorably to simply reading the paper individually.&lt;/p&gt;
+
+&lt;p&gt;One idea from last semester that we decided to keep is to spend a length of time (possibly an entire semester) on a topic rather than having a new topic each week. Staying on the same theme helps with retention as well as allowing for deeper investigation.&lt;/p&gt;
+
+&lt;p&gt;In that spirit, we chose three themes for the semester: program synthesis, the sequent calculus, and logic programming. Mostly by chance, these topics have interesting connections to each other, and we even had several PL Grown-Up Seminars this semester on program synthesis!&lt;/p&gt;
+
+&lt;h2 id="synthesis"&gt;Synthesis&lt;/h2&gt;
+
+&lt;p&gt;The first paper on program synthesis that we looked at was &lt;a href="https://www.sri.com/sites/default/files/uploads/publications/pdf/725.pdf"&gt;A Deductive Approach to Program Synthesis&lt;/a&gt; by Manna and Waldinger. We chose this paper because it&amp;rsquo;s old and has a lot of citations so it&amp;rsquo;s probably Important. It was interesting and provided an OK introduction to proof search but the method presented seems far removed from modern synthesis techniques.&lt;/p&gt;
+
+&lt;p&gt;The next paper was &lt;a href="https://arxiv.org/abs/1507.02988"&gt;Programmatic and Direct Manipulation, Together&lt;/a&gt; by Chugh, Hempel,  Spradlin, and Alders, which presents the &lt;a href="https://ravichugh.github.io/sketch-n-sketch/index.html"&gt;Sketch-n-Sketch&lt;/a&gt; system. Sketch-n-Sketch is a cool system. It demonstrates that a narrow application of synthesis - trying to fill in the constant values in a program (sketching) - can be used for great effect. We were left wondering, however, if it was too narrow an application of synthesis to give much of an indication of what the entire field is like.&lt;/p&gt;
+
+&lt;p&gt;We concluded our program synthesis segment with &lt;a href="http://www.cis.upenn.edu/~stevez/papers/OZ15.pdf"&gt;Type-and-Example-Directed Program Synthesis&lt;/a&gt; by Osera and Zdancewic, another relatively recent paper. This seems like a relevant paper because we are under the impression that using examples to do synthesis is a big thing right now. Using types to constrain the search is another interesting perspective on techniques for synthesis.&lt;/p&gt;
+
+&lt;p&gt;While each of theses papers had merits, none was so comprehensive as to be a necessary inclusion in any future look at program synthesis for pl junior&lt;/p&gt;
+
+&lt;h2 id="sequent-calculus"&gt;Sequent Calculus&lt;/h2&gt;
+
+&lt;p&gt;We followed up the program synthesis unit with a week on the sequent calculus. The seminar presentation was based on a paper by &lt;a href="https://hal.inria.fr/inria-00381525/document"&gt;Herbelin&lt;/a&gt;. &lt;a href="http://www.ccs.neu.edu/home/gasche/phd_thesis/scherer-thesis.pdf"&gt;Gabriel’s thesis&lt;/a&gt; (chapter 4) includes maybe a more suitable modern introduction to the sequent calculus.&lt;/p&gt;
+
+&lt;p&gt;It might have been better to do sequent calculus first because there is a modern branch of proof search based on the sequent calculus. Presenting this first would have allowed us to look into proof search for program synthesis.&lt;/p&gt;
+
+&lt;p&gt;An additional problem is that it was insufficiently motivated. Either skipping the topic or spending more time on it would be preferable, since one week was just enough to describe the sequent calculus but not enough to apply it. For this topic to be worthwhile, it would best be used as the basis for subsequent readings that directly reference it.&lt;/p&gt;
+
+&lt;h2 id="logic-programming"&gt;Logic Programming&lt;/h2&gt;
+
+&lt;p&gt;The topic was presented over two weeks. The first session presented/demoed Prolog as a language, and we got a sense of what logic programming could do. But it was a whirlwind tour, and we were left wondering about specific details (how proof search runs, what &lt;code&gt;cut&lt;/code&gt; does).&lt;/p&gt;
+
+&lt;p&gt;The second session presented the paper &lt;a href="http://www.doc.ic.ac.uk/~rak/papers/kowalski-van_emden.pdf"&gt;The Semantics of Predicate Logic as a Programming Language&lt;/a&gt;. It was interesting and insightful but left wondering how it relates to the implementation of real logic programming languages.&lt;/p&gt;
+
+&lt;p&gt;In hindsight this was about as far as we could have gotten in just two weeks. However, complications such as the cut rule seem prevalent enough in practice that more time would be required to build up a useful understanding of logic programming&lt;/p&gt;
+
+&lt;h2 id="bonus-rounds"&gt;Bonus Rounds&lt;/h2&gt;
+
+&lt;p&gt;We also used a few weeks to read and discuss specific papers as a group.&lt;/p&gt;
+
+&lt;p&gt;The first paper we read was Cardelli&amp;rsquo;s &lt;a href="http://www.lucacardelli.name/Papers/TypefulProg.pdf"&gt;Typeful Programming&lt;/a&gt;. We picked typeful programming because Matthias has mentioned on occasion how important he thinks it is.&lt;/p&gt;
+
+&lt;p&gt;It was an interesting read; more of an essay than a paper. It really stood out as different from the other academic publications that we have looked at. It’s a walk through of a language design motivating each design decision in practical terms, as in things that actually help the programmer.&lt;/p&gt;
+
+&lt;p&gt;Cardelli places great importance on polymorphism (subtyping in addition to parametric), as well as features for programming in the large such as modules and interfaces. Several features are interesting in their omission, like type inference and macros.&lt;/p&gt;
+
+&lt;p&gt;After reading it it’s not clear why Matthias thinks it’s so important. From the perspective of modern researchers, many of the features in Cardelli&amp;rsquo;s language seem rather mundane. However, it&amp;rsquo;s likely that at the time he published it, these ideas were significantly newer and much less widespread.&lt;/p&gt;
+
+&lt;p&gt;The other paper we read as a group was Alan Kay&amp;rsquo;s &lt;a href="http://worrydream.com/EarlyHistoryOfSmalltalk/"&gt;The Early History of Smalltalk&lt;/a&gt;. It seems like the Smalltalk project investigated a plethora of interesting ideas about designing programming languages and environments. This article seems to confirm that but does not delve into many particulars.&lt;/p&gt;
+
+&lt;h2 id="final-thoughts"&gt;Final Thoughts&lt;/h2&gt;
+
+&lt;p&gt;Overall this semester of pl junior went well enough that we think it makes a reasonable template for future semesters. The topics were interesting and relevant, and we mostly picked appropriate material for presentations. One downside is that we didn’t quite ‘fill out’ the semester with presentations due to scheduling and not wanting to make some people present twice. Here’s a lesson: recruit more people to the phd program (or get more undergrads) so you don’t have this problem!&lt;/p&gt;
+
+&lt;p&gt;Having papers in a theme helped a lot over previous paper-presentation iterations of pl junior. It helped each week being able to build on what we learned last week, as opposed to having a whirlwind of unrelated topics.&lt;/p&gt;
+
+&lt;p&gt;Writing this retrospective has also proven to be a beneficial exercise. Especially with our sequences of connected topics, looking back has allowed us to put the earlier papers into perspective and better assess both their relevance and presentation.&lt;/p&gt;</content></entry>
+ <entry>
+  <title type="text">No Good Answers, Gradually Typed Object-Oriented Languages</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/05/09/no-good-answers-gradually-typed-object-oriented-languages/?utm_source=Author-Ben-Chung&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-05-09-no-good-answers-gradually-typed-object-oriented-languages</id>
+  <published>2017-05-09T14:04:31Z</published>
+  <updated>2017-05-09T14:04:31Z</updated>
+  <author>
+   <name>Ben Chung</name></author>
+  <content type="html">&lt;!-- more--&gt;
+
+&lt;p&gt;Untyped code remains a real problem in practice, as a result of reduced performance and hindered readability. One approach to solve this problem is gradual typing.&lt;/p&gt;
+
+&lt;p&gt;Gradual typing puts the onus on the developer to add type annotations, statically checks whatever type annotations have been written, and dynamically ensures that untyped code does not violate those annotations. A number of approaches have been put forward to try to achieve these objectives while retaining efficiency, semantic meaning, and the ability to actually type untyped code.&lt;/p&gt;
+
+&lt;p&gt;I discussed three systems, all of which achieve the objective of typing untyped code in different ways, and all of which have different tradeoffs.&lt;/p&gt;
+
+&lt;p&gt;Unofficial Notes:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md"&gt;https://github.com/nuprl/hopl-s2017/blob/master/lecture_notes/2017-04-18.md&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
+
+&lt;p&gt;Code Examples:&lt;/p&gt;
+
+&lt;ul&gt;
+ &lt;li&gt;&lt;a href="https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL"&gt;https://github.com/BenChung/GradualComparison/tree/master/examples/HOPL&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;</content></entry>
+ <entry>
+  <title type="text">Fall 2016 PL Junior Retrospective</title>
+  <link rel="alternate" href="http://prl.ccs.neu.edu/blog/2017/01/02/fall-2016-pl-junior-retrospective/?utm_source=Author-Ben-Chung&amp;utm_medium=Atom" />
+  <id>urn:http-prl-ccs-neu-edu:-blog-2017-01-02-fall-2016-pl-junior-retrospective</id>
+  <published>2017-01-02T16:39:37Z</published>
+  <updated>2017-01-02T16:39:37Z</updated>
+  <author>Ben Chung</author>
+  <author>Milo Davis</author>
+  <author>Ming-Ho Yee</author>
+  <author>Sam Caldwell</author>
+  <author>
+   <name>Ben Chung, Milo Davis, Ming-Ho Yee, Sam Caldwell</name></author>
+  <content type="html">
+&lt;p&gt;The &lt;a href="http://prl.ccs.neu.edu/seminars.html"&gt;Programming Language Seminar, Junior&lt;/a&gt; (or “PL Junior”), is a seminar for junior students to learn and discuss topics at a pace more suitable to our background. This semester, we decided to study dependent types. We chose this topic because&lt;/p&gt;
+
+&lt;ol&gt;
+ &lt;li&gt;working from the &lt;a href="https://mitpress.mit.edu/books/types-and-programming-languages"&gt;TAPL&lt;/a&gt; presentation of type systems, dependent types are a step up in difficulty (excepting F-omega-sub), and&lt;/li&gt;
+ &lt;li&gt;they represent a significant increase in the reasoning power of types over programs.&lt;/li&gt;&lt;/ol&gt;
+&lt;!-- more--&gt;
+
+&lt;p&gt;There was a preference for learning how to implement a dependent type system, instead of spending a significant amount of time reading papers, especially dense type-theoretic papers suggested by &lt;a href="http://purelytheoretical.com/sywtltt.html"&gt;posts&lt;/a&gt; like &lt;a href="http://jozefg.bitbucket.org/posts/2015-08-14-learn-tt.html"&gt;these&lt;/a&gt;. So we followed the &lt;a href="https://github.com/sweirich/pi-forall"&gt;pi-for-all&lt;/a&gt; lecture series given by Stephanie Weirich at &lt;a href="https://www.cis.upenn.edu/~bcpierce/attapl/"&gt;OPLSS&lt;/a&gt;, which focuses on implementing a simple dependently-typed programming language.&lt;/p&gt;
+
+&lt;p&gt;After the pi-for-all lectures, we read chapter two of Edwin Brady’s &lt;a href="https://eb.host.cs.st-andrews.ac.uk/writings/thesis.pdf"&gt;dissertation on implementing dependently typed languages&lt;/a&gt;. The thesis includes a relatively approachable introduction to TT, the core dependent type theory of Epigram.&lt;/p&gt;
+
+&lt;p&gt;Along the way, we became sidetracked by &lt;a href="https://en.wikipedia.org/wiki/System_U#Girard.27s_paradox"&gt;Girard’s paradox&lt;/a&gt;. In the first pi-for-all lecture, we came across the Type-in-Type rule. (In a dependent type system the term and the type languages are the same. However, we still need to distinguish what is a “program” and what is a “type,” for instance, so that we can determine that the annotation of a function’s argument is valid. So a construct in the term language is Type, which is meant to describe those things that are valid in programs where we expect to find a type). In the lecture, this prompted the comment that this (“of course”) makes our system inconsistent as a logic, but there was no further elaboration, and we could not figure out how to use this fact to show inconsistency.&lt;/p&gt;
+
+&lt;p&gt;It turns out the reason Type-in-Type is inconsistent is quite complicated. It is explained in a &lt;a href="https://www.cs.cmu.edu/~kw/scans/hurkens95tlca.pdf"&gt;paper&lt;/a&gt; that we had difficulty understanding. So we turned to the students in our lab that have expertise in the area. The answer we received is that, intuitively, it is inconsistent for the same reason as Russell’s paradox (or the Burali-Forti paradox), but the actual proof is actually quite involved. The lesson we drew is that despite being “obvious,” Type-in-Type being inconsistent is not easy to prove. The way people seem to throw around this conclusion is confusing from a beginner’s point of view.&lt;/p&gt;
+
+&lt;p&gt;The best thing about the pi-for-all series is that it demystified dependent types for us. We gained confidence in being able to whiteboard a dependent type system with the ease of System-F or STLC. If we had one complaint, the presentation of the material relied heavily on Haskell details. The unbound library to handle variables in the implementation results in a somewhat “magicy” representation of binding; it’s not clear that the benefits are so great as to outweigh the cost of just implementing alpha-equivalence and capture-avoiding-substitution. Overall they were high-quality lectures. As hinted above, we didn’t particularly care for the second lecture that was mostly a code walk-through. One advantage of watching videos was that we could speed through parts we were already comfortable with.&lt;/p&gt;
+
+&lt;p&gt;With Edwin Brady’s dissertation, we got a glimpse of how quickly the details of a dependently typed language get hairy. Looking at you, inductive data definitions and eliminations. There were some extremely large type signatures. While this exercise boosted our confidence that we could read Serious Dependent Types™ papers, it also gave evidence that our fears of incomprehensibility were not completely unfounded.&lt;/p&gt;
+
+&lt;p&gt;This issue appeared before in our discussion of Girard’s Paradox. In the discussion of the paradox, we got stuck when we tried to understand the very complex term that inhabited the bottom type. Dependent typing, and discussions thereof, allow very rich, meaningful, and complex types that are as complex as the code that they abstract over. While we are used to understanding these structures in code, parsing a complex type and its fundamental meaning gave us considerable difficulty.&lt;/p&gt;
+
+&lt;h2 id="thoughts-on-the-format"&gt;Thoughts on the format&lt;/h2&gt;
+
+&lt;p&gt;Our meetings this semester were all of the form “we’ll watch this lecture or read this chapter, and then discuss it next week.” Next semester we would like to go back to presenting each week. We feel doing presentations forces the presenter to reach a deeper understanding of the material. This semester we got a relatively shallow understanding of a broad area. A deeper understanding with a narrower focus may be more beneficial (or complementary).&lt;/p&gt;
+
+&lt;p&gt;[[Sam’s defense as Grand Convener of PL Junior: Once we picked dependent types as a topic, doing presentations was not an option. We didn’t have the expertise in the area to pick out different sub-topics and papers suitable for presentations. And, since we were short-handed (4 people each week), we would be presenting once a month!]]&lt;/p&gt;
+
+&lt;p&gt;If we continue learning more about dependent types it would be by: 1) Doing more reading, such as the &lt;a href="https://www.cis.upenn.edu/~bcpierce/attapl/"&gt;ATTAPL&lt;/a&gt; chapter or the programming in Martin-Löf’s type theory material. 2) Actually trying to implement some of the things we’ve learned this semester 3) Playing around with more of the various dependent type systems and theorem provers out there&lt;/p&gt;
+
+&lt;p&gt;For future pl junior cohorts or anyone else in learning about dependent types: Pi-for-all is useful material, but could be condensed into two weeks (for example, by watching the lectures at 1.5x speed) instead of four. Don’t worry about Type-in-Type. The Epigram material is OK but you might be better served looking at ATTAPL first. At some point, you will have to read the dense papers, but pi-for-all is a good introduction.&lt;/p&gt;</content></entry></feed>
