@@ -435,6 +435,7 @@ functional array languages.
                   #:history @list[
                       "Joined Northeastern, 2024"
                       "BSE, University of Michigan"]
+                  #:website "http://shubhagr.com/"
                   #:img "shubh_agrawal.jpg"]{
             I'm interested in type systems, logic, dynamics, and abstract semantics for proving interesting properties about interesting programming languages.
           }
